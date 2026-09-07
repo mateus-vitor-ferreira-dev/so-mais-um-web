@@ -12,7 +12,7 @@ import {
   Home, Profile, QueroJogar, CriarPartida, Tournaments, MinhasPartidas,
   Historico, Avaliacoes, PartidaDetail, TournamentDetail, Times, TimeDetail, Jogador, Amigos,
   ConviteDeProfessor,
-  ConviteDeEspaco, DesignSystem,
+  ConviteDeEspaco, DesignSystem, AreaDoProfessor,
   AdminDashboard, AdminUsers, AdminRequests, AdminPlaces,
   OwnerDashboard, OwnerPlans, OwnerPlaces, OwnerInventory, OwnerEquipment, OwnerRequests, OwnerCourts,
   OwnerProfessores,
@@ -81,6 +81,12 @@ export const arvoreDeRotas = (
       {/* Fica no menu, e não numa aba do perfil: perfil é onde se configura a
           conta, e amigos é onde se usa o produto. Ver o comentário da página. */}
       <Route path="/amigos"          element={<Amigos />} />
+      {/* A área do professor (api#451). Dentro do MainLayout, e não num painel
+          próprio: a decisão B daquela issue diz que o professor continua
+          `PLAYER` e ganha uma área A MAIS, não uma no lugar da outra. A porta é
+          o vínculo, e quem a guarda é a api — `isProfessor` responde 403 a quem
+          não dá aula em lugar nenhum. */}
+      <Route path="/professor"       element={<AreaDoProfessor />} />
       {/* A página de outra pessoa (web#375). Autenticada: seguir exige sessão,
           e uma versão pública sem o botão seria a mesma tela sem o motivo dela. */}
       <Route path="/jogador/:userId" element={<Jogador />} />

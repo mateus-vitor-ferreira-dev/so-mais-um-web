@@ -140,6 +140,18 @@ export const chaves = {
    */
   solicitacoesPendentes: (escopo: 'todas' | 'minhas') =>
     ['solicitacoes', 'pendentes', escopo] as const,
+  /**
+   * A área do professor (api#451, api#484).
+   *
+   * Fora de `espacos/<placeId>`, e é a mesma razão da api ter montado estas
+   * rotas sob `/me`: a agenda dele mistura as academias, então uma chave por
+   * espaço obrigaria a escolher um antes de ver qualquer coisa.
+   */
+  professor: {
+    turmas: () => ['professor', 'turmas'] as const,
+    /** A janela entra na chave: outra janela é outra resposta. */
+    agenda: (de: string, ate: string) => ['professor', 'agenda', de, ate] as const,
+  },
   jogador: (userId: string) => ['jogador', userId] as const,
   perfisEsportivos: () => ['perfis-esportivos'] as const,
   estatisticas: () => ['estatisticas'] as const,
