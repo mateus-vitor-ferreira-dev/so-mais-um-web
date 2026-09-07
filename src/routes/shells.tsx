@@ -6,6 +6,7 @@ import MainLayout from '../components/MainLayout'
 import DashboardLayout from '../components/DashboardLayout'
 import { ownerNavItems } from '../constants/navItems'
 import { useSubscription } from '../hooks/useSubscription'
+import FalhaAoVerificarSessao from '../components/FalhaAoVerificarSessao'
 
 
 /**
@@ -43,8 +44,12 @@ export function PublicRoute({ children }: { children: ReactNode }) {
  * a sidebar apareceria por um instante para quem não tem acesso.
  */
 export function PrivateRoute({ children }: { children: ReactNode }) {
-  const { isAuthenticated, loading } = useAuth()
+  const { isAuthenticated, loading, verificacaoFalhou } = useAuth()
   if (loading) return null
+  /* Ter marca de sessão e não conseguir verificar não é o mesmo que não estar
+     autenticado. Mandar ao login aqui é o defeito da #346: o cookie continua
+     válido, e a pessoa conclui que a sessão expirou. */
+  if (verificacaoFalhou) return <FalhaAoVerificarSessao />
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />
 }
 
@@ -72,16 +77,18 @@ export function PartidaShell() {
 }
 
 export function AdminRoute({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth()
+  const { user, loading, verificacaoFalhou } = useAuth()
   if (loading) return null
+  if (verificacaoFalhou) return <FalhaAoVerificarSessao />
   if (!user) return <Navigate to="/login" replace />
   if (user.role !== 'ADMIN') return <Navigate to="/home" replace />
   return <>{children}</>
 }
 
 export function OwnerRoute({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth()
+  const { user, loading, verificacaoFalhou } = useAuth()
   if (loading) return null
+  if (verificacaoFalhou) return <FalhaAoVerificarSessao />
   if (!user) return <Navigate to="/login" replace />
   if (user.role !== 'OWNER' && user.role !== 'ADMIN') return <Navigate to="/home" replace />
   return <>{children}</>
