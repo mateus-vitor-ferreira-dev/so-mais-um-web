@@ -112,7 +112,21 @@ describe('OwnerDayUses', () => {
       await user.tab()
 
       await waitFor(() => expect(servico.sugestaoDeFim).toHaveBeenCalled())
-      await waitFor(() => expect(screen.getByLabelText('Termina')).toHaveValue('2026-09-11T22:00'))
+
+      /**
+       * Compara o INSTANTE, e não o texto do campo.
+       *
+       * `datetime-local` fala hora local, então o mesmo instante vira
+       * `22:00` numa máquina em -03 e `01:00` numa em UTC. A primeira versão
+       * deste teste esperava o texto e passava aqui e falhava no CI — que roda
+       * em UTC. O que a tela promete não é um texto: é mostrar a hora que a api
+       * sugeriu, seja qual for o relógio de quem olha.
+       */
+      await waitFor(() => {
+        const campo = screen.getByLabelText('Termina') as HTMLInputElement
+        expect(campo.value).not.toBe('')
+        expect(new Date(campo.value).toISOString()).toBe('2026-09-12T01:00:00.000Z')
+      })
     })
 
     it('sugestão nula avisa e deixa o dono digitar — não bloqueia', async () => {
