@@ -1,7 +1,7 @@
 import { Suspense, useState, useEffect } from 'react'
 import type { LucideIcon } from 'lucide-react'
-import type { UserRole } from '../../types/api'
-import { Home, Search, ClipboardList, History, User, Plus, Trophy, Menu, Star, Sun, Moon, LayoutDashboard, Store, LogOut, Users, UserPlus } from 'lucide-react'
+import type { UserMe, UserRole } from '../../types/api'
+import { Home, Search, ClipboardList, History, User, Plus, Trophy, Menu, Star, Sun, Moon, LayoutDashboard, Store, LogOut, Users, UserPlus, GraduationCap } from 'lucide-react'
 import iconUrl from '../../assets/icon-so-mais-um.svg'
 import LogoSvg from '../LogoSvg'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
@@ -42,15 +42,34 @@ interface PanelLink {
   icon: LucideIcon
 }
 
-function getPanelLinks(role: UserRole | undefined): PanelLink[] {
-  if (role === 'ADMIN') return [
-    { to: '/admin', label: 'Painel Admin', icon: LayoutDashboard },
-    { to: '/owner', label: 'Painel Owner', icon: Store },
-  ]
-  if (role === 'OWNER') return [
-    { to: '/owner', label: 'Painel Owner', icon: Store },
-  ]
-  return []
+/**
+ * As áreas a mais de quem tem uma.
+ *
+ * O papel decide os painéis de admin e de dono; o **vínculo** decide a área do
+ * professor, e é a decisão B da api#451 que manda: `user.role` é global e
+ * exclusivo, e dar aula vale num espaço e não nos outros. Quem dá aula continua
+ * `PLAYER` e ganha uma entrada a mais — não uma no lugar da outra. É por isso
+ * que a assinatura recebe o usuário, e não só o papel.
+ *
+ * A entrada aparece só para quem tem vínculo. Professor é papel de poucos, e um
+ * item de menu para todo mundo anunciaria uma área que a pessoa não alcança
+ * sozinha: só o dono de um espaço concede o vínculo.
+ */
+function getPanelLinks(user: UserMe | null | undefined): PanelLink[] {
+  const role: UserRole | undefined = user?.role
+  const links: PanelLink[] = []
+
+  if (role === 'ADMIN') {
+    links.push({ to: '/admin', label: 'Painel Admin', icon: LayoutDashboard })
+  }
+  if (role === 'ADMIN' || role === 'OWNER') {
+    links.push({ to: '/owner', label: 'Painel Owner', icon: Store })
+  }
+  if ((user?.vinculos?.professorEm?.length ?? 0) > 0) {
+    links.push({ to: '/professor', label: 'Minhas aulas', icon: GraduationCap })
+  }
+
+  return links
 }
 
 function getInitials(name = ''): string {
@@ -113,10 +132,10 @@ export default function MainLayout() {
             </NavItem>
           ))}
 
-          {getPanelLinks(user?.role).length > 0 && (
+          {getPanelLinks(user).length > 0 && (
             <>
               <NavDivider />
-              {getPanelLinks(user?.role).map(({ to, label, icon: Icon }) => (
+              {getPanelLinks(user).map(({ to, label, icon: Icon }) => (
                 <NavItem key={to} to={to} onMouseEnter={() => prefetchRota(to)} onFocus={() => prefetchRota(to)}>
                   <Icon />
                   {label}
