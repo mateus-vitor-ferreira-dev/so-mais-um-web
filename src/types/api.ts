@@ -1186,6 +1186,49 @@ export interface AlcanceDosRequisitos {
 }
 
 /**
+ * O day use como o **jogador** o vê na busca (api#519).
+ *
+ * É outro tipo do `DayUse`, e a diferença não é acidente: aquele é a oferta
+ * como o dono a administra — traz `canceladoEm` e `courtId` —, e este é a
+ * vitrine. Nada do dono passa por aqui, porque a api não o serve nesta rota.
+ *
+ * ## `lotado` vem PRONTO da api, e não se recalcula
+ *
+ * `maxPessoas` nulo é sem teto. Quem fizesse `pessoasDentro >= maxPessoas`
+ * compararia com zero e diria lotado para **todo** day use sem limite — que é
+ * o caso mais comum. A api calcula e manda.
+ *
+ * ## E lotado APARECE
+ *
+ * Não some da lista, pelo mesmo desenho da busca de partida. Quem vê "lotado"
+ * aprende que o lugar enche; o que some não ensina nada.
+ */
+export interface DayUsePublico {
+    id: string;
+    inicio: IsoDate;
+    fim: IsoDate;
+    precoGeral: string;
+    /** Nulo = preço único. **Não** repita o geral aqui: a tela desenharia duas faixas iguais. */
+    precoAluno: string | null;
+    maxPessoas: number | null;
+    pessoasDentro: number;
+    lotado: boolean;
+    court: {
+        id: string;
+        name: string;
+        type: CourtType;
+        place: { id: string; name: string; city: string | null; neighborhood: string | null };
+    };
+}
+
+export interface BuscaDeDayUse {
+    dayUses: DayUsePublico[];
+    total: number;
+    page: number;
+    hasMore: boolean;
+}
+
+/**
  * O day use de uma quadra num dia (api#505).
  *
  * O terceiro formato de venda do produto: paga-se um valor fixo, por pessoa,

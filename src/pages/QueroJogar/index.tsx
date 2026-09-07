@@ -8,6 +8,7 @@ import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
 import { useOrigemDeLocalizacao } from '../../hooks/useOrigemDeLocalizacao'
 import ConviteDeLocalizacao from '../../components/ConviteDeLocalizacao'
+import DayUsesDoDia from '../../components/DayUsesDoDia'
 import { pontosDaBusca } from '../../components/MapaDaBusca/pontos'
 import { temDistancia } from '../../types/api'
 import { useSports, getSportMeta } from '../../hooks/useSports'
@@ -452,6 +453,19 @@ export default function QueroJogar() {
             <MapaDaBusca origem={origem} raioKm={raioKm} partidas={pontosDaBusca(filteredEvents)} />
           </Suspense>
         )}
+
+        {/*
+          O day use entra ANTES da contagem de partidas, e não depois do grid.
+
+          Ele é o formato de quem quer jogar hoje sem combinar nada — se ficasse
+          no fim, quem rolasse até lá já teria decidido. E some sozinho quando
+          não há nenhum: um "nenhum day use encontrado" no meio da busca de
+          partida pareceria que a busca falhou.
+
+          Os filtros são os mesmos do grid, de propósito: o jogador filtrou uma
+          vez e espera que valha para o que a tela mostra.
+        */}
+        <DayUsesDoDia city={filterCity} courtType={selectedSport as CourtType | ''} />
 
         <ResultsCount>
           {loading
