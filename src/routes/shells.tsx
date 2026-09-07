@@ -4,8 +4,10 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import MainLayout from '../components/MainLayout'
 import DashboardLayout from '../components/DashboardLayout'
-import { ownerNavItems } from '../constants/navItems'
+import type { NavItemDef } from '../components/DashboardLayout'
+import { adminNavItems, ownerNavItems } from '../constants/navItems'
 import { useSubscription } from '../hooks/useSubscription'
+import { useSolicitacoesPendentes } from '../hooks/useSolicitacoesPendentes'
 import FalhaAoVerificarSessao from '../components/FalhaAoVerificarSessao'
 
 
@@ -94,10 +96,44 @@ export function OwnerRoute({ children }: { children: ReactNode }) {
   return <>{children}</>
 }
 
+/**
+ * Põe o contador de pendentes no item de solicitações do menu.
+ *
+ * O item é achado pela rota, e não pela posição: o menu do owner muda de forma
+ * conforme o papel e o plano, e um índice fixo passaria a decorar o item
+ * errado no dia em que alguém acrescentasse uma linha acima.
+ *
+ * Zero não vira `badge`. O `DashboardLayout` já não desenha contador zerado,
+ * mas deixá-lo fora daqui também evita recriar o item à toa — é o caso comum,
+ * já que a fila vazia é o estado normal de um painel em dia.
+ */
+function comContadorDeSolicitacoes(itens: NavItemDef[], rota: string, pendentes: number): NavItemDef[] {
+  if (pendentes <= 0) return itens
+  return itens.map((item) => (item.to === rota ? { ...item, badge: pendentes } : item))
+}
+
+/**
+ * Layout do painel do admin.
+ *
+ * Existe como componente — em vez de o `DashboardLayout` ser montado direto na
+ * árvore de rotas — porque o contador de solicitações precisa de um hook, e a
+ * árvore é JSX estático. É o mesmo motivo do `OwnerPanelLayout`.
+ */
+export function AdminPanelLayout() {
+  const pendentes = useSolicitacoesPendentes('todas')
+
+  const navItems = useMemo(
+    () => comContadorDeSolicitacoes(adminNavItems, '/admin/requests', pendentes),
+    [pendentes],
+  )
+  return <DashboardLayout navItems={navItems} tagline="Admin Panel" accent="#16a34a" />
+}
+
 /** Layout do painel do owner, com o menu que depende do papel e do plano. */
 export function OwnerPanelLayout() {
   const { user } = useAuth()
   const { temFuncionalidade, loading } = useSubscription()
+  const pendentes = useSolicitacoesPendentes('minhas')
 
   // `ownerNavItems` monta um array novo a cada chamada; sem o memo, o layout
   // recalcularia os badges do menu a cada render.
@@ -106,8 +142,12 @@ export function OwnerPanelLayout() {
   // e tirá-lo meio segundo depois é pior do que mostrar o menu inteiro por um
   // instante, e quem clicar antes da hora encontra o portão da própria página.
   const navItems = useMemo(
-    () => ownerNavItems(user?.role, loading ? undefined : temFuncionalidade),
-    [user?.role, loading, temFuncionalidade],
+    () => comContadorDeSolicitacoes(
+      ownerNavItems(user?.role, loading ? undefined : temFuncionalidade),
+      '/owner/requests',
+      pendentes,
+    ),
+    [user?.role, loading, temFuncionalidade, pendentes],
   )
   return <DashboardLayout navItems={navItems} tagline="Owner Panel" accent="#f59e0b" />
 }

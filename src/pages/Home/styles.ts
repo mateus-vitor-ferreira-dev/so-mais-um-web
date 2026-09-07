@@ -344,12 +344,6 @@ export const ProgressFill = styled.div<{ $pct?: number; }>`
   transition: width 0.3s ease;
 `
 
-export const EmptyState = styled.div`
-  padding: 40px 0;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 0.875rem;
-`
 
 // ── CTA Buttons ───────────────────────────────────────────────────────────────
 

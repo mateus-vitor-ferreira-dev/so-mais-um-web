@@ -15,12 +15,13 @@ import * as courtsService from '../../../services/courts'
 import * as placesService from '../../../services/places'
 import type { Court, CourtType, Place } from '../../../types/api'
 import {
-  BackBtn, CourtsGrid, CourtCard, CourtCardHeader, CourtIconBox,
-  CourtInfo, CourtName, CourtMeta, StatusBadge, CourtActions, ActionBtn,
-  EmptyState, ErrorMsg, NewBtn,
-  Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle,
-  Form, FormGroup, Label, Input, Select, FieldError, ModalActions, CancelBtn, SubmitBtn,
+  BackBtn, CourtsGrid, CourtCard, CourtCardHeader, CourtIconBox, CourtInfo,
+  CourtName, CourtMeta, StatusBadge, CourtActions, ActionBtn, ErrorMsg,
+  NewBtn, Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle, Form,
+  FormGroup, Label, Input, Select, FieldError, ModalActions, CancelBtn,
+  SubmitBtn,
 } from './styles'
+import EmptyState from '../../../components/EmptyState'
 
 const COURT_TYPES = [
   { value: 'SOCIETY',      label: 'Society' },

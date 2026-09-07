@@ -10,16 +10,16 @@ import SportIcon from '../../components/SportIcon'
 import { PartidasPerto } from '../../components/PartidasPerto'
 import type { CourtType } from '../../types/api'
 import {
-  PageWrapper,
-  CompactHeader, GreetingBlock, GreetingText, GreetingTitle,
+  PageWrapper, CompactHeader, GreetingBlock, GreetingText, GreetingTitle,
   StatsRow, StatBox, StatIconBox, StatInfo, StatValue, StatLabel,
-  TabsWrapper, TabsRow, TabsFade, Tab,
-  SectionBlock, SectionHeader, SectionTitle, SectionSubtitle,
-  GamesGrid, GameCardWrapper, CardTop, CardCourtIcon, CardCourtInfo,
-  CourtName, SportBadge, VagasBadge, CardMeta, MetaRow,
-  CardBottom, PlayerCount, Price, ProgressBar, ProgressFill, EmptyState,
-  CTARow, CTAPrimary, CTASecondary,
+  TabsWrapper, TabsRow, TabsFade, Tab, SectionBlock, SectionHeader,
+  SectionTitle, SectionSubtitle, GamesGrid, GameCardWrapper, CardTop,
+  CardCourtIcon, CardCourtInfo, CourtName, SportBadge, VagasBadge, CardMeta,
+  MetaRow, CardBottom, PlayerCount, Price, ProgressBar, ProgressFill, CTARow,
+  CTAPrimary, CTASecondary,
 } from './styles'
+import EmptyState from '../../components/EmptyState'
+import { SkeletonCard } from '../../components/Skeleton'
 
 interface FiltroTab {
   id: string
@@ -243,7 +243,10 @@ export default function Home() {
           </SectionHeader>
 
           {loadingEvents ? (
-            <EmptyState>Carregando partidas...</EmptyState>
+            /* Carregando não é vazio: um pede espera, o outro pede ação, e o
+               mesmo desenho para os dois fazia a pessoa agir na hora de
+               esperar. O esqueleto ainda mostra a forma do que vem (#315). */
+            <GamesGrid><SkeletonCard count={4} /></GamesGrid>
           ) : filteredEvents.length === 0 ? (
             <EmptyState>Nenhuma partida disponível no momento.</EmptyState>
           ) : (

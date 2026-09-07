@@ -16,19 +16,15 @@ import type { CorDeTime } from '../../constants/coresDeTime'
 import {
   SecondaryButton, CreateButton, ModalOverlay, ModalContent, Form, ButtonGroup,
 } from '../Times/styles'
-import type { CourtType, PartidaStatus, TeamMember, TeamPartida } from '../../types/api'
+import type { CourtType, TeamMember, TeamPartida } from '../../types/api'
 import {
-  Container, BackLink, Hero, CaptainActions, Section,
-  MemberList, MemberCard, CaptainBadge,
-  PartidaList, PartidaCard, StatusChip, EmptyState, ErrorState,
+  Container, BackLink, Hero, CaptainActions, Section, MemberList, MemberCard,
+  PartidaList, PartidaCard, StatusChip,
 } from './styles'
-
-const STATUS: Record<PartidaStatus, { label: string; tom: 'aberta' | 'cheia' | 'fim' | 'cancelada' }> = {
-  WAITING:   { label: 'Aberta',     tom: 'aberta' },
-  FULL:      { label: 'Lotada',     tom: 'cheia' },
-  FINISHED:  { label: 'Finalizada', tom: 'fim' },
-  CANCELLED: { label: 'Cancelada',  tom: 'cancelada' },
-}
+import CaptainBadge from '../../components/CaptainBadge'
+import { rotuloDoStatus } from '../../constants/statusDaPartida'
+import ErrorState from '../../components/ErrorState'
+import EmptyState from '../../components/EmptyState'
 
 const formatarData = (iso: string) =>
   new Date(iso).toLocaleString('pt-BR', {
@@ -246,9 +242,7 @@ export default function TimeDetail() {
               <div>
                 <div className="nome">{membro.user.nickname || membro.user.name}</div>
                 {membro.userId === dados.captainId ? (
-                  <CaptainBadge>
-                    <Crown size={11} aria-hidden="true" /> Capitão
-                  </CaptainBadge>
+                  <CaptainBadge>Capitão</CaptainBadge>
                 ) : (
                   <span className="papel">Jogador</span>
                 )}
@@ -262,7 +256,7 @@ export default function TimeDetail() {
         <h2 id="titulo-partidas">Partidas do time</h2>
 
         {!souMembro && (
-          <EmptyState>As partidas deste time são visíveis para quem é do time.</EmptyState>
+          <EmptyState comMoldura>As partidas deste time são visíveis para quem é do time.</EmptyState>
         )}
 
         {souMembro && partidas.isPending && <Skeleton height={72} radius={12} />}
@@ -274,7 +268,7 @@ export default function TimeDetail() {
         )}
 
         {souMembro && partidas.data?.length === 0 && (
-          <EmptyState>
+          <EmptyState comMoldura>
             Este time ainda não jogou nenhuma partida.
             {souCapitao && ' Crie uma e a vaga da galera fica garantida.'}
           </EmptyState>
@@ -283,7 +277,7 @@ export default function TimeDetail() {
         {souMembro && partidas.data && partidas.data.length > 0 && (
           <PartidaList>
             {partidas.data.map((partida: TeamPartida) => {
-              const situacao = STATUS[partida.status]
+              const situacao = rotuloDoStatus(partida.status)
               return (
                 <PartidaCard key={partida.id}>
                   <Link to={`/partida/${partida.id}`}>

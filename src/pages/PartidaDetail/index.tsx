@@ -30,13 +30,7 @@ import {
   LeaveBtn, Modal, ModalOverlay, ModalBox, ModalTitle,
   ReasonInput, ReasonCounter, ModalActions, ModalCancelBtn, ModalConfirmBtn,
 } from './styles'
-
-const STATUS_LABEL = {
-  WAITING:   { label: 'Aguardando', emoji: '🟢' },
-  FULL:      { label: 'Lotado',     emoji: '🟡' },
-  FINISHED:  { label: 'Finalizado', emoji: '🔵' },
-  CANCELLED: { label: 'Cancelado',  emoji: '🔴' },
-}
+import { rotuloDoStatus } from '../../constants/statusDaPartida'
 
 /**
  * Os três jeitos de um link de convite parar de valer (#229).
@@ -249,7 +243,7 @@ export default function PartidaDetail() {
    */
   const visitante = !verificandoSessao && !isAuthenticated
   const sport           = getSportMeta(event.court?.type as CourtType)
-  const status          = STATUS_LABEL[event.status] ?? { label: event.status, emoji: '⚪' }
+  const status          = rotuloDoStatus(event.status)
   const mapsUrl         = buildMapsUrl(event)
 
   const dateObj = new Date(event.date)
@@ -394,7 +388,12 @@ export default function PartidaDetail() {
               <ProgressLabel>
                 <ProgressText><SportGlyph icon={sport.icon} fallback={sport.iconFallback} /> {sport.label}</ProgressText>
                 <VagasText $isFull={isFull}>
-                  {isFull ? 'Lotado' : `${vagas} vaga${vagas !== 1 ? 's' : ''}`}
+                  {/* Feminino, concordando com "partida", como o
+                      `statusDaPartida` (#315). Aqui a palavra não vem do mapa
+                      porque não é o status: é o contador de vagas dizendo que
+                      não há nenhuma — a partida pode estar `WAITING` e cheia
+                      no mesmo instante em que alguém sai. */}
+                  {isFull ? 'Lotada' : `${vagas} vaga${vagas !== 1 ? 's' : ''}`}
                 </VagasText>
               </ProgressLabel>
               <ProgressBar>

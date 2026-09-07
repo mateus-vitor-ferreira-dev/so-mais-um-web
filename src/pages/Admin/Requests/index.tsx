@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback } from 'react'
-import { usePageHeader, useNavBadge } from '../../../components/DashboardLayout/pageHeader'
+import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import { toast } from 'sonner'
 import StatCard from '../../../components/StatCard'
 import * as placeRequestsService from '../../../services/placeRequests'
+import { useInvalidarSolicitacoesPendentes } from '../../../hooks/useSolicitacoesPendentes'
 import type { PlaceRequest, PlaceRequestStatus } from '../../../types/api'
 import {
   StatsRow, Tabs, Tab, RequestList, RequestCard, RequestAccent,
-  RequestHeader, RequestTitle, RequestMeta,
-  RequestFooter, RequestSentAt, StatusBadge, ActionGroup,
-  ApproveBtn, RejectBtn, EmptyState, ErrorMsg, RejectModal, ModalOverlay,
-  ModalBox, ModalTitle, ReasonInput, ModalActions, CancelBtn, ConfirmBtn,
+  RequestHeader, RequestTitle, RequestMeta, RequestFooter, RequestSentAt,
+  StatusBadge, ActionGroup, ApproveBtn, RejectBtn, ErrorMsg, RejectModal,
+  ModalOverlay, ModalBox, ModalTitle, ReasonInput, ModalActions, CancelBtn,
+  ConfirmBtn,
 } from './styles'
+import EmptyState from '../../../components/EmptyState'
 
 const STATUS_TABS: Array<{ key: PlaceRequestStatus | undefined; label: string }> = [
   { key: undefined,    label: 'Todas'      },
@@ -32,6 +34,8 @@ export default function AdminRequests() {
   const [rejectTarget, setRejectTarget] = useState<PlaceRequest | null>(null)
   const [rejectReason, setRejectReason] = useState('')
 
+  const recontarPendentes = useInvalidarSolicitacoesPendentes('todas')
+
   const fetchRequests = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -52,6 +56,9 @@ export default function AdminRequests() {
     try {
       await placeRequestsService.approve(id)
       await fetchRequests()
+      // O contador do menu está na tela junto com esta lista: sem recontar, ele
+      // segue anunciando a solicitação que acabou de sair da fila.
+      await recontarPendentes()
     } catch {
       toast.error('Erro ao aprovar solicitação.')
     } finally {
@@ -67,6 +74,7 @@ export default function AdminRequests() {
       setRejectTarget(null)
       setRejectReason('')
       await fetchRequests()
+      await recontarPendentes()
     } catch {
       toast.error('Erro ao rejeitar solicitação.')
     } finally {
@@ -81,12 +89,7 @@ export default function AdminRequests() {
     rejected: requests.filter((r) => r.status === 'REJECTED').length,
   }
 
-  const pendingCount = requests.filter((r) => r.status === 'PENDING').length
-
   usePageHeader("Solicitações de Estabelecimento", "Aprove ou rejeite solicitações de Owners para cadastro de novos estabelecimentos")
-  // Contagem de pendentes no item do menu — só enquanto esta página está
-  // aberta, como era antes de o layout virar rota-pai.
-  useNavBadge('/admin/requests', pendingCount)
 
   return (
     <>
