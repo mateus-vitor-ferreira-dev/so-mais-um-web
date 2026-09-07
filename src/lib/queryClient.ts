@@ -129,6 +129,17 @@ export const chaves = {
     seguindo:   (userId: string) => ['rede', userId, 'seguindo'] as const,
     meusAmigos: () => ['rede', 'eu', 'amigos'] as const,
   },
+  /**
+   * As solicitações de estabelecimento ainda pendentes, para o contador do
+   * menu lateral (#356).
+   *
+   * O escopo entra na chave porque a resposta é outra: o admin conta a fila
+   * inteira, o dono conta só o que ele mesmo pediu. Uma chave única faria o
+   * painel do owner mostrar o número do admin — ou o contrário, que é pior,
+   * porque revelaria a fila de todo mundo a quem só devia ver a própria.
+   */
+  solicitacoesPendentes: (escopo: 'todas' | 'minhas') =>
+    ['solicitacoes', 'pendentes', escopo] as const,
   jogador: (userId: string) => ['jogador', userId] as const,
   perfisEsportivos: () => ['perfis-esportivos'] as const,
   estatisticas: () => ['estatisticas'] as const,

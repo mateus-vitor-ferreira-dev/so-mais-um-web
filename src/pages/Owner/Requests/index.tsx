@@ -9,6 +9,7 @@ import StatCard from '../../../components/StatCard'
 import SubscriptionGate from '../../../components/SubscriptionGate'
 import { useSubscription } from '../../../hooks/useSubscription'
 import * as placeRequestsService from '../../../services/placeRequests'
+import { useInvalidarSolicitacoesPendentes } from '../../../hooks/useSolicitacoesPendentes'
 import type { PlaceRequest } from '../../../types/api'
 import type { PlaceRequestInput } from '../../../services/placeRequests'
 import {
@@ -96,6 +97,8 @@ export default function OwnerRequests() {
     resolver: yupResolver(schema),
   })
 
+  const recontarPendentes = useInvalidarSolicitacoesPendentes('minhas')
+
   const fetchRequests = async () => {
     setLoading(true)
     setError(null)
@@ -119,6 +122,9 @@ export default function OwnerRequests() {
       reset()
       setShowModal(false)
       await fetchRequests()
+      // A solicitação recém-enviada entra na fila do dono: o contador do menu
+      // precisa refletir isso sem esperar o cache vencer.
+      await recontarPendentes()
     } catch (err) {
       // O toast some sozinho; a mensagem da API — que diz qual campo falhou —
       // fica no modal até o dono corrigir e reenviar.
