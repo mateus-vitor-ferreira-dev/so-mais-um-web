@@ -146,13 +146,3 @@ export const ReviewComment = styled.p`
   border-top: 1px solid ${({ theme }) => theme.colors.borderLight};
 `
 
-export const EmptyState = styled.div`
-  text-align: center;
-  padding: ${({ theme }) => theme.spacing[12]};
-  color: ${({ theme }) => theme.colors.textMuted};
-
-  p {
-    font-size: ${({ theme }) => theme.fontSizes.md};
-    margin-top: ${({ theme }) => theme.spacing[3]};
-  }
-`

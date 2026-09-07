@@ -128,17 +128,6 @@ export const MemberCard = styled.li`
   }
 `
 
-export const CaptainBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: ${({ theme }) => theme.colors.primaryLight};
-  color: ${({ theme }) => theme.colors.primaryDark};
-  border-radius: ${({ theme }) => theme.radii.full};
-  padding: 2px ${({ theme }) => theme.spacing[2]};
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  font-weight: 700;
-`
 
 export const PartidaList = styled.ul`
   list-style: none;
@@ -205,21 +194,4 @@ export const StatusChip = styled.span<{ $tom: 'aberta' | 'cheia' | 'fim' | 'canc
     : theme.colors.textSecondary};
 `
 
-export const EmptyState = styled.div`
-  background: ${({ theme }) => theme.colors.bgCard};
-  border: 1px dashed ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  padding: ${({ theme }) => theme.spacing[6]};
-  text-align: center;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`
 
-export const ErrorState = styled.div`
-  background: ${({ theme }) => theme.colors.errorLight};
-  border: 1px solid ${({ theme }) => theme.colors.error};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  padding: ${({ theme }) => theme.spacing[5]};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`

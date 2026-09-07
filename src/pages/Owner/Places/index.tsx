@@ -14,12 +14,12 @@ import * as placesService from '../../../services/places'
 import type { PlaceInput } from '../../../services/places'
 import type { Place } from '../../../types/api'
 import {
-  StatsRow, PlaceGrid, PlaceCard, PlaceCardHeader, PlaceInfo,
-  PlaceName, PlaceMeta, StatusBadge, PlaceDesc, PlaceActions,
-  ActionBtn, EmptyState, ErrorMsg,
-  Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle,
-  Form, FormGroup, Label, Input, FieldError, ModalActions, CancelBtn, SubmitBtn,
+  StatsRow, PlaceGrid, PlaceCard, PlaceCardHeader, PlaceInfo, PlaceName,
+  PlaceMeta, StatusBadge, PlaceDesc, PlaceActions, ActionBtn, ErrorMsg,
+  Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle, Form, FormGroup,
+  Label, Input, FieldError, ModalActions, CancelBtn, SubmitBtn,
 } from './styles'
+import EmptyState from '../../../components/EmptyState'
 
 const editSchema = yup.object({
   name:         yup.string().required('Nome obrigatório'),

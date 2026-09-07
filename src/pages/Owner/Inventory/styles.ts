@@ -280,17 +280,6 @@ export const HistoryItem = styled.div<{ $entry: boolean }>`
   time { white-space: nowrap; }
 `
 
-export const EmptyState = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 140px;
-  color: ${({ theme }) => theme.colors.textMuted};
-  text-align: center;
-
-  svg { animation: spin 1s linear infinite; }
-`
 
 export const Modal = styled.div`
   position: fixed;

@@ -13,12 +13,12 @@ import type { PlaceRequest } from '../../../types/api'
 import type { PlaceRequestInput } from '../../../services/placeRequests'
 import {
   StatsRow, RequestList, RequestCard, RequestAccent, RequestHeader,
-  RequestTitle, RequestMeta, RequestFooter, RequestSentAt,
-  StatusBadge, EmptyState, ErrorMsg,
-  NewBtn, Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle,
+  RequestTitle, RequestMeta, RequestFooter, RequestSentAt, StatusBadge,
+  ErrorMsg, NewBtn, Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle,
   Form, FormGroup, FormRow, Label, Input, ModalActions, CancelBtn, SubmitBtn,
   FieldError,
 } from './styles'
+import EmptyState from '../../../components/EmptyState'
 
 const STATUS_LABEL = { PENDING: 'Aguardando', APPROVED: 'Aprovada', REJECTED: 'Rejeitada' }
 const STATUS_COLOR = { PENDING: '#d97706', APPROVED: '#16a34a', REJECTED: '#dc2626' }

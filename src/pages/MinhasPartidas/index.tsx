@@ -27,9 +27,11 @@ import { MarcaDeVisibilidade } from '../../components/MarcaDeVisibilidade'
 import { teamsService } from '../../services/teams'
 import { SortearBtn } from '../../components/SorteioDeTimes/styles'
 import {
-  Container, PageHeader, CreateButton, Tabs, Tab, PixBox, EmptyState,
-  ModalOverlay, ModalContent, Form, ButtonGroup,
+  Container, PageHeader, CreateButton, Tabs, Tab, PixBox, ModalOverlay,
+  ModalContent, Form, ButtonGroup,
 } from './styles'
+import EmptyState from '../../components/EmptyState'
+import { rotuloDoStatus } from '../../constants/statusDaPartida'
 
 /**
  * O que cada aba diz quando não há nada, e para onde ela manda (#379).
@@ -57,13 +59,6 @@ const VAZIO_POR_ABA = {
 } as const
 
 type AbaDePartidas = keyof typeof VAZIO_POR_ABA
-
-const STATUS_LABELS: Record<string, string> = {
-  WAITING:   'Aguardando',
-  FULL:      'Lotado',
-  FINISHED:  'Finalizado',
-  CANCELLED: 'Cancelado',
-}
 
 interface FormularioPartida {
   date: string
@@ -283,20 +278,23 @@ export default function MinhasPartidas() {
                "Criar Partida" nas duas pontas —, e sem a região quem navega por
                botões ouve o mesmo nome duas vezes sem nada que os separe.
           */
-          <EmptyState role="region" aria-labelledby="titulo-vazio-partidas">
-            <h2 id="titulo-vazio-partidas">{vazioDaAba.titulo}</h2>
-            <p>{vazioDaAba.texto}</p>
-            {/*
+          <EmptyState
+            titulo={vazioDaAba.titulo}
+            /*
               Outro caminho, e não um substituto do botão do cabeçalho: aquele
               continua onde está, e este é o que faz sentido a partir do vazio
               desta aba.
-            */}
-            <CreateButton
-              type="button"
-              onClick={() => navigate(vazioDaAba.destino)}
-            >
-              {vazioDaAba.botao}
-            </CreateButton>
+            */
+            acao={
+              <CreateButton
+                type="button"
+                onClick={() => navigate(vazioDaAba.destino)}
+              >
+                {vazioDaAba.botao}
+              </CreateButton>
+            }
+          >
+            {vazioDaAba.texto}
           </EmptyState>
         ) : (
           <Grid>
@@ -320,7 +318,7 @@ export default function MinhasPartidas() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                       <MarcaDeVisibilidade visibility={ev.visibility} />
                       <span className="badge" style={{ color: '#f59e0b', background: '#fef3c7' }}>
-                        {STATUS_LABELS[ev.status] ?? ev.status}
+                        {rotuloDoStatus(ev.status).label}
                       </span>
                     </div>
                   </CardHeader>

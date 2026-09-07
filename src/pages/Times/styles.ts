@@ -102,46 +102,8 @@ export const TeamCard = styled.li`
   }
 `
 
-export const CaptainTag = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: ${({ theme }) => theme.colors.primaryLight};
-  color: ${({ theme }) => theme.colors.primaryDark};
-  border-radius: ${({ theme }) => theme.radii.full};
-  padding: 2px ${({ theme }) => theme.spacing[2]};
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  font-weight: 700;
-`
 
-export const EmptyState = styled.div`
-  text-align: center;
-  background: ${({ theme }) => theme.colors.bgCard};
-  border: 1px dashed ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.xl};
-  padding: ${({ theme }) => theme.spacing[8]};
 
-  h2 {
-    font-size: ${({ theme }) => theme.fontSizes.lg};
-    color: ${({ theme }) => theme.colors.textPrimary};
-    margin-bottom: ${({ theme }) => theme.spacing[2]};
-  }
-
-  p {
-    color: ${({ theme }) => theme.colors.textSecondary};
-    font-size: ${({ theme }) => theme.fontSizes.sm};
-    margin-bottom: ${({ theme }) => theme.spacing[5]};
-  }
-`
-
-export const ErrorState = styled.div`
-  background: ${({ theme }) => theme.colors.errorLight};
-  border: 1px solid ${({ theme }) => theme.colors.error};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  padding: ${({ theme }) => theme.spacing[5]};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`
 
 export const ModalOverlay = styled.div`
   position: fixed;

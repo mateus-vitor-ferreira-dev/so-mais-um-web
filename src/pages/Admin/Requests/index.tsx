@@ -6,11 +6,12 @@ import * as placeRequestsService from '../../../services/placeRequests'
 import type { PlaceRequest, PlaceRequestStatus } from '../../../types/api'
 import {
   StatsRow, Tabs, Tab, RequestList, RequestCard, RequestAccent,
-  RequestHeader, RequestTitle, RequestMeta,
-  RequestFooter, RequestSentAt, StatusBadge, ActionGroup,
-  ApproveBtn, RejectBtn, EmptyState, ErrorMsg, RejectModal, ModalOverlay,
-  ModalBox, ModalTitle, ReasonInput, ModalActions, CancelBtn, ConfirmBtn,
+  RequestHeader, RequestTitle, RequestMeta, RequestFooter, RequestSentAt,
+  StatusBadge, ActionGroup, ApproveBtn, RejectBtn, ErrorMsg, RejectModal,
+  ModalOverlay, ModalBox, ModalTitle, ReasonInput, ModalActions, CancelBtn,
+  ConfirmBtn,
 } from './styles'
+import EmptyState from '../../../components/EmptyState'
 
 const STATUS_TABS: Array<{ key: PlaceRequestStatus | undefined; label: string }> = [
   { key: undefined,    label: 'Todas'      },
