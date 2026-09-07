@@ -30,7 +30,15 @@ export interface NavItemDef {
   to: string
   label: string
   icon: LucideIcon
-  /** Contador exibido à direita; só aparece se > 0. */
+  /**
+   * Contador exibido à direita; só aparece se > 0.
+   *
+   * Vem montado por quem constrói o menu (`AdminPanelLayout`,
+   * `OwnerPanelLayout`). Até a #356 ele era publicado pela **página** de
+   * destino, via `useNavBadge`, e por isso só existia depois de a pessoa já
+   * ter aberto a tela que ele deveria anunciar — além de sumir a cada recarga,
+   * porque morava num `useState` deste layout.
+   */
   badge?: number
   /** Insere um separador acima deste item. */
   divider?: boolean
@@ -70,7 +78,6 @@ export default function DashboardLayout({
   const { logout, user } = useAuth()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [header, setHeaderState] = useState<{ title: string; sub?: string }>({ title: '' })
-  const [navBadges, setNavBadges] = useState<Record<string, number>>({})
   const [actionsSlot, setActionsSlot] = useState<HTMLElement | null>(null)
 
   // Identidade estável: é dependência do efeito em `usePageHeader`. A
@@ -81,18 +88,9 @@ export default function DashboardLayout({
     )
   }, [])
 
-  const setNavBadge = useCallback((to: string, count: number) => {
-    setNavBadges((anterior) => (anterior[to] === count ? anterior : { ...anterior, [to]: count }))
-  }, [])
-
   const headerContext = useMemo(
-    () => ({ setHeader, setNavBadge, actionsSlot }),
-    [setHeader, setNavBadge, actionsSlot],
-  )
-
-  const itensComBadge = useMemo(
-    () => navItems.map((item) => (navBadges[item.to] != null ? { ...item, badge: navBadges[item.to] } : item)),
-    [navItems, navBadges],
+    () => ({ setHeader, actionsSlot }),
+    [setHeader, actionsSlot],
   )
 
   function handleLogout() {
@@ -117,7 +115,7 @@ export default function DashboardLayout({
         <Divider />
 
         <Nav>
-          {itensComBadge.map(({ to, label, icon: Icon, badge, divider, end, bloqueado }) => (
+          {navItems.map(({ to, label, icon: Icon, badge, divider, end, bloqueado }) => (
             <span key={to}>
               {divider && <Divider />}
               {bloqueado ? (
