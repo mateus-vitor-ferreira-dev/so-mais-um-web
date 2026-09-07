@@ -11,24 +11,17 @@
  * recebe em `useOrigemDeLocalizacao`.
  */
 
+import { guarde, leia } from '../../utils/armazenamento'
+
 /** Mesma prateleira da preferência de localização (`so-mais-um:localizacao`). */
 const CHAVE = 'so-mais-um:convite-de-localizacao'
 
+// O `try/catch` que estava aqui virou `utils/armazenamento` (web#359): a mesma
+// guarda existia em quatro lugares, e dois deles a tinham esquecido.
 export function foiDispensado(): boolean {
-  try {
-    return localStorage.getItem(CHAVE) === 'dispensado'
-  } catch {
-    // Janela anônima, cookies bloqueados, storage cheio. Não conseguir lembrar
-    // é motivo para convidar de novo, nunca para quebrar a tela.
-    return false
-  }
+  return leia(CHAVE) === 'dispensado'
 }
 
 export function guardeDispensa() {
-  try {
-    localStorage.setItem(CHAVE, 'dispensado')
-  } catch {
-    // Sem registro, o convite volta na próxima visita. Pior que lembrar, muito
-    // melhor que estourar.
-  }
+  guarde(CHAVE, 'dispensado')
 }

@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { env } from '../config/env'
+import { esqueca, guarde, leia } from '../utils/armazenamento'
 
 /**
  * Marca de que existe sessão — **não é credencial**.
@@ -15,9 +16,17 @@ import { env } from '../config/env'
  */
 export const SESSION_HINT_KEY = 'só+1:sessao'
 
-export const marcarSessao   = () => localStorage.setItem(SESSION_HINT_KEY, '1')
-export const esquecerSessao = () => localStorage.removeItem(SESSION_HINT_KEY)
-export const temSessao      = () => localStorage.getItem(SESSION_HINT_KEY) !== null
+/*
+ * Pelo `armazenamento`, e não pelo `localStorage` cru: `temSessao` é chamado no
+ * boot, e uma exceção ali derrubaria o app antes da primeira tela (web#359).
+ *
+ * Sem storage, `temSessao` responde `false` — o app trata como visitante, que é
+ * o que ele já faz com token expirado. Não é o melhor resultado; é o resultado
+ * certo quando não há como saber.
+ */
+export const marcarSessao   = () => guarde(SESSION_HINT_KEY, '1')
+export const esquecerSessao = () => esqueca(SESSION_HINT_KEY)
+export const temSessao      = () => leia(SESSION_HINT_KEY) !== null
 
 /** Header exigido pela API em requisição que muda estado — ver o interceptor. */
 export const CSRF_HEADER = 'X-Requested-With'
