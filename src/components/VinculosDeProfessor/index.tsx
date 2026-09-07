@@ -5,13 +5,18 @@ import { Bloco, Espaco, Explicacao, Lista, Titulo } from './styles'
 /**
  * Onde a pessoa dá aula (web#377, api#451).
  *
- * ## Por que no perfil, e não no menu
+ * ## Por que no perfil, agora que também há menu
  *
- * A api#451 diz que a entrada do professor deve aparecer *"do mesmo jeito que
- * 'Painel Owner' aparece hoje no menu do jogador"* — só que o painel do
- * professor **é a lista de aulas**, e aula não existe no schema: ela é o épico
- * api#444, que ainda não começou. Um item de menu levaria a uma tela vazia sem
- * nada que a possa preencher.
+ * Este bloco nasceu como substituto: a api#451 pedia a entrada no menu *"do
+ * mesmo jeito que 'Painel Owner' aparece"*, mas o painel do professor **é a
+ * lista de aulas**, e aula não existia no schema — era o épico api#444. Um item
+ * de menu levaria a uma tela vazia sem nada que a preenchesse.
+ *
+ * **O épico fechou, e a entrada existe**: "Minhas aulas" no menu do jogador,
+ * levando a `/professor`. Este bloco ficou, e não virou redundante — ele
+ * responde outra pergunta. O menu diz *o que você pode fazer*; aqui se diz **em
+ * quais espaços o vínculo vale**, que é a informação contraintuitiva da #451 e
+ * que a agenda não mostra (ela mistura as academias de propósito).
  *
  * O que dá para fazer hoje, e resolve o essencial, é o vínculo ficar **visível
  * para quem o tem**: aceitar um convite tem de produzir algo que a pessoa

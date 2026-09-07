@@ -1479,6 +1479,62 @@ export interface Aula {
     fim: string;
     status: AulaStatus;
 }
+/**
+ * O espaço e a quadra, no recorte que a área do professor mostra (api#484).
+ *
+ * Sem endereço e sem preço: o professor precisa saber **onde** é a aula, não
+ * comercializar o espaço.
+ */
+export interface QuadraDoProfessor {
+    id: string;
+    name: string;
+    type: CourtType;
+    place: { id: string; name: string; city: string };
+}
+
+/**
+ * Uma turma como o professor a vê.
+ *
+ * **Sem `valorMensalidade`**, ao contrário da `Turma` do dono — e não é
+ * esquecimento: a api omite o campo de propósito, porque quanto o aluno paga é
+ * assunto entre o aluno e o espaço. É o que torna verificável o critério da
+ * api#451 de que a tela do professor não mostra faturamento.
+ */
+export interface TurmaDoProfessor {
+    id: string;
+    modalidade: CourtType;
+    /** 0–6, com **0 = domingo**. */
+    diaDaSemana: number;
+    /** `"HH:mm"` em 24h. */
+    horario: string;
+    duracaoMinutos: number;
+    vagas: number;
+    ativa: boolean;
+    court: QuadraDoProfessor;
+    /** Quantos, e não quais — os nomes só aparecem no detalhe da turma. */
+    alunosMatriculados: number;
+}
+
+/**
+ * Uma aula na agenda do professor.
+ *
+ * A aula traz o espaço junto porque a agenda **mistura as academias** numa
+ * lista só: quem dá aula às 18h numa e às 20h noutra precisa ver as duas, e sem
+ * o nome do espaço em cada linha a lista fica ambígua justamente para quem ela
+ * existe.
+ */
+export interface AulaDoProfessor {
+    id: string;
+    inicio: IsoDate;
+    fim: IsoDate;
+    status: AulaStatus;
+    turma: {
+        id: string;
+        modalidade: CourtType;
+        court: QuadraDoProfessor;
+    };
+}
+
 export interface ChamadaDaAula {
     aula: Pick<Aula, 'id' | 'inicio' | 'fim' | 'status'>;
     alunos: Array<{ matriculaId: string; nome: string; temConta: boolean; presente: boolean | null }>;
