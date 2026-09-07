@@ -12,7 +12,7 @@ import {
   Home, Profile, QueroJogar, CriarPartida, Tournaments, MinhasPartidas,
   Historico, Avaliacoes, PartidaDetail, TournamentDetail, Times, TimeDetail, Jogador, Amigos,
   ConviteDeProfessor,
-  ConviteDeEspaco,
+  ConviteDeEspaco, DesignSystem,
   AdminDashboard, AdminUsers, AdminRequests, AdminPlaces,
   OwnerDashboard, OwnerPlans, OwnerPlaces, OwnerInventory, OwnerEquipment, OwnerRequests, OwnerCourts,
   OwnerProfessores,
@@ -58,6 +58,12 @@ export const arvoreDeRotas = (
         uma credencial ao portador — quem tiver o link entra, e não há o que
         recusar. */}
     <Route path="/convite-espaco" element={<Suspense fallback={<FullPageLoader />}><ConviteDeEspaco /></Suspense>} />
+    {/* O catálogo do vocabulário visual (#430). Público e fora de todo menu:
+        não mostra dado de ninguém, e é na URL de preview do PR que a revisão de
+        desenho acontece. Sem `PublicRoute` de propósito — aquele redireciona
+        quem já tem sessão para a área dele, e quem constrói costuma estar
+        logado justamente quando quer abrir isto. */}
+    <Route path="/design-system" element={<Suspense fallback={<FullPageLoader />}><DesignSystem /></Suspense>} />
 
     {/* Área do jogador — MainLayout monta uma vez e persiste entre estas rotas */}
     <Route element={<PrivateRoute><MainLayout /></PrivateRoute>}>
