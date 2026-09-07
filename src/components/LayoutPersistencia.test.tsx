@@ -5,7 +5,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import { renderWithProviders, screen } from '../test/render'
 import DashboardLayout from './DashboardLayout'
 import MainLayout from './MainLayout'
-import { PageActions, useNavBadge, usePageHeader } from './DashboardLayout/pageHeader'
+import { PageActions, usePageHeader } from './DashboardLayout/pageHeader'
 
 /**
  * Regressão da #197.
@@ -134,19 +134,16 @@ describe('publicação da página na topbar', () => {
     expect(botao.closest('header')).not.toBeNull()
   })
 
-  it('mostra no menu o contador publicado pela página', async () => {
-    const itens = [{ to: '/painel/pedidos', label: 'Pedidos', icon: Inbox }]
-
-    function ComBadge() {
-      usePageHeader('Pedidos')
-      useNavBadge('/painel/pedidos', 7)
-      return <p>corpo</p>
-    }
+  it('mostra no menu o contador que veio no item', async () => {
+    // Desde a #356 o contador vem montado por quem constrói o menu, e não
+    // publicado pela página de destino: era a publicação pela página que fazia
+    // o número só existir depois de a pessoa já ter aberto a tela.
+    const itens = [{ to: '/painel/pedidos', label: 'Pedidos', icon: Inbox, badge: 7 }]
 
     renderWithProviders(
       <Routes>
         <Route element={<DashboardLayout navItems={itens} tagline="Painel" accent="#3baa34" />}>
-          <Route index element={<ComBadge />} />
+          <Route index element={<p>corpo</p>} />
         </Route>
       </Routes>,
     )

@@ -119,7 +119,11 @@ describe('Meus Times', () => {
       await user.click(dialogo.getByRole('button', { name: 'Criar time' }))
 
       await waitFor(() =>
-        expect(criar).toHaveBeenCalledWith({ name: 'Os Boleiros', sport: 'FUTSAL', city: 'Campinas' }),
+        // `cor: null` e não ausente: quem não escolheu está dizendo que a
+        // marca sai do nome, e é isso que a api precisa guardar (#314).
+        expect(criar).toHaveBeenCalledWith({
+          name: 'Os Boleiros', sport: 'FUTSAL', city: 'Campinas', cor: null,
+        }),
       )
     })
 

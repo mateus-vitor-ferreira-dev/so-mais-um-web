@@ -13,6 +13,16 @@ export interface AuthContextValue {
   user: UserMe | null
   loading: boolean
   isAuthenticated: boolean
+  /**
+   * O boot tinha marca de sessão e **não conseguiu verificar** — 429, 5xx,
+   * queda de rede. É diferente de não estar autenticado (web#346).
+   *
+   * Quem guarda rota usa isto para não mandar ao login quem provavelmente está
+   * logado: o cookie continua no navegador, e o que faltou foi resposta.
+   */
+  verificacaoFalhou: boolean
+  /** Tenta verificar de novo. É o botão da tela de falha. */
+  tentarNovamente: () => Promise<void>
   register: (data: RegisterInput) => Promise<ApiEnvelope<AuthResult>>
   registerOwner: (data: RegisterOwnerInput) => Promise<ApiEnvelope<AuthResult>>
   login: (data: LoginInput) => Promise<ApiEnvelope<AuthResult>>
@@ -34,16 +44,52 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser]       = useState<UserMe | null>(null)
   const [loading, setLoading] = useState(true)
+  const [verificacaoFalhou, setVerificacaoFalhou] = useState(false)
 
-  // Restaura sessão ao montar: o cookie vai junto, então basta perguntar quem é
-  useEffect(() => {
+  /**
+   * Restaura a sessão ao montar — e **só apaga a marca quando a api diz que ela
+   * não vale** (web#346).
+   *
+   * O `.catch(esquecerSessao)` que estava aqui não olhava o erro: rate limit,
+   * timeout, DNS, Wi-Fi que caiu no elevador — todos apagavam a marca, e a
+   * navegação seguinte mandava a pessoa para o login. O cookie continuava
+   * válido; o que se perdeu foi a marca que o app usa para decidir se vale a
+   * pena perguntar quem é.
+   *
+   * E o sintoma não é "erro ao carregar": é **tela de login**. A pessoa acha
+   * que a sessão expirou e digita a senha de novo.
+   *
+   * O interceptor do `api.ts` já fazia a distinção certa — só desloga em 401 —,
+   * e o comentário dele explica por quê. A regra existia; o boot é que não a
+   * seguia.
+   */
+  const verificarSessao = useCallback(async () => {
     if (!temSessao()) { setLoading(false); return }
 
-    authService.getMe()
-      .then((res) => setUser(res.data))
-      .catch(esquecerSessao)
-      .finally(() => setLoading(false))
+    setLoading(true)
+    setVerificacaoFalhou(false)
+    try {
+      const res = await authService.getMe()
+      setUser(res.data)
+    } catch (err) {
+      const status = (err as { response?: { status?: number } }).response?.status
+
+      if (status === 401 || status === 403) {
+        // A api disse que a sessão não vale. É o único caso em que apagar é
+        // certo — e o 403 entra junto porque sessão sem permissão de ler o
+        // próprio perfil também não é sessão utilizável.
+        esquecerSessao()
+      } else {
+        // 429, 5xx, erro sem `response`. A sessão pode estar boa: a marca fica,
+        // e quem guarda rota mostra falha em vez de login.
+        setVerificacaoFalhou(true)
+      }
+    } finally {
+      setLoading(false)
+    }
   }, [])
+
+  useEffect(() => { void verificarSessao() }, [verificarSessao])
 
   /**
    * Fecha a autenticação: marca a sessão e popula o usuário pelo GET /auth/me.
@@ -104,6 +150,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   /**
+   * O botão da tela de falha.
+   *
+   * Repete o mesmo caminho do boot — inclusive a distinção de 401 —, em vez de
+   * um `getMe` solto: se a segunda tentativa levar 401, a marca precisa sair,
+   * e um retry que só tentasse de novo deixaria a pessoa presa numa tela de
+   * erro com sessão que de fato expirou.
+   */
+  const tentarNovamente = useCallback(() => verificarSessao(), [verificarSessao])
+
+  /**
    * Encerra a sessão: estado local primeiro, pedido à API depois.
    *
    * A ordem importa. Quem chama faz `logout(); navigate('/login')` sem esperar,
@@ -127,6 +183,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       loading,
       isAuthenticated: !!user,
+      verificacaoFalhou,
+      tentarNovamente,
       register,
       registerOwner,
       login,

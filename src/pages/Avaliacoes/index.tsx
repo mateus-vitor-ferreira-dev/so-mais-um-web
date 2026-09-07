@@ -3,11 +3,10 @@ import { useAuth } from '../../contexts/AuthContext'
 import { playerService } from '../../services/playerService'
 import type { Review, ReviewTag, UserStats } from '../../types/api'
 import {
-  Container, StatsCard, Section,
-  TagsGrid, TagChip,
-  ReviewList, ReviewCard, ReviewHeader, TagBadge, ReviewComment,
-  EmptyState,
+  Container, StatsCard, Section, TagsGrid, TagChip, ReviewList, ReviewCard,
+  ReviewHeader, TagBadge, ReviewComment,
 } from './styles'
+import EmptyState from '../../components/EmptyState'
 
 const TAG_LABELS: Record<string, string> = {
   CRAQUE_DA_PARTIDA: 'Craque da Partida',

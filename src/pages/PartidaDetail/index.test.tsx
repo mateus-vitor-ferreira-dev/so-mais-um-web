@@ -125,14 +125,14 @@ describe('PartidaDetail — contagem de vagas', () => {
     expect(await screen.findByText('1 vaga')).toBeInTheDocument()
   })
 
-  it('anuncia "Lotado" em vez de contar vagas quando enche', async () => {
+  it('anuncia "Lotada" em vez de contar vagas quando enche', async () => {
     buscaPartida.mockResolvedValue(
       envelope(criaPartida({ maxPlayers: 10, _count: { participations: 10 } })),
     )
 
     abrePartida()
 
-    expect(await screen.findByText('Lotado')).toBeInTheDocument()
+    expect(await screen.findByText('Lotada')).toBeInTheDocument()
     expect(screen.queryByText('0 vagas')).not.toBeInTheDocument()
   })
 
@@ -167,7 +167,7 @@ describe('PartidaDetail — confirmação de presenças', () => {
 
     abrePartida()
 
-    await screen.findByText(/Finalizado/)
+    await screen.findByText(/Finalizada/)
     expect(screen.queryByRole('button', { name: 'Confirmar Presenças' })).not.toBeInTheDocument()
   })
 })
@@ -228,7 +228,7 @@ describe('PartidaDetail — botão de entrar', () => {
 
     abrePartida()
 
-    expect(await screen.findByText(/cancelado/i)).toBeInTheDocument()
+    expect(await screen.findByText(/cancelada/i)).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /entrar na partida/i })).not.toBeInTheDocument()
   })
 })

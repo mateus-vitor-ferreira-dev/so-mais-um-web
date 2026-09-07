@@ -119,13 +119,6 @@ export const ActionBtn = styled.button<{ variant?: VariantKey }>`
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 `
 
-export const EmptyState = styled.p`
-  text-align: center;
-  color: ${({ theme }) => theme.colors.textMuted};
-  padding: 48px 0;
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  line-height: 1.7;
-`
 
 export const ErrorMsg = styled.p`
   color: ${({ theme }) => theme.colors.error};

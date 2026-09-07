@@ -225,22 +225,6 @@ export const NextButton = styled.button`
   }
 `
 
-export const EmptyState = styled.div`
-  text-align: center;
-  padding: 40px 20px;
-  color: ${({ theme }) => theme.colors.textMuted};
-
-  span {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 12px;
-  }
-
-  p {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
-    margin: 0;
-  }
-`
 
 export const LoadingState = styled.div`
   text-align: center;

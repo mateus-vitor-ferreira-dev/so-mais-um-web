@@ -23,18 +23,15 @@ import type { CreateTournamentInput } from '../../services/tournaments'
 type FormularioTorneio = InferType<typeof schema>
 import { mensagemDeErro } from '../../utils/apiError'
 import {
-  Container, PageHeader, Title, Subtitle, CreateButton,
-  FiltersBar, FilterChip,
-  Grid, TournamentCard, CardTop, TournamentName, SportIcon, StatusBadge,
-  CardMeta, MetaRow, ViewBracketBtn,
-  BracketSection, BracketTitle,
-  Modal, ModalBox, ModalHeader, ModalTitle, CloseBtn,
-  Form, Field, Label, Input, Select, ErrorMsg,
-  ModalActions, CancelButton, SubmitButton,
-  EmptyState, LoadingState,
-  FormatHint, FormatPreview,
-  CategorySection, CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
+  Container, PageHeader, Title, Subtitle, CreateButton, FiltersBar,
+  FilterChip, Grid, TournamentCard, CardTop, TournamentName, SportIcon,
+  StatusBadge, CardMeta, MetaRow, ViewBracketBtn, BracketSection,
+  BracketTitle, Modal, ModalBox, ModalHeader, ModalTitle, CloseBtn, Form,
+  Field, Label, Input, Select, ErrorMsg, ModalActions, CancelButton,
+  SubmitButton, LoadingState, FormatHint, FormatPreview, CategorySection,
+  CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
 } from './styles'
+import EmptyState from '../../components/EmptyState'
 
 const STATUS_FILTERS = [
   { label: 'Todos',           value: '' },
@@ -463,10 +460,7 @@ export default function Tournaments() {
         {loading ? (
           <LoadingState>Carregando torneios...</LoadingState>
         ) : tournaments.length === 0 ? (
-          <EmptyState>
-            <span>🏆</span>
-            <p>Nenhum torneio encontrado.</p>
-          </EmptyState>
+          <EmptyState icone="🏆">Nenhum torneio encontrado.</EmptyState>
         ) : (
           <Grid>
             {tournaments.map((t) => {

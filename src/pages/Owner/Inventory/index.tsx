@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import {
-  AlertTriangle, ArrowDown, ArrowUp, History, Loader2, Package, Plus, ShoppingCart,
+  AlertTriangle, ArrowDown, ArrowUp, History, Package, Plus, ShoppingCart,
 } from 'lucide-react'
 import { useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -18,12 +18,15 @@ import type {
 import { codigoDeErro, mensagemDeErro } from '../../../utils/apiError'
 import { toastErroDeApi } from '../../../utils/toastErro'
 import {
-  Actions, AlertBadge, DangerActions, DangerButton, EmptyState, FilterToggle, FormGrid,
-  HeaderActions, HistoryCard, HistoryHeader, HistoryItem, HistoryList, Input, Label, Modal,
-  ModalActions, ModalBox, ModalOverlay, PageGrid, PrimaryButton, ProductCard, ProductGrid,
-  ProductHeader, ProductMeta, QuickSale, SaleButton, SecondaryButton, Select, StockNumber,
-  StockSummary, SummaryCard, Textarea, Toolbar,
+  Actions, AlertBadge, DangerActions, DangerButton, FilterToggle, FormGrid,
+  HeaderActions, HistoryCard, HistoryHeader, HistoryItem, HistoryList, Input,
+  Label, Modal, ModalActions, ModalBox, ModalOverlay, PageGrid,
+  PrimaryButton, ProductCard, ProductGrid, ProductHeader, ProductMeta,
+  QuickSale, SaleButton, SecondaryButton, Select, StockNumber, StockSummary,
+  SummaryCard, Textarea, Toolbar,
 } from './styles'
+import EmptyState from '../../../components/EmptyState'
+import { SkeletonCard } from '../../../components/Skeleton'
 
 const UNIDADES: Array<{ value: InventoryUnit; label: string }> = [
   { value: 'UNIDADE', label: 'Unidade' },
@@ -320,7 +323,9 @@ export default function OwnerInventory() {
           <PageGrid>
             <section>
               {loading ? (
-                <EmptyState><Loader2 /> Carregando estoque…</EmptyState>
+                /* Este `EmptyState` tinha `svg { animation: spin }` dentro:
+                   era um spinner morando no componente do vazio (#315). */
+                <ProductGrid><SkeletonCard count={3} /></ProductGrid>
               ) : products.length === 0 ? (
                 <EmptyState>
                   {lowOnly

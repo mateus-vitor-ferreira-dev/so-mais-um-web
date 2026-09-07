@@ -222,6 +222,9 @@ describe('Página do time', () => {
           name: 'Os Boleiros FC',
           sport: 'FUTSAL',
           city: 'Campinas',
+          // O formulário abre com a cor que o time tinha, e a devolve como
+          // estava — editar o nome não pode apagar a marca (#314).
+          cor: null,
         }),
       )
     })
@@ -245,7 +248,10 @@ describe('Página do time', () => {
       montar()
 
       const secao = within(await screen.findByRole('region', { name: 'Partidas do time' }))
-      expect(await secao.findByText('Aberta')).toBeInTheDocument()
+      // "Aguardando", e não "Aberta": o rótulo passou a sair de
+      // `constants/statusDaPartida`, onde "Aberta" foi descartada por colidir
+      // com o vocabulário de visibilidade — Pública, Por link, Privada (#315).
+      expect(await secao.findByText('Aguardando')).toBeInTheDocument()
       expect(secao.getByText('5/14 jogadores')).toBeInTheDocument()
       expect(secao.getByText(/Arena Teste/)).toBeInTheDocument()
     })

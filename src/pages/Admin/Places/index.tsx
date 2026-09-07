@@ -7,14 +7,12 @@ import * as adminService from '../../../services/admin'
 import type { Place } from '../../../types/api'
 import type { AdminUser } from '../../../services/admin'
 import {
-  StatsRow, Table, Th, Tr, Td, OwnerCell, NoOwner,
-  StatusBadge, ActionGroup, ActionBtn,
-  EmptyState, ErrorMsg,
-  Modal, ModalOverlay, ModalBox, ModalTitle,
-  ModalActions, CancelBtn, ConfirmBtn,
-  Select, OwnerOption,
-  PromoteLink, PromoteBox, PromoteBtn,
+  StatsRow, Table, Th, Tr, Td, OwnerCell, NoOwner, StatusBadge, ActionGroup,
+  ActionBtn, ErrorMsg, Modal, ModalOverlay, ModalBox, ModalTitle,
+  ModalActions, CancelBtn, ConfirmBtn, Select, OwnerOption, PromoteLink,
+  PromoteBox, PromoteBtn,
 } from './styles'
+import EmptyState from '../../../components/EmptyState'
 
 const STATUS_LABEL = { OPEN: 'Aberto', CLOSED: 'Fechado' }
 const STATUS_COLOR = { OPEN: '#16a34a', CLOSED: '#6b7280' }

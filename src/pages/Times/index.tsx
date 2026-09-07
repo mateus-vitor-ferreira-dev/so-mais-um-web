@@ -2,9 +2,12 @@ import { useState, useRef, useEffect } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Plus, Users, MapPin, Crown } from 'lucide-react'
+import { Plus, Users, MapPin } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useSports, getSportMeta } from '../../hooks/useSports'
+import MarcaDoTime from '../../components/MarcaDoTime'
+import SeletorDeCorDoTime from '../../components/SeletorDeCorDoTime'
+import type { CorDeTime } from '../../constants/coresDeTime'
 import { teamsService } from '../../services/teams'
 import type { CriarTimeInput } from '../../services/teams'
 import { chaves } from '../../lib/queryClient'
@@ -14,9 +17,12 @@ import ConvitesDeTime from '../../components/ConvitesDeTime'
 import SportIcon from '../../components/SportIcon'
 import type { CourtType, TeamSummary } from '../../types/api'
 import {
-  Container, PageHeader, CreateButton, Grid, TeamCard, CaptainTag,
-  EmptyState, ErrorState, ModalOverlay, ModalContent, Form, ButtonGroup, SecondaryButton,
+  Container, PageHeader, CreateButton, Grid, TeamCard, ModalOverlay,
+  ModalContent, Form, ButtonGroup, SecondaryButton,
 } from './styles'
+import CaptainBadge from '../../components/CaptainBadge'
+import ErrorState from '../../components/ErrorState'
+import EmptyState from '../../components/EmptyState'
 
 const MAX_NOME = 60
 const MAX_CIDADE = 80
@@ -25,9 +31,11 @@ interface Formulario {
   name: string
   sport: CourtType | ''
   city: string
+  /** `null` = sem escolha; a marca sai da cor derivada do nome (#314). */
+  cor: CorDeTime | null
 }
 
-const VAZIO: Formulario = { name: '', sport: '', city: '' }
+const VAZIO: Formulario = { name: '', sport: '', city: '', cor: null }
 
 export default function Times() {
   const { user } = useAuth()
@@ -80,7 +88,7 @@ export default function Times() {
     if (!form.sport) return setErro('Escolha a modalidade principal.')
     if (!city) return setErro('Diga de que cidade o time é.')
 
-    criar.mutate({ name, sport: form.sport, city })
+    criar.mutate({ name, sport: form.sport, city, cor: form.cor })
   }
 
   return (
@@ -112,16 +120,17 @@ export default function Times() {
       )}
 
       {times && times.length === 0 && (
-        <EmptyState>
-          <h2>Você ainda não tem time</h2>
-          <p>
-            Time é o grupo que joga junto toda semana. Crie o seu, chame a galera
-            e a vaga de vocês para de ser disputada com estranhos.
-          </p>
-          <CreateButton type="button" onClick={() => setModalAberto(true)}>
-            <Plus size={18} aria-hidden="true" />
-            Criar meu primeiro time
-          </CreateButton>
+        <EmptyState
+          titulo="Você ainda não tem time"
+          acao={
+            <CreateButton type="button" onClick={() => setModalAberto(true)}>
+              <Plus size={18} aria-hidden="true" />
+              Criar meu primeiro time
+            </CreateButton>
+          }
+        >
+          Time é o grupo que joga junto toda semana. Crie o seu, chame a galera
+          e a vaga de vocês para de ser disputada com estranhos.
         </EmptyState>
       )}
 
@@ -134,13 +143,15 @@ export default function Times() {
             return (
               <TeamCard key={time.id}>
                 <Link to={`/times/${time.id}`}>
-                  <div className="nome">{time.name}</div>
+                  {/* A marca antes do nome: é ela que faz reconhecer sem ler,
+                      que é o que a #314 existe para resolver. */}
+                  <div className="identidade">
+                    <MarcaDoTime nome={time.name} cor={time.cor} />
+                    <div className="nome">{time.name}</div>
+                  </div>
 
                   {souCapitao && (
-                    <CaptainTag>
-                      <Crown size={12} aria-hidden="true" />
-                      Você é o capitão
-                    </CaptainTag>
+                    <CaptainBadge>Você é o capitão</CaptainBadge>
                   )}
 
                   <div className="linha">
@@ -212,6 +223,17 @@ export default function Times() {
                   placeholder="Campinas"
                 />
               </label>
+
+              <fieldset>
+                <legend>Cor do time</legend>
+                <SeletorDeCorDoTime
+                  valor={form.cor}
+                  aoEscolher={(cor) => setForm({ ...form, cor })}
+                  /* Sem nome digitado ainda, a prévia usa o placeholder: assim
+                     a cor derivada já aparece em vez de piscar depois. */
+                  nome={form.name.trim() || 'Os Boleiros'}
+                />
+              </fieldset>
 
               {erro && <span className="erro" role="alert">{erro}</span>}
 

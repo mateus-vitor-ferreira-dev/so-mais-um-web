@@ -18,18 +18,15 @@ import { AgendaDaQuadra } from '../../components/AgendaDaQuadra'
 import { useAgendaDaQuadra } from '../../hooks/useAgendaDaQuadra'
 import { conflitoNaAgenda, fimDaPartida, faixaDeHorario } from '../../utils/agenda'
 import {
-  Container, PageHeader, Title, Subtitle,
-  StepIndicator, Step, StepDot, StepLine,
-  Card, SectionTitle,
-  CourtsGrid, CourtCard, CourtName, CourtInfo, SportBadge,
-  Form, Row, Field, Label, Input, ErrorMsg, HintMsg,
-  Actions, BackButton, NextButton,
-  EmptyState, LoadingState,
-  SuccessBox, SuccessActions, PrimaryBtn, SecondaryBtn,
-  SportChipsGrid, SportChip,
-  PlacesGrid, PlaceCard, PlaceName, PlaceAddress, PlaceCourtCount,
-  BreadcrumbBar, BreadcrumbTag, BreadcrumbSep,
+  Container, PageHeader, Title, Subtitle, StepIndicator, Step, StepDot,
+  StepLine, Card, SectionTitle, CourtsGrid, CourtCard, CourtName, CourtInfo,
+  SportBadge, Form, Row, Field, Label, Input, ErrorMsg, HintMsg, Actions,
+  BackButton, NextButton, LoadingState, SuccessBox, SuccessActions,
+  PrimaryBtn, SecondaryBtn, SportChipsGrid, SportChip, PlacesGrid, PlaceCard,
+  PlaceName, PlaceAddress, PlaceCourtCount, BreadcrumbBar, BreadcrumbTag,
+  BreadcrumbSep,
 } from './styles'
+import EmptyState from '../../components/EmptyState'
 
 /**
  * Campo numérico vazio chega como `''` e a conversão do yup vira `NaN` — que
@@ -333,10 +330,7 @@ export default function CriarPartida() {
                 {/* Sub-etapa A: Escolher Modalidade */}
                 {!filterSport && (
                   sportOptions.length === 0 ? (
-                    <EmptyState>
-                      <span>🏟️</span>
-                      <p>Nenhuma quadra disponível no momento.</p>
-                    </EmptyState>
+                    <EmptyState icone="🏟️">Nenhuma quadra disponível no momento.</EmptyState>
                   ) : (
                     <SportChipsGrid>
                       {sportOptions.map(s => (
@@ -352,10 +346,7 @@ export default function CriarPartida() {
                 {/* Sub-etapa B: Escolher Estabelecimento */}
                 {filterSport && !filterPlace && (
                   availablePlaces.length === 0 ? (
-                    <EmptyState>
-                      <span>🏟️</span>
-                      <p>Nenhum estabelecimento disponível para essa modalidade.</p>
-                    </EmptyState>
+                    <EmptyState icone="🏟️">Nenhum estabelecimento disponível para essa modalidade.</EmptyState>
                   ) : (
                     <PlacesGrid>
                       {availablePlaces.map((place: Place) => {

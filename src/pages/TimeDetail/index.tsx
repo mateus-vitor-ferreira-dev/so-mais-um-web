@@ -10,22 +10,21 @@ import { chaves } from '../../lib/queryClient'
 import { mensagemDeErro, codigoDeErro } from '../../utils/apiError'
 import { Skeleton } from '../../components/Skeleton'
 import SportIcon from '../../components/SportIcon'
+import MarcaDoTime from '../../components/MarcaDoTime'
+import SeletorDeCorDoTime from '../../components/SeletorDeCorDoTime'
+import type { CorDeTime } from '../../constants/coresDeTime'
 import {
   SecondaryButton, CreateButton, ModalOverlay, ModalContent, Form, ButtonGroup,
 } from '../Times/styles'
-import type { CourtType, PartidaStatus, TeamMember, TeamPartida } from '../../types/api'
+import type { CourtType, TeamMember, TeamPartida } from '../../types/api'
 import {
-  Container, BackLink, Hero, CaptainActions, Section,
-  MemberList, MemberCard, CaptainBadge,
-  PartidaList, PartidaCard, StatusChip, EmptyState, ErrorState,
+  Container, BackLink, Hero, CaptainActions, Section, MemberList, MemberCard,
+  PartidaList, PartidaCard, StatusChip,
 } from './styles'
-
-const STATUS: Record<PartidaStatus, { label: string; tom: 'aberta' | 'cheia' | 'fim' | 'cancelada' }> = {
-  WAITING:   { label: 'Aberta',     tom: 'aberta' },
-  FULL:      { label: 'Lotada',     tom: 'cheia' },
-  FINISHED:  { label: 'Finalizada', tom: 'fim' },
-  CANCELLED: { label: 'Cancelada',  tom: 'cancelada' },
-}
+import CaptainBadge from '../../components/CaptainBadge'
+import { rotuloDoStatus } from '../../constants/statusDaPartida'
+import ErrorState from '../../components/ErrorState'
+import EmptyState from '../../components/EmptyState'
 
 const formatarData = (iso: string) =>
   new Date(iso).toLocaleString('pt-BR', {
@@ -61,7 +60,9 @@ export default function TimeDetail() {
   })
 
   const { sports } = useSports()
-  const [edicao, setEdicao] = useState<{ name: string; sport: CourtType | ''; city: string } | null>(null)
+  const [edicao, setEdicao] = useState<
+    { name: string; sport: CourtType | ''; city: string; cor: CorDeTime | null } | null
+  >(null)
   const [erroEdicao, setErroEdicao] = useState<string | null>(null)
   const primeiroCampo = useRef<HTMLInputElement>(null)
 
@@ -70,7 +71,7 @@ export default function TimeDetail() {
   }, [edicao])
 
   const editar = useMutation({
-    mutationFn: (dados: { name: string; sport: CourtType; city: string }) =>
+    mutationFn: (dados: { name: string; sport: CourtType; city: string; cor: CorDeTime | null }) =>
       teamsService.editar(teamId, dados),
     onSuccess: (atualizado) => {
       // As duas entradas: a lista mostra nome, cidade e modalidade no cartão.
@@ -122,7 +123,7 @@ export default function TimeDetail() {
   function abrirEdicao() {
     if (!time.data) return
     setErroEdicao(null)
-    setEdicao({ name: time.data.name, sport: time.data.sport, city: time.data.city })
+    setEdicao({ name: time.data.name, sport: time.data.sport, city: time.data.city, cor: time.data.cor })
   }
 
   function salvarEdicao(evento: React.FormEvent) {
@@ -137,7 +138,7 @@ export default function TimeDetail() {
     if (!edicao.sport) return setErroEdicao('Escolha a modalidade principal.')
     if (!city) return setErroEdicao('Diga de que cidade o time é.')
 
-    editar.mutate({ name, sport: edicao.sport, city })
+    editar.mutate({ name, sport: edicao.sport, city, cor: edicao.cor })
   }
 
   function confirmarEApagar() {
@@ -193,7 +194,10 @@ export default function TimeDetail() {
       </BackLink>
 
       <Hero>
-        <h1>{dados.name}</h1>
+        <div className="identidade">
+          <MarcaDoTime nome={dados.name} cor={dados.cor} tamanho="lg" />
+          <h1>{dados.name}</h1>
+        </div>
         <div className="meta">
           <span><span aria-hidden="true"><SportIcon icon={modalidade.icon} fallback={modalidade.iconFallback} /></span> {modalidade.label}</span>
           <span><MapPin size={14} aria-hidden="true" /> {dados.city}</span>
@@ -238,9 +242,7 @@ export default function TimeDetail() {
               <div>
                 <div className="nome">{membro.user.nickname || membro.user.name}</div>
                 {membro.userId === dados.captainId ? (
-                  <CaptainBadge>
-                    <Crown size={11} aria-hidden="true" /> Capitão
-                  </CaptainBadge>
+                  <CaptainBadge>Capitão</CaptainBadge>
                 ) : (
                   <span className="papel">Jogador</span>
                 )}
@@ -254,7 +256,7 @@ export default function TimeDetail() {
         <h2 id="titulo-partidas">Partidas do time</h2>
 
         {!souMembro && (
-          <EmptyState>As partidas deste time são visíveis para quem é do time.</EmptyState>
+          <EmptyState comMoldura>As partidas deste time são visíveis para quem é do time.</EmptyState>
         )}
 
         {souMembro && partidas.isPending && <Skeleton height={72} radius={12} />}
@@ -266,7 +268,7 @@ export default function TimeDetail() {
         )}
 
         {souMembro && partidas.data?.length === 0 && (
-          <EmptyState>
+          <EmptyState comMoldura>
             Este time ainda não jogou nenhuma partida.
             {souCapitao && ' Crie uma e a vaga da galera fica garantida.'}
           </EmptyState>
@@ -275,7 +277,7 @@ export default function TimeDetail() {
         {souMembro && partidas.data && partidas.data.length > 0 && (
           <PartidaList>
             {partidas.data.map((partida: TeamPartida) => {
-              const situacao = STATUS[partida.status]
+              const situacao = rotuloDoStatus(partida.status)
               return (
                 <PartidaCard key={partida.id}>
                   <Link to={`/partida/${partida.id}`}>
@@ -400,6 +402,15 @@ export default function TimeDetail() {
                   onChange={(e) => setEdicao({ ...edicao, city: e.target.value })}
                 />
               </label>
+
+              <fieldset>
+                <legend>Cor do time</legend>
+                <SeletorDeCorDoTime
+                  valor={edicao.cor}
+                  aoEscolher={(cor) => setEdicao({ ...edicao, cor })}
+                  nome={edicao.name.trim() || dados.name}
+                />
+              </fieldset>
 
               {erroEdicao && <span className="erro" role="alert">{erroEdicao}</span>}
 

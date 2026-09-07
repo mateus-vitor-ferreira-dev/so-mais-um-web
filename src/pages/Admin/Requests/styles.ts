@@ -156,12 +156,6 @@ export const RejectBtn = styled.button`
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 `
 
-export const EmptyState = styled.p`
-  text-align: center;
-  color: ${({ theme }) => theme.colors.textMuted};
-  padding: 48px 0;
-  font-size: ${({ theme }) => theme.fontSizes.md};
-`
 
 export const ErrorMsg = styled.p`
   color: ${({ theme }) => theme.colors.error};
