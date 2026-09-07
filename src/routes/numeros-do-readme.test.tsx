@@ -73,6 +73,21 @@ describe('os números do README', () => {
 
     expect(encontrados).toHaveLength(1)
     expect(encontrados[0]).toBe(lazy.length)
+
+    /*
+     * O diagrama diz a MESMA coisa com outras palavras, e por isso escapava.
+     *
+     * Ele anunciava "23 páginas lazy" enquanto a frase acima já dizia 38 — o
+     * número parou no dia em que alguém o escreveu, porque nada o conferia. É
+     * exatamente o modo de falhar que o comentário do teste de rotas descreve:
+     * uma menção que escapa do padrão é um número que ninguém mais confere.
+     *
+     * A saída não é apagar a menção do diagrama, que é onde muita gente olha
+     * primeiro: é conferi-la também.
+     */
+    const noDiagrama = anunciados(/(\d+) páginas lazy/g)
+    expect(noDiagrama).toHaveLength(1)
+    expect(noDiagrama[0]).toBe(lazy.length)
   })
 
   /**
