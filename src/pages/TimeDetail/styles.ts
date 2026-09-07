@@ -31,10 +31,19 @@ export const Hero = styled.header`
   padding: ${({ theme }) => theme.spacing[6]};
   margin-bottom: ${({ theme }) => theme.spacing[6]};
 
+  /* A marca ao lado do nome, e não acima: no mobile ela empilhada empurraria
+     a meta do time para fora da primeira dobra (#314). */
+  .identidade {
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing[4]};
+    margin-bottom: ${({ theme }) => theme.spacing[2]};
+  }
+
   h1 {
     font-size: ${({ theme }) => theme.fontSizes['2xl']};
     color: ${({ theme }) => theme.colors.textPrimary};
-    margin-bottom: ${({ theme }) => theme.spacing[2]};
+    margin-bottom: 0;
   }
 
   .meta {

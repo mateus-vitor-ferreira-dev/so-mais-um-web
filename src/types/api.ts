@@ -1,3 +1,5 @@
+import type { CorDeTime } from "../constants/coresDeTime";
+
 /**
  * Contratos da API Só+1, espelhando o que o backend devolve.
  *
@@ -346,6 +348,12 @@ export interface Team {
     name: string;
     sport: CourtType;
     city: string;
+    /**
+     * A marca visual do time (#314). `null` quando ninguém escolheu — e nesse
+     * caso o cliente deriva uma cor estável do nome, em `constants/coresDeTime`.
+     * É o que faz time criado antes da coluna continuar legível sem migração.
+     */
+    cor: CorDeTime | null;
     captainId: string;
     captain: TeamPlayer;
     members: TeamMember[];
@@ -363,6 +371,8 @@ export interface TeamSummary {
     name: string;
     sport: CourtType;
     city: string;
+    /** A marca visual (#314) — é o cartão desta listagem que ela existe para distinguir. */
+    cor: CorDeTime | null;
     captainId: string;
     captain: TeamPlayer;
     _count: { members: number };
@@ -388,7 +398,7 @@ export interface TeamInvite {
     respondedAt: IsoDate | null;
     createdAt: IsoDate;
     expired: boolean;
-    team: Pick<Team, "id" | "name" | "sport" | "city"> & { captain: TeamPlayer };
+    team: Pick<Team, "id" | "name" | "sport" | "city" | "cor"> & { captain: TeamPlayer };
     invitedBy: TeamPlayer;
 }
 

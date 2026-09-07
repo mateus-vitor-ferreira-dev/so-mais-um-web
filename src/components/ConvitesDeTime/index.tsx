@@ -7,6 +7,7 @@ import { chaves } from '../../lib/queryClient'
 import { mensagemDeErro } from '../../utils/apiError'
 import { getSportMeta } from '../../hooks/useSports'
 import SportIcon from '../SportIcon'
+import MarcaDoTime from '../MarcaDoTime'
 import type { TeamInvite } from '../../types/api'
 import { Bloco, Lista, Convite, Acoes, Aceitar, Recusar, Vencido } from './styles'
 
@@ -86,6 +87,10 @@ export default function ConvitesDeTime() {
 
           return (
             <Convite key={convite.id} $vencido={convite.expired}>
+              {/* A marca do time no convite (#314): "Fulano chamou você para o
+                  Os Boleiros" era o time como palavra no meio de uma frase. */}
+              <MarcaDoTime nome={convite.team.name} cor={convite.team.cor} tamanho="sm" />
+
               <div className="texto">
                 <div className="titulo">
                   {convite.invitedBy.name} chamou você para o {convite.team.name}

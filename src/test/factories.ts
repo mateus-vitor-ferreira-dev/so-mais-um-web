@@ -207,6 +207,10 @@ export function criaTime(over: Partial<Team> = {}): Team {
     name: 'Os Boleiros',
     sport: 'FUTSAL',
     city: 'Campinas',
+    // Sem cor escolhida por padrão: é o estado da maioria dos times de hoje, e
+    // é o caminho que a #314 precisa manter funcionando — a marca sai da cor
+    // derivada do nome. Quem testa a cor escolhida passa `cor` no `over`.
+    cor: null,
     captainId: capitao.id,
     captain: capitao,
     members: [{ id: 'membro-do-capitao', userId: capitao.id, joinedAt: DATA_FUTURA, user: capitao }],
@@ -224,6 +228,7 @@ export function criaResumoDeTime(over: Partial<TeamSummary> = {}): TeamSummary {
     name: 'Os Boleiros',
     sport: 'FUTSAL',
     city: 'Campinas',
+    cor: null,
     captainId: capitao.id,
     captain: capitao,
     _count: { members: 3 },
@@ -271,6 +276,7 @@ export function criaConviteDeTime(over: Partial<TeamInvite> = {}): TeamInvite {
       name: 'Os Boleiros',
       sport: 'FUTSAL',
       city: 'Campinas',
+      cor: null,
       captain: quemConvidou,
     },
     invitedBy: quemConvidou,

@@ -85,11 +85,21 @@ export const TeamCard = styled.li`
     outline-offset: 2px;
   }
 
+  /* A marca e o nome na mesma linha, alinhados pelo centro: a marca é
+     quadrada e o nome pode quebrar em duas linhas num nome longo (#314). */
+  .identidade {
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.spacing[3]};
+    margin-bottom: ${({ theme }) => theme.spacing[2]};
+  }
+
   .nome {
     font-size: ${({ theme }) => theme.fontSizes.lg};
     font-weight: 700;
     color: ${({ theme }) => theme.colors.textPrimary};
-    margin-bottom: ${({ theme }) => theme.spacing[1]};
+    /* O espaço abaixo passou a ser do .identidade, que envolve os dois. */
+    margin-bottom: 0;
   }
 
   .linha {
@@ -209,6 +219,25 @@ export const Form = styled.form`
     font-size: ${({ theme }) => theme.fontSizes.xs};
     font-weight: 500;
   }
+  /* O grupo de cores é fieldset/legend porque é um grupo de rádio de verdade
+     (#314) — mas a moldura padrão do navegador destoa dos outros campos. Ela
+     sai, e a legenda passa a se parecer com os labels vizinhos. */
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing[2]};
+  }
+
+  legend {
+    padding: 0;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
 `
 
 export const ButtonGroup = styled.div`
