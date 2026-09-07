@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { guarde, leia } from '../utils/armazenamento'
 import { useAuth } from '../contexts/AuthContext'
 
 /**
@@ -54,24 +55,14 @@ const CHAVE = 'so-mais-um:localizacao'
 
 type Preferencia = 'concedida' | 'negada'
 
+// O `try/catch` que estava aqui virou `utils/armazenamento` (web#359).
 function leiaPreferencia(): Preferencia | null {
-  try {
-    const valor = localStorage.getItem(CHAVE)
-    return valor === 'concedida' || valor === 'negada' ? valor : null
-  } catch {
-    // Janela anônima, cookies bloqueados, storage cheio. A ausência de
-    // preferência é um estado válido — não vale derrubar a home por isso.
-    return null
-  }
+  const valor = leia(CHAVE)
+  return valor === 'concedida' || valor === 'negada' ? valor : null
 }
 
 function guardePreferencia(valor: Preferencia) {
-  try {
-    localStorage.setItem(CHAVE, valor)
-  } catch {
-    // Sem preferência guardada, o app volta a perguntar na próxima visita. É
-    // pior que lembrar, e muito melhor que quebrar.
-  }
+  guarde(CHAVE, valor)
 }
 
 /**
