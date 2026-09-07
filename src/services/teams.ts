@@ -1,5 +1,6 @@
 import api from './api'
 import type { ApiEnvelope, CourtType, Team, TeamInvite, TeamPartida, TeamSummary } from '../types/api'
+import type { CorDeTime } from '../constants/coresDeTime'
 
 /**
  * Times fixos (api#202).
@@ -14,6 +15,14 @@ export interface CriarTimeInput {
   name: string
   sport: CourtType
   city: string
+  /**
+   * A marca visual (#314). Omitida quando o capitão não escolheu; `null`
+   * **apaga** uma escolha anterior e volta para a cor derivada do nome.
+   *
+   * Ausente e nulo são coisas diferentes no PATCH, e a api trata as duas: sem o
+   * campo ela não mexe na cor, com `null` ela a limpa.
+   */
+  cor?: CorDeTime | null
 }
 
 export type EditarTimeInput = Partial<CriarTimeInput>

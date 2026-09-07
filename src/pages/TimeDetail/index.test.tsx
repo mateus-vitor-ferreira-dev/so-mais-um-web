@@ -222,6 +222,9 @@ describe('Página do time', () => {
           name: 'Os Boleiros FC',
           sport: 'FUTSAL',
           city: 'Campinas',
+          // O formulário abre com a cor que o time tinha, e a devolve como
+          // estava — editar o nome não pode apagar a marca (#314).
+          cor: null,
         }),
       )
     })
