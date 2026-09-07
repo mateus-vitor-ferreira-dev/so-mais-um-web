@@ -10,12 +10,12 @@ import * as adminService from '../../../services/admin'
 import type { AdminUser, InviteResult } from '../../../services/admin'
 import { mensagemDeErro } from '../../../utils/apiError'
 import {
-  StatsRow, FilterBar, SearchInput, RoleFilters, RoleBtn,
-  Table, Th, Tr, Td, AvatarCell, UserMeta, UserEmail,
-  ActionBtn, EmptyState, ErrorMsg,
-  ModalWrap, ModalOverlay, ModalBox, ModalTitle, ModalText,
-  ModalInput, ModalActions, ModalCancelBtn, ModalConfirmBtn,
+  StatsRow, FilterBar, SearchInput, RoleFilters, RoleBtn, Table, Th, Tr, Td,
+  AvatarCell, UserMeta, UserEmail, ActionBtn, ErrorMsg, ModalWrap,
+  ModalOverlay, ModalBox, ModalTitle, ModalText, ModalInput, ModalActions,
+  ModalCancelBtn, ModalConfirmBtn,
 } from './styles'
+import EmptyState from '../../../components/EmptyState'
 
 const ROLES = ['Todos', 'PLAYER', 'OWNER', 'ADMIN']
 

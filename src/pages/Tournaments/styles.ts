@@ -374,22 +374,6 @@ export const SubmitButton = styled.button`
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 `
 
-export const EmptyState = styled.div`
-  text-align: center;
-  padding: 60px 20px;
-  color: ${({ theme }) => theme.colors.textMuted};
-
-  span {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 12px;
-  }
-
-  p {
-    font-size: ${({ theme }) => theme.fontSizes.md};
-    margin: 0;
-  }
-`
 
 export const LoadingState = styled.div`
   text-align: center;
