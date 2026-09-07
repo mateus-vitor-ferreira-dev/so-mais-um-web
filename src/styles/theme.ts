@@ -55,9 +55,25 @@ export const lightTheme = {
   ...base,
   mode: 'light',
   colors: {
-    primary:       '#22c55e',
-    primaryHover:  '#16a34a',
-    primaryDark:   '#166534',
+    /*
+     * O verde desceu um degrau inteiro na #436, e não por gosto.
+     *
+     * Em `#22c55e` ele reprovava **nos dois sentidos**: 2,18:1 como texto sobre
+     * as superfícies claras (são 45 usos de `color: primary`) e 2,28:1 com o
+     * branco em cima, que é o botão primário — 31 usos, e o elemento mais
+     * clicado do produto. Metade do mínimo de 4,5:1.
+     *
+     * Contraste é simétrico, então um único valor resolve as duas pontas: verde
+     * escuro o bastante para se ler sobre branco é verde escuro o bastante para
+     * o branco se ler sobre ele.
+     *
+     * `hover` e `dark` desceram junto para a escada continuar existindo — hover
+     * mais escuro que o normal é o que faz o botão responder ao mouse, e
+     * empurrar só o primeiro teria invertido isso.
+     */
+    primary:       '#15803d',
+    primaryHover:  '#166534',
+    primaryDark:   '#14532d',
     primaryLight:  '#dcfce7',
     primarySubtle: '#f0fdf4',
 
@@ -94,15 +110,25 @@ export const lightTheme = {
     border:        '#e5e7eb',
     borderLight:   '#f3f4f6',
 
-    success:       '#22c55e',
+    /*
+     * Os semânticos seguiram o verde, e pelo mesmo motivo: em nível 500 eles
+     * são cor de **preenchimento**, não de texto — e o app os usa como texto.
+     * Sobre o fundo claro davam 2,18 (success), 2,05 (warning) e 3,51 (info).
+     *
+     * As versões `*Light` não mudaram: elas são fundo, e o que se lê em cima
+     * delas é `textPrimary` ou o `warningText`, que já passavam.
+     */
+    success:       '#15803d',
     successLight:  '#dcfce7',
-    warning:       '#f59e0b',
+    warning:       '#b45309',
     warningLight:  '#fef3c7',
     warningText:   '#92400e',
     warningBorder: '#fde68a',
-    error:         '#ef4444',
+    /* 3,59 como texto e 3,08 sobre o próprio `errorLight` — o vermelho de erro
+       era o que menos se lia justamente onde mais importa ser lido. */
+    error:         '#b91c1c',
     errorLight:    '#fee2e2',
-    info:          '#3b82f6',
+    info:          '#2563eb',
     infoLight:     '#dbeafe',
 
     white:         '#ffffff',
@@ -119,6 +145,16 @@ export const darkTheme = {
     lg:  '0 8px 24px rgba(0,0,0,0.75), 0 4px 8px rgba(0,0,0,0.55)',
   },
   colors: {
+    /*
+     * Aqui o verde **fica**: sobre o fundo escuro ele dá 8,54:1 como texto, que
+     * é o dobro do mínimo. O que reprovava era o branco em cima dele, no botão
+     * — 2,00:1.
+     *
+     * Por isso a correção do escuro é o outro lado do par: o `textOnPrimary`
+     * daqui é quase preto, e não branco. É o mesmo raciocínio da marca do time
+     * (#314) — no claro, cor cheia com texto branco; no escuro, cor clara com
+     * texto escuro —, e é o que o comentário abaixo já pedia.
+     */
     // Verde só como acento, nunca como fundo — mesmo padrão do Recanto Vila Rica
     primary:       '#3ecf8e',
     primaryHover:  '#2db87a',
@@ -139,7 +175,18 @@ export const darkTheme = {
        vale para elemento não-texto. Aqui o `textSecondary` já passava com
        folga, então só este subiu. */
     textMuted:     '#8a8a8a',
-    textOnPrimary: '#ffffff',
+    /*
+     * Quase preto, e não branco (#436).
+     *
+     * O `primary` daqui é um verde CLARO — ele existe para se ler sobre o fundo
+     * escuro, e por isso branco em cima dele dá 2,00:1. Sobre este verde, quem
+     * se lê é texto escuro: 8,62:1.
+     *
+     * É a mesma regra da marca do time (#314): no claro, cor cheia com texto
+     * branco; no escuro, cor clara com texto escuro. O token guarda o papel — "o
+     * que se lê sobre o primary" — e cada tema responde com o que funciona nele.
+     */
+    textOnPrimary: '#0b1f14',
 
     border:        '#2c2c2c',
     borderLight:   '#272727',

@@ -31,19 +31,25 @@ const SUPERFICIES = ['bgApp', 'bgPage', 'bgCard'] as const
 const ESCALA = ['textPrimary', 'textSecondary', 'textMuted'] as const
 
 /**
- * Pares de texto sobre superfície **colorida** que hoje reprovam, e que esta
- * issue não corrige.
+ * Cores semânticas que o app usa como **texto**, e sobre o quê.
  *
- * Não é tolerância: é dívida nomeada. Os dois mexem em cor de marca — o verde
- * do produto e o vermelho de erro —, e trocá-las é decisão de produto que não
- * cabia na #435, cujo assunto era a escala neutra de texto. Ver web#436.
- *
- * O teste abaixo garante que esta lista não apodreça: par que passar a
- * alcançar o mínimo tem de sair daqui.
+ * Elas entraram aqui na #436, saindo de uma lista de dívida conhecida. Em nível
+ * 500 — o tom vivo — são cor de preenchimento, não de leitura: sobre o fundo
+ * claro davam 2,05 a 3,59, e o branco sobre o verde do botão primário dava
+ * 2,28, que era metade do mínimo no elemento mais clicado do produto.
  */
-const DIVIDA_CONHECIDA: { fg: string; bg: string; motivo: string }[] = [
-  { fg: 'textOnPrimary', bg: 'primary', motivo: 'branco sobre o verde da marca — botão primário (web#436)' },
-  { fg: 'error', bg: 'errorLight', motivo: 'vermelho sobre o próprio fundo claro dele (web#436)' },
+const SEMANTICAS_COMO_TEXTO = ['primary', 'primaryDark', 'success', 'warning', 'error', 'info'] as const
+
+/**
+ * Texto sobre superfície **colorida** — o par não passa por nenhuma das
+ * superfícies neutras, então precisa ser conferido nomeadamente.
+ */
+const SOBRE_COR: { fg: string; bg: string; onde: string }[] = [
+  { fg: 'textOnPrimary', bg: 'primary', onde: 'botão primário' },
+  { fg: 'primaryDark', bg: 'primaryLight', onde: 'selos verdes, como o CaptainBadge' },
+  { fg: 'warningText', bg: 'warningLight', onde: 'selo de aviso' },
+  { fg: 'error', bg: 'errorLight', onde: 'texto de erro na faixa' },
+  { fg: 'textPrimary', bg: 'errorLight', onde: 'ErrorState' },
 ]
 
 describe('contraste da escala de texto', () => {
@@ -90,18 +96,56 @@ describe('contraste da escala de texto', () => {
   })
 })
 
-describe('dívida de contraste conhecida', () => {
-  it('cada par listado ainda reprova — lista que guarda item resolvido é lista que ninguém lê', () => {
-    for (const { fg, bg, motivo } of DIVIDA_CONHECIDA) {
-      const pior = Math.min(
-        ...TEMAS.map(({ tema }) => contraste(
-          tema.colors[fg as keyof typeof tema.colors],
-          tema.colors[bg as keyof typeof tema.colors],
-        )),
-      )
+describe('contraste das cores semânticas', () => {
+  it.each(TEMAS)('$nome: cor semântica usada como texto alcança o mínimo', ({ tema }) => {
+    const reprovados: string[] = []
 
-      expect(pior, `${fg}/${bg} já alcança ${MINIMO_TEXTO}: tire da lista. ${motivo}`)
-        .toBeLessThan(MINIMO_TEXTO)
+    for (const cor of SEMANTICAS_COMO_TEXTO) {
+      for (const fundo of SUPERFICIES) {
+        const razao = contraste(tema.colors[cor], tema.colors[fundo])
+        if (razao < MINIMO_TEXTO) {
+          reprovados.push(
+            `${cor} (${tema.colors[cor]}) sobre ${fundo} (${tema.colors[fundo]}): ` +
+              `${razao} — mínimo ${MINIMO_TEXTO}`,
+          )
+        }
+      }
     }
+
+    expect(reprovados, reprovados.join('\n')).toEqual([])
+  })
+
+  it.each(TEMAS)('$nome: texto sobre superfície colorida alcança o mínimo', ({ tema }) => {
+    const reprovados: string[] = []
+
+    for (const { fg, bg, onde } of SOBRE_COR) {
+      const frente = tema.colors[fg as keyof typeof tema.colors]
+      const fundo = tema.colors[bg as keyof typeof tema.colors]
+      const razao = contraste(frente, fundo)
+
+      if (razao < MINIMO_TEXTO) {
+        reprovados.push(`${onde} — ${fg} (${frente}) sobre ${bg} (${fundo}): ${razao}`)
+      }
+    }
+
+    expect(reprovados, reprovados.join('\n')).toEqual([])
+  })
+
+  /**
+   * O botão primário é o caso que a #436 nasceu para consertar, e ele tem uma
+   * particularidade: a correção é **oposta** nos dois temas. No claro o verde
+   * escureceu para o branco caber em cima; no escuro o verde ficou claro e quem
+   * mudou foi o texto, que virou quase preto.
+   *
+   * Sem este teste, alguém "uniformizando" o `textOnPrimary` de volta para
+   * branco nos dois temas reproduziria o defeito só no escuro — onde é mais
+   * difícil de notar.
+   */
+  it('o texto do botão é claro num tema e escuro no outro, de propósito', () => {
+    expect(lightTheme.colors.textOnPrimary).not.toBe(darkTheme.colors.textOnPrimary)
+    expect(contraste(lightTheme.colors.textOnPrimary, lightTheme.colors.primary))
+      .toBeGreaterThanOrEqual(MINIMO_TEXTO)
+    expect(contraste(darkTheme.colors.textOnPrimary, darkTheme.colors.primary))
+      .toBeGreaterThanOrEqual(MINIMO_TEXTO)
   })
 })
