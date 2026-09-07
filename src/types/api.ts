@@ -1193,12 +1193,23 @@ export interface AlcanceDosRequisitos {
  */
 export interface OcupacaoDaQuadra {
     /**
-     * `AULA` entrou na api#473: a aula de uma turma ocupa a quadra como
-     * qualquer outra marcação, e vinha chegando aqui num tipo que não a
-     * previa. Ninguém no app decide nada por este campo hoje — ele descreve o
-     * que a api manda, e descrevê-lo errado é o defeito.
+     * Os quatro tipos que a api serve — e este campo já ficou atrasado **duas**
+     * vezes, pelo mesmo motivo nas duas.
+     *
+     * `AULA` entrou na api#473 e `DAY_USE` na api#515: as duas ocupam a quadra
+     * como qualquer outra marcação, e chegaram aqui num tipo que não as previa.
+     *
+     * **Ninguém no app decide nada por este campo hoje** — o `AgendaDaQuadra`
+     * mostra a `descricao` que a api manda, e por isso o valor desconhecido
+     * aparece certo na tela. É exatamente o que fez a defasagem durar: ela não
+     * quebra nada, só deixa de descrever a api.
+     *
+     * O dia em que alguém escrever um `switch` sobre isto — um ícone, uma cor,
+     * um filtro —, o TypeScript vai garantir exaustividade sobre uma união
+     * incompleta e concordar com quem estiver errado. É contra isso que o
+     * `contrato:check` existe (web#416).
      */
-    tipo: "PARTIDA" | "PARTIDA_DE_CAMPEONATO" | "AULA";
+    tipo: "PARTIDA" | "PARTIDA_DE_CAMPEONATO" | "AULA" | "DAY_USE";
     /**
      * `null` quando a marcação **não é pública**.
      *
