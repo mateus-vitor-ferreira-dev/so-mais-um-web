@@ -8,7 +8,7 @@ import { useSubscription } from '../../../hooks/useSubscription'
 import { ownerService } from '../../../services/ownerService'
 import { formatarPrecoCentavos } from '../../../utils/formatCurrency'
 import { ROTULOS_DE_FUNCIONALIDADE, INCLUSO_EM_TODO_PLANO } from '../../../constants/planFeatures'
-import { Container, Grid, Card, PlanHighlight, RowList, PrimaryButton, Badge, StatsGrid, StatCard, StatIcon, StatInfo, StatValue, StatLabel, ConviteEstatisticas } from './styles'
+import { Container, Grid, Card, PlanHighlight, RowList, PrimaryButton, Badge, StatsGrid, StatCard, StatIcon, StatInfo, StatValue, StatLabel, ConviteEstatisticas, PassosList } from './styles'
 import type { OwnerStats, SubscriptionStatus } from '../../../types/api'
 
 const STATUS_LABEL: Record<string, string> = {
@@ -17,6 +17,57 @@ const STATUS_LABEL: Record<string, string> = {
   past_due:  'Vencida',
   canceled:  'Cancelada',
   inactive:  'Inativo',
+}
+
+interface Passo {
+  titulo: string
+  descricao: string
+  descricaoFeito: string
+  feito: boolean
+  destino: string
+}
+
+/**
+ * A ordem em que um dono novo consegue chegar a algum lugar (#404).
+ *
+ * Não é uma lista de links: é a dependência real entre as três coisas. Sem
+ * espaço cadastrado não há onde pôr quadra, e sem quadra o plano não abre nada
+ * — assinar antes disso é pagar por uma arena vazia.
+ *
+ * O passo da quadra aponta para `/owner/places` e não para a tela de quadras:
+ * `places/:placeId/courts` exige o id do espaço, e o dashboard não o tem — o
+ * `usage` traz contagem, não identificador. A lista de espaços é o caminho real
+ * de qualquer forma, porque é lá que se escolhe de qual espaço é a quadra.
+ */
+function passosDeQuemNaoAssinou(sub: SubscriptionStatus | null): Passo[] {
+  const espacos = sub?.usage?.estabelecimentos ?? 0
+  const quadras = sub?.usage?.quadras ?? 0
+
+  return [
+    {
+      titulo: 'Cadastre seu espaço',
+      descricao: 'A arena, o endereço e o horário de funcionamento.',
+      descricaoFeito: espacos === 1 ? '1 espaço cadastrado.' : `${espacos} espaços cadastrados.`,
+      feito: espacos > 0,
+      destino: '/owner/places',
+    },
+    {
+      titulo: 'Cadastre uma quadra',
+      descricao: 'É a quadra que recebe partida — o espaço sozinho não aparece para o jogador.',
+      descricaoFeito: quadras === 1 ? '1 quadra cadastrada.' : `${quadras} quadras cadastradas.`,
+      feito: quadras > 0,
+      destino: '/owner/places',
+    },
+    {
+      titulo: 'Escolha seu plano',
+      descricao: 'Compare preços e o que cada plano abre.',
+      // Este card só existe sem assinatura, então o passo nunca chega aqui
+      // marcado. O texto existe para o dia em que ele for reaproveitado.
+      descricaoFeito: 'Assinatura ativa.',
+      feito: false,
+      destino: '/owner/plans',
+    },
+  ]
 }
 
 export default function OwnerDashboard() {
@@ -133,7 +184,7 @@ export default function OwnerDashboard() {
           </Card>
 
           <Card>
-            <h2>{sub?.plan ? 'O que seu plano abre' : 'Escolha seu plano'}</h2>
+            <h2>{sub?.plan ? 'O que seu plano abre' : 'Próximos passos'}</h2>
             {sub?.plan ? <RowList>
               {/* O que todo degrau inclui vem primeiro, e depois o que este abre.
                   Listar só as funcionalidades faria o Básico parecer um plano vazio,
@@ -148,7 +199,27 @@ export default function OwnerDashboard() {
                   <span className="value">{item}</span>
                 </div>
               ))}
-            </RowList> : <p>Compare preços e limites para escolher o plano que acompanha o seu negócio.</p>}
+            </RowList> : (
+              /* O estado de cada passo sai do `usage` da assinatura, e não das
+                 `stats` do topo: `getStats` responde 403 quando o plano não abre
+                 ESTATISTICAS, e quem ainda não assinou é exatamente quem cai
+                 nesse 403 — os passos ficariam todos "pendentes" para alguém que
+                 já cadastrou o espaço. O `usage` vem junto do status e não
+                 depende de funcionalidade nenhuma. */
+              <PassosList>
+                {passosDeQuemNaoAssinou(sub).map(passo => (
+                  <li key={passo.titulo} data-feito={String(passo.feito)}>
+                    <button type="button" onClick={() => navigate(passo.destino)}>
+                      <span className="marcador" aria-hidden="true" />
+                      <span>
+                        <strong>{passo.titulo}</strong>
+                        <p>{passo.feito ? passo.descricaoFeito : passo.descricao}</p>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </PassosList>
+            )}
           </Card>
         </Grid>
       </Container>
