@@ -81,6 +81,17 @@ export const chaves = {
   turmas: (placeId: string) => ['espacos', placeId, 'turmas'] as const,
   membrosDoEspaco: (placeId: string) => ['espacos', placeId, 'membros'] as const,
   quadrasDoEspaco: (placeId: string) => ['espacos', placeId, 'quadras'] as const,
+
+  /**
+   * Os day uses de um espaço (api#505), e quem está dentro de cada um.
+   *
+   * O `incluirCancelados` entra na chave porque muda o **conjunto** devolvido,
+   * não a ordem: sem ele na chave, ligar o filtro serviria a lista de antes do
+   * cache e o cancelado só apareceria no refetch seguinte.
+   */
+  dayUses: (placeId: string, incluirCancelados: boolean) =>
+    ['espacos', placeId, 'day-uses', incluirCancelados] as const,
+  entradasDoDayUse: (dayUseId: string) => ['day-uses', dayUseId, 'entradas'] as const,
   /**
    * Os alunos de uma turma (api#474).
    *

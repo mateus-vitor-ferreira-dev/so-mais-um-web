@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, Users, ClipboardList, Building2, Home, Store, ShieldCheck, CreditCard, Package, Dumbbell,
-  GraduationCap, CalendarClock,
+  GraduationCap, CalendarClock, Ticket,
 } from 'lucide-react'
 import type { NavItemDef } from '../components/DashboardLayout'
 import type { PlanFeature, UserRole } from '../types/api'
@@ -68,6 +68,14 @@ export function ownerNavItems(
      * cadeado aqui contradiria ela.
      */
     { to: '/owner/turmas',    label: 'Turmas',                 icon: CalendarClock   },
+    /**
+     * Day use (api#505). Ao lado de Turmas porque são os dois formatos que o
+     * espaço vende, e o dono passa de um para o outro.
+     *
+     * Nunca bloqueado, pelo mesmo motivo: a api deixou estas rotas fora do
+     * `requireActiveSubscription`, e um cadeado aqui contradiria ela.
+     */
+    { to: '/owner/day-uses',  label: 'Day use',                icon: Ticket          },
     { to: '/owner/requests',  label: 'Solicitações',          icon: ClipboardList   },
     ...(role === 'ADMIN'
       ? [{ to: '/admin', label: 'Painel Admin', icon: ShieldCheck, divider: true }]
