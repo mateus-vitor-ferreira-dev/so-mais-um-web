@@ -64,6 +64,8 @@ const CARREGADORES = {
   '/owner/equipment':  () => import('../pages/Owner/Equipment'),
   '/owner/professores': () => import('../pages/Owner/Professores'),
   '/owner/turmas':     () => import('../pages/Owner/Turmas'),
+  '/owner/day-uses':   () => import('../pages/Owner/DayUses'),
+  '/owner/day-uses/:dayUseId/entradas': () => import('../pages/Owner/EntradasDoDayUse'),
   '/owner/requests':   () => import('../pages/Owner/Requests'),
 } as const
 
@@ -158,3 +160,5 @@ export const OwnerChamada = lazyWithRetry(() => import('../pages/Owner/Chamada')
 export const OwnerMensalidades = lazyWithRetry(() => import('../pages/Owner/Mensalidades'))
 export const OwnerProfessores = lazyWithRetry(CARREGADORES['/owner/professores'])
 export const OwnerTurmas = lazyWithRetry(CARREGADORES['/owner/turmas'])
+export const OwnerDayUses = lazyWithRetry(CARREGADORES['/owner/day-uses'])
+export const OwnerEntradasDoDayUse = lazyWithRetry(CARREGADORES['/owner/day-uses/:dayUseId/entradas'])

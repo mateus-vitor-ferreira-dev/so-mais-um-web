@@ -19,6 +19,8 @@ import {
   OwnerDashboard, OwnerPlans, OwnerPlaces, OwnerInventory, OwnerEquipment, OwnerRequests, OwnerCourts,
   OwnerProfessores,
   OwnerTurmas,
+  OwnerDayUses,
+  OwnerEntradasDoDayUse,
   OwnerAlunos,
   OwnerChamada,
   OwnerMensalidades,
@@ -120,6 +122,18 @@ export const arvoreDeRotas = (
           Sem `:placeId` no caminho, também pelo mesmo motivo: a tela está no
           menu, e o espaço vem do seletor com `?placeId=` na URL. */}
       <Route path="turmas"                element={<OwnerTurmas />} />
+      {/* O day use da quadra (api#505). Sem `PlanGate` pelo mesmo motivo das
+          turmas e dos professores: a api deixou estas rotas fora do
+          `requireActiveSubscription` de propósito.
+
+          Sem `:placeId` no caminho: a tela está no menu, e menu não carrega
+          parâmetro — o espaço vem do seletor, com `?placeId=` na URL. */}
+      <Route path="day-uses"              element={<OwnerDayUses />} />
+      {/* Aqui o `:dayUseId` VAI no caminho: esta tela não está no menu, então a
+          regra de "menu não carrega parâmetro" não se aplica. O `placeId`
+          continua na query, porque é dele que a api precisa na URL da rota —
+          mesmo desenho dos alunos da turma. */}
+      <Route path="day-uses/:dayUseId/entradas" element={<OwnerEntradasDoDayUse />} />
       {/* Os alunos de uma turma (api#474). Aqui o `:turmaId` **vai no caminho**:
           diferente da lista de turmas, esta tela não está no menu, então a
           regra de "menu não carrega parâmetro" não se aplica. O `placeId`
