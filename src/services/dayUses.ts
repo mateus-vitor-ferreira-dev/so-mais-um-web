@@ -1,6 +1,7 @@
 import api from './api'
 import type {
   ApiEnvelope,
+  BuscaDeDayUse,
   DayUse,
   DayUseInput,
   EntradaInput,
@@ -36,6 +37,23 @@ import type {
 const desembrulhar = <T>(r: { data: ApiEnvelope<T> }): T => r.data.data
 
 export const dayUsesService = {
+  /**
+   * A busca **pública**, para o jogador (api#519).
+   *
+   * Rota própria, e não dentro do `searchEvents`: day use não tem organizador,
+   * vagas nem rateio, e a api decidiu não misturar os dois numa união
+   * discriminada. A junção acontece na tela.
+   *
+   * Não passa token de propósito — a api não usa `identify` aqui, porque day
+   * use é sempre público e a sessão não mudaria a resposta.
+   */
+  buscar: (filtros: { city?: string; courtType?: string; page?: number; limit?: number } = {}) => {
+    const query = new URLSearchParams(
+      Object.entries(filtros).flatMap(([k, v]) => (v === undefined || v === '' ? [] : [[k, String(v)]])),
+    ).toString()
+    return api.get<ApiEnvelope<BuscaDeDayUse>>(`/day-uses${query ? `?${query}` : ''}`).then(desembrulhar)
+  },
+
   listar: (placeId: string, incluirCancelados = false) =>
     api
       .get<ApiEnvelope<DayUse[]>>(

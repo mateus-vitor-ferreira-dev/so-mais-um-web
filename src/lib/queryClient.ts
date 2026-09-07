@@ -92,6 +92,10 @@ export const chaves = {
   dayUses: (placeId: string, incluirCancelados: boolean) =>
     ['espacos', placeId, 'day-uses', incluirCancelados] as const,
   entradasDoDayUse: (dayUseId: string) => ['day-uses', dayUseId, 'entradas'] as const,
+
+  /** A busca pública de day use, do jogador (api#519). */
+  buscaDeDayUses: (filtros: { city?: string; courtType?: string }) =>
+    ['day-uses', 'busca', filtros.city ?? '', filtros.courtType ?? ''] as const,
   /**
    * Os alunos de uma turma (api#474).
    *
