@@ -1186,6 +1186,153 @@ export interface AlcanceDosRequisitos {
 }
 
 /**
+ * O day use como o **jogador** o vê na busca (api#519).
+ *
+ * É outro tipo do `DayUse`, e a diferença não é acidente: aquele é a oferta
+ * como o dono a administra — traz `canceladoEm` e `courtId` —, e este é a
+ * vitrine. Nada do dono passa por aqui, porque a api não o serve nesta rota.
+ *
+ * ## `lotado` vem PRONTO da api, e não se recalcula
+ *
+ * `maxPessoas` nulo é sem teto. Quem fizesse `pessoasDentro >= maxPessoas`
+ * compararia com zero e diria lotado para **todo** day use sem limite — que é
+ * o caso mais comum. A api calcula e manda.
+ *
+ * ## E lotado APARECE
+ *
+ * Não some da lista, pelo mesmo desenho da busca de partida. Quem vê "lotado"
+ * aprende que o lugar enche; o que some não ensina nada.
+ */
+export interface DayUsePublico {
+    id: string;
+    inicio: IsoDate;
+    fim: IsoDate;
+    precoGeral: string;
+    /** Nulo = preço único. **Não** repita o geral aqui: a tela desenharia duas faixas iguais. */
+    precoAluno: string | null;
+    maxPessoas: number | null;
+    pessoasDentro: number;
+    lotado: boolean;
+    court: {
+        id: string;
+        name: string;
+        type: CourtType;
+        place: { id: string; name: string; city: string | null; neighborhood: string | null };
+    };
+}
+
+export interface BuscaDeDayUse {
+    dayUses: DayUsePublico[];
+    total: number;
+    page: number;
+    hasMore: boolean;
+}
+
+/**
+ * O day use de uma quadra num dia (api#505).
+ *
+ * O terceiro formato de venda do produto: paga-se um valor fixo, por pessoa,
+ * para jogar naquele dia. A **partida** é combinada e rateada; a **turma** é
+ * recorrência com matrícula; o day use é chegar, pagar e jogar.
+ *
+ * ## Os preços vêm como STRING
+ *
+ * `precoGeral` e `precoAluno` são `Decimal` no banco e chegam como texto, pela
+ * mesma razão do `valorMensalidade` da turma: número em ponto flutuante perde
+ * precisão em dinheiro. Some com `Number()` antes de formatar.
+ *
+ * ## `precoAluno` nulo quer dizer PREÇO ÚNICO
+ *
+ * Não é "faltou preencher": é a declaração de que só há uma faixa, e o
+ * `precoGeral` vale para todo mundo. A api trata assim inclusive na entrada —
+ * com `precoAluno` nulo, até quem tem matrícula entra como `GERAL`.
+ */
+export interface DayUse {
+    id: string;
+    courtId: string;
+    /** Instante, não `"HH:mm"`. O fim foi **copiado** do expediente na criação. */
+    inicio: IsoDate;
+    fim: IsoDate;
+    precoGeral: string;
+    /** Nulo = preço único. Ver a nota acima. */
+    precoAluno: string | null;
+    /** Nulo = sem teto. Quanto dele está tomado é o `pessoasDentro`. */
+    maxPessoas: number | null;
+    /** Nulo = ativo. Cancelar **não** apaga: a lista de quem pagou continua lá. */
+    canceladoEm: IsoDate | null;
+    court: { id: string; name: string; type: CourtType };
+    /**
+     * Quantas pessoas já entraram (api#505).
+     *
+     * O par de `maxPessoas`, como `matriculasAtivas` é o de `vagas` na turma.
+     * Vem sempre, e vale `0` em day use vazio — nunca ausente.
+     */
+    pessoasDentro: number;
+}
+
+export interface DayUseInput {
+    courtId: string;
+    inicio: string;
+    /** Omita para a api copiar do expediente do espaço. */
+    fim?: string;
+    precoGeral: number;
+    precoAluno?: number | null;
+    maxPessoas?: number | null;
+}
+
+/** `GERAL` ou `ALUNO` — a faixa que valeu para quem entrou, congelada. */
+export type FaixaDoDayUse = "GERAL" | "ALUNO";
+
+/**
+ * Quem entrou num day use (api#505).
+ *
+ * ## `faixa` e `valor` são o que valeu NAQUELE dia
+ *
+ * Os dois congelaram no momento da entrada. Sair da turma depois não muda a
+ * faixa gravada, e subir o preço do day use não muda o valor de quem já entrou.
+ *
+ * **A tela não deve recalcular nem exibir o preço atual ao lado do nome** —
+ * fazer isso desfaz visualmente a garantia que a api guarda.
+ *
+ * ## `userId` nulo é o caso NORMAL
+ *
+ * Mesma decisão da matrícula. Day use é o formato de quem chega para jogar; um
+ * cadastro na porta perde exatamente essa pessoa. `nome` e `contato` são a
+ * fonte da verdade sobre quem entrou.
+ */
+export interface EntradaNoDayUse {
+    id: string;
+    nome: string;
+    contato: string;
+    userId: string | null;
+    faixa: FaixaDoDayUse;
+    valor: string;
+    /** Nulo = em aberto. O Só+1 **registra** o pagamento; não o cobra. */
+    pagoEm: IsoDate | null;
+    entrouEm: IsoDate;
+    user: { id: string; name: string; avatarUrl: string | null } | null;
+}
+
+/**
+ * A lista de quem está dentro, com o resumo do dinheiro.
+ *
+ * O resumo vem da api de propósito: somar `Decimal` de dinheiro no cliente é
+ * onde o centavo se perde.
+ */
+export interface EntradasDoDayUse {
+    entradas: EntradaNoDayUse[];
+    resumo: { pessoas: number; recebido: number; emAberto: number };
+}
+
+export interface EntradaInput {
+    nome: string;
+    contato: string;
+    userId?: string | null;
+    /** Só é lida pela api quando **não** há `userId`. */
+    faixa?: FaixaDoDayUse;
+}
+
+/**
  * O que ocupa uma quadra num intervalo (api#443).
  *
  * A api tem **um calendário só** por quadra desde a api#446: partida comum e
