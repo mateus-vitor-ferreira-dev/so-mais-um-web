@@ -5,8 +5,6 @@ import { createPortal } from 'react-dom'
 export interface PageHeaderContextValue {
   /** Publica título e subtítulo na topbar. Estável entre renders. */
   setHeader: (title: string, sub?: string) => void
-  /** Publica o contador de um item do menu lateral. Estável entre renders. */
-  setNavBadge: (to: string, count: number) => void
   /** Nó da topbar onde `<PageActions>` injeta o conteúdo da página. */
   actionsSlot: HTMLElement | null
 }
@@ -37,25 +35,6 @@ export function usePageHeader(title: string, sub?: string) {
   useEffect(() => {
     setHeader?.(title, sub)
   }, [setHeader, title, sub])
-}
-
-/**
- * Publica o contador de um item do menu lateral.
- *
- * Mantém o comportamento que existia antes da #197: só a página de
- * solicitações do admin conhece a contagem de pendentes, e o badge some ao
- * sair dela. Levar a contagem para o layout faria o número valer em todas as
- * telas, mas custaria uma chamada de API na montagem do painel — mudança de
- * comportamento que não pertence a esta issue.
- */
-// eslint-disable-next-line react-refresh/only-export-components
-export function useNavBadge(to: string, count: number) {
-  const ctx = useContext(PageHeaderContext)
-  const setNavBadge = ctx?.setNavBadge
-
-  useEffect(() => {
-    setNavBadge?.(to, count)
-  }, [setNavBadge, to, count])
 }
 
 /**

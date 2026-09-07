@@ -2,12 +2,10 @@ import { Route, Navigate } from 'react-router-dom'
 
 import {
   FullPageLoader, PublicRoute, PrivateRoute, PartidaShell,
-  AdminRoute, OwnerRoute, OwnerPanelLayout,
+  AdminRoute, OwnerRoute, AdminPanelLayout, OwnerPanelLayout,
 } from './shells'
 import { Suspense } from 'react'
 import MainLayout from '../components/MainLayout'
-import DashboardLayout from '../components/DashboardLayout'
-import { adminNavItems } from '../constants/navItems'
 import PlanGate from '../components/PlanGate'
 import {
   Register, ForgotPassword, ResetPassword, OwnerAccess,
@@ -87,7 +85,7 @@ export const arvoreDeRotas = (
       path="/admin"
       element={
         <AdminRoute>
-          <DashboardLayout navItems={adminNavItems} tagline="Admin Panel" accent="#16a34a" />
+          <AdminPanelLayout />
         </AdminRoute>
       }
     >
