@@ -43,11 +43,11 @@ O ciclo é **descobrir → entrar → jogar → avaliar**, e ele fecha em cima d
   <tbody>
     <tr>
       <td>🎮 <strong>Jogador</strong><br/><code>PLAYER</code></td>
-      <td>Busca partidas abertas com filtro por modalidade, cidade, horário, arena, preço por pessoa e vagas restantes. Entra com um clique, cria a própria partida num wizard de 3 etapas (quadra → detalhes → confirmação), copia a chave PIX do rateio, dispara o sorteio de times, marca presença e avalia quem jogou.</td>
+      <td>Busca partidas abertas com filtro por modalidade, cidade, horário, arena, preço por pessoa e vagas restantes. Entra com um clique, cria a própria partida num wizard de 3 etapas (quadra → detalhes → confirmação), copia a chave PIX do rateio, dispara o sorteio de times, marca presença e avalia quem jogou. Na mesma busca ele vê os <strong>day uses</strong> acontecendo — o dia avulso de valor fixo, em que não se combina nada: chega, paga no local e joga.</td>
     </tr>
     <tr>
       <td>🏟️ <strong>Dono de quadra</strong><br/><code>OWNER</code></td>
-      <td>Pede o cadastro do espaço, gerencia locais e quadras (criar, editar, ativar/desativar), acompanha as solicitações e assina o <strong>Só+1 Pro</strong> — sem assinatura em dia ele continua consultando tudo, e só as ações que gravam ficam desabilitadas, como a API já fazia.</td>
+      <td>Pede o cadastro do espaço, gerencia locais e quadras (criar, editar, ativar/desativar), acompanha as solicitações e assina o <strong>Só+1 Pro</strong> — sem assinatura em dia ele continua consultando tudo, e só as ações que gravam ficam desabilitadas, como a API já fazia.<br/><br/>Vende a quadra de três jeitos, e cada um tem a sua tela: a <strong>partida</strong> que alguém marca e rateia, a <strong>turma</strong> semanal com matrícula, chamada e mensalidade, e o <strong>day use</strong> — cria o dia, e a lista diz quem entrou, por qual faixa e quem já pagou.</td>
     </tr>
     <tr>
       <td>🛠️ <strong>Admin</strong><br/><code>ADMIN</code></td>
@@ -64,7 +64,7 @@ flowchart TB
     O["🏟️ Dono · OWNER"] --> WEB
     A["🛠️ Admin · ADMIN"] --> WEB
 
-    WEB["<b>Web App · React 19 + Vite 8</b><br/>rotas guardadas por papel · 23 páginas lazy<br/>Axios + JWT · styled-components · tema claro/escuro"]
+    WEB["<b>Web App · React 19 + Vite 8</b><br/>rotas guardadas por papel · 38 páginas lazy<br/>Axios + JWT · styled-components · tema claro/escuro"]
 
     WEB --> API["<b>API Só+1</b><br/>REST · /auth /events /courts<br/>/tournaments /owner /admin"]
     WEB --> G["Google Identity<br/>idToken → POST /auth/google"]
