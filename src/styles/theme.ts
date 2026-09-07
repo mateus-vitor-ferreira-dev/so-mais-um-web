@@ -68,9 +68,27 @@ export const lightTheme = {
     bgInput:       '#ffffff',
     bgOverlay:     'rgba(0, 0, 0, 0.4)',
 
+    /*
+     * A escala de texto, e por que estes três valores (#435).
+     *
+     * Todos os três precisam alcançar 4,5:1 contra a superfície mais escura em
+     * que aparecem — `bgApp`, que é o verde palha da área do jogador. Não é
+     * refinamento: `textMuted` carrega "Nenhuma partida disponível no momento",
+     * que é a única coisa na tela quando a lista está vazia, e ele estava em
+     * 2,43:1 — pouco mais da metade do mínimo.
+     *
+     * Corrigir só o `textMuted` não dava: o `textSecondary` estava em 4,62, e
+     * abaixo dele não sobrava degrau nenhum acima de 4,5. Os dois desceram um
+     * passo juntos, e o `textMuted` herdou o valor que era do `textSecondary` —
+     * então nada CLAREOU: os três níveis só ganharam contraste, e a hierarquia
+     * entre eles continua visível.
+     *
+     * `styles/contraste.test.ts` mede isto a cada suíte. Trocar um destes
+     * valores por um mais claro reprova lá, com o número.
+     */
     textPrimary:   '#111827',
-    textSecondary: '#6b7280',
-    textMuted:     '#9ca3af',
+    textSecondary: '#4b5563',
+    textMuted:     '#6b7280',
     textOnPrimary: '#ffffff',
 
     border:        '#e5e7eb',
@@ -117,7 +135,10 @@ export const darkTheme = {
 
     textPrimary:   '#e8e8e8',
     textSecondary: '#a0a0a0',
-    textMuted:     '#666666',
+    /* 2,97:1 contra o bgCard antes da #435 — abaixo até do piso de 3:1 que
+       vale para elemento não-texto. Aqui o `textSecondary` já passava com
+       folga, então só este subiu. */
+    textMuted:     '#8a8a8a',
     textOnPrimary: '#ffffff',
 
     border:        '#2c2c2c',
