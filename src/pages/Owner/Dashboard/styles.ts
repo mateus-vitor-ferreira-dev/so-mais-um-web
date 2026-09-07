@@ -189,3 +189,94 @@ export const ConviteEstatisticas = styled.div`
     line-height: 1.5;
   }
 `
+
+/**
+ * Os próximos passos de quem ainda não assinou (#404).
+ *
+ * Antes esta coluna era uma caixa com um título e uma frase apontando para
+ * `/owner/plans` — o mesmo destino do botão da coluna ao lado, com mais espaço
+ * e menos utilidade. Quem chega sem assinatura não está perguntando *quais são
+ * os planos*; está perguntando *o que eu faço agora*.
+ *
+ * É `ol` porque a ordem é real: sem espaço não há quadra, e sem quadra o plano
+ * não abre nada. O contador vem do `counter-reset`/`counter-increment` em vez
+ * de número escrito, para o passo concluído poder trocar o número pelo ✓ sem
+ * desalinhar os de baixo.
+ */
+export const PassosList = styled.ol`
+  list-style: none;
+  counter-reset: passo;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  li { counter-increment: passo; }
+
+  button {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    text-align: left;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: ${({ theme }) => theme.radii.lg};
+    cursor: pointer;
+    font: inherit;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  button:hover,
+  button:focus-visible {
+    background: ${({ theme }) => theme.colors.bgCard};
+    border-color: ${({ theme }) => theme.colors.border};
+  }
+
+  /* O marcador: número enquanto falta, ✓ quando está feito. Tamanho fixo para
+     os títulos alinharem entre passos de estados diferentes. */
+  .marcador {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    color: ${({ theme }) => theme.colors.textSecondary};
+  }
+
+  .marcador::before { content: counter(passo); }
+
+  li[data-feito='true'] .marcador {
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+  }
+
+  li[data-feito='true'] .marcador::before { content: '✓'; }
+
+  strong {
+    display: block;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  /* Passo concluído continua legível e clicável — dá para voltar e cadastrar
+     outro espaço —, mas para de disputar atenção com o que falta. */
+  li[data-feito='true'] strong {
+    color: ${({ theme }) => theme.colors.textSecondary};
+    text-decoration: line-through;
+  }
+
+  p {
+    margin: 2px 0 0;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    color: ${({ theme }) => theme.colors.textSecondary};
+    line-height: 1.45;
+  }
+`
