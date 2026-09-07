@@ -61,6 +61,27 @@ jobs:
             }
           fi
 
+      # O tipo que descreve a api pode ficar atrasado sem quebrar nada — e foi
+      # o que aconteceu duas vezes com o `OcupacaoDaQuadra.tipo` (web#416). O
+      # `AgendaDaQuadra` mostra a `descricao` que a api manda e nunca ramifica
+      # por `tipo`, então o valor desconhecido aparece certo na tela.
+      #
+      # **Falta é fatal em todo evento**: a api serve um tipo e a união não o
+      # tem. É a defasagem, e é o defeito.
+      #
+      # **Sobra é aviso em PR e na `develop`**: a união conhece um tipo que
+      # produção ainda não serve. Esse é o estado normal entre o merge daqui e
+      # o deploy da api, e reprovar nele obrigaria a acertar a ordem do release
+      # entre dois repositórios — o custo que a api-collection#92 cronometrou em
+      # 90 minutos. Mesma assimetria do `verifica-cobertura.py` da collection.
+      #
+      # O script NÃO reprova quando a api não responde: indisponibilidade dela
+      # não é defeito daqui, e vermelho por causa alheia ensina todo mundo a
+      # ignorar vermelho.
+      - name: Confere o contrato com a api
+        run: |
+          npm run contrato:check -- ${{ ((github.event_name == 'pull_request' && github.base_ref != 'main') || (github.event_name == 'push' && github.ref_name == 'develop')) && '--sobra-como-aviso' || '' }}
+
       # Peso não quebra teste: um import a mais numa tela de login volta a
       # empacotar Leaflet e componente de rota autenticada no chunk da raiz, e
       # o app continua correto — só que lento. Ver docs/PERFORMANCE-317-SEM-BARREL.md.
