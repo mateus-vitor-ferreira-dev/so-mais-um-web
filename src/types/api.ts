@@ -1073,7 +1073,22 @@ export type PlanFeature = "DAY_USE" | "ESTATISTICAS" | "ESCOLINHA" | "EQUIPAMENT
 export interface Plan {
     id: string;
     nome: string;
+    /**
+     * O que a plataforma **recebe** — e o que o Pix cobra, porque nele o
+     * dinheiro cai inteiro (api#539).
+     */
     precoCentavos: number;
+    /**
+     * O que o **cartão** cobra: o líquido acrescido da taxa que a Stripe retém,
+     * para o plano chegar inteiro (api#539).
+     *
+     * Vem pronto da api, e é para usá-lo assim. A conta é uma divisão de uma
+     * linha, e é justamente por isso que ela não pode ser refeita aqui: a taxa
+     * escrita em dois repositórios vira dois números diferentes no dia em que
+     * mudar. O desconto do Pix também sai da razão entre os dois, nunca de uma
+     * porcentagem digitada.
+     */
+    precoNoCartaoCentavos: number;
     /**
      * O que o plano abre. **Lista vazia é o degrau de entrada, não plano quebrado** —
      * cadastrar a arena e receber partidas não depende de funcionalidade nenhuma.
@@ -1112,14 +1127,18 @@ export interface SubscriptionStatus {
 export type SwitchPlanEffectType = "upgrade" | "downgrade" | "mesmo_preco";
 
 export interface SwitchPlanPreview {
-    planoAtual: Pick<Plan, "id" | "nome" | "precoCentavos"> | null;
-    planoNovo: Pick<Plan, "id" | "nome" | "precoCentavos">;
+    planoAtual: Pick<Plan, "id" | "nome" | "precoCentavos" | "precoNoCartaoCentavos"> | null;
+    planoNovo: Pick<Plan, "id" | "nome" | "precoCentavos" | "precoNoCartaoCentavos">;
     tipo: SwitchPlanEffectType;
     /**
      * Aproximada — o valor exato vai para a fatura seguinte na Stripe.
      *
      * **Zero no downgrade**, e não é arredondamento: como a troca só vale no
      * fim do ciclo, nada é cobrado nem creditado agora.
+     *
+     * Calculada sobre o preço **do cartão** (api#539), que é onde a cobrança
+     * acontece — estimar sobre o líquido prometeria uma proração menor do que a
+     * fatura vai dizer.
      */
     estimativaCobrancaCentavos: number;
     /** `true` no upgrade, que vale na hora; `false` no downgrade. */

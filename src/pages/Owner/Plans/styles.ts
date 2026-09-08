@@ -136,6 +136,54 @@ export const PlanPrice = styled.div`
   }
 `
 
+/**
+ * O bloco do Pix, abaixo do preço do cartão (web#447).
+ *
+ * Destacado, e não uma linha cinza de rodapé: é o caminho mais barato para o
+ * cliente e o único que funciona hoje, enquanto não há CNPJ. Esconder isso
+ * numa nota de rodapé seria vender pelo caminho pior.
+ */
+export const PixBox = styled.div`
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  background: ${({ theme }) => theme.colors.primarySubtle};
+  border: 1px solid ${({ theme }) => theme.colors.primaryLight};
+  display: grid;
+  gap: 3px;
+
+  strong {
+    font-size: 15px;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  span {
+    font-size: 12px;
+    line-height: 1.4;
+    color: ${({ theme }) => theme.colors.textSecondary};
+  }
+`
+
+/** O atalho para a conversa. Some quando não há número configurado. */
+export const PixLink = styled.a`
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 13px;
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  text-decoration: none;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primarySubtle};
+  }
+`
+
 export const PlanFeatures = styled.ul`
   list-style: none;
   margin: 0;

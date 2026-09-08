@@ -47,7 +47,7 @@ O ciclo é **descobrir → entrar → jogar → avaliar**, e ele fecha em cima d
     </tr>
     <tr>
       <td>🏟️ <strong>Dono de quadra</strong><br/><code>OWNER</code></td>
-      <td>Pede o cadastro do espaço, gerencia locais e quadras (criar, editar, ativar/desativar), acompanha as solicitações e assina o <strong>Só+1 Pro</strong> — sem assinatura em dia ele continua consultando tudo, e só as ações que gravam ficam desabilitadas, como a API já fazia.<br/><br/>Vende a quadra de três jeitos, e cada um tem a sua tela: a <strong>partida</strong> que alguém marca e rateia, a <strong>turma</strong> semanal com matrícula, chamada e mensalidade, e o <strong>day use</strong> — cria o dia, e a lista diz quem entrou, por qual faixa e quem já pagou.</td>
+      <td>Pede o cadastro do espaço, gerencia locais e quadras (criar, editar, ativar/desativar), acompanha as solicitações e assina o <strong>Só+1 Pro</strong> — sem assinatura em dia ele continua consultando tudo, e só as ações que gravam ficam desabilitadas, como a API já fazia.<br/><br/>O pagamento tem <strong>dois caminhos, e a tela mostra os dois</strong>: no <strong>cartão</strong>, o valor sobe para cobrir a taxa que a Stripe retém — o preço do plano é o que a plataforma recebe, não o que o cliente paga; no <strong>Pix</strong>, que cai inteiro, ele desce de volta e vira <strong>5% de desconto</strong>, combinado no WhatsApp e confirmado em até 24h por quem recebe.<br/><br/>Vende a quadra de três jeitos, e cada um tem a sua tela: a <strong>partida</strong> que alguém marca e rateia, a <strong>turma</strong> semanal com matrícula, chamada e mensalidade, e o <strong>day use</strong> — cria o dia, e a lista diz quem entrou, por qual faixa e quem já pagou.</td>
     </tr>
     <tr>
       <td>🛠️ <strong>Admin</strong><br/><code>ADMIN</code></td>
@@ -419,7 +419,7 @@ Os fluxos críticos do jogador, o que dá mais prejuízo quando quebra:
 | Gate de assinatura | `hooks/useSubscription.test.tsx` · `utils/toastErro.test.ts` | O `isActive` concordando com o middleware da API, inclusive na tolerância de `past_due`, e o erro 402 mostrando o caminho do pagamento |
 | Assinatura vencida no painel | `pages/Owner/{Places,Courts,Equipment,Requests,Inventory}/index.test.tsx` | As cinco telas se comportando igual: conteúdo consultável, ações que gravam desabilitadas e ninguém gravando antes de o status chegar |
 
-**974 testes, ~9s.** A cobertura de linhas está em **~70%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
+**984 testes, ~9s.** A cobertura de linhas está em **~70%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
 
 ---
 

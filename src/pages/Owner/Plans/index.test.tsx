@@ -16,18 +16,25 @@ vi.mock('../../../components/DashboardLayout', () => ({
 vi.mock('../../../services/plansService')
 vi.mock('../../../services/subscriptionService')
 vi.mock('sonner', () => ({ toast: { error: vi.fn(), success: vi.fn() } }))
+// O número do WhatsApp vem do ambiente; o teste da tela controla só o que ele
+// produz. Que o link em si é montado certo — e some sem número — é assunto do
+// `constants/contato.test.ts`.
+vi.mock('../../../constants/contato', () => ({
+  linkDeAssinaturaNoWhatsApp: vi.fn(() => 'https://wa.me/5535999999999?text=oi'),
+}))
 
+import { linkDeAssinaturaNoWhatsApp } from '../../../constants/contato'
 import { plansService } from '../../../services/plansService'
 import { subscriptionService } from '../../../services/subscriptionService'
 import { toast } from 'sonner'
 
 const basico: Plan = {
-  id: 'basico', nome: 'Só+1 Básico', precoCentavos: 3990,
+  id: 'basico', nome: 'Só+1 Básico', precoCentavos: 3990, precoNoCartaoCentavos: 4200,
   funcionalidades: [],
 }
 
 const pro: Plan = {
-  id: 'pro', nome: 'Só+1 Pro', precoCentavos: 7990,
+  id: 'pro', nome: 'Só+1 Pro', precoCentavos: 7990, precoNoCartaoCentavos: 8411,
   funcionalidades: ['ESTATISTICAS', 'EQUIPAMENTOS', 'ESTOQUE'],
 }
 
@@ -45,6 +52,7 @@ const checkout = vi.mocked(subscriptionService.createCheckout)
 const previewSwitch = vi.mocked(subscriptionService.previewSwitch)
 const switchPlan = vi.mocked(subscriptionService.switchPlan)
 const toastDeErro = vi.mocked(toast.error)
+const linkDoWhatsApp = vi.mocked(linkDeAssinaturaNoWhatsApp)
 
 function erroDeStripeIndisponivel() {
   const err = erroDaApi('Pagamentos indisponíveis', 503)
@@ -56,6 +64,7 @@ beforeEach(() => {
   vi.clearAllMocks()
   getPlans.mockResolvedValue([basico, pro])
   getStatus.mockResolvedValue(assinaturaPro)
+  linkDoWhatsApp.mockReturnValue('https://wa.me/5535999999999?text=oi')
 })
 
 describe('OwnerPlans', () => {
@@ -63,8 +72,9 @@ describe('OwnerPlans', () => {
     renderWithProviders(<OwnerPlans />)
 
     expect(await screen.findByText('Seu plano atual')).toBeInTheDocument()
-    expect(screen.getByText('R$ 39,90')).toBeInTheDocument()
-    expect(screen.getByText('R$ 79,90')).toBeInTheDocument()
+    // O preço em destaque é o do cartão — é o que o botão ao lado cobra.
+    expect(screen.getByText(/R\$ 42,00/)).toBeInTheDocument()
+    expect(screen.getByText(/R\$ 84,11/)).toBeInTheDocument()
 
     // Número seco, sem "de N": nenhum plano tem teto desde a api#278, e "6 de 10"
     // prometeria uma cota que não existe mais.
@@ -127,8 +137,8 @@ describe('OwnerPlans', () => {
    * justamente porque nada é cobrado nem creditado agora.
    */
   const previewDowngrade: SwitchPlanPreview = {
-    planoAtual: { id: pro.id, nome: pro.nome, precoCentavos: pro.precoCentavos },
-    planoNovo: { id: basico.id, nome: basico.nome, precoCentavos: basico.precoCentavos },
+    planoAtual: { id: pro.id, nome: pro.nome, precoCentavos: pro.precoCentavos, precoNoCartaoCentavos: pro.precoNoCartaoCentavos },
+    planoNovo: { id: basico.id, nome: basico.nome, precoCentavos: basico.precoCentavos, precoNoCartaoCentavos: basico.precoNoCartaoCentavos },
     tipo: 'downgrade',
     estimativaCobrancaCentavos: 0,
     efetivaImediatamente: false,
@@ -170,8 +180,8 @@ describe('OwnerPlans', () => {
 
   it('upgrade segue anunciando efeito imediato e o ajuste da fatura', async () => {
     previewSwitch.mockResolvedValue({
-      planoAtual: { id: basico.id, nome: basico.nome, precoCentavos: basico.precoCentavos },
-      planoNovo: { id: pro.id, nome: pro.nome, precoCentavos: pro.precoCentavos },
+      planoAtual: { id: basico.id, nome: basico.nome, precoCentavos: basico.precoCentavos, precoNoCartaoCentavos: basico.precoNoCartaoCentavos },
+      planoNovo: { id: pro.id, nome: pro.nome, precoCentavos: pro.precoCentavos, precoNoCartaoCentavos: pro.precoNoCartaoCentavos },
       tipo: 'upgrade',
       estimativaCobrancaCentavos: 2000,
       efetivaImediatamente: true,
@@ -255,5 +265,98 @@ describe('OwnerPlans', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Trocar para este plano' })).toBeDisabled()
     expect(toastDeErro).not.toHaveBeenCalled()
+  })
+
+  describe('os dois preços (api#539)', () => {
+    it('mostra o do cartão em destaque e o do Pix com o desconto', async () => {
+      renderWithProviders(<OwnerPlans />)
+
+      await screen.findByText('Seu plano atual')
+
+      // Básico: recebemos R$ 39,90, e o cartão cobra R$ 42,00 para chegar lá.
+      expect(screen.getByText(/R\$ 42,00/)).toBeInTheDocument()
+      expect(screen.getByText(/R\$ 39,90 \/ mês no Pix/)).toBeInTheDocument()
+      // Pro: R$ 79,90 líquido, R$ 84,11 no cartão.
+      expect(screen.getByText(/R\$ 84,11/)).toBeInTheDocument()
+      expect(screen.getByText(/R\$ 79,90 \/ mês no Pix/)).toBeInTheDocument()
+    })
+
+    it('nomeia o meio de pagamento de cada preço', async () => {
+      renderWithProviders(<OwnerPlans />)
+
+      await screen.findByText('Seu plano atual')
+
+      expect(screen.getAllByText(/\/ mês no cartão/)).toHaveLength(2)
+      expect(screen.getAllByText(/\/ mês no Pix/)).toHaveLength(2)
+    })
+
+    it('o desconto sai da razão entre os dois preços, e não de um número digitado', async () => {
+      // Um plano de taxa diferente prova que o rótulo acompanha: 100 líquido
+      // cobrado a 125 no cartão é 20% de desconto, não os 5% da grade de hoje.
+      getPlans.mockResolvedValue([{ ...basico, precoCentavos: 10000, precoNoCartaoCentavos: 12500 }])
+      getStatus.mockResolvedValue({
+        status: 'inactive', currentPeriodEnd: null, plan: null,
+        usage: { quadras: 1, estabelecimentos: 1 },
+      })
+      renderWithProviders(<OwnerPlans />)
+
+      expect(await screen.findByText(/desconto de 20%/)).toBeInTheDocument()
+      expect(screen.queryByText(/desconto de 5%/)).not.toBeInTheDocument()
+    })
+
+    it('avisa que a confirmação do Pix leva até 24h', async () => {
+      renderWithProviders(<OwnerPlans />)
+
+      await screen.findByText('Seu plano atual')
+
+      // Vem junto do desconto de propósito: a espera é o preço do desconto.
+      expect(screen.getAllByText(/desconto de 5% · confirmação em até 24h/)).toHaveLength(2)
+    })
+  })
+
+  describe('o caminho do Pix', () => {
+    it('leva ao WhatsApp, e não gera QR nem link de pagamento', async () => {
+      renderWithProviders(<OwnerPlans />)
+
+      await screen.findByText('Seu plano atual')
+
+      const atalho = screen.getByRole('link', { name: /assinar no pix pelo whatsapp/i })
+      expect(atalho).toHaveAttribute('href', 'https://wa.me/5535999999999?text=oi')
+      expect(screen.queryByRole('button', { name: /qr|copiar código|gerar pix/i })).not.toBeInTheDocument()
+    })
+
+    it('a mensagem já diz o plano e o valor, para ninguém repetir', async () => {
+      renderWithProviders(<OwnerPlans />)
+
+      await screen.findByText('Seu plano atual')
+
+      expect(linkDoWhatsApp).toHaveBeenCalledWith(
+        expect.stringContaining('Só+1 Básico'))
+      // `\s`, e não um espaço literal: o `Intl.NumberFormat` pt-BR separa o
+      // "R$" do número com espaço não-quebrável. A Testing Library normaliza
+      // isso ao casar texto na tela, mas aqui a asserção é sobre a string crua.
+      expect(linkDoWhatsApp).toHaveBeenCalledWith(
+        expect.stringMatching(/R\$\s39,90/))
+    })
+
+    it('sem número configurado o atalho some, em vez de abrir o WhatsApp sem destino', async () => {
+      linkDoWhatsApp.mockReturnValue(null)
+      renderWithProviders(<OwnerPlans />)
+
+      await screen.findByText('Seu plano atual')
+
+      expect(screen.queryByRole('link', { name: /whatsapp/i })).not.toBeInTheDocument()
+      // O preço do Pix continua: ele informa mesmo sem atalho.
+      expect(screen.getByText(/R\$ 39,90 \/ mês no Pix/)).toBeInTheDocument()
+    })
+
+    it('o plano atual não oferece o atalho — não há o que assinar de novo', async () => {
+      renderWithProviders(<OwnerPlans />)
+
+      await screen.findByText('Seu plano atual')
+
+      const atalhos = screen.getAllByRole('link', { name: /assinar no pix pelo whatsapp/i })
+      expect(atalhos).toHaveLength(1)
+    })
   })
 })

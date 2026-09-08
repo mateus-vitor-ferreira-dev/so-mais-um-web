@@ -30,7 +30,7 @@ const getStats = vi.mocked(ownerService.getStats)
 const pro: Plan = {
   id: 'pro',
   nome: 'Só+1 Pro',
-  precoCentavos: 7990,
+  precoCentavos: 7990, precoNoCartaoCentavos: 8411,
   funcionalidades: ['ESTATISTICAS'],
 }
 
