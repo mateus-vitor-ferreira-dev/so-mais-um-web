@@ -1122,6 +1122,19 @@ export interface SubscriptionStatus {
     plan?: Plan | null;
     trocaAgendada?: TrocaAgendada | null;
     usage?: SubscriptionUsage;
+    /**
+     * Dá para pagar no cartão agora? (api#544)
+     *
+     * É o mesmo valor que faz o checkout responder `503
+     * STRIPE_NOT_CONFIGURED`, e serve para a tela não oferecer um caminho que
+     * não leva a lugar nenhum. **Dica de interface, não autorização**: é um
+     * retrato do momento da carga, e quem decide continua sendo a guarda do
+     * checkout — o tratamento do 503 no clique fica de pé.
+     *
+     * Opcional porque api mais velha não manda o campo, e nesse caso o certo é
+     * seguir oferecendo o cartão: só `false` explícito impede.
+     */
+    stripeDisponivel?: boolean;
 }
 
 export type SwitchPlanEffectType = "upgrade" | "downgrade" | "mesmo_preco";

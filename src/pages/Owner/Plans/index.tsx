@@ -68,6 +68,18 @@ export default function OwnerPlans() {
     ]).then(([plansData, subData]) => {
       setPlans(plansData)
       setSub(subData)
+      /*
+        O cartão nasce indisponível quando não dá para pagar nele (#451).
+
+        Antes este estado só existia depois de um clique falhar: a tela oferecia
+        o cartão, o dono clicava, levava o 503 e só então lia o aviso. Com a
+        api#544 a resposta já diz, e a tela deixa de anunciar um caminho que não
+        leva a lugar nenhum.
+
+        `=== false` de propósito: api sem o campo manda `undefined`, e aí o
+        certo é continuar oferecendo o cartão — só a negativa explícita impede.
+      */
+      setStripeIndisponivel(subData.stripeDisponivel === false)
     }).catch(() => {
       toast.error('Não foi possível carregar os planos. Tente novamente.')
     }).finally(() => setLoading(false))
@@ -193,8 +205,11 @@ export default function OwnerPlans() {
           <PaymentWarning role="alert">
             <AlertTriangle size={20} />
             <div>
-              <strong>Pagamentos temporariamente indisponíveis</strong>
-              <span>Não é possível assinar ou trocar de plano agora. Tente novamente mais tarde.</span>
+              <strong>Pagamento no cartão indisponível</strong>
+              <span>
+                Ainda não dá para assinar nem trocar de plano no cartão. O Pix, pelo WhatsApp,
+                continua funcionando normalmente — e sai mais barato.
+              </span>
             </div>
           </PaymentWarning>
         )}
@@ -258,11 +273,16 @@ export default function OwnerPlans() {
                   {/* O preço em destaque é o do cartão porque é o que o botão
                       logo abaixo cobra: o número maior tem que ser o número que
                       sai da fatura. O do Pix vem em seguida, com o desconto. */}
-                  <PlanPrice>
+                  {/* O preço do cartão fica à vista mesmo indisponível: é
+                      informação — quanto custará quando der para pagar assim —, e
+                      escondê-lo faria a comparação com o Pix sumir junto. O que
+                      muda é o peso: sem cartão, o destaque vai para o caminho que
+                      funciona. */}
+                  <PlanPrice $esmaecido={stripeIndisponivel}>
                     {formatarPrecoCentavos(plano.precoNoCartaoCentavos)}
-                    <span> / mês no cartão</span>
+                    <span> / mês no cartão{stripeIndisponivel ? ' (indisponível)' : ''}</span>
                   </PlanPrice>
-                  <PixBox>
+                  <PixBox $destaque={stripeIndisponivel}>
                     <strong>
                       {formatarPrecoCentavos(plano.precoCentavos)} / mês no Pix
                     </strong>
@@ -289,16 +309,20 @@ export default function OwnerPlans() {
                       onClick={() => abrirTroca(plano)}
                       disabled={stripeIndisponivel || previewLoading || confirmando}
                     >
-                      Trocar para este plano
+                      {/* Desabilitado e mudo faria a pessoa procurar o que ela fez
+                          de errado. O rótulo diz o motivo onde ela está olhando. */}
+                      {stripeIndisponivel ? 'Cartão indisponível' : 'Trocar para este plano'}
                     </PlanButton>
                   ) : (
                     <PlanButton
                       onClick={() => handleAssinar(plano.id)}
                       disabled={stripeIndisponivel || carregandoEsse}
                     >
-                      {carregandoEsse
-                        ? <><Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Aguarde...</>
-                        : 'Assinar'}
+                      {stripeIndisponivel
+                        ? 'Cartão indisponível'
+                        : carregandoEsse
+                          ? <><Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Aguarde...</>
+                          : 'Assinar'}
                     </PlanButton>
                   )}
 
@@ -307,7 +331,12 @@ export default function OwnerPlans() {
                       configurado — atalho que abre o WhatsApp sem destino faz a
                       pessoa achar que mandou mensagem. */}
                   {!éAtual && pix && (
-                    <PixLink href={pix} target="_blank" rel="noopener noreferrer">
+                    <PixLink
+                      href={pix}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      $destaque={stripeIndisponivel}
+                    >
                       <MessageCircle size={15} aria-hidden />
                       Assinar no Pix pelo WhatsApp
                     </PixLink>
