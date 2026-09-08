@@ -155,4 +155,20 @@ export const chaves = {
   jogador: (userId: string) => ['jogador', userId] as const,
   perfisEsportivos: () => ['perfis-esportivos'] as const,
   estatisticas: () => ['estatisticas'] as const,
+  /**
+   * As assinaturas, na tela do admin (api#537).
+   *
+   * Uma chave só, sem filtro: a lista é curta por natureza — são as arenas que
+   * assinam o Só+1, não os clientes delas — e quem opera precisa das vencidas
+   * junto das em dia, que é justamente o que um filtro na chave separaria.
+   */
+  assinaturasDoAdmin: () => ['admin', 'assinaturas'] as const,
+  /**
+   * Os donos e os planos que o formulário de assinatura manual oferece (api#537).
+   *
+   * Separados da lista de assinaturas porque são carregados só quando o modal
+   * abre: quem só veio conferir vencimentos não precisa da base de usuários.
+   */
+  usuariosDoAdmin: (papel: string) => ['admin', 'usuarios', papel] as const,
+  planos: () => ['planos'] as const,
 }

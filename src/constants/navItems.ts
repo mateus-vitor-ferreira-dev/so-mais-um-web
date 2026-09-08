@@ -25,6 +25,7 @@ export const adminNavItems: NavItemDef[] = [
   { to: '/admin/users',     label: 'Gestão de Usuários', icon: Users           },
   { to: '/admin/requests',  label: 'Solicitações',       icon: ClipboardList   },
   { to: '/admin/places',    label: 'Estabelecimentos',   icon: Building2       },
+  { to: '/admin/subscriptions', label: 'Assinaturas',    icon: CreditCard      },
   { to: '/owner',           label: 'Painel do Owner',    icon: Store, divider: true },
   { to: '/home',            label: 'Área do Jogador',    icon: Home },
 ]
