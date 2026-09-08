@@ -51,12 +51,12 @@ O ciclo é **descobrir → entrar → jogar → avaliar**, e ele fecha em cima d
     </tr>
     <tr>
       <td>🛠️ <strong>Admin</strong><br/><code>ADMIN</code></td>
-      <td>Modera a plataforma: aprova ou rejeita solicitações de espaço com justificativa, promove/rebaixa usuários entre <code>PLAYER</code> e <code>OWNER</code>, vincula donos a locais e convida parceiros por link. O admin também entra em qualquer painel de dono.</td>
+      <td>Modera a plataforma: aprova ou rejeita solicitações de espaço com justificativa, promove/rebaixa usuários entre <code>PLAYER</code> e <code>OWNER</code>, vincula donos a locais e convida parceiros por link. O admin também entra em qualquer painel de dono.<br/><br/>Enquanto não há gateway, é ele quem <strong>registra a assinatura paga por fora</strong>: o Pix é combinado no WhatsApp, e a tela de assinaturas grava que o dinheiro chegou — com a validade, que é o que vence a assinatura manual, e o nome de quem registrou. A cobrada pela Stripe aparece na mesma lista e não se deixa editar, com o motivo à vista.</td>
     </tr>
   </tbody>
 </table>
 
-São **42 rotas** sobre **40 páginas carregadas sob demanda**, **12 modalidades** (de futsal a beach tennis), reputação com **6 tags** de comportamento (Craque da Partida, Pontual, Fair Play…) e torneios com divisões em **5 níveis** — tudo consumindo a API do Só+1 via REST, com um canal SSE aberto para as notificações.
+São **43 rotas** sobre **41 páginas carregadas sob demanda**, **12 modalidades** (de futsal a beach tennis), reputação com **6 tags** de comportamento (Craque da Partida, Pontual, Fair Play…) e torneios com divisões em **5 níveis** — tudo consumindo a API do Só+1 via REST, com um canal SSE aberto para as notificações.
 
 ```mermaid
 flowchart TB
@@ -64,7 +64,7 @@ flowchart TB
     O["🏟️ Dono · OWNER"] --> WEB
     A["🛠️ Admin · ADMIN"] --> WEB
 
-    WEB["<b>Web App · React 19 + Vite 8</b><br/>rotas guardadas por papel · 40 páginas lazy<br/>Axios + JWT · styled-components · tema claro/escuro"]
+    WEB["<b>Web App · React 19 + Vite 8</b><br/>rotas guardadas por papel · 41 páginas lazy<br/>Axios + JWT · styled-components · tema claro/escuro"]
 
     WEB --> API["<b>API Só+1</b><br/>REST · /auth /events /courts<br/>/tournaments /owner /admin"]
     WEB --> G["Google Identity<br/>idToken → POST /auth/google"]
@@ -419,7 +419,7 @@ Os fluxos críticos do jogador, o que dá mais prejuízo quando quebra:
 | Gate de assinatura | `hooks/useSubscription.test.tsx` · `utils/toastErro.test.ts` | O `isActive` concordando com o middleware da API, inclusive na tolerância de `past_due`, e o erro 402 mostrando o caminho do pagamento |
 | Assinatura vencida no painel | `pages/Owner/{Places,Courts,Equipment,Requests,Inventory}/index.test.tsx` | As cinco telas se comportando igual: conteúdo consultável, ações que gravam desabilitadas e ninguém gravando antes de o status chegar |
 
-**984 testes, ~9s.** A cobertura de linhas está em **~70%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
+**998 testes, ~9s.** A cobertura de linhas está em **~70%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
 
 ---
 

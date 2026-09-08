@@ -1622,3 +1622,41 @@ export interface MatriculaInput {
     nome: string;
     contato: string;
 }
+
+/**
+ * Quem cobra a assinatura — e, por consequência, o que decide se ela vale (api#537).
+ *
+ * Não é rótulo de exibição: é o campo que a tela do admin usa para decidir o
+ * que deixa tocar. `STRIPE` é espelho do que acontece lá fora, e editar aqui
+ * criaria divergência que o próximo webhook desfaz sem avisar.
+ */
+export type OrigemDaAssinatura = 'STRIPE' | 'MANUAL';
+
+/**
+ * Uma assinatura como o `/admin/subscriptions` a devolve (api#537).
+ *
+ * ## `emDia` não sai do `status`, e é por isso que a api o manda pronto
+ *
+ * Para a Stripe, manda o status: é ela quem o vira quando o cartão falha. Para
+ * a manual, manda a **data** — não há webhook que a vença, então uma manual
+ * `active` com `validoAte` no passado está vencida e continua dizendo `active`.
+ * Recalcular isso na tela seria manter uma segunda cópia da regra do
+ * `subscriptions/vigencia.ts`, e as duas cópias discordariam no primeiro
+ * ajuste. A tela lê `emDia` e não opina.
+ */
+export interface AssinaturaDoAdmin {
+    id: string;
+    owner: { name: string; email: string };
+    place: { name: string } | null;
+    planName: string;
+    /** Já formatado pela api como `"79,90"` — sem símbolo, sem centavos crus. */
+    monthlyValue: string;
+    status: string;
+    /** Até quando vale. Na manual é a data que manda; nula é registro incompleto. */
+    currentPeriodEnd: IsoDate | null;
+    origem: OrigemDaAssinatura;
+    emDia: boolean;
+    /** O nome de quem registrou o Pix. Nulo em tudo que veio da Stripe. */
+    registradaPor: string | null;
+    registradaEm: IsoDate | null;
+}

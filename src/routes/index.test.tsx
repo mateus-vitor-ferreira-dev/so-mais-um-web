@@ -38,7 +38,7 @@ vi.mock('./paginas', () => {
     Times: stub('Times'), TimeDetail: stub('TimeDetail'), Jogador: stub('Jogador'),
     Amigos: stub('Amigos'),
     AdminDashboard: stub('AdminDashboard'), AdminUsers: stub('AdminUsers'),
-    AdminRequests: stub('AdminRequests'), AdminPlaces: stub('AdminPlaces'),
+    AdminRequests: stub('AdminRequests'), AdminPlaces: stub('AdminPlaces'), AdminSubscriptions: stub('AdminSubscriptions'),
     OwnerDashboard: stub('OwnerDashboard'), OwnerPlans: stub('OwnerPlans'),
     OwnerPlaces: stub('OwnerPlaces'), OwnerInventory: stub('OwnerInventory'),
     OwnerEquipment: stub('OwnerEquipment'), OwnerRequests: stub('OwnerRequests'),
