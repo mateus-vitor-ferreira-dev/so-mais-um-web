@@ -13,9 +13,11 @@ import type { PlanFeature } from '../types/api'
 export const ROTULOS_DE_FUNCIONALIDADE: Record<PlanFeature, string> = {
   DAY_USE: 'Day use',
   ESTATISTICAS: 'Estatísticas do espaço',
-  // Rótulo mais longo que os outros de propósito: `ESCOLINHA` abre cinco itens do
-  // menu, e "Escolinha" sozinho não diria ao dono o que ele está comprando.
-  ESCOLINHA: 'Escolinha — turmas, matrículas, mensalidades e chamada',
+  // Rótulo mais longo que os outros de propósito: "Escolinha" sozinho não diria
+  // ao dono o que ele está comprando. E lista só o que o portão de fato tranca —
+  // a chamada fica fora dele (api#531), e citá-la aqui prometeria um corte que
+  // não existe.
+  ESCOLINHA: 'Escolinha — turmas, matrículas e mensalidades',
   EQUIPAMENTOS: 'Controle de equipamento',
   ESTOQUE: 'Controle de estoque',
 }
