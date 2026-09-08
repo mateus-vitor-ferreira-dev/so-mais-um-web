@@ -80,12 +80,17 @@ const emReais = (valor: string | number) =>
 /**
  * As turmas do espaço, para o dono (web#390, api#472).
  *
- * ## Sem `PlanGate`, na rota e aqui
+ * ## Com `PlanGate` na rota, desde a api#531
  *
- * A api deixou estas rotas fora do `requireActiveSubscription` de propósito — a
- * mesma decisão do expediente e do convite de professor. Trancá-las na tela
- * contradiria a api: o dono veria a página de planos para uma coisa que ele já
- * pode fazer.
+ * A escolinha virou funcionalidade paga: `ESCOLINHA` cobre turma, matrícula,
+ * mensalidade, aula e chamada num valor só, porque vender "turma sem chamada"
+ * seria vender um caderno pela metade. O portão fica na rota (`arvore.tsx`) e
+ * não aqui dentro — chegar pela URL abriria a tela que o menu marca com
+ * cadeado.
+ *
+ * A **chamada** é a única tela da escolinha sem portão, e é de propósito: a api
+ * deixou `chamada.routes` e `aula.routes` fora, porque o plano decide o que o
+ * dono pode montar e não decide que a aula de amanhã deixe de ter chamada.
  *
  * ## Desativar não é apagar
  *

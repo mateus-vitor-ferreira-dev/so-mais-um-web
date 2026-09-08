@@ -10,11 +10,16 @@ import type { ApiEnvelope, MembroDoEspaco, Turma, TurmaInput } from '../types/ap
  * a resposta bruta do axios. A convenção do arquivo é a de quem consome: a
  * página não deveria precisar saber que a api embrulha tudo em `data.data`.
  *
- * ## Tudo aqui é do dono
+ * ## Tudo aqui é do dono, e desde a api#531 é pago
  *
- * A api guarda estas rotas com `isPlaceOwnerOrAdmin`, e **fora** do
- * `requireActiveSubscription` — a mesma decisão do expediente e do convite de
- * professor. A tela acompanha: não há `PlanGate` no caminho.
+ * A api guarda estas rotas com `isPlaceOwnerOrAdmin` e, desde a api#531,
+ * também com `requireFuncionalidade("ESCOLINHA")` — turma, matrícula e
+ * mensalidade são a oferta comercial da escolinha, e a grade passou a cobrá-la.
+ * A tela acompanha: há `PlanGate` na rota (`routes/arvore.tsx`).
+ *
+ * **A chamada não.** `chamada.routes` e `aula.routes` ficaram fora do portão do
+ * lado da api, porque o plano decide o que o dono pode montar e não decide que
+ * a aula de amanhã deixe de ter chamada. Ver `aulasService`.
  */
 const desembrulhar = <T>(r: { data: ApiEnvelope<T> }): T => r.data.data
 

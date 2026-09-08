@@ -17,25 +17,41 @@ const bloqueados = (itens: ReturnType<typeof ownerNavItems>) =>
   itens.filter((i) => i.bloqueado).map((i) => i.label)
 
 describe('ownerNavItems — o que o plano abre', () => {
-  it('plano de entrada: estoque e equipamento com cadeado', () => {
+  it('Básico: estoque, equipamento, turmas e day use com cadeado', () => {
     const itens = ownerNavItems('OWNER', abre())
 
-    expect(bloqueados(itens)).toEqual(['Estoque', 'Equipamentos'])
+    expect(bloqueados(itens)).toEqual(['Estoque', 'Equipamentos', 'Turmas', 'Day use'])
     // Continuam no menu — é assim que o dono descobre que existem.
-    expect(rotulos(itens)).toContain('Estoque')
-    expect(rotulos(itens)).toContain('Equipamentos')
+    for (const item of ['Estoque', 'Equipamentos', 'Turmas', 'Day use']) {
+      expect(rotulos(itens)).toContain(item)
+    }
   })
 
-  it('plano do meio: estatísticas abertas, estoque e equipamento ainda não', () => {
-    const itens = ownerNavItems('OWNER', abre('ESTATISTICAS'))
+  it('Pro: day use aberto, escolinha e balcão ainda não', () => {
+    const itens = ownerNavItems('OWNER', abre('DAY_USE', 'ESTATISTICAS'))
 
-    expect(bloqueados(itens)).toEqual(['Estoque', 'Equipamentos'])
+    expect(bloqueados(itens)).toEqual(['Estoque', 'Equipamentos', 'Turmas'])
   })
 
-  it('plano de cima: nada bloqueado', () => {
-    const itens = ownerNavItems('OWNER', abre('ESTATISTICAS', 'EQUIPAMENTOS', 'ESTOQUE'))
+  it('Premium: nada bloqueado', () => {
+    const itens = ownerNavItems(
+      'OWNER',
+      abre('DAY_USE', 'ESTATISTICAS', 'ESCOLINHA', 'EQUIPAMENTOS', 'ESTOQUE'),
+    )
 
     expect(bloqueados(itens)).toEqual([])
+  })
+
+  it('ESCOLINHA abre Turmas sozinha — day use tem cadeado próprio', () => {
+    // Os dois formatos que o espaço vende, e a api#531 os separou de propósito:
+    // quadra que só aluga hora ganha dinheiro com day use sem nunca abrir turma.
+    const soEscolinha = ownerNavItems('OWNER', abre('ESCOLINHA'))
+    const soDayUse = ownerNavItems('OWNER', abre('DAY_USE'))
+
+    expect(bloqueados(soEscolinha)).toContain('Day use')
+    expect(bloqueados(soEscolinha)).not.toContain('Turmas')
+    expect(bloqueados(soDayUse)).toContain('Turmas')
+    expect(bloqueados(soDayUse)).not.toContain('Day use')
   })
 })
 
@@ -49,6 +65,17 @@ describe('ownerNavItems — o que nunca é bloqueado', () => {
     for (const item of ['Solicitações', 'Meus Estabelecimentos', 'Planos', 'Visão Geral']) {
       expect(bloqueados(itens)).not.toContain(item)
     }
+  })
+
+  it('Professores, mesmo depois de a escolinha virar funcionalidade paga', () => {
+    // A api#531 portou turma, matrícula, mensalidade e aula sob `ESCOLINHA` e
+    // deixou `/me/turmas` e `/me/aulas` de fora, de propósito: a assinatura é do
+    // dono do espaço, e o professor é prestador — ele não assina nada. Cadeado
+    // aqui contradiria a api, que tem teste prendendo a decisão do lado dela.
+    const itens = ownerNavItems('OWNER', abre())
+
+    expect(rotulos(itens)).toContain('Professores')
+    expect(bloqueados(itens)).not.toContain('Professores')
   })
 })
 
