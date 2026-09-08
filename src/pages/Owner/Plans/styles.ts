@@ -124,10 +124,17 @@ export const PlanName = styled.h3`
   margin: 0;
 `
 
-export const PlanPrice = styled.div`
-  font-size: 28px;
+/**
+ * `$esmaecido` quando não dá para pagar no cartão (web#451).
+ *
+ * O número continua ali — é informação, quanto custará quando der para pagar
+ * assim —, mas deixa de ser o maior peso visual da tela: o palco passa para o
+ * Pix, que é o caminho que funciona.
+ */
+export const PlanPrice = styled.div<{ $esmaecido?: boolean }>`
+  font-size: ${({ $esmaecido }) => ($esmaecido ? '22px' : '28px')};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.textPrimary};
+  color: ${({ $esmaecido, theme }) => ($esmaecido ? theme.colors.textSecondary : theme.colors.textPrimary)};
 
   span {
     font-size: 13px;
@@ -143,17 +150,18 @@ export const PlanPrice = styled.div`
  * cliente e o único que funciona hoje, enquanto não há CNPJ. Esconder isso
  * numa nota de rodapé seria vender pelo caminho pior.
  */
-export const PixBox = styled.div`
+export const PixBox = styled.div<{ $destaque?: boolean }>`
   margin-top: 10px;
-  padding: 10px 12px;
+  padding: ${({ $destaque }) => ($destaque ? '14px 12px' : '10px 12px')};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.primarySubtle};
-  border: 1px solid ${({ theme }) => theme.colors.primaryLight};
+  border: ${({ $destaque, theme }) => ($destaque ? `2px solid ${theme.colors.primary}` : `1px solid ${theme.colors.primaryLight}`)};
+
   display: grid;
   gap: 3px;
 
   strong {
-    font-size: 15px;
+    font-size: ${({ $destaque }) => ($destaque ? '20px' : '15px')};
     color: ${({ theme }) => theme.colors.primary};
   }
 
@@ -164,8 +172,14 @@ export const PixBox = styled.div`
   }
 `
 
-/** O atalho para a conversa. Some quando não há número configurado. */
-export const PixLink = styled.a`
+/**
+ * O atalho para a conversa. Some quando não há número configurado.
+ *
+ * `$destaque` é o estado em que o cartão não dá — aí este link deixa de ser
+ * alternativa e vira o botão da tela, preenchido como o de assinar. Duas opções
+ * com o mesmo peso, uma delas um beco, é pior que uma opção só (web#451).
+ */
+export const PixLink = styled.a<{ $destaque?: boolean }>`
   margin-top: 8px;
   display: flex;
   align-items: center;
@@ -174,13 +188,14 @@ export const PixLink = styled.a`
   padding: 10px 14px;
   border-radius: ${({ theme }) => theme.radii.md};
   border: 1px solid ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.primary};
-  font-size: 13px;
+  background: ${({ $destaque, theme }) => ($destaque ? theme.colors.primary : 'transparent')};
+  color: ${({ $destaque, theme }) => ($destaque ? theme.colors.textOnPrimary : theme.colors.primary)};
+  font-size: ${({ $destaque }) => ($destaque ? '14px' : '13px')};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   text-decoration: none;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primarySubtle};
+    background: ${({ $destaque, theme }) => ($destaque ? theme.colors.primaryDark : theme.colors.primarySubtle)};
   }
 `
 
