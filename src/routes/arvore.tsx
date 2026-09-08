@@ -13,7 +13,7 @@ import {
   Historico, Avaliacoes, PartidaDetail, TournamentDetail, Times, TimeDetail, Jogador, Amigos,
   ConviteDeProfessor,
   ConviteDeEspaco, DesignSystem, AreaDoProfessor,
-  AdminDashboard, AdminUsers, AdminRequests, AdminPlaces,
+  AdminDashboard, AdminUsers, AdminRequests, AdminPlaces, AdminSubscriptions,
   OwnerDashboard, OwnerPlans, OwnerPlaces, OwnerInventory, OwnerEquipment, OwnerRequests, OwnerCourts,
   OwnerProfessores,
   OwnerTurmas,
@@ -106,6 +106,10 @@ export const arvoreDeRotas = (
       <Route path="users"        element={<AdminUsers />} />
       <Route path="requests"     element={<AdminRequests />} />
       <Route path="places"       element={<AdminPlaces />} />
+      {/* As assinaturas, e o registro do Pix recebido por fora (api#537).
+          Fica no painel admin porque é a equipe do Só+1 que recebe — o dono
+          não registra o próprio pagamento. */}
+      <Route path="subscriptions" element={<AdminSubscriptions />} />
     </Route>
 
     {/* Painel Owner */}
