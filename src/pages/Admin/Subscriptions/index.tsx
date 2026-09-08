@@ -296,7 +296,24 @@ export default function AdminSubscriptions() {
                     {assinatura.owner.email}
                   </Detalhe>
                   <Detalhe>
-                    {assinatura.planName} · R$ {assinatura.monthlyValue}/mês ·{' '}
+                    {/*
+                      O número é sempre o LÍQUIDO — o que a plataforma recebe —,
+                      e desde a api#539 ele deixou de ser o único preço: o cartão
+                      cobra o bruto, para o líquido chegar inteiro depois da taxa.
+
+                      Na manual não há ambiguidade: o Pix cai inteiro, e os dois
+                      números são o mesmo. Na Stripe, este painel diria R$ 189,90
+                      enquanto a fatura do dono diz R$ 199,90 — dois números do
+                      mesmo produto, sem explicação, e quem opera não teria como
+                      saber se está vendo arredondamento, plano antigo ou desconto.
+
+                      Rotular, não trocar: receita é o que entra, e é isso que se
+                      olha aqui. O bruto não aparece porque a taxa mora na api
+                      (`plans/precoNoCartao.ts`) — refazer a conta aqui é como os
+                      dois lados passam a discordar (#449).
+                    */}
+                    {assinatura.planName} · R$ {assinatura.monthlyValue}/mês
+                    {manual ? '' : ' recebidos (o cartão cobra mais, com a taxa)'} ·{' '}
                     {assinatura.currentPeriodEnd
                       ? `vale até ${dia(assinatura.currentPeriodEnd)}`
                       : manual
