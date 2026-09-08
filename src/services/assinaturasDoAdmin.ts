@@ -36,6 +36,21 @@ export const assinaturasDoAdmin = {
   registrar: (dados: { userId: string; planId: string; validoAte: string }) =>
     api.post('/admin/subscriptions', dados).then((r) => r.data.data),
 
+  /**
+   * Concede um mês de teste (api#552).
+   *
+   * **Rota própria, e não a de registrar com um campo a mais.** As duas criam a
+   * mesma linha e a diferença entre elas é uma palavra — mas registrar afirma
+   * que entrou dinheiro e conceder afirma o contrário, e as consequências são
+   * opostas: uma soma na Receita Mensal, a outra não pode.
+   *
+   * Recusa a segunda concessão ao mesmo dono com `409 CORTESIA_JA_CONCEDIDA`, e
+   * a mensagem da api já traz a data da primeira — é ela que a tela mostra, em
+   * vez de inventar um texto que não saberia a data.
+   */
+  conceder: (dados: { userId: string; planId: string; validoAte: string }) =>
+    api.post('/admin/subscriptions/cortesia', dados).then((r) => r.data.data),
+
   /** Estende a validade. O plano não muda: trocar de degrau é outra decisão. */
   renovar: (id: string, validoAte: string) =>
     api.patch(`/admin/subscriptions/${id}`, { validoAte }).then((r) => r.data.data),
