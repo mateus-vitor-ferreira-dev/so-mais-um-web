@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
-import { Check, Loader2, AlertTriangle, CalendarClock } from 'lucide-react'
+import { Check, Loader2, AlertTriangle, CalendarClock, MessageCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { plansService } from '../../../services/plansService'
 import { subscriptionService } from '../../../services/subscriptionService'
@@ -11,15 +11,36 @@ import {
   ORDEM_DAS_FUNCIONALIDADES,
 } from '../../../constants/planFeatures'
 import { ehErroDeStripeIndisponivel, mensagemDeErro } from '../../../utils/apiError'
+import { linkDeAssinaturaNoWhatsApp } from '../../../constants/contato'
 import type { Plan, SubscriptionStatus, SwitchPlanPreview } from '../../../types/api'
 import {
   Container, UsageCard, UsageGrid, UsageItem, UsageLabel, UsageValue,
   PlansGrid, PlanCard, CurrentBadge, PlanName, PlanPrice, PlanFeatures, PlanButton,
   Modal, ModalOverlay, ModalBox, ModalTitle, EffectRow, WarningBox, ModalActions, CancelBtn, ConfirmBtn,
-  CenteredSpinner, ScheduledBox, CancelScheduleBtn, PaymentWarning,
+  CenteredSpinner, ScheduledBox, CancelScheduleBtn, PaymentWarning, PixBox, PixLink,
 } from './styles'
 
 const STATUS_COM_TROCA = ['active', 'trialing', 'past_due']
+
+/**
+ * O desconto do Pix, em pontos percentuais inteiros.
+ *
+ * **Derivado dos dois preços, nunca digitado.** O bruto do cartão é
+ * `líquido ÷ (1 − taxa)` (api#539), então a razão entre eles devolve exatamente
+ * a taxa de volta — 5% cravado nos três planos da grade. Escrever "5%" à mão
+ * aqui daria o mesmo número hoje e um número errado no dia em que a taxa mudar,
+ * porque o preço viria certo da api e o rótulo continuaria mentindo.
+ */
+const descontoDoPix = (plano: Plan) =>
+  Math.round((1 - plano.precoCentavos / plano.precoNoCartaoCentavos) * 100)
+
+/** A conversa já começa dizendo o que a pessoa quer, para ninguém repetir. */
+const mensagemDoPix = (plano: Plan) =>
+  `Olá! Quero assinar o ${plano.nome} do Só+1 pagando no Pix ` +
+  `(${formatarPrecoCentavos(plano.precoCentavos)} por mês).`
+
+/** `null` quando não há número configurado — aí o atalho não aparece. */
+const linkDoPix = (plano: Plan) => linkDeAssinaturaNoWhatsApp(mensagemDoPix(plano))
 
 /** Mesma formatação do resto do painel — ver Admin/Dashboard e Owner/Requests. */
 function formatarData(iso: string): string {
@@ -228,14 +249,27 @@ export default function OwnerPlans() {
             {plans.map((plano) => {
               const éAtual = sub?.plan?.id === plano.id
               const carregandoEsse = paying === plano.id
+              const pix = linkDoPix(plano)
 
               return (
                 <PlanCard key={plano.id} $current={éAtual}>
                   {éAtual && <CurrentBadge>Seu plano atual</CurrentBadge>}
                   <PlanName>{plano.nome}</PlanName>
+                  {/* O preço em destaque é o do cartão porque é o que o botão
+                      logo abaixo cobra: o número maior tem que ser o número que
+                      sai da fatura. O do Pix vem em seguida, com o desconto. */}
                   <PlanPrice>
-                    {formatarPrecoCentavos(plano.precoCentavos)}<span> / mês</span>
+                    {formatarPrecoCentavos(plano.precoNoCartaoCentavos)}
+                    <span> / mês no cartão</span>
                   </PlanPrice>
+                  <PixBox>
+                    <strong>
+                      {formatarPrecoCentavos(plano.precoCentavos)} / mês no Pix
+                    </strong>
+                    <span>
+                      desconto de {descontoDoPix(plano)}% · confirmação em até 24h
+                    </span>
+                  </PixBox>
                   {/* O incluso vem primeiro, e depois o que este degrau abre. Sem as
                       duas primeiras linhas o Básico apareceria como um cartão vazio —
                       ele é o plano de entrada, não um plano sem nada. */}
@@ -266,6 +300,17 @@ export default function OwnerPlans() {
                         ? <><Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Aguarde...</>
                         : 'Assinar'}
                     </PlanButton>
+                  )}
+
+                  {/* O Pix não tem botão de pagamento porque não é pagamento na
+                      tela: é conversa. O link some quando não há número
+                      configurado — atalho que abre o WhatsApp sem destino faz a
+                      pessoa achar que mandou mensagem. */}
+                  {!éAtual && pix && (
+                    <PixLink href={pix} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle size={15} aria-hidden />
+                      Assinar no Pix pelo WhatsApp
+                    </PixLink>
                   )}
                 </PlanCard>
               )
