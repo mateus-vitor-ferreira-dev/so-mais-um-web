@@ -134,7 +134,7 @@ describe('useSubscription — funcionalidades do plano', () => {
     buscaStatus.mockResolvedValue({
       status: 'active',
       currentPeriodEnd: emDias(20),
-      plan: { id: 'pro', nome: 'Só+1 Pro', precoCentavos: 7990, funcionalidades: ['ESTATISTICAS'] },
+      plan: { id: 'pro', nome: 'Só+1 Pro', precoCentavos: 7990, precoNoCartaoCentavos: 8411, funcionalidades: ['ESTATISTICAS'] },
     })
 
     const result = await montaHook()
@@ -148,7 +148,7 @@ describe('useSubscription — funcionalidades do plano', () => {
     buscaStatus.mockResolvedValue({
       status: 'active',
       currentPeriodEnd: emDias(20),
-      plan: { id: 'basico', nome: 'Só+1 Básico', precoCentavos: 3990, funcionalidades: [] },
+      plan: { id: 'basico', nome: 'Só+1 Básico', precoCentavos: 3990, precoNoCartaoCentavos: 4200, funcionalidades: [] },
     })
 
     const result = await montaHook()
@@ -172,9 +172,9 @@ describe('useSubscription — funcionalidades do plano', () => {
     buscaStatus.mockResolvedValue({
       status: 'active',
       currentPeriodEnd: emDias(20),
-      plan: { id: 'premium', nome: 'Só+1 Premium', precoCentavos: 14990, funcionalidades: ['ESTOQUE'] },
+      plan: { id: 'premium', nome: 'Só+1 Premium', precoCentavos: 14990, precoNoCartaoCentavos: 15779, funcionalidades: ['ESTOQUE'] },
       trocaAgendada: {
-        plan: { id: 'basico', nome: 'Só+1 Básico', precoCentavos: 3990, funcionalidades: [] },
+        plan: { id: 'basico', nome: 'Só+1 Básico', precoCentavos: 3990, precoNoCartaoCentavos: 4200, funcionalidades: [] },
         valeAPartirDe: emDias(20),
       },
     })
@@ -207,7 +207,7 @@ describe('useSubscription — ADMIN (#265)', () => {
     buscaStatus.mockResolvedValue({
       status: 'active',
       currentPeriodEnd: emDias(20),
-      plan: { id: 'basico', nome: 'Só+1 Básico', precoCentavos: 3990, funcionalidades: [] },
+      plan: { id: 'basico', nome: 'Só+1 Básico', precoCentavos: 3990, precoNoCartaoCentavos: 4200, funcionalidades: [] },
     })
 
     const result = await montaHook()

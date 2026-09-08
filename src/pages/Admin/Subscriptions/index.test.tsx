@@ -61,7 +61,11 @@ beforeEach(() => {
   servico.renovar.mockResolvedValue({})
   servico.encerrar.mockResolvedValue({})
   planos.getAll.mockResolvedValue([
-    { id: 'p-pro', nome: 'Pro', precoCentavos: 7990, funcionalidades: [] },
+    // O bruto do cartão veio com a api#539. Esta tela não o usa — a
+    // assinatura manual é Pix, e no Pix o líquido é o valor cheio —, mas o
+    // tipo `Plan` o exige, e a fixture não pode inventar um plano que a api
+    // não devolve mais.
+    { id: 'p-pro', nome: 'Pro', precoCentavos: 7990, precoNoCartaoCentavos: 8411, funcionalidades: [] },
   ])
   const dono = (id: string, name: string, email: string) => ({
     id, name, email, role: 'OWNER' as const, badge: null, createdAt: emDias(-90),
