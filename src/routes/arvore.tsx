@@ -115,42 +115,55 @@ export const arvoreDeRotas = (
       <Route path="plans"               element={<OwnerPlans />} />
       <Route path="places"              element={<OwnerPlaces />} />
       <Route path="places/:placeId/courts" element={<OwnerCourts />} />
-      {/* Convites de professor (api#451). Sem `PlanGate`: a api deixou esta rota
-          fora do `requireActiveSubscription` de propósito, e trancá-la aqui
-          deixaria um dono adimplente de ontem sem dar acesso a quem já dá aula
-          na quadra dele hoje.
+      {/* Convites de professor (api#451). Sem `PlanGate`, e continua sem depois
+          de a api#531 ter portado a escolinha: a assinatura é do dono do
+          espaço, e o professor é prestador — ele não assina nada. Trancá-la
+          aqui deixaria um dono adimplente de ontem sem dar acesso a quem já dá
+          aula na quadra dele hoje.
 
           Sem `:placeId` no caminho: a tela está no menu, e menu não carrega
           parâmetro. O espaço vem do seletor, com `?placeId=` na URL — mesmo
           desenho do Estoque e dos Equipamentos. */}
       <Route path="professores"           element={<OwnerProfessores />} />
-      {/* As turmas do espaço (api#472). Sem `PlanGate` pelo mesmo motivo dos
-          professores: a api deixou estas rotas fora do
-          `requireActiveSubscription` de propósito, e o cadeado aqui mandaria o
-          dono para a tela de planos por uma coisa que ele já pode fazer.
-
-          Sem `:placeId` no caminho, também pelo mesmo motivo: a tela está no
-          menu, e o espaço vem do seletor com `?placeId=` na URL. */}
-      <Route path="turmas"                element={<OwnerTurmas />} />
-      {/* O day use da quadra (api#505). Sem `PlanGate` pelo mesmo motivo das
-          turmas e dos professores: a api deixou estas rotas fora do
-          `requireActiveSubscription` de propósito.
+      {/* As turmas do espaço (api#472), sob `ESCOLINHA` desde a api#531. Até lá
+          a escolinha inteira vinha junto do degrau de entrada — não por
+          decisão, mas porque foi entregue depois de a grade ser desenhada.
 
           Sem `:placeId` no caminho: a tela está no menu, e menu não carrega
           parâmetro — o espaço vem do seletor, com `?placeId=` na URL. */}
-      <Route path="day-uses"              element={<OwnerDayUses />} />
+      <Route path="turmas"                element={<PlanGate funcionalidade="ESCOLINHA"><OwnerTurmas /></PlanGate>} />
+      {/* O day use da quadra (api#505), sob `DAY_USE` desde a api#531.
+
+          Funcionalidade própria, e não junto da escolinha: o day use vende
+          sozinho — quadra que só aluga hora ganha dinheiro com ele sem nunca
+          abrir uma turma.
+
+          Sem `:placeId` no caminho: a tela está no menu, e menu não carrega
+          parâmetro — o espaço vem do seletor, com `?placeId=` na URL. */}
+      <Route path="day-uses"              element={<PlanGate funcionalidade="DAY_USE"><OwnerDayUses /></PlanGate>} />
       {/* Aqui o `:dayUseId` VAI no caminho: esta tela não está no menu, então a
           regra de "menu não carrega parâmetro" não se aplica. O `placeId`
           continua na query, porque é dele que a api precisa na URL da rota —
           mesmo desenho dos alunos da turma. */}
-      <Route path="day-uses/:dayUseId/entradas" element={<OwnerEntradasDoDayUse />} />
+      <Route path="day-uses/:dayUseId/entradas" element={<PlanGate funcionalidade="DAY_USE"><OwnerEntradasDoDayUse /></PlanGate>} />
       {/* Os alunos de uma turma (api#474). Aqui o `:turmaId` **vai no caminho**:
           diferente da lista de turmas, esta tela não está no menu, então a
           regra de "menu não carrega parâmetro" não se aplica. O `placeId`
           continua na query, porque é dele que a api precisa na URL da rota. */}
-      <Route path="turmas/:turmaId/alunos" element={<OwnerAlunos />} />
+      <Route path="turmas/:turmaId/alunos" element={<PlanGate funcionalidade="ESCOLINHA"><OwnerAlunos /></PlanGate>} />
+      {/* A chamada **não** tem `PlanGate`, e é a única tela da escolinha sem.
+
+          A api deixou `chamada.routes` e `aula.routes` fora do portão de
+          propósito (api#531): o plano decide o que o dono pode montar, não
+          decide que a aula de amanhã deixe de ter chamada. Um cadeado aqui
+          contradiria a api e deixaria o professor sem marcar presença porque o
+          dono desceu de degrau — e a chamada que não acontece é a que ninguém
+          recupera depois.
+
+          Chegar nesta tela pelo menu passa por Turmas, que é portada. Quem
+          chega é quem tem o link — o professor, ou o dono que o guardou. */}
       <Route path="turmas/:turmaId/chamada" element={<OwnerChamada />} />
-      <Route path="turmas/:turmaId/mensalidades" element={<OwnerMensalidades />} />
+      <Route path="turmas/:turmaId/mensalidades" element={<PlanGate funcionalidade="ESCOLINHA"><OwnerMensalidades /></PlanGate>} />
       {/* O portão fica na rota, e não só dentro da página: sem isso, chegar pela
           URL abriria a tela que o menu marca com cadeado. A API recusa de qualquer
           jeito, mas o dono veria a tela montar e as chamadas falharem uma a uma. */}

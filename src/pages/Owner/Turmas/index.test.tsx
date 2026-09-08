@@ -92,13 +92,21 @@ beforeEach(() => {
 })
 
 describe('OwnerTurmas', () => {
-  it('está no menu do owner, e nunca com cadeado', () => {
-    // Sem plano nenhum: a api deixou as rotas de turma fora do
-    // `requireActiveSubscription`, e o cadeado aqui contradiria ela.
-    const item = ownerNavItems('OWNER', () => false).find((i) => i.to === '/owner/turmas')
+  it('está no menu do owner, com cadeado quando o plano não abre a escolinha', () => {
+    // Desde a api#531 a escolinha é paga. O item **não some** do menu — é assim
+    // que o dono descobre que existe, e menu que some não vende plano nenhum.
+    const semPlano = ownerNavItems('OWNER', () => false).find((i) => i.to === '/owner/turmas')
 
-    expect(item?.label).toBe('Turmas')
-    expect(item?.bloqueado).toBeFalsy()
+    expect(semPlano?.label).toBe('Turmas')
+    expect(semPlano?.bloqueado).toBe(true)
+  })
+
+  it('sem cadeado quando o plano abre a escolinha', () => {
+    const comEscolinha = ownerNavItems('OWNER', (f) => f === 'ESCOLINHA').find(
+      (i) => i.to === '/owner/turmas',
+    )
+
+    expect(comEscolinha?.bloqueado).toBeFalsy()
   })
 
   it('respeita o ?placeId= e troca de espaço pelo seletor', async () => {

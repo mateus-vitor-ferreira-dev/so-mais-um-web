@@ -42,6 +42,8 @@ export const adminNavItems: NavItemDef[] = [
  * são como o dono entra na plataforma, o que ele já contratou e como ele paga. A
  * Visão Geral entra na lista porque a página existe para todo mundo — o que depende de
  * plano são as estatísticas dentro dela, e quem barra isso é a própria página.
+ *
+ * Professores também nunca é bloqueado, mas por outro motivo — está escrito no item.
  */
 export function ownerNavItems(
   role: UserRole | undefined,
@@ -56,26 +58,32 @@ export function ownerNavItems(
     { to: '/owner/equipment', label: 'Equipamentos',          icon: Dumbbell,
       bloqueado: !temFuncionalidade('EQUIPAMENTOS') },
     /*
-     * Professores (api#451). Nunca bloqueado, como Visão Geral, Planos,
-     * Estabelecimentos e Solicitações: a api deixou a rota fora do
-     * `requireActiveSubscription` de propósito, e um cadeado aqui contradiria
-     * ela — o dono veria a tela de planos para uma coisa que ele já pode fazer.
+     * Professores (api#451). **Continua nunca bloqueado**, mesmo depois da
+     * api#531 ter portado a escolinha inteira.
+     *
+     * Não é esquecimento: a assinatura é do dono do espaço, e o professor é
+     * prestador — ele não assina nada. As rotas de `/me/turmas` e `/me/aulas`
+     * ficaram fora do portão de propósito, e a api tem teste prendendo isso. Um
+     * cadeado aqui contradiria ela.
      */
     { to: '/owner/professores', label: 'Professores',        icon: GraduationCap   },
     /*
-     * Turmas (api#472). Nunca bloqueado, pelo mesmo motivo dos Professores: a
-     * api deixou as rotas de turma fora do `requireActiveSubscription`, e um
-     * cadeado aqui contradiria ela.
+     * Turmas (api#472), sob `ESCOLINHA` desde a api#531.
+     *
+     * A mesma funcionalidade abre matrícula, mensalidade, aula e chamada — a
+     * turma semanal é um bloco só, e vender "turma sem chamada" seria vender um
+     * caderno pela metade. Por isso o cadeado é um, e não cinco.
      */
-    { to: '/owner/turmas',    label: 'Turmas',                 icon: CalendarClock   },
+    { to: '/owner/turmas',    label: 'Turmas',                 icon: CalendarClock,
+      bloqueado: !temFuncionalidade('ESCOLINHA') },
     /**
      * Day use (api#505). Ao lado de Turmas porque são os dois formatos que o
-     * espaço vende, e o dono passa de um para o outro.
-     *
-     * Nunca bloqueado, pelo mesmo motivo: a api deixou estas rotas fora do
-     * `requireActiveSubscription`, e um cadeado aqui contradiria ela.
+     * espaço vende, e o dono passa de um para o outro. Sob `DAY_USE` desde a
+     * api#531 — cadeado próprio, porque o day use vende sozinho: quadra que só
+     * aluga hora ganha dinheiro com ele sem nunca abrir uma turma.
      */
-    { to: '/owner/day-uses',  label: 'Day use',                icon: Ticket          },
+    { to: '/owner/day-uses',  label: 'Day use',                icon: Ticket,
+      bloqueado: !temFuncionalidade('DAY_USE') },
     { to: '/owner/requests',  label: 'Solicitações',          icon: ClipboardList   },
     ...(role === 'ADMIN'
       ? [{ to: '/admin', label: 'Painel Admin', icon: ShieldCheck, divider: true }]

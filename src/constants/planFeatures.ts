@@ -11,7 +11,11 @@ import type { PlanFeature } from '../types/api'
  * comparação precisa reconhecer a mesma palavra quando o item aparecer no menu.
  */
 export const ROTULOS_DE_FUNCIONALIDADE: Record<PlanFeature, string> = {
+  DAY_USE: 'Day use',
   ESTATISTICAS: 'Estatísticas do espaço',
+  // Rótulo mais longo que os outros de propósito: `ESCOLINHA` abre cinco itens do
+  // menu, e "Escolinha" sozinho não diria ao dono o que ele está comprando.
+  ESCOLINHA: 'Escolinha — turmas, matrículas, mensalidades e chamada',
   EQUIPAMENTOS: 'Controle de equipamento',
   ESTOQUE: 'Controle de estoque',
 }
@@ -30,4 +34,10 @@ export const INCLUSO_EM_TODO_PLANO = [
 ]
 
 /** Ordem de exibição — do que abre antes, no degrau mais barato, para o que abre depois. */
-export const ORDEM_DAS_FUNCIONALIDADES: PlanFeature[] = ['ESTATISTICAS', 'EQUIPAMENTOS', 'ESTOQUE']
+export const ORDEM_DAS_FUNCIONALIDADES: PlanFeature[] = [
+  'DAY_USE',
+  'ESTATISTICAS',
+  'ESCOLINHA',
+  'EQUIPAMENTOS',
+  'ESTOQUE',
+]

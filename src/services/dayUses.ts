@@ -14,9 +14,11 @@ import type {
  *
  * ## Tudo aqui é do dono
  *
- * A api guarda estas rotas com `isPlaceOwnerOrAdmin` e **fora** do
- * `requireActiveSubscription` — mesma decisão da turma e do expediente. A tela
- * acompanha: não há `PlanGate` no caminho.
+ * A api guarda estas rotas com `isPlaceOwnerOrAdmin` e, desde a api#531,
+ * também com `requireFuncionalidade("DAY_USE")`. Funcionalidade própria, e não
+ * junto da escolinha: o day use vende sozinho — quadra que só aluga hora ganha
+ * dinheiro com ele sem nunca abrir uma turma. A tela acompanha: há `PlanGate`
+ * na rota (`routes/arvore.tsx`).
  *
  * ## `cancelar` é `DELETE`, e não apaga
  *

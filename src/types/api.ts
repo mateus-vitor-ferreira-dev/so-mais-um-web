@@ -1060,8 +1060,15 @@ export interface DrawResult {
  * Solicitações, Meus Estabelecimentos e a própria tela de Planos: são como o dono
  * entra na plataforma, o que ele já contratou e como ele paga — trancar qualquer um
  * deixaria o cliente do lado de fora da própria assinatura.
+ *
+ * `DAY_USE` e `ESCOLINHA` entraram na api#531: até lá a grade descrevia o produto
+ * de agosto, e tudo que foi entregue depois dela vinha junto do degrau de entrada.
+ *
+ * `ESCOLINHA` é um valor só e cobre a turma semanal inteira — matrícula,
+ * mensalidade, aula, chamada e o vínculo do professor. Não há como assinar
+ * "turmas sem chamada", e o menu não deve sugerir que haja.
  */
-export type PlanFeature = "ESTATISTICAS" | "EQUIPAMENTOS" | "ESTOQUE";
+export type PlanFeature = "DAY_USE" | "ESTATISTICAS" | "ESCOLINHA" | "EQUIPAMENTOS" | "ESTOQUE";
 
 export interface Plan {
     id: string;
