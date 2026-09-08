@@ -44,6 +44,14 @@ const assinaturaPro: SubscriptionStatus = {
   stripeSubscriptionId: 'sub_123',
   plan: pro,
   usage: { quadras: 6, estabelecimentos: 2 },
+  stripeDisponivel: true,
+}
+
+/** Sem assinatura, com o cartão funcionando — o ponto de partida de quem vai assinar. */
+const semAssinatura: SubscriptionStatus = {
+  status: 'inactive', currentPeriodEnd: null, plan: null,
+  usage: { quadras: 1, estabelecimentos: 1 },
+  stripeDisponivel: true,
 }
 
 const getPlans = vi.mocked(plansService.getAll)
@@ -102,10 +110,7 @@ describe('OwnerPlans', () => {
   })
 
   it('envia ao checkout exatamente o plano escolhido', async () => {
-    getStatus.mockResolvedValue({
-      status: 'inactive', currentPeriodEnd: null, plan: null,
-      usage: { quadras: 1, estabelecimentos: 1 },
-    })
+    getStatus.mockResolvedValue(semAssinatura)
     checkout.mockRejectedValue(new Error('checkout indisponível no teste'))
 
     const { user } = renderWithProviders(<OwnerPlans />)
@@ -114,21 +119,82 @@ describe('OwnerPlans', () => {
     expect(checkout).toHaveBeenCalledWith('basico')
   })
 
-  it('mantém aviso e bloqueia assinaturas quando a Stripe está indisponível', async () => {
+  /**
+   * O tratamento do 503 no clique **fica** (web#451).
+   *
+   * O booleano da api#544 é um retrato do momento da carga: entre ele e o
+   * clique a configuração pode mudar. Uma tela que confiasse só no retrato
+   * voltaria a falhar em silêncio no dia em que ele estivesse velho.
+   */
+  it('mantém aviso e bloqueia assinaturas quando a Stripe cai depois da carga', async () => {
+    getStatus.mockResolvedValue(semAssinatura)
+    checkout.mockRejectedValue(erroDeStripeIndisponivel())
+
+    const { user } = renderWithProviders(<OwnerPlans />)
+    // A api disse que dava para pagar no cartão, então o botão nasceu clicável.
+    await user.click((await screen.findAllByRole('button', { name: 'Assinar' }))[0])
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Pagamento no cartão indisponível')
+    const botoes = screen.getAllByRole('button', { name: 'Cartão indisponível' })
+    expect(botoes).toHaveLength(2)
+    expect(botoes.every((button) => button.hasAttribute('disabled'))).toBe(true)
+    expect(screen.queryByRole('button', { name: 'Assinar' })).not.toBeInTheDocument()
+    expect(toastDeErro).not.toHaveBeenCalled()
+  })
+
+  // ── O cartão nasce indisponível (web#451 / api#544) ──────────────────────
+
+  describe('quando a api diz que não dá para pagar no cartão', () => {
+    beforeEach(() => {
+      getStatus.mockResolvedValue({ ...semAssinatura, stripeDisponivel: false })
+    })
+
+    it('impede o cartão já na carga, com o motivo escrito e sem clique nenhum', async () => {
+      renderWithProviders(<OwnerPlans />)
+
+      expect(await screen.findByRole('alert')).toHaveTextContent('Pagamento no cartão indisponível')
+      const botoes = screen.getAllByRole('button', { name: 'Cartão indisponível' })
+      expect(botoes).toHaveLength(2)
+      expect(botoes.every((button) => button.hasAttribute('disabled'))).toBe(true)
+      expect(screen.queryByRole('button', { name: 'Assinar' })).not.toBeInTheDocument()
+      // Nada foi tentado: o ponto é justamente não gastar o clique do dono.
+      expect(checkout).not.toHaveBeenCalled()
+      expect(toastDeErro).not.toHaveBeenCalled()
+    })
+
+    it('põe o Pix no palco e mantém o preço do cartão à vista', async () => {
+      renderWithProviders(<OwnerPlans />)
+
+      // O caminho que funciona continua clicável, e é link — não botão.
+      const pix = await screen.findAllByRole('link', { name: /Assinar no Pix pelo WhatsApp/ })
+      expect(pix).toHaveLength(2)
+      expect(pix[0]).toHaveAttribute('href', 'https://wa.me/5535999999999?text=oi')
+
+      // O preço do cartão é informação — quanto custará quando der para pagar
+      // assim. Escondê-lo faria a comparação com o Pix sumir junto.
+      expect(screen.getByText(/R\$ 42,00/)).toBeInTheDocument()
+      expect(screen.getByText(/R\$ 84,11/)).toBeInTheDocument()
+      // E a tela diz por que ele está ali sem dar em nada.
+      expect(screen.getAllByText(/mês no cartão \(indisponível\)/)).toHaveLength(2)
+    })
+  })
+
+  /**
+   * Api mais velha não manda o campo, e nesse caso o certo é seguir oferecendo
+   * o cartão: só a negativa explícita impede. Tratar `undefined` como "não dá"
+   * derrubaria a venda no cartão em todo deploy em que a web fosse na frente.
+   */
+  it('continua oferecendo o cartão quando a api não manda o campo', async () => {
     getStatus.mockResolvedValue({
       status: 'inactive', currentPeriodEnd: null, plan: null,
       usage: { quadras: 1, estabelecimentos: 1 },
     })
-    checkout.mockRejectedValue(erroDeStripeIndisponivel())
 
-    const { user } = renderWithProviders(<OwnerPlans />)
-    await user.click((await screen.findAllByRole('button', { name: 'Assinar' }))[0])
+    renderWithProviders(<OwnerPlans />)
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('Pagamentos temporariamente indisponíveis')
-    expect(
-      screen.getAllByRole('button', { name: 'Assinar' }).every((button) => button.hasAttribute('disabled')),
-    ).toBe(true)
-    expect(toastDeErro).not.toHaveBeenCalled()
+    const botoes = await screen.findAllByRole('button', { name: 'Assinar' })
+    expect(botoes.every((button) => button.hasAttribute('disabled'))).toBe(false)
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
   /**
@@ -247,9 +313,9 @@ describe('OwnerPlans', () => {
     const { user } = renderWithProviders(<OwnerPlans />)
     await user.click(await screen.findByRole('button', { name: 'Trocar para este plano' }))
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('Pagamentos temporariamente indisponíveis')
+    expect(await screen.findByRole('alert')).toHaveTextContent('Pagamento no cartão indisponível')
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Trocar para este plano' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Cartão indisponível' })).toBeDisabled()
     expect(toastDeErro).not.toHaveBeenCalled()
   })
 
@@ -261,9 +327,9 @@ describe('OwnerPlans', () => {
     await user.click(await screen.findByRole('button', { name: 'Trocar para este plano' }))
     await user.click(await screen.findByRole('button', { name: 'Confirmar troca' }))
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('Tente novamente mais tarde')
+    expect(await screen.findByRole('alert')).toHaveTextContent('O Pix, pelo WhatsApp, continua funcionando')
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Trocar para este plano' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Cartão indisponível' })).toBeDisabled()
     expect(toastDeErro).not.toHaveBeenCalled()
   })
 
