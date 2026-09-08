@@ -74,14 +74,21 @@ beforeEach(() => {
 })
 
 describe('OwnerDayUses', () => {
-  it('está no menu do owner, ao lado de Turmas e sem cadeado', () => {
-    const itens = ownerNavItems('OWNER')
-    const item = itens.find((i) => i.to === '/owner/day-uses')
+  it('está no menu do owner, ao lado de Turmas, com cadeado próprio', () => {
+    // Cadeado **próprio**, e não o da escolinha: a api#531 separou os dois
+    // porque o day use vende sozinho — quadra que só aluga hora ganha dinheiro
+    // com ele sem nunca abrir uma turma.
+    const semPlano = ownerNavItems('OWNER', () => false).find((i) => i.to === '/owner/day-uses')
+    const soEscolinha = ownerNavItems('OWNER', (f) => f === 'ESCOLINHA').find(
+      (i) => i.to === '/owner/day-uses',
+    )
+    const comDayUse = ownerNavItems('OWNER', (f) => f === 'DAY_USE').find(
+      (i) => i.to === '/owner/day-uses',
+    )
 
-    expect(item).toBeDefined()
-    // A api deixou estas rotas fora do `requireActiveSubscription`; um cadeado
-    // aqui mandaria o dono para a tela de planos por algo que ele já pode fazer.
-    expect(item).not.toHaveProperty('funcionalidade')
+    expect(semPlano?.bloqueado).toBe(true)
+    expect(soEscolinha?.bloqueado).toBe(true)
+    expect(comDayUse?.bloqueado).toBeFalsy()
   })
 
   it('lista os day uses com preço, ocupação e quadra', async () => {
