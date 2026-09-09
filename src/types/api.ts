@@ -1135,6 +1135,18 @@ export interface SubscriptionStatus {
      * seguir oferecendo o cartão: só `false` explícito impede.
      */
     stripeDisponivel?: boolean;
+    /**
+     * Este mês foi **concedido**, e não vendido? (api#552)
+     *
+     * A tela precisa disso para dizer "teste até tal dia" em vez de "seu plano
+     * atual" — sem ele ela recebe `status: "active"` e um plano, igual a quem
+     * paga, e um teste que termina em silêncio produz alguém achando que o
+     * produto quebrou.
+     *
+     * `currentPeriodEnd` é quando ele acaba. A origem crua não vem: quem
+     * consome precisa saber que é teste e até quando, e mais nada.
+     */
+    ehCortesia?: boolean;
 }
 
 export type SwitchPlanEffectType = "upgrade" | "downgrade" | "mesmo_preco";
