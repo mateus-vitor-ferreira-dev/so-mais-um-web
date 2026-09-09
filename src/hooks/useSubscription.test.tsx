@@ -69,6 +69,64 @@ describe('useSubscription — status que liberam', () => {
   })
 })
 
+/**
+ * Quando não há assinatura na Stripe, quem manda é a **data** (web#457).
+ *
+ * A assinatura manual (api#537) e a cortesia (api#551) ficam `active` para
+ * sempre: não há webhook para vencê-las. Antes daqui o hook devolvia `true` só
+ * pelo status, a lateral destravava Estoque, Turmas e Day use, e o clique
+ * levava 403 — o "a tela abre e a ação falha" que o cabeçalho deste arquivo já
+ * apontava como o pior dos dois lados.
+ */
+describe('useSubscription — o que vence por data', () => {
+  it('bloqueia active sem assinatura na Stripe quando a data já passou', async () => {
+    buscaStatus.mockResolvedValue({ status: 'active', currentPeriodEnd: emDias(-1) })
+
+    const result = await montaHook()
+
+    expect(result.current.isActive).toBe(false)
+  })
+
+  it('libera enquanto a data não passou', async () => {
+    buscaStatus.mockResolvedValue({ status: 'active', currentPeriodEnd: emHoras(1) })
+
+    const result = await montaHook()
+
+    expect(result.current.isActive).toBe(true)
+  })
+
+  it('não herda a tolerância do past_due — não há cobrança retentando', async () => {
+    buscaStatus.mockResolvedValue({ status: 'active', currentPeriodEnd: emDias(-3) })
+
+    const result = await montaHook()
+
+    expect(result.current.isActive).toBe(false)
+  })
+
+  it('sem data não vale: registro incompleto não é assinatura sem prazo', async () => {
+    buscaStatus.mockResolvedValue({ status: 'active', currentPeriodEnd: null })
+
+    const result = await montaHook()
+
+    expect(result.current.isActive).toBe(false)
+  })
+
+  it('a da Stripe continua decidindo por status, e a data não é consultada', async () => {
+    // É ela quem vira o status quando o cartão falha, então o status é a
+    // informação mais nova que existe — e a data seria redundante, ou pior,
+    // atrasada em relação a ele.
+    buscaStatus.mockResolvedValue({
+      status: 'active',
+      currentPeriodEnd: emDias(-90),
+      stripeSubscriptionId: 'sub_123',
+    })
+
+    const result = await montaHook()
+
+    expect(result.current.isActive).toBe(true)
+  })
+})
+
 describe('useSubscription — status que bloqueiam', () => {
   it.each(['inactive', 'canceled', 'unpaid', 'incomplete'])(
     'bloqueia com status %s',
