@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
-import { Check, Loader2, AlertTriangle, CalendarClock, MessageCircle } from 'lucide-react'
+import { Check, Loader2, AlertTriangle, CalendarClock, MessageCircle, Gift } from 'lucide-react'
 import { toast } from 'sonner'
 import { plansService } from '../../../services/plansService'
 import { subscriptionService } from '../../../services/subscriptionService'
@@ -17,10 +17,24 @@ import {
   Container, UsageCard, UsageGrid, UsageItem, UsageLabel, UsageValue,
   PlansGrid, PlanCard, CurrentBadge, PlanName, PlanPrice, PlanFeatures, PlanButton,
   Modal, ModalOverlay, ModalBox, ModalTitle, EffectRow, WarningBox, ModalActions, CancelBtn, ConfirmBtn,
-  CenteredSpinner, ScheduledBox, CancelScheduleBtn, PaymentWarning, PixBox, PixLink,
+  CenteredSpinner, ScheduledBox, CancelScheduleBtn, PaymentWarning, PixBox, PixLink, TrialNotice,
 } from './styles'
 
 const STATUS_COM_TROCA = ['active', 'trialing', 'past_due']
+
+const DIA_MS = 24 * 60 * 60 * 1000
+
+/**
+ * A partir de quantos dias o fim do teste sai do selo e vira aviso no topo.
+ *
+ * Espelha o `ASSINATURA_EXPIRANDO_DIAS` da api e o `DIAS_DE_ALERTA` do painel
+ * do admin: os três descrevem a mesma janela, e números diferentes fariam o
+ * admin ver "vencendo" numa tela e o dono não ver nada na dele.
+ */
+const DIAS_DE_ALERTA = 7
+
+/** Dias inteiros até a data — negativo quando ela já passou. */
+const diasAte = (iso: string) => Math.ceil((new Date(iso).getTime() - Date.now()) / DIA_MS)
 
 /**
  * O desconto do Pix, em pontos percentuais inteiros.
@@ -99,6 +113,23 @@ export default function OwnerPlans() {
   }, [trocaPlano, confirmando])
 
   const podeTrocar = sub ? STATUS_COM_TROCA.includes(sub.status) && !!sub.stripeSubscriptionId : false
+
+  /**
+   * O mês de teste, e em que ponto dele o dono está (#457).
+   *
+   * A api manda `ehCortesia` e a data do fim; os dias são subtração de datas
+   * aqui — não é regra de negócio duplicada, é o relógio. A regra que decide
+   * acesso continua sendo a da api, e ela responde 402/403 quando o mês acaba.
+   *
+   * `acabou` existe porque a cortesia vencida chega com `status: "active"` e a
+   * data no passado — não há webhook para virar o status, exatamente como na
+   * assinatura manual.
+   */
+  const emCortesia = sub?.ehCortesia === true
+  const fimDoTeste = emCortesia ? sub?.currentPeriodEnd ?? null : null
+  const diasDeTeste = fimDoTeste ? diasAte(fimDoTeste) : null
+  const testeAcabou = diasDeTeste !== null && diasDeTeste < 0
+  const testeAcabando = diasDeTeste !== null && diasDeTeste >= 0 && diasDeTeste <= DIAS_DE_ALERTA
 
   const handleAssinar = async (planId: string) => {
     try {
@@ -215,6 +246,34 @@ export default function OwnerPlans() {
         )}
 
         {/*
+          O fim do teste, quando ele está perto ou já passou (#457).
+
+          Com folga, o selo do cartão basta — um aviso no topo desde o primeiro
+          dia viraria ruído e a pessoa pararia de lê-lo justamente na semana em
+          que ele importa. Acabado não é estado de erro: é o fim esperado de
+          todo teste, e o que a tela deve fazer é chamar para assinar.
+        */}
+        {(testeAcabando || testeAcabou) && (
+          <TrialNotice role="status">
+            <Gift size={20} />
+            <div>
+              <strong>
+                {testeAcabou
+                  ? 'Seu mês de teste acabou'
+                  : diasDeTeste === 0
+                    ? 'Seu mês de teste acaba hoje'
+                    : `Seu mês de teste acaba em ${diasDeTeste} ${diasDeTeste === 1 ? 'dia' : 'dias'}`}
+              </strong>
+              <span>
+                {testeAcabou
+                  ? 'As áreas do plano ficaram fechadas. Para voltar a usar, assine — no Pix, pelo WhatsApp, abaixo.'
+                  : 'Depois dessa data as áreas do plano fecham. Para continuar, assine — no Pix, pelo WhatsApp, abaixo.'}
+              </span>
+            </div>
+          </TrialNotice>
+        )}
+
+        {/*
           Sem isto, quem agenda um downgrade volta para uma tela idêntica à de
           antes — plano antigo em vigor, nenhum sinal do agendamento — e conclui
           que a troca falhou.
@@ -268,7 +327,18 @@ export default function OwnerPlans() {
 
               return (
                 <PlanCard key={plano.id} $current={éAtual}>
-                  {éAtual && <CurrentBadge>Seu plano atual</CurrentBadge>}
+                  {/* Em cortesia o selo diz o que é e até quando. "Seu plano
+                      atual" afirmaria uma assinatura que não existe, e é o que
+                      fazia o teste terminar em silêncio. */}
+                  {éAtual && (
+                    <CurrentBadge $cortesia={emCortesia}>
+                      {!emCortesia
+                        ? 'Seu plano atual'
+                        : fimDoTeste
+                          ? `${testeAcabou ? 'Teste encerrado em' : 'Teste até'} ${formatarData(fimDoTeste)}`
+                          : 'Teste'}
+                    </CurrentBadge>
+                  )}
                   <PlanName>{plano.nome}</PlanName>
                   {/* O preço em destaque é o do cartão porque é o que o botão
                       logo abaixo cobra: o número maior tem que ser o número que
@@ -302,7 +372,12 @@ export default function OwnerPlans() {
                     ))}
                   </PlanFeatures>
 
-                  {éAtual ? (
+                  {/*
+                    O plano em teste NÃO vira botão morto: é justamente ele que
+                    o dono vai querer assinar, e "Plano atual" desabilitado
+                    fecharia a única porta que a tela precisa manter aberta.
+                  */}
+                  {éAtual && !emCortesia ? (
                     <PlanButton $variant="current" disabled>Plano atual</PlanButton>
                   ) : podeTrocar ? (
                     <PlanButton
@@ -330,7 +405,9 @@ export default function OwnerPlans() {
                       tela: é conversa. O link some quando não há número
                       configurado — atalho que abre o WhatsApp sem destino faz a
                       pessoa achar que mandou mensagem. */}
-                  {!éAtual && pix && (
+                  {/* O atalho do Pix aparece também no plano em teste, e é o
+                      caminho que o aviso do topo promete. */}
+                  {(!éAtual || emCortesia) && pix && (
                     <PixLink
                       href={pix}
                       target="_blank"

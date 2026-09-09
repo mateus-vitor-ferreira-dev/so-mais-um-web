@@ -28,6 +28,36 @@ export const PaymentWarning = styled.div`
   span { font-size: 13px; }
 `
 
+/**
+ * O aviso de que o teste está acabando, ou acabou (web#457).
+ *
+ * Mesma forma do `PaymentWarning`, e cor própria: aquele é amarelo de alerta —
+ * "algo está impedido" —, e este não descreve impedimento nenhum. É o fim
+ * esperado de todo teste, e o que ele pede é uma decisão, não um conserto.
+ */
+export const TrialNotice = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px 18px;
+  border: 1px solid ${({ theme }) => theme.colors.accent};
+  border-radius: 10px;
+  background: ${({ theme }) => theme.colors.accentLight};
+  color: ${({ theme }) => theme.colors.accent};
+
+  svg { flex-shrink: 0; }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  strong { font-size: 14px; }
+  span { font-size: 13px; }
+`
+
 export const UsageCard = styled.div`
   background: ${({ theme }) => theme.colors.bgCard};
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
@@ -105,11 +135,17 @@ export const PlanCard = styled.div<{ $current?: boolean; }>`
   box-shadow: ${({ theme }) => theme.shadows.sm};
 `
 
-export const CurrentBadge = styled.span`
+/**
+ * `$cortesia` quando o plano está sendo **testado**, não pago (web#457).
+ *
+ * Roxo, o mesmo do painel do admin: verde diria "você assina isto", que é
+ * justamente o que ainda não aconteceu.
+ */
+export const CurrentBadge = styled.span<{ $cortesia?: boolean }>`
   position: absolute;
   top: -12px;
   left: 24px;
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ $cortesia, theme }) => ($cortesia ? theme.colors.accent : theme.colors.primary)};
   color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: 11px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
