@@ -123,6 +123,16 @@ jobs:
             npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
           fi
 
+      # O build acontece AQUI, não na Vercel (o deploy abaixo é --prebuilt), então
+      # é este ambiente que o Vite inlina no bundle.
+      #
+      # As duas variáveis abaixo são definidas aqui e sobrescrevem o que veio do
+      # `vercel pull`. Ao acrescentar variável de build, saiba que **variável de
+      # Production na Vercel nasce `sensitive`**, e nesse estado o `pull` devolve
+      # o literal `[SENSITIVE]` em vez do valor — que o Vite inlina sem reclamar.
+      # Então toda variável precisa de uma das duas coisas: `--no-sensitive` na
+      # Vercel, ou estar nesta lista. Custou dez minutos de link quebrado em
+      # produção em 09/09/2026; ver web#463.
       - name: Build project artifacts
         env:
           VITE_API_URL: https://api.so-mais-um.com
