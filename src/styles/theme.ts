@@ -131,6 +131,21 @@ export const lightTheme = {
     info:          '#2563eb',
     infoLight:     '#dbeafe',
 
+    /*
+     * O roxo entrou com a cortesia (api#551, web#456), e a razão é que ela
+     * precisava de um selo que não fosse nenhum dos dois que já existiam.
+     *
+     * Origem `MANUAL` é verde e `STRIPE` é azul. Cortesia ao lado delas em
+     * verde diria "é a mesma coisa que o Pix", que é justamente o engano que a
+     * origem nova existe para desfazer — o valor da linha dela não descreve
+     * dinheiro que entrou. Amarelo colidiria com o selo de situação "Vence em
+     * N dias", que fica ao lado no mesmo cartão.
+     *
+     * O par é medido no `contraste.test.ts`, como os outros de texto sobre cor.
+     */
+    accent:        '#6d28d9',
+    accentLight:   '#ede9fe',
+
     white:         '#ffffff',
     black:         '#000000',
   },
@@ -201,6 +216,11 @@ export const darkTheme = {
     errorLight:    '#1a0808',
     info:          '#93c5fd',
     infoLight:     '#080f1c',
+
+    /* Mesma inversão dos outros semânticos no escuro: o tom vivo vira o texto e
+       o fundo vira quase preto. */
+    accent:        '#c4b5fd',
+    accentLight:   '#140c26',
 
     white:         '#ffffff',
     black:         '#000000',

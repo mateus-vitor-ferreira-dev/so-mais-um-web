@@ -1642,8 +1642,14 @@ export interface MatriculaInput {
  * Não é rótulo de exibição: é o campo que a tela do admin usa para decidir o
  * que deixa tocar. `STRIPE` é espelho do que acontece lá fora, e editar aqui
  * criaria divergência que o próximo webhook desfaz sem avisar.
+ *
+ * `CORTESIA` é o mês **concedido, não vendido** (api#551): vence por data como
+ * a `MANUAL`, e é a única em que o valor da linha não descreve dinheiro que
+ * entrou. Renovar não vale para ela — seria conceder mais tempo grátis, e
+ * cortesia é uma por dono; encerrar vale, porque teste concedido por engano
+ * precisa ter volta.
  */
-export type OrigemDaAssinatura = 'STRIPE' | 'MANUAL';
+export type OrigemDaAssinatura = 'STRIPE' | 'MANUAL' | 'CORTESIA';
 
 /**
  * Uma assinatura como o `/admin/subscriptions` a devolve (api#537).

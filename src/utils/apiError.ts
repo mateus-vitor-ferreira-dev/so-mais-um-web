@@ -48,6 +48,19 @@ export function ehErroDeLimiteDePlano(err: unknown): boolean {
   return corpo?.code === 'PLAN_LIMIT_REACHED'
 }
 
+/**
+ * Este dono já teve o mês de cortesia? (api#552)
+ *
+ * Não é falha: é resposta. A api recusa a segunda concessão e diz **quando** foi
+ * a primeira — mostrar isso como "erro ao conceder" jogaria fora justamente a
+ * informação que quem clicou precisa.
+ */
+export function ehCortesiaJaConcedida(err: unknown): boolean {
+  if (!(err instanceof AxiosError)) return false
+  if (codigoDeErro(err) !== 'CORTESIA_JA_CONCEDIDA') return false
+  return err.response?.status === 409
+}
+
 /** A integração de pagamentos está indisponível por configuração da API? */
 export function ehErroDeStripeIndisponivel(err: unknown): boolean {
   if (!(err instanceof AxiosError)) return false
