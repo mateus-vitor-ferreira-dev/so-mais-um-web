@@ -31,7 +31,7 @@ vi.mock('./paginas', () => {
     Register: ({ initialMode }: { initialMode?: string }) => <div>tela de {initialMode}</div>,
     ForgotPassword: stub('ForgotPassword'), ResetPassword: stub('ResetPassword'),
     OwnerAccess: stub('OwnerAccess'), Home: stub('Home'), Profile: stub('Profile'),
-    QueroJogar: stub('QueroJogar'), CriarPartida: stub('CriarPartida'),
+    QueroJogar: stub('QueroJogar'), DayUses: stub('DayUses'), CriarPartida: stub('CriarPartida'),
     Tournaments: stub('Tournaments'), MinhasPartidas: stub('MinhasPartidas'),
     Historico: stub('Historico'), Avaliacoes: stub('Avaliacoes'),
     PartidaDetail: stub('PartidaDetail'), TournamentDetail: stub('TournamentDetail'),

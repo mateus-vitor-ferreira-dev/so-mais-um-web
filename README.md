@@ -56,7 +56,7 @@ O ciclo é **descobrir → entrar → jogar → avaliar**, e ele fecha em cima d
   </tbody>
 </table>
 
-São **43 rotas** sobre **41 páginas carregadas sob demanda**, **12 modalidades** (de futsal a beach tennis), reputação com **6 tags** de comportamento (Craque da Partida, Pontual, Fair Play…) e torneios com divisões em **5 níveis** — tudo consumindo a API do Só+1 via REST, com um canal SSE aberto para as notificações.
+São **44 rotas** sobre **42 páginas carregadas sob demanda**, **12 modalidades** (de futsal a beach tennis), reputação com **6 tags** de comportamento (Craque da Partida, Pontual, Fair Play…) e torneios com divisões em **5 níveis** — tudo consumindo a API do Só+1 via REST, com um canal SSE aberto para as notificações.
 
 ```mermaid
 flowchart TB
@@ -64,7 +64,7 @@ flowchart TB
     O["🏟️ Dono · OWNER"] --> WEB
     A["🛠️ Admin · ADMIN"] --> WEB
 
-    WEB["<b>Web App · React 19 + Vite 8</b><br/>rotas guardadas por papel · 41 páginas lazy<br/>Axios + JWT · styled-components · tema claro/escuro"]
+    WEB["<b>Web App · React 19 + Vite 8</b><br/>rotas guardadas por papel · 42 páginas lazy<br/>Axios + JWT · styled-components · tema claro/escuro"]
 
     WEB --> API["<b>API Só+1</b><br/>REST · /auth /events /courts<br/>/tournaments /owner /admin"]
     WEB --> G["Google Identity<br/>idToken → POST /auth/google"]

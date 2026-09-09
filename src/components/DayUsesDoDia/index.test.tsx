@@ -162,4 +162,19 @@ describe('DayUsesDoDia', () => {
     await screen.findByText('Quadra 1')
     expect(servico.buscar).toHaveBeenCalledWith({ city: undefined, courtType: undefined })
   })
+
+  it('na busca de partidas deixa só o atalho de descoberta', async () => {
+    renderWithProviders(<DayUsesDoDia city="Lavras" modo="atalho" />)
+
+    const atalho = await screen.findByRole('link', { name: /1 day use acontecendo hoje perto de você/i })
+    expect(atalho).toHaveAttribute('href', '/day-uses?city=Lavras')
+    expect(screen.queryByRole('heading', { name: 'Day use' })).not.toBeInTheDocument()
+  })
+
+  it('sem day use não deixa atalho morto na busca', async () => {
+    servico.buscar.mockResolvedValue(resposta([]))
+    renderWithProviders(<DayUsesDoDia modo="atalho" />)
+
+    expect(screen.queryByRole('link', { name: /ver day uses/i })).not.toBeInTheDocument()
+  })
 })

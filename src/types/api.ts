@@ -1117,6 +1117,13 @@ export interface TrocaAgendada {
 export interface SubscriptionStatus {
     status: string;
     currentPeriodEnd: IsoDate | null;
+    /**
+     * O plano veio de uma cortesia? (api#552)
+     *
+     * A tela não recebe a origem crua da assinatura: só precisa distinguir o
+     * teste de um plano pago para oferecer a compra antes do fim.
+     */
+    ehCortesia?: boolean;
     stripeSubscriptionId?: string | null;
     /** O plano EM VIGOR, mesmo havendo troca agendada. */
     plan?: Plan | null;

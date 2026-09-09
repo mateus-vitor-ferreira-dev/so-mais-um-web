@@ -109,6 +109,25 @@ describe('OwnerPlans', () => {
     expect(screen.queryByText(/ilimitad/i)).not.toBeInTheDocument()
   })
 
+  it('identifica a cortesia, destaca o fim próximo e deixa assinar o plano em teste', async () => {
+    const fimDoTeste = new Date(Date.now() + 2 * 86_400_000).toISOString()
+    getStatus.mockResolvedValue({
+      ...assinaturaPro,
+      ehCortesia: true,
+      stripeSubscriptionId: null,
+      currentPeriodEnd: fimDoTeste,
+    })
+    checkout.mockRejectedValue(new Error('checkout indisponível no teste'))
+
+    const { user } = renderWithProviders(<OwnerPlans />)
+
+    expect(await screen.findByText(`Teste até ${new Date(fimDoTeste).toLocaleDateString('pt-BR')}`)).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(/Seu teste termina em/)
+    await user.click(screen.getAllByRole('button', { name: 'Assinar' })[1])
+    expect(checkout).toHaveBeenCalledWith('pro')
+    expect(screen.getAllByRole('link', { name: /assinar no pix pelo whatsapp/i })).toHaveLength(2)
+  })
+
   it('envia ao checkout exatamente o plano escolhido', async () => {
     getStatus.mockResolvedValue(semAssinatura)
     checkout.mockRejectedValue(new Error('checkout indisponível no teste'))
