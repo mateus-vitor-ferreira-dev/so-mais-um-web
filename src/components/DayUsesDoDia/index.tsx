@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import { Clock, MapPin, Users } from 'lucide-react'
 import { dayUsesService } from '../../services/dayUses'
 import { chaves } from '../../lib/queryClient'
-import type { CourtType, DayUsePublico } from '../../types/api'
-import { Atalho, Aviso, Cabecalho, Cartao, Grade, Precos, Secao, Selo } from './styles'
+import type { ReactNode } from 'react'
+import type { DayUsePublico, FiltrosDeDayUse } from '../../types/api'
+import { Atalho, Aviso, Cabecalho, Carregando, Cartao, Grade, Precos, Secao, Selo } from './styles'
 
 const emReais = (valor: string) =>
   Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -15,13 +16,19 @@ const dia = (iso: string) =>
   new Date(iso).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })
 
 interface Props {
-  /** Os mesmos filtros do grid de partidas — os dois olham a mesma busca. */
-  city?: string
-  courtType?: CourtType | ''
-  /** A página própria só consulta depois que a pessoa delimitou a busca. */
-  habilitado?: boolean
+  /** Tudo que a api aceita. No Quero Jogar são os mesmos do grid de partidas. */
+  filtros?: FiltrosDeDayUse
   /** Na busca de partidas sobra só a porta de descoberta, não a grade inteira. */
   modo?: 'lista' | 'atalho'
+  /**
+   * O que mostrar quando não há nenhum day use (#469).
+   *
+   * **Omitido, a seção some** — que é o certo no Quero Jogar, onde ela é um
+   * extra e um "nada encontrado" no meio da busca de partida pareceria que a
+   * busca falhou. Na página própria a lista é o assunto, e sumir deixaria a
+   * pessoa sem saber se filtrou demais ou se o produto quebrou.
+   */
+  vazio?: ReactNode
 }
 
 /**
@@ -58,23 +65,27 @@ interface Props {
  * na tela de busca de partida, e um "nenhum day use encontrado" no meio dela
  * pareceria que a busca falhou.
  */
-export default function DayUsesDoDia({ city, courtType, habilitado = true, modo = 'lista' }: Props) {
-  const filtros = { city: city || undefined, courtType: courtType || undefined }
-
-  const { data } = useQuery({
+export default function DayUsesDoDia({ filtros = {}, modo = 'lista', vazio }: Props) {
+  const { data, isPending } = useQuery({
     queryKey: chaves.buscaDeDayUses(filtros),
     queryFn: () => dayUsesService.buscar(filtros),
-    enabled: habilitado,
     /* A falha não pode derrubar a busca de partida: esta seção é um extra, e o
        `useQuery` já isola o erro — o `data` fica indefinido e a seção some. */
   })
 
   const dayUses = data?.dayUses ?? []
-  if (dayUses.length === 0) return null
+
+  // Carregando é diferente de vazio, e trocar um pelo outro faz a tela dizer
+  // "nada encontrado" antes de ter perguntado.
+  if (isPending && vazio) return <Carregando>Procurando day uses…</Carregando>
+
+  if (dayUses.length === 0) return vazio ? <>{vazio}</> : null
 
   if (modo === 'atalho') {
     const destino = new URLSearchParams(
-      Object.entries(filtros).flatMap(([chave, valor]) => valor ? [[chave, valor]] : []),
+      Object.entries(filtros).flatMap(([chave, valor]) =>
+        valor === undefined || valor === '' ? [] : [[chave, String(valor)]],
+      ),
     ).toString()
     const quantidade = dayUses.length
 
@@ -114,9 +125,19 @@ export default function DayUsesDoDia({ city, courtType, habilitado = true, modo 
               <Clock size={14} /> {dia(dayUse.inicio)} · {hora(dayUse.inicio)} às {hora(dayUse.fim)}
             </span>
 
-            {dayUse.court.place.neighborhood && (
+            {(dayUse.court.place.neighborhood || dayUse.distanceKm !== undefined) && (
               <span className="linha">
-                <MapPin size={14} /> {dayUse.court.place.neighborhood}
+                <MapPin size={14} />
+                {dayUse.court.place.neighborhood}
+                {/* A distância só existe quando a busca foi por raio. Sem
+                    origem não há de onde medir, e um "0 km" ali seria lido
+                    como "está do lado". */}
+                {dayUse.distanceKm !== undefined && (
+                  <strong>
+                    {dayUse.court.place.neighborhood ? ' · ' : ''}
+                    {dayUse.distanceKm.toLocaleString('pt-BR')} km
+                  </strong>
+                )}
               </span>
             )}
 

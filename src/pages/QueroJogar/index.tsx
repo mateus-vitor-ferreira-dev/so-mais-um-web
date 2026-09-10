@@ -465,7 +465,10 @@ export default function QueroJogar() {
           Os filtros são os mesmos do grid, de propósito: o jogador filtrou uma
           vez e espera que valha para o que a tela mostra.
         */}
-        <DayUsesDoDia city={filterCity} courtType={selectedSport as CourtType | ''} modo="atalho" />
+        <DayUsesDoDia
+          filtros={{ city: filterCity || undefined, courtType: selectedSport || undefined }}
+          modo="atalho"
+        />
 
         <ResultsCount>
           {loading

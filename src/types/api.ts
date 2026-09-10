@@ -1278,8 +1278,24 @@ export interface DayUsePublico {
         id: string;
         name: string;
         type: CourtType;
-        place: { id: string; name: string; city: string | null; neighborhood: string | null };
+        place: {
+            id: string;
+            name: string;
+            city: string | null;
+            neighborhood: string | null;
+            /** Viajam desde a api#565: é delas que sai a distância, e é com elas que dá para pôr no mapa. */
+            latitude: number | null;
+            longitude: number | null;
+        };
     };
+    /**
+     * A distância até a origem da busca, em km (api#565).
+     *
+     * **Só existe quando a busca foi por raio.** Sem `latitude`/`longitude`/
+     * `radiusKm` o campo não vem — não há ponto de referência, e um zero aqui
+     * seria lido como "está do lado".
+     */
+    distanceKm?: number;
 }
 
 export interface BuscaDeDayUse {
@@ -1287,6 +1303,31 @@ export interface BuscaDeDayUse {
     total: number;
     page: number;
     hasMore: boolean;
+}
+
+/**
+ * O que a busca pública de day use aceita (api#519, #565, #566).
+ *
+ * `from`/`to` são ISO e filtram o **início**; sem eles a api devolve o que
+ * ainda não acabou — que é por que um day use das 8h às 22h continua na lista
+ * às 15h.
+ *
+ * As três da origem andam **juntas**: mandar metade é 422, e não filtro
+ * ignorado.
+ */
+export interface FiltrosDeDayUse {
+    city?: string;
+    neighborhood?: string;
+    courtType?: string;
+    from?: string;
+    to?: string;
+    /** Teto comparado com `precoGeral`. Zero é busca legítima: só o de graça. */
+    precoMax?: number;
+    latitude?: number;
+    longitude?: number;
+    radiusKm?: number;
+    page?: number;
+    limit?: number;
 }
 
 /**
