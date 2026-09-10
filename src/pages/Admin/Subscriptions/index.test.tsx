@@ -69,6 +69,55 @@ const cortesia = (patch: Partial<AssinaturaDoAdmin> = {}): AssinaturaDoAdmin =>
 
 const monta = () => renderWithProviders(<AdminSubscriptions />, { route: '/admin/subscriptions' })
 
+// ── Qual dos dois preços a linha mostra (#449) ────────────────────────────────
+
+describe('o valor da linha', () => {
+  /**
+   * O número é o líquido nas duas origens. Na manual isso não é ambíguo — o Pix
+   * cai inteiro —, então a linha não ganha explicação nenhuma: rótulo onde não
+   * há dois números só faria ruído.
+   */
+  it('não explica nada na manual, onde os dois números são o mesmo', async () => {
+    servico.listar.mockResolvedValue([manual()])
+    monta()
+
+    await screen.findByText('Joana Ribeiro')
+    const linha = linhaDe('Joana Ribeiro')
+    expect(linha).toHaveTextContent('Pro · R$ 79,90/mês')
+    expect(linha).not.toHaveTextContent(/recebidos/)
+    expect(linha).not.toHaveTextContent(/o cartão cobra/)
+  })
+
+  /**
+   * Na Stripe o painel diz o líquido e a fatura do dono diz o bruto. Sem rótulo,
+   * quem confere o primeiro pagamento real vê dois números do mesmo produto e
+   * nenhuma explicação — informação errada com a mesma confiança da certa.
+   */
+  it('diz que o valor é o recebido quando a origem é Stripe', async () => {
+    servico.listar.mockResolvedValue([daStripe()])
+    monta()
+
+    await screen.findByText('Pedro Alves')
+    const linha = linhaDe('Pedro Alves')
+    expect(linha).toHaveTextContent('Pro · R$ 79,90/mês recebidos (o cartão cobra mais, com a taxa)')
+  })
+
+  /**
+   * O bruto não é reconstruído aqui de propósito: a taxa mora na api
+   * (`plans/precoNoCartao.ts`), e refazer a conta no front é como os dois lados
+   * passam a discordar — foi a decisão da api#539.
+   */
+  it('não inventa o valor do cartão — nenhuma aritmética de taxa no front', async () => {
+    servico.listar.mockResolvedValue([daStripe()])
+    monta()
+
+    await screen.findByText('Pedro Alves')
+    const linha = linhaDe('Pedro Alves')
+    // 79,90 ÷ 0,95 = 84,11. Se esse número aparecer, a conta foi refeita aqui.
+    expect(linha).not.toHaveTextContent(/84,11/)
+  })
+})
+
 const linhaDe = (nome: string) => screen.getByText(nome).closest('li') as HTMLElement
 
 beforeEach(() => {

@@ -485,12 +485,18 @@ describe('quando o plano é um mês de teste', () => {
   it('o plano em teste continua assinável — não vira botão morto', async () => {
     // É justamente ele que o dono vai querer assinar.
     getStatus.mockResolvedValue(emCortesia(3))
-    renderWithProviders(<OwnerPlans />)
+    checkout.mockRejectedValue(new Error('checkout indisponível no teste'))
+    const { user } = renderWithProviders(<OwnerPlans />)
 
     const botoes = await screen.findAllByRole('button', { name: 'Assinar' })
     expect(botoes).toHaveLength(2)
     expect(botoes.every((b) => b.hasAttribute('disabled'))).toBe(false)
     expect(screen.queryByRole('button', { name: 'Plano atual' })).not.toBeInTheDocument()
+
+    // Habilitado não basta: o clique tem que levar ao checkout o plano que
+    // está em teste, e não o primeiro da grade.
+    await user.click(botoes[1])
+    expect(checkout).toHaveBeenCalledWith('pro')
 
     // E o atalho do Pix aparece no plano em teste também: é o caminho que o
     // aviso do topo promete.
