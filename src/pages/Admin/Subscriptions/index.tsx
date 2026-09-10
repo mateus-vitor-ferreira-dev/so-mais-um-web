@@ -355,11 +355,33 @@ export default function AdminSubscriptions() {
                   </Detalhe>
                   <Detalhe>
                     {assinatura.planName} ·{' '}
-                    {/* Na cortesia o número não descreve dinheiro que entrou, e
-                        mostrá-lo do mesmo jeito faria a linha afirmar um
-                        recebimento que não houve. O plano continua dito porque é
-                        ele que decide o que o dono abre. */}
-                    {cortesia ? 'cortesia, sem cobrança' : `R$ ${assinatura.monthlyValue}/mês`} ·{' '}
+                    {/*
+                      Três origens, três afirmações diferentes sobre dinheiro.
+
+                      Na cortesia o número não descreve dinheiro que entrou, e
+                      mostrá-lo do mesmo jeito faria a linha afirmar um
+                      recebimento que não houve. O plano continua dito porque é
+                      ele que decide o que o dono abre.
+
+                      Nas outras duas o número é sempre o LÍQUIDO — o que a
+                      plataforma recebe —, e desde a api#539 ele deixou de ser o
+                      único preço: o cartão cobra o bruto, para o líquido chegar
+                      inteiro depois da taxa. Na manual não há ambiguidade, o Pix
+                      cai inteiro e os dois números são o mesmo. Na Stripe, este
+                      painel diria R$ 189,90 enquanto a fatura do dono diz
+                      R$ 199,90 — dois números do mesmo produto, sem explicação, e
+                      quem opera não teria como saber se está vendo arredondamento,
+                      plano antigo ou desconto.
+
+                      Rotular, não trocar: receita é o que entra, e é isso que se
+                      olha aqui. O bruto não aparece porque a taxa mora na api
+                      (`plans/precoNoCartao.ts`) — refazer a conta aqui é como os
+                      dois lados passam a discordar (#449).
+                    */}
+                    {cortesia
+                      ? 'cortesia, sem cobrança'
+                      : `R$ ${assinatura.monthlyValue}/mês${manual ? '' : ' recebidos (o cartão cobra mais, com a taxa)'}`}{' '}
+                    ·{' '}
                     {assinatura.currentPeriodEnd
                       ? `${cortesia ? 'teste até' : 'vale até'} ${dia(assinatura.currentPeriodEnd)}`
                       : venceuPorData(assinatura)
