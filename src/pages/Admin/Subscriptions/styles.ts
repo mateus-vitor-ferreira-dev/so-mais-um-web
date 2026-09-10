@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
-/** Os tons de selo. `manual` e `stripe` marcam origem; o resto, situação. */
-export type TomDeSelo = 'ok' | 'alerta' | 'erro' | 'neutro' | 'manual' | 'stripe'
+/** Os tons de selo. `manual`, `stripe` e `cortesia` marcam origem; o resto, situação. */
+export type TomDeSelo = 'ok' | 'alerta' | 'erro' | 'neutro' | 'manual' | 'stripe' | 'cortesia'
 
 const TONS = {
   ok:     css`background: ${({ theme }) => theme.colors.successLight}; color: ${({ theme }) => theme.colors.success};`,
@@ -10,11 +10,33 @@ const TONS = {
   neutro: css`background: ${({ theme }) => theme.colors.borderLight};  color: ${({ theme }) => theme.colors.textMuted};`,
   manual: css`background: ${({ theme }) => theme.colors.primaryLight}; color: ${({ theme }) => theme.colors.primary};`,
   stripe: css`background: ${({ theme }) => theme.colors.infoLight};    color: ${({ theme }) => theme.colors.info};`,
+  // Roxo, e não verde: cortesia ao lado da manual em verde diria "é a mesma
+  // coisa que o Pix", que é o engano que a origem nova existe para desfazer.
+  cortesia: css`background: ${({ theme }) => theme.colors.accentLight}; color: ${({ theme }) => theme.colors.accent};`,
 }
 
 export const Topo = styled.div`
   display: flex; justify-content: space-between; align-items: start; gap: 16px; margin-bottom: 16px;
   @media (max-width: 640px) { flex-direction: column; align-items: stretch; }
+`
+/**
+ * O de conceder cortesia, ao lado do de registrar (web#456).
+ *
+ * Secundário de propósito: registrar um Pix é a ação do dia a dia, conceder é
+ * exceção. Os dois com o mesmo peso fariam a exceção parecer rotina — e a
+ * diferença entre eles é o que a Receita Mensal soma.
+ */
+export const BotaoConceder = styled.button`
+  display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+  border: 1px solid ${({ theme }) => theme.colors.accent};
+  border-radius: ${({ theme }) => theme.radii.md}; padding: 10px 16px; cursor: pointer;
+  background: transparent; color: ${({ theme }) => theme.colors.accent};
+  font-weight: ${({ theme }) => theme.fontWeights.bold}; font-size: ${({ theme }) => theme.fontSizes.sm};
+  &:hover { background: ${({ theme }) => theme.colors.accentLight}; }
+`
+export const BotoesDoTopo = styled.div`
+  display: flex; gap: 8px; flex-shrink: 0;
+  @media (max-width: 640px) { flex-direction: column; }
 `
 export const BotaoRegistrar = styled.button`
   display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;

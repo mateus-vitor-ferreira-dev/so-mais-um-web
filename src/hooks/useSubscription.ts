@@ -20,9 +20,45 @@ const STATUS_ATIVOS = ['active', 'trialing']
  */
 const TOLERANCIA_PAST_DUE_DIAS = 7
 
+/**
+ * A assinatura vence por **data**, e não por status?
+ *
+ * Sem assinatura na Stripe não há webhook: ninguém vira o status quando o mês
+ * acaba. É o caso da assinatura manual (api#537) e da cortesia (api#551), e nos
+ * dois a api decide pela data — `subscriptions/vigencia.ts`.
+ *
+ * `stripeSubscriptionId` é o que distingue: a api não devolve a origem para o
+ * dono, e não devolveria mesmo — `"CORTESIA"` é vocabulário interno. A ausência
+ * do id é a mesma informação, e é a que a tela de planos já usa para decidir se
+ * dá para trocar de plano.
+ */
+const venceuPorData = (sub: SubscriptionStatus) => !sub.stripeSubscriptionId
+
 function estaEmDia(sub: SubscriptionStatus | null): boolean {
   if (!sub) return false
-  if (STATUS_ATIVOS.includes(sub.status)) return true
+
+  if (STATUS_ATIVOS.includes(sub.status)) {
+    /*
+     * **Status ativo não basta quando quem manda é a data** (web#457).
+     *
+     * Este `return true` era incondicional, e ficou errado quando a assinatura
+     * manual nasceu (api#537): ela fica `active` para sempre, porque não há
+     * webhook para vencê-la. O front dizia "em dia", a lateral destravava
+     * Estoque, Turmas e Day use, e o clique levava 403 — exatamente o "a tela
+     * abre e a ação falha" que o comentário da tolerância acima já aponta como
+     * o pior dos dois lados.
+     *
+     * Vale para a cortesia pelo mesmo motivo, e é nela que isso aparece
+     * primeiro: todo teste concedido chega a este estado no fim do mês.
+     */
+    if (venceuPorData(sub)) {
+      // Sem data não vale: registro incompleto não é assinatura sem prazo.
+      if (!sub.currentPeriodEnd) return false
+      return Date.now() <= new Date(sub.currentPeriodEnd).getTime()
+    }
+    return true
+  }
+
   if (sub.status !== 'past_due') return false
 
   // Sem data de fim não há de onde medir — mesmo lado seguro da API.

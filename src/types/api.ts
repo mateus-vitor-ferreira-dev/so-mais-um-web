@@ -1122,6 +1122,31 @@ export interface SubscriptionStatus {
     plan?: Plan | null;
     trocaAgendada?: TrocaAgendada | null;
     usage?: SubscriptionUsage;
+    /**
+     * Dá para pagar no cartão agora? (api#544)
+     *
+     * É o mesmo valor que faz o checkout responder `503
+     * STRIPE_NOT_CONFIGURED`, e serve para a tela não oferecer um caminho que
+     * não leva a lugar nenhum. **Dica de interface, não autorização**: é um
+     * retrato do momento da carga, e quem decide continua sendo a guarda do
+     * checkout — o tratamento do 503 no clique fica de pé.
+     *
+     * Opcional porque api mais velha não manda o campo, e nesse caso o certo é
+     * seguir oferecendo o cartão: só `false` explícito impede.
+     */
+    stripeDisponivel?: boolean;
+    /**
+     * Este mês foi **concedido**, e não vendido? (api#552)
+     *
+     * A tela precisa disso para dizer "teste até tal dia" em vez de "seu plano
+     * atual" — sem ele ela recebe `status: "active"` e um plano, igual a quem
+     * paga, e um teste que termina em silêncio produz alguém achando que o
+     * produto quebrou.
+     *
+     * `currentPeriodEnd` é quando ele acaba. A origem crua não vem: quem
+     * consome precisa saber que é teste e até quando, e mais nada.
+     */
+    ehCortesia?: boolean;
 }
 
 export type SwitchPlanEffectType = "upgrade" | "downgrade" | "mesmo_preco";
@@ -1629,8 +1654,14 @@ export interface MatriculaInput {
  * Não é rótulo de exibição: é o campo que a tela do admin usa para decidir o
  * que deixa tocar. `STRIPE` é espelho do que acontece lá fora, e editar aqui
  * criaria divergência que o próximo webhook desfaz sem avisar.
+ *
+ * `CORTESIA` é o mês **concedido, não vendido** (api#551): vence por data como
+ * a `MANUAL`, e é a única em que o valor da linha não descreve dinheiro que
+ * entrou. Renovar não vale para ela — seria conceder mais tempo grátis, e
+ * cortesia é uma por dono; encerrar vale, porque teste concedido por engano
+ * precisa ter volta.
  */
-export type OrigemDaAssinatura = 'STRIPE' | 'MANUAL';
+export type OrigemDaAssinatura = 'STRIPE' | 'MANUAL' | 'CORTESIA';
 
 /**
  * Uma assinatura como o `/admin/subscriptions` a devolve (api#537).

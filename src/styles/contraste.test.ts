@@ -50,6 +50,8 @@ const SOBRE_COR: { fg: string; bg: string; onde: string }[] = [
   { fg: 'warningText', bg: 'warningLight', onde: 'selo de aviso' },
   { fg: 'error', bg: 'errorLight', onde: 'texto de erro na faixa' },
   { fg: 'textPrimary', bg: 'errorLight', onde: 'ErrorState' },
+  { fg: 'accent', bg: 'accentLight', onde: 'selo de cortesia, no painel de assinaturas' },
+  { fg: 'textOnPrimary', bg: 'accent', onde: 'selo "Teste até DD/MM" no cartão do plano (#457)' },
 ]
 
 describe('contraste da escala de texto', () => {
