@@ -1,4 +1,27 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+
+export const Atalho = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 24px 0 8px;
+  padding: 14px 16px;
+  border: 1px solid ${({ theme }) => theme.colors.primaryLight};
+  border-radius: ${({ theme }) => theme.radii.lg};
+  background: ${({ theme }) => theme.colors.primarySubtle};
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  text-decoration: none;
+
+  span { display: grid; gap: 3px; }
+  small { color: ${({ theme }) => theme.colors.textSecondary}; font-weight: ${({ theme }) => theme.fontWeights.medium}; }
+
+  &:hover { background: ${({ theme }) => theme.colors.primaryLight}; }
+  @media (max-width: 480px) { align-items: flex-start; flex-direction: column; gap: 8px; }
+`
 
 /**
  * A seção de day use dentro do Quero Jogar (web#420).

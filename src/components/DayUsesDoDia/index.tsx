@@ -3,7 +3,7 @@ import { Clock, MapPin, Users } from 'lucide-react'
 import { dayUsesService } from '../../services/dayUses'
 import { chaves } from '../../lib/queryClient'
 import type { CourtType, DayUsePublico } from '../../types/api'
-import { Aviso, Cabecalho, Cartao, Grade, Precos, Secao, Selo } from './styles'
+import { Atalho, Aviso, Cabecalho, Cartao, Grade, Precos, Secao, Selo } from './styles'
 
 const emReais = (valor: string) =>
   Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -18,6 +18,10 @@ interface Props {
   /** Os mesmos filtros do grid de partidas — os dois olham a mesma busca. */
   city?: string
   courtType?: CourtType | ''
+  /** A página própria só consulta depois que a pessoa delimitou a busca. */
+  habilitado?: boolean
+  /** Na busca de partidas sobra só a porta de descoberta, não a grade inteira. */
+  modo?: 'lista' | 'atalho'
 }
 
 /**
@@ -54,18 +58,36 @@ interface Props {
  * na tela de busca de partida, e um "nenhum day use encontrado" no meio dela
  * pareceria que a busca falhou.
  */
-export default function DayUsesDoDia({ city, courtType }: Props) {
+export default function DayUsesDoDia({ city, courtType, habilitado = true, modo = 'lista' }: Props) {
   const filtros = { city: city || undefined, courtType: courtType || undefined }
 
   const { data } = useQuery({
     queryKey: chaves.buscaDeDayUses(filtros),
     queryFn: () => dayUsesService.buscar(filtros),
+    enabled: habilitado,
     /* A falha não pode derrubar a busca de partida: esta seção é um extra, e o
        `useQuery` já isola o erro — o `data` fica indefinido e a seção some. */
   })
 
   const dayUses = data?.dayUses ?? []
   if (dayUses.length === 0) return null
+
+  if (modo === 'atalho') {
+    const destino = new URLSearchParams(
+      Object.entries(filtros).flatMap(([chave, valor]) => valor ? [[chave, valor]] : []),
+    ).toString()
+    const quantidade = dayUses.length
+
+    return (
+      <Atalho to={`/day-uses${destino ? `?${destino}` : ''}`}>
+        <span>
+          <strong>{quantidade} day use{quantidade === 1 ? '' : 's'} acontecendo hoje perto de você</strong>
+          <small>Chegue, pague no local e jogue. Não há reserva.</small>
+        </span>
+        Ver day uses
+      </Atalho>
+    )
+  }
 
   return (
     <Secao aria-labelledby="day-uses-do-dia">

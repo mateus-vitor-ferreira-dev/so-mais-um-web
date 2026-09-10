@@ -9,7 +9,7 @@ import MainLayout from '../components/MainLayout'
 import PlanGate from '../components/PlanGate'
 import {
   Register, ForgotPassword, ResetPassword, OwnerAccess,
-  Home, Profile, QueroJogar, CriarPartida, Tournaments, MinhasPartidas,
+  Home, Profile, QueroJogar, DayUses, CriarPartida, Tournaments, MinhasPartidas,
   Historico, Avaliacoes, PartidaDetail, TournamentDetail, Times, TimeDetail, Jogador, Amigos,
   ConviteDeProfessor,
   ConviteDeEspaco, DesignSystem, AreaDoProfessor,
@@ -70,6 +70,7 @@ export const arvoreDeRotas = (
       <Route path="/home"            element={<Home />} />
       <Route path="/perfil"          element={<Profile />} />
       <Route path="/quero-jogar"     element={<QueroJogar />} />
+      <Route path="/day-uses"        element={<DayUses />} />
       <Route path="/criar-partida"    element={<CriarPartida />} />
       <Route path="/torneios"        element={<Tournaments />} />
       <Route path="/torneios/:id"    element={<TournamentDetail />} />

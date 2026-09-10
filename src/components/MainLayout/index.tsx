@@ -1,7 +1,7 @@
 import { Suspense, useState, useEffect } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import type { UserMe, UserRole } from '../../types/api'
-import { Home, Search, ClipboardList, History, User, Plus, Trophy, Menu, Star, Sun, Moon, LayoutDashboard, Store, LogOut, Users, UserPlus, GraduationCap } from 'lucide-react'
+import { Home, Search, ClipboardList, History, User, Plus, Trophy, Menu, Star, Sun, Moon, LayoutDashboard, Store, LogOut, Users, UserPlus, GraduationCap, Ticket } from 'lucide-react'
 import iconUrl from '../../assets/icon-so-mais-um.svg'
 import LogoSvg from '../LogoSvg'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
@@ -20,6 +20,7 @@ import {
 const NAV_ITEMS = [
   { to: '/home',           label: 'Início',          icon: Home          },
   { to: '/quero-jogar',    label: 'Quero Jogar',     icon: Search        },
+  { to: '/day-uses',       label: 'Day uses',        icon: Ticket        },
   { to: '/criar-partida',   label: 'Criar Partida',   icon: Plus          },
   { to: '/torneios',       label: 'Torneios',        icon: Trophy        },
   { to: '/minhas-partidas', label: 'Minhas Partidas', icon: ClipboardList },
