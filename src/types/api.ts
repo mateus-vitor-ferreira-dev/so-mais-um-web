@@ -1117,13 +1117,6 @@ export interface TrocaAgendada {
 export interface SubscriptionStatus {
     status: string;
     currentPeriodEnd: IsoDate | null;
-    /**
-     * O plano veio de uma cortesia? (api#552)
-     *
-     * A tela não recebe a origem crua da assinatura: só precisa distinguir o
-     * teste de um plano pago para oferecer a compra antes do fim.
-     */
-    ehCortesia?: boolean;
     stripeSubscriptionId?: string | null;
     /** O plano EM VIGOR, mesmo havendo troca agendada. */
     plan?: Plan | null;
@@ -1142,6 +1135,18 @@ export interface SubscriptionStatus {
      * seguir oferecendo o cartão: só `false` explícito impede.
      */
     stripeDisponivel?: boolean;
+    /**
+     * Este mês foi **concedido**, e não vendido? (api#552)
+     *
+     * A tela precisa disso para dizer "teste até tal dia" em vez de "seu plano
+     * atual" — sem ele ela recebe `status: "active"` e um plano, igual a quem
+     * paga, e um teste que termina em silêncio produz alguém achando que o
+     * produto quebrou.
+     *
+     * `currentPeriodEnd` é quando ele acaba. A origem crua não vem: quem
+     * consome precisa saber que é teste e até quando, e mais nada.
+     */
+    ehCortesia?: boolean;
 }
 
 export type SwitchPlanEffectType = "upgrade" | "downgrade" | "mesmo_preco";

@@ -109,25 +109,6 @@ describe('OwnerPlans', () => {
     expect(screen.queryByText(/ilimitad/i)).not.toBeInTheDocument()
   })
 
-  it('identifica a cortesia, destaca o fim próximo e deixa assinar o plano em teste', async () => {
-    const fimDoTeste = new Date(Date.now() + 2 * 86_400_000).toISOString()
-    getStatus.mockResolvedValue({
-      ...assinaturaPro,
-      ehCortesia: true,
-      stripeSubscriptionId: null,
-      currentPeriodEnd: fimDoTeste,
-    })
-    checkout.mockRejectedValue(new Error('checkout indisponível no teste'))
-
-    const { user } = renderWithProviders(<OwnerPlans />)
-
-    expect(await screen.findByText(`Teste até ${new Date(fimDoTeste).toLocaleDateString('pt-BR')}`)).toBeInTheDocument()
-    expect(screen.getByRole('alert')).toHaveTextContent(/Seu teste termina em/)
-    await user.click(screen.getAllByRole('button', { name: 'Assinar' })[1])
-    expect(checkout).toHaveBeenCalledWith('pro')
-    expect(screen.getAllByRole('link', { name: /assinar no pix pelo whatsapp/i })).toHaveLength(2)
-  })
-
   it('envia ao checkout exatamente o plano escolhido', async () => {
     getStatus.mockResolvedValue(semAssinatura)
     checkout.mockRejectedValue(new Error('checkout indisponível no teste'))
@@ -443,5 +424,101 @@ describe('OwnerPlans', () => {
       const atalhos = screen.getAllByRole('link', { name: /assinar no pix pelo whatsapp/i })
       expect(atalhos).toHaveLength(1)
     })
+  })
+})
+
+/**
+ * O dono em teste (web#457 / api#552).
+ *
+ * O que estes casos prendem é que o teste **não termina em silêncio**. Antes
+ * daqui a tela dizia "Seu plano atual" e nada sobre vigência: o dono descobria
+ * o fim pelo 402 na primeira quadra que tentasse criar.
+ */
+describe('quando o plano é um mês de teste', () => {
+  const emCortesia = (dias: number): SubscriptionStatus => ({
+    ...assinaturaPro,
+    // Cortesia não tem assinatura na Stripe, e é o que tira a tela do caminho
+    // de "trocar de plano".
+    stripeSubscriptionId: null,
+    ehCortesia: true,
+    currentPeriodEnd: new Date(Date.now() + dias * 24 * 60 * 60 * 1000).toISOString(),
+  })
+
+  it('o selo diz que é teste e até quando, e não "Seu plano atual"', async () => {
+    getStatus.mockResolvedValue(emCortesia(20))
+    renderWithProviders(<OwnerPlans />)
+
+    expect(await screen.findByText(/Teste até \d{2}\/\d{2}\/\d{4}/)).toBeInTheDocument()
+    expect(screen.queryByText('Seu plano atual')).not.toBeInTheDocument()
+  })
+
+  it('com folga não enche o topo de aviso', async () => {
+    // Um aviso desde o primeiro dia vira ruído, e a pessoa para de lê-lo
+    // justamente na semana em que ele importa.
+    getStatus.mockResolvedValue(emCortesia(20))
+    renderWithProviders(<OwnerPlans />)
+
+    await screen.findByText(/Teste até/)
+    expect(screen.queryByText(/Seu mês de teste acaba/)).not.toBeInTheDocument()
+  })
+
+  it('perto do fim, o aviso sobe para o topo com o caminho de assinar', async () => {
+    getStatus.mockResolvedValue(emCortesia(3))
+    renderWithProviders(<OwnerPlans />)
+
+    const aviso = await screen.findByRole('status')
+    expect(aviso).toHaveTextContent('Seu mês de teste acaba em 3 dias')
+    expect(aviso).toHaveTextContent(/assine/i)
+  })
+
+  it('acabado não é erro: a tela chama para assinar', async () => {
+    getStatus.mockResolvedValue(emCortesia(-2))
+    renderWithProviders(<OwnerPlans />)
+
+    const aviso = await screen.findByRole('status')
+    expect(aviso).toHaveTextContent('Seu mês de teste acabou')
+    // `status`, e não `alert`: não há defeito nenhum a consertar.
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    expect(await screen.findByText(/Teste encerrado em \d{2}\/\d{2}\/\d{4}/)).toBeInTheDocument()
+  })
+
+  it('o plano em teste continua assinável — não vira botão morto', async () => {
+    // É justamente ele que o dono vai querer assinar.
+    getStatus.mockResolvedValue(emCortesia(3))
+    checkout.mockRejectedValue(new Error('checkout indisponível no teste'))
+    const { user } = renderWithProviders(<OwnerPlans />)
+
+    const botoes = await screen.findAllByRole('button', { name: 'Assinar' })
+    expect(botoes).toHaveLength(2)
+    expect(botoes.every((b) => b.hasAttribute('disabled'))).toBe(false)
+    expect(screen.queryByRole('button', { name: 'Plano atual' })).not.toBeInTheDocument()
+
+    // Habilitado não basta: o clique tem que levar ao checkout o plano que
+    // está em teste, e não o primeiro da grade.
+    await user.click(botoes[1])
+    expect(checkout).toHaveBeenCalledWith('pro')
+
+    // E o atalho do Pix aparece no plano em teste também: é o caminho que o
+    // aviso do topo promete.
+    expect(await screen.findAllByRole('link', { name: /Assinar no Pix pelo WhatsApp/ })).toHaveLength(2)
+  })
+
+  it('os outros planos continuam visíveis e comparáveis', async () => {
+    // Quem testou o Pro pode querer o Básico, e a comparação é o que deixa ele
+    // escolher em vez de desistir.
+    getStatus.mockResolvedValue(emCortesia(3))
+    renderWithProviders(<OwnerPlans />)
+
+    expect(await screen.findByText('Só+1 Básico')).toBeInTheDocument()
+    expect(screen.getByText('Só+1 Pro')).toBeInTheDocument()
+  })
+
+  it('quem paga não vê nada disso', async () => {
+    getStatus.mockResolvedValue(assinaturaPro)
+    renderWithProviders(<OwnerPlans />)
+
+    expect(await screen.findByText('Seu plano atual')).toBeInTheDocument()
+    expect(screen.queryByText(/mês de teste/)).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Plano atual' })).toBeDisabled()
   })
 })
