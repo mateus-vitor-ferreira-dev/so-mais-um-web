@@ -40,7 +40,14 @@ function dayUse(over: Partial<DayUsePublico> = {}): DayUsePublico {
       id: 'q1',
       name: 'Quadra 1',
       type: 'BEACH_TENNIS',
-      place: { id: 'p1', name: 'Arena Sul', city: 'Lavras', neighborhood: 'Centro' },
+      place: {
+        id: 'p1',
+        name: 'Arena Sul',
+        city: 'Lavras',
+        neighborhood: 'Centro',
+        latitude: null,
+        longitude: null,
+      },
     },
     ...over,
   }
@@ -150,21 +157,21 @@ describe('DayUsesDoDia', () => {
   })
 
   it('repassa os filtros da tela para a api', async () => {
-    renderWithProviders(<DayUsesDoDia city="Lavras" courtType="BEACH_TENNIS" />)
+    renderWithProviders(<DayUsesDoDia filtros={{ city: 'Lavras', courtType: 'BEACH_TENNIS' }} />)
 
     await screen.findByText('Quadra 1')
     expect(servico.buscar).toHaveBeenCalledWith({ city: 'Lavras', courtType: 'BEACH_TENNIS' })
   })
 
-  it('filtro vazio não vira string vazia na query', async () => {
-    renderWithProviders(<DayUsesDoDia city="" courtType="" />)
+  it('sem filtro nenhum, pergunta tudo — é como a página própria abre', async () => {
+    renderWithProviders(<DayUsesDoDia />)
 
     await screen.findByText('Quadra 1')
-    expect(servico.buscar).toHaveBeenCalledWith({ city: undefined, courtType: undefined })
+    expect(servico.buscar).toHaveBeenCalledWith({})
   })
 
   it('na busca de partidas deixa só o atalho de descoberta', async () => {
-    renderWithProviders(<DayUsesDoDia city="Lavras" modo="atalho" />)
+    renderWithProviders(<DayUsesDoDia filtros={{ city: 'Lavras' }} modo="atalho" />)
 
     const atalho = await screen.findByRole('link', { name: /1 day use acontecendo hoje perto de você/i })
     expect(atalho).toHaveAttribute('href', '/day-uses?city=Lavras')

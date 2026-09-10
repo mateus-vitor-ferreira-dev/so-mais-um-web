@@ -132,3 +132,9 @@ export const Selo = styled.span<{ $lotado: boolean }>`
   border: 1px solid ${({ theme, $lotado }) => ($lotado ? theme.colors.border : theme.colors.primary)};
   color: ${({ theme, $lotado }) => ($lotado ? theme.colors.textSecondary : theme.colors.primary)};
 `
+
+/** O "procurando", que na página própria toma o lugar do vazio (#469). */
+export const Carregando = styled.p`
+  margin: 24px 0;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`
