@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
+import type { FiltrosDeDayUse } from '../types/api'
 
 /**
  * Cliente de cache de estado de servidor (#198).
@@ -94,8 +95,26 @@ export const chaves = {
   entradasDoDayUse: (dayUseId: string) => ['day-uses', dayUseId, 'entradas'] as const,
 
   /** A busca pública de day use, do jogador (api#519). */
-  buscaDeDayUses: (filtros: { city?: string; courtType?: string }) =>
-    ['day-uses', 'busca', filtros.city ?? '', filtros.courtType ?? ''] as const,
+  /**
+   * A busca de day use, com todos os filtros na chave (web#469).
+   *
+   * Cada filtro é uma pergunta diferente e tem resposta diferente: deixar
+   * qualquer um de fora faria a tela reaproveitar o cache de uma busca que não
+   * é esta — trocar o raio e ver a lista antiga é o sintoma.
+   */
+  buscaDeDayUses: (filtros: FiltrosDeDayUse) =>
+    [
+      'day-uses',
+      'busca',
+      filtros.city ?? '',
+      filtros.courtType ?? '',
+      filtros.from ?? '',
+      filtros.to ?? '',
+      filtros.precoMax ?? '',
+      filtros.latitude ?? '',
+      filtros.longitude ?? '',
+      filtros.radiusKm ?? '',
+    ] as const,
   /**
    * Os alunos de uma turma (api#474).
    *

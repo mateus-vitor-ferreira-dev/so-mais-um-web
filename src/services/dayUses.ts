@@ -7,6 +7,7 @@ import type {
   EntradaInput,
   EntradaNoDayUse,
   EntradasDoDayUse,
+  FiltrosDeDayUse,
 } from '../types/api'
 
 /**
@@ -48,8 +49,20 @@ export const dayUsesService = {
    *
    * Não passa token de propósito — a api não usa `identify` aqui, porque day
    * use é sempre público e a sessão não mudaria a resposta.
+   *
+   * ## Raio e preço (api#565, api#566)
+   *
+   * `latitude`, `longitude` e `radiusKm` andam **os três juntos**: metade do
+   * trio é recusada com 422, e não ignorada. É de propósito, e é a única
+   * diferença de comportamento em relação à busca de partida — quem manda
+   * coordenada aqui a obteve de um clique da pessoa, e devolver o país inteiro
+   * sob o rótulo "perto de você" seria pior que recusar.
+   *
+   * `precoMax` corta pelo `precoGeral`, nunca pelo de aluno. E vive na api, e
+   * não aqui, porque a busca é paginada: filtrar a página recebida faria
+   * `total` e `hasMore` mentirem.
    */
-  buscar: (filtros: { city?: string; courtType?: string; page?: number; limit?: number } = {}) => {
+  buscar: (filtros: FiltrosDeDayUse = {}) => {
     const query = new URLSearchParams(
       Object.entries(filtros).flatMap(([k, v]) => (v === undefined || v === '' ? [] : [[k, String(v)]])),
     ).toString()
