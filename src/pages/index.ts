@@ -10,6 +10,7 @@ export { default as AdminPlaces } from './Admin/Places'
 
 export { default as OwnerPlaces } from './Owner/Places'
 export { default as OwnerRequests } from './Owner/Requests'
+export { default as OwnerSuporte } from './Owner/Suporte'
 
 export { default as QueroJogar } from './QueroJogar'
 export { default as MinhasPartidas } from './MinhasPartidas'

@@ -5,6 +5,7 @@ import { queryClient } from './lib/queryClient'
 import { lightTheme, darkTheme } from './styles/theme'
 import GlobalStyles from './styles/global'
 import { AuthProvider } from './contexts/AuthContext'
+import { StreamProvider } from './contexts/StreamProvider'
 import { ThemeContextProvider, useThemeMode } from './contexts/ThemeContext'
 import AppRoutes from './routes'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -16,7 +17,11 @@ function ThemedApp() {
       <ErrorBoundary>
         <AuthProvider>
           <GlobalStyles />
-          <AppRoutes />
+          {/* Dentro do `AuthProvider`: é o `user` dele que abre e fecha a
+              conexão de stream, uma por aba (web#472). */}
+          <StreamProvider>
+            <AppRoutes />
+          </StreamProvider>
           <Toaster
             position="top-right"
             toastOptions={{ duration: 4000 }}

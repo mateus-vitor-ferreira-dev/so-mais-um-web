@@ -55,7 +55,9 @@ export type NotificationType =
     | "MATCH_FINISHED"
     | "ATTENDANCE_CONFIRMED"
     | "TEAM_INVITE"
-    | "TEAM_MATCH_CREATED";
+    | "TEAM_MATCH_CREATED"
+    /** A equipe respondeu no suporte (api#572). Um aviso por conversa, e não um por mensagem. */
+    | "SUPPORT_MESSAGE";
 
 export type TournamentStatus =
     | "DRAFT"
@@ -741,7 +743,7 @@ export interface Notification {
     type: NotificationType;
     title: string;
     body: string;
-    data: { matchId?: string } | null;
+    data: { matchId?: string; conversaId?: string } | null;
     read: boolean;
     createdAt: IsoDate;
 }
@@ -1735,4 +1737,42 @@ export interface AssinaturaDoAdmin {
     /** O nome de quem registrou o Pix. Nulo em tudo que veio da Stripe. */
     registradaPor: string | null;
     registradaEm: IsoDate | null;
+}
+
+/**
+ * Uma mensagem da conversa de suporte, como o dono a vê (api#571).
+ *
+ * **Sem o autor.** Para o dono, quem responde é a "Equipe Só+1": a api nem
+ * manda qual admin escreveu.
+ */
+export interface MensagemDeSuporte {
+    id: string;
+    texto: string;
+    daEquipe: boolean;
+    /** De que tela do app o dono escreveu, quando ele mandou. */
+    tela: string | null;
+    criadaEm: IsoDate;
+}
+
+/**
+ * Uma página da conversa do dono, na ordem de leitura — a mais antiga primeiro.
+ *
+ * `conversaId` é nulo para quem nunca escreveu: conversa vazia, e não 404.
+ * `maisAntigas` é o cursor da página anterior, ou nulo quando a conversa começa
+ * aqui.
+ */
+export interface ConversaDoDono {
+    conversaId: string | null;
+    naoLidas: number;
+    mensagens: MensagemDeSuporte[];
+    maisAntigas: string | null;
+}
+
+/**
+ * O evento `suporte` do stream (api#572). Chega também com o que o próprio dono
+ * mandou — a outra aba precisa ver —, e por isso a tela deduplica pelo `id`.
+ */
+export interface EventoDeSuporte {
+    conversaId: string;
+    mensagem: MensagemDeSuporte;
 }
