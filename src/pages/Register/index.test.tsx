@@ -100,6 +100,29 @@ describe('Cadastro — consentimento de marketing', () => {
   })
 })
 
+describe('Cadastro — modalidades', () => {
+  // A api passou a gravar este campo na api#579; antes o descartava calada.
+  // O nome `sports` é o contrato entre os dois lados, e é ele que este teste
+  // prende.
+  it('manda as modalidades escolhidas junto com o cadastro', async () => {
+    cadastro.mockResolvedValue(envelope({ token: 't', user: criaUsuario() }))
+    const { user } = renderWithProviders(<Register initialMode="register" />, { route: '/register' })
+
+    await user.type(screen.getByPlaceholderText('Ex: João da Silva'), 'João Silva')
+    await user.type(screen.getByPlaceholderText('seu@email.com'), 'joao3@exemplo.com')
+    await user.type(screen.getByPlaceholderText('Mín. 6 caracteres'), 'senha123')
+    await user.type(screen.getByPlaceholderText('Repita a senha'), 'senha123')
+    // A busca fica dentro da caixa de modalidades: "Futsal" também aparece em
+    // outros lugares da tela, fora do seletor.
+    const abrir = screen.getByText('Selecione as modalidades').closest('button')!
+    await user.click(abrir)
+    await user.click(within(abrir.parentElement!).getByText('Futsal'))
+    await user.click(screen.getByRole('button', { name: /criar conta grátis/i }))
+
+    await waitFor(() => expect(cadastro).toHaveBeenCalledWith(expect.objectContaining({ sports: ['FUTSAL'] })))
+  })
+})
+
 /**
  * Renderiza a tela em modo login e devolve os campos.
  *
