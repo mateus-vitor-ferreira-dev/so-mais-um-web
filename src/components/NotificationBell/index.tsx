@@ -5,6 +5,7 @@ import { notificationService } from '../../services/notificationService'
 import { useAuth } from '../../contexts/AuthContext'
 import { useEventoDoStream, useReconexaoDoStream } from '../../hooks/useEventoDoStream'
 import { destinoDaNotificacao } from '../../utils/destinoDaNotificacao'
+import { useSuporteLido } from '../../utils/suporteLido'
 import type { Notification } from '../../types/api'
 import {
   Wrapper, BellBtn, Badge, Dropdown, DropHeader, DropTitle,
@@ -56,6 +57,20 @@ export default function NotificationBell() {
 
   // O que chegou durante a queda se perdeu: o banco é a verdade.
   useReconexaoDoStream(() => void load())
+
+  /**
+   * A conversa de suporte foi lida numa tela desta aba (web#473). A api já
+   * apagou o aviso; sem isto o sino só descobriria na próxima leitura.
+   */
+  useSuporteLido(conversaId => {
+    setNotifs(prev =>
+      prev.map(n =>
+        n.type === 'SUPPORT_MESSAGE' && !n.read && (!conversaId || n.data?.conversaId === conversaId)
+          ? { ...n, read: true }
+          : n,
+      ),
+    )
+  })
 
   useEffect(() => {
     function handleClick(e: globalThis.MouseEvent) {

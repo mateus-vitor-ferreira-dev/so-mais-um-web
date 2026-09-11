@@ -7,7 +7,7 @@
  * e leva para a comparação de planos.
  */
 import { describe, it, expect } from 'vitest'
-import { ownerNavItems } from './navItems'
+import { ownerNavItems, adminNavItems } from './navItems'
 import type { PlanFeature } from '../types/api'
 
 const abre = (...quais: PlanFeature[]) => (f: PlanFeature) => quais.includes(f)
@@ -95,5 +95,11 @@ describe('ownerNavItems — ADMIN', () => {
 
     expect(rotulos(itens)).toContain('Painel Admin')
     expect(bloqueados(itens)).toEqual([])
+  })
+})
+
+describe('adminNavItems — a caixa do suporte (web#473)', () => {
+  it('o admin chega ao suporte pelo menu', () => {
+    expect(adminNavItems.find(i => i.label === 'Suporte')?.to).toBe('/admin/suporte')
   })
 })

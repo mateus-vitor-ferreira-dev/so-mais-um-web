@@ -13,7 +13,7 @@ import {
   Historico, Avaliacoes, PartidaDetail, TournamentDetail, Times, TimeDetail, Jogador, Amigos,
   ConviteDeProfessor,
   ConviteDeEspaco, DesignSystem, AreaDoProfessor,
-  AdminDashboard, AdminUsers, AdminRequests, AdminPlaces, AdminSubscriptions,
+  AdminDashboard, AdminUsers, AdminRequests, AdminPlaces, AdminSubscriptions, AdminSuporte,
   OwnerDashboard, OwnerPlans, OwnerPlaces, OwnerInventory, OwnerEquipment, OwnerRequests, OwnerCourts,
   OwnerProfessores,
   OwnerTurmas,
@@ -112,6 +112,10 @@ export const arvoreDeRotas = (
           Fica no painel admin porque é a equipe do Só+1 que recebe — o dono
           não registra o próprio pagamento. */}
       <Route path="subscriptions" element={<AdminSubscriptions />} />
+      {/* A caixa do suporte (web#473). No painel admin porque quem responde aos
+          donos é a equipe. Uma rota só, com o id opcional: com ele, a conversa
+          abre ao lado da lista, e trocar de conversa não desmonta a caixa. */}
+      <Route path="suporte/:conversaId?" element={<AdminSuporte />} />
     </Route>
 
     {/* Painel Owner */}

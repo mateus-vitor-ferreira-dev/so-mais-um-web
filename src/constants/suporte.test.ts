@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { telaDeOrigem } from './suporte'
+import { rotuloDaTela, telaDeOrigem } from './suporte'
 
 describe('telaDeOrigem (web#472)', () => {
   it('aceita o caminho de uma tela do app', () => {
@@ -19,5 +19,17 @@ describe('telaDeOrigem (web#472)', () => {
     expect(telaDeOrigem('/owner/suporte')).toBeUndefined()
     expect(telaDeOrigem(undefined)).toBeUndefined()
     expect(telaDeOrigem(42)).toBeUndefined()
+  })
+})
+
+describe('rotuloDaTela (web#473)', () => {
+  it('dá à tela o nome que o dono vê no menu', () => {
+    expect(rotuloDaTela('/owner/inventory')).toBe('Estoque')
+    expect(rotuloDaTela('/owner/places/abc123/courts')).toBe('Meus Estabelecimentos')
+    expect(rotuloDaTela('/home')).toBe('Área do Jogador')
+  })
+
+  it('o que não casa com item nenhum aparece como o caminho, e não some', () => {
+    expect(rotuloDaTela('/perfil')).toBe('/perfil')
   })
 })

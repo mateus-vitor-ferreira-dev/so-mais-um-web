@@ -6,8 +6,16 @@ describe('destinoDaNotificacao (web#472)', () => {
     expect(destinoDaNotificacao({ type: 'SUPPORT_MESSAGE', data: { conversaId: 'c1' } }, 'OWNER')).toBe('/owner/suporte')
   })
 
-  it('para o admin, ainda não leva a lugar nenhum — o caminho dele é da web#473', () => {
-    expect(destinoDaNotificacao({ type: 'SUPPORT_MESSAGE', data: { conversaId: 'c1' } }, 'ADMIN')).toBeNull()
+  it('o aviso de mensagem nova leva o admin à conversa certa (web#473)', () => {
+    expect(destinoDaNotificacao({ type: 'SUPPORT_MESSAGE', data: { conversaId: 'c1' } }, 'ADMIN')).toBe('/admin/suporte/c1')
+  })
+
+  it('sem o id da conversa, leva o admin à caixa', () => {
+    expect(destinoDaNotificacao({ type: 'SUPPORT_MESSAGE', data: null }, 'ADMIN')).toBe('/admin/suporte')
+  })
+
+  it('para o jogador, não leva a lugar nenhum', () => {
+    expect(destinoDaNotificacao({ type: 'SUPPORT_MESSAGE', data: { conversaId: 'c1' } }, 'PLAYER')).toBeNull()
   })
 
   it('os outros tipos continuam só informando', () => {

@@ -11,7 +11,7 @@ import type { Notification, UserRole } from '../types/api'
  *
  * O papel entra porque o mesmo tipo leva a lugares diferentes. A resposta da
  * equipe leva o dono à conversa dele; o aviso de mensagem nova leva o admin à
- * caixa do suporte — esse caminho é da web#473.
+ * conversa certa na caixa do suporte (web#473), pelo `conversaId` do `data`.
  */
 export function destinoDaNotificacao(
   notificacao: Pick<Notification, 'type' | 'data'>,
@@ -19,7 +19,12 @@ export function destinoDaNotificacao(
 ): string | null {
   switch (notificacao.type) {
     case 'SUPPORT_MESSAGE':
-      return papel === 'OWNER' ? '/owner/suporte' : null
+      if (papel === 'OWNER') return '/owner/suporte'
+      if (papel === 'ADMIN') {
+        const conversaId = notificacao.data?.conversaId
+        return conversaId ? `/admin/suporte/${conversaId}` : '/admin/suporte'
+      }
+      return null
     default:
       return null
   }

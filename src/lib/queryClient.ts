@@ -196,4 +196,7 @@ export const chaves = {
    * quando o dono sobe a rolagem.
    */
   suporteDoDono: () => ['suporte', 'dono'] as const,
+  /** A caixa da equipe (web#473): relida a cada evento `suporte`, que muda ordem e contagem. */
+  caixaDoSuporte: () => ['suporte', 'caixa'] as const,
+  conversaDoSuporte: (conversaId: string) => ['suporte', 'conversa', conversaId] as const,
 }
