@@ -98,6 +98,45 @@ describe('PerfilEsportivo — estados da tela', () => {
   })
 })
 
+describe('PerfilEsportivo — modalidade que veio do cadastro, sem nível (api#579)', () => {
+  const doCadastro = () => perfil({ sport: 'SOCIETY', level: null, position: null })
+
+  it('diz que falta o nível, e oferece o atalho para informar', async () => {
+    buscaPerfis.mockResolvedValue(resposta([doCadastro()]))
+    renderWithProviders(<PerfilEsportivo />)
+
+    expect(await screen.findByText('Nível não informado · qualquer posição')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /informar nível de/i })).toBeInTheDocument()
+  })
+
+  it('o formulário abre sem nível escolhido, e só salva depois da escolha', async () => {
+    buscaPerfis.mockResolvedValue(resposta([doCadastro()]))
+    const { user } = renderWithProviders(<PerfilEsportivo />)
+
+    await user.click(await screen.findByRole('button', { name: /informar nível de/i }))
+
+    // Nível pré-escolhido seria salvo por quem só queria mexer na posição, e o
+    // sorteio o leria como declarado.
+    expect(screen.getByLabelText('Seu nível')).toHaveValue('')
+    expect(screen.getByRole('button', { name: /salvar modalidade/i })).toBeDisabled()
+
+    await user.selectOptions(screen.getByLabelText('Seu nível'), 'AMATEUR')
+    await user.click(screen.getByRole('button', { name: /salvar modalidade/i }))
+
+    await waitFor(() => {
+      expect(salvaPerfil).toHaveBeenCalledWith('SOCIETY', { level: 'AMATEUR', position: null })
+    })
+  })
+
+  it('modalidade com nível não mostra o atalho', async () => {
+    buscaPerfis.mockResolvedValue(resposta([perfil()]))
+    renderWithProviders(<PerfilEsportivo />)
+
+    expect(await screen.findByText('Avançado · Goleiro')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /informar nível/i })).not.toBeInTheDocument()
+  })
+})
+
 describe('PerfilEsportivo — adicionar', () => {
   it('salva modalidade, nível e posição', async () => {
     const { user } = renderWithProviders(<PerfilEsportivo />)

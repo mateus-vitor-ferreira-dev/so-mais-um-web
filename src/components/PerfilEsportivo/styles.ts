@@ -83,6 +83,23 @@ export const BotaoDeItem = styled.button<{ $perigo?: boolean; }>`
   }
 `
 
+/** O atalho da modalidade sem nível — texto, e não ícone, porque diz o que falta. */
+export const InformarNivel = styled.button`
+  display: inline-block;
+  margin-top: ${({ theme }) => theme.spacing[1]};
+  padding: 0;
+  border: none;
+  background: none;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
 export const Vazio = styled.div`
   padding: ${({ theme }) => theme.spacing[6]} ${({ theme }) => theme.spacing[4]};
   border: 1px dashed ${({ theme }) => theme.colors.border};
