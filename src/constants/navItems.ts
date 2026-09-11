@@ -26,6 +26,8 @@ export const adminNavItems: NavItemDef[] = [
   { to: '/admin/requests',  label: 'Solicitações',       icon: ClipboardList   },
   { to: '/admin/places',    label: 'Estabelecimentos',   icon: Building2       },
   { to: '/admin/subscriptions', label: 'Assinaturas',    icon: CreditCard      },
+  // A caixa do suporte (web#473): quem responde aos donos é a equipe.
+  { to: '/admin/suporte',   label: 'Suporte',            icon: LifeBuoy        },
   { to: '/owner',           label: 'Painel do Owner',    icon: Store, divider: true },
   { to: '/home',            label: 'Área do Jogador',    icon: Home },
 ]

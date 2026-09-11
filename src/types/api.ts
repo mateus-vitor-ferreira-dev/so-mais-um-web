@@ -1752,6 +1752,11 @@ export interface MensagemDeSuporte {
     /** De que tela do app o dono escreveu, quando ele mandou. */
     tela: string | null;
     criadaEm: IsoDate;
+    /**
+     * **Só na visão da equipe** (web#473): quem escreveu — o dono, ou qual admin
+     * respondeu. O dono nunca recebe este campo.
+     */
+    autor?: { id: string; name: string } | null;
 }
 
 /**
@@ -1775,4 +1780,36 @@ export interface ConversaDoDono {
 export interface EventoDeSuporte {
     conversaId: string;
     mensagem: MensagemDeSuporte;
+}
+
+/** Uma conversa na caixa da equipe (web#473). A api já manda as não lidas primeiro. */
+export interface ConversaNaCaixa {
+    id: string;
+    dono: { id: string; name: string };
+    naoLidas: number;
+    ultimaMensagemEm: IsoDate;
+    ultimaMensagem: { texto: string; daEquipe: boolean; criadaEm: IsoDate } | null;
+}
+
+/**
+ * A assinatura do dono, como a equipe a vê na conversa (api#571): a origem crua
+ * e o `emDia` já decidido pela api — quem responde precisa saber que a
+ * cortesia venceu ontem.
+ */
+export interface AssinaturaNoSuporte {
+    plano: { id: string; nome: string } | null;
+    origem: string;
+    status: string;
+    currentPeriodEnd: IsoDate | null;
+    emDia: boolean;
+}
+
+/** Uma página da conversa, para a equipe: com quem é o dono antes de qualquer mensagem. */
+export interface ConversaParaEquipe {
+    id: string;
+    naoLidas: number;
+    ultimaMensagemEm: IsoDate;
+    dono: { id: string; name: string; email: string; assinatura: AssinaturaNoSuporte | null };
+    mensagens: MensagemDeSuporte[];
+    maisAntigas: string | null;
 }

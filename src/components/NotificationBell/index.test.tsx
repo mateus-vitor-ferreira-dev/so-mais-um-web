@@ -16,6 +16,8 @@ import { Routes, Route } from 'react-router-dom'
 import { renderWithProviders, screen, waitFor } from '../../test/render'
 import { criaUsuario } from '../../test/factories'
 import { criaStreamFalso } from '../../test/streamFalso'
+import { avisarSuporteLido } from '../../utils/suporteLido'
+import { act } from '@testing-library/react'
 import type { Notification, UserMe } from '../../types/api'
 import NotificationBell from './index'
 
@@ -54,6 +56,7 @@ function abre() {
       <NotificationBell />
       <Routes>
         <Route path="/owner/suporte" element={<p>conversa de suporte aberta</p>} />
+        <Route path="/admin/suporte/c9" element={<p>conversa c9 aberta na caixa</p>} />
         <Route path="*" element={null} />
       </Routes>
     </stream.Provider>,
@@ -125,5 +128,32 @@ describe('NotificationBell', () => {
     stream.reconectar()
 
     await waitFor(() => expect(lista).toHaveBeenCalledTimes(2))
+  })
+
+  it('clicar no aviso do suporte leva o admin à conversa certa (web#473)', async () => {
+    sessao.user = criaUsuario({ role: 'ADMIN' })
+    lista.mockResolvedValue([
+      notificacao({ type: 'SUPPORT_MESSAGE', title: 'Mensagem nova no suporte', data: { conversaId: 'c9' } }),
+    ])
+    const { user } = abre()
+
+    await user.click(screen.getByRole('button', { name: 'Notificações' }))
+    await user.click(await screen.findByText('Mensagem nova no suporte'))
+
+    expect(await screen.findByText('conversa c9 aberta na caixa')).toBeInTheDocument()
+  })
+
+  it('a conversa lida numa tela desta aba apaga o aviso dela do sino, e só o dela', async () => {
+    lista.mockResolvedValue([
+      notificacao({ id: 'n1', type: 'SUPPORT_MESSAGE', title: 'Aviso da c1', data: { conversaId: 'c1' } }),
+      notificacao({ id: 'n2', type: 'SUPPORT_MESSAGE', title: 'Aviso da c2', data: { conversaId: 'c2' } }),
+    ])
+    abre()
+    expect(await screen.findByText('2')).toBeInTheDocument()
+
+    act(() => avisarSuporteLido('c1'))
+
+    expect(await screen.findByText('1')).toBeInTheDocument()
+    expect(screen.queryByText('2')).not.toBeInTheDocument()
   })
 })
