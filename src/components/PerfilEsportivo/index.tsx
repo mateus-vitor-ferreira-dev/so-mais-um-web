@@ -12,7 +12,7 @@ import { NIVEIS, posicoesDe, rotuloDoNivel } from '../../constants/sportPosition
 import type { CompetitionLevel, CourtType, SportProfile } from '../../types/api'
 import {
   Bloco, Explicacao, Lista, Item, BotaoDeItem, Vazio,
-  Formulario, Campos, Campo, AcoesDoFormulario, AdicionarBtn, Erro,
+  Formulario, Campos, Campo, AcoesDoFormulario, AdicionarBtn, Erro, InformarNivel,
 } from './styles'
 
 /**
@@ -29,7 +29,12 @@ import {
 
 interface EmEdicao {
   sport: CourtType | ''
-  level: CompetitionLevel
+  /**
+   * `''` quando a modalidade veio do cadastro sem nível (api#579). O formulário
+   * não escolhe pela pessoa: um nível pré-selecionado seria salvo por quem só
+   * queria mexer na posição, e o sorteio o leria como declarado.
+   */
+  level: CompetitionLevel | ''
   position: string
   /** `true` quando a modalidade já existe e está sendo editada — trava o select. */
   editando: boolean
@@ -71,7 +76,7 @@ export function PerfilEsportivo() {
   function abrirEdicao(perfil: SportProfile) {
     setForm({
       sport: perfil.sport,
-      level: perfil.level,
+      level: perfil.level ?? '',
       position: perfil.position ?? '',
       editando: true,
     })
@@ -79,7 +84,7 @@ export function PerfilEsportivo() {
 
   async function salvar(evento: React.FormEvent) {
     evento.preventDefault()
-    if (!form?.sport) return
+    if (!form?.sport || !form.level) return
 
     setSalvando(true)
     try {
@@ -158,9 +163,21 @@ export function PerfilEsportivo() {
                 <span className="texto">
                   <span className="modalidade">{meta.label}</span>
                   <span className="detalhe">
-                    {rotuloDoNivel(perfil.level)}
+                    {perfil.level ? rotuloDoNivel(perfil.level) : 'Nível não informado'}
                     {perfil.position ? ` · ${perfil.position}` : ' · qualquer posição'}
                   </span>
+                  {!perfil.level && (
+                    // A modalidade veio do cadastro, que não pergunta o nível.
+                    // O atalho é o que faz alguém completar em vez de conviver
+                    // com o "não informado".
+                    <InformarNivel
+                      type="button"
+                      onClick={() => abrirEdicao(perfil)}
+                      aria-label={`Informar nível de ${meta.label}`}
+                    >
+                      Informar nível
+                    </InformarNivel>
+                  )}
                 </span>
                 <span className="acoes">
                   <BotaoDeItem
@@ -220,6 +237,11 @@ export function PerfilEsportivo() {
                 value={form.level}
                 onChange={e => setForm({ ...form, level: e.target.value as CompetitionLevel })}
               >
+                {form.level === '' && (
+                  <option value="" disabled>
+                    Escolha seu nível
+                  </option>
+                )}
                 {NIVEIS.map(nivel => (
                   <option key={nivel.id} value={nivel.id}>
                     {nivel.label} — {nivel.descricao}
@@ -255,7 +277,7 @@ export function PerfilEsportivo() {
             <button type="button" className="cancelar" onClick={() => setForm(null)} disabled={salvando}>
               Cancelar
             </button>
-            <button type="submit" className="salvar" disabled={salvando || !form.sport}>
+            <button type="submit" className="salvar" disabled={salvando || !form.sport || !form.level}>
               {salvando ? 'Salvando...' : 'Salvar modalidade'}
             </button>
           </AcoesDoFormulario>

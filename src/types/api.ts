@@ -987,10 +987,14 @@ export interface Sport {
  *
  * `position` é texto livre e nulo quer dizer "jogo em qualquer posição", que é a
  * resposta honesta da maioria.
+ *
+ * `level` é nulo na modalidade que veio do cadastro (api#579): aquela tela
+ * pergunta quais modalidades a pessoa joga, e não como. O jogador completa aqui,
+ * no perfil, e até lá o sorteio o trata como nível médio estimado.
  */
 export interface SportProfile {
     sport: CourtType;
-    level: CompetitionLevel;
+    level: CompetitionLevel | null;
     position: string | null;
     updatedAt: string;
 }
