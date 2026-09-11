@@ -22,6 +22,7 @@ import {
   OwnerAlunos,
   OwnerChamada,
   OwnerMensalidades,
+  OwnerSuporte,
 } from './paginas'
 
 /**
@@ -175,6 +176,10 @@ export const arvoreDeRotas = (
       <Route path="inventory"           element={<PlanGate funcionalidade="ESTOQUE"><OwnerInventory /></PlanGate>} />
       <Route path="equipment"           element={<PlanGate funcionalidade="EQUIPAMENTOS"><OwnerEquipment /></PlanGate>} />
       <Route path="requests"            element={<OwnerRequests />} />
+      {/* A conversa com a equipe (web#472). **Sem `PlanGate`**, nem gate de
+          assinatura: o dono vencido é quem mais precisa falar com a gente, e a
+          api também não passa a conversa por gate nenhum (api#571). */}
+      <Route path="suporte"             element={<OwnerSuporte />} />
     </Route>
 
     {/* Fallback */}

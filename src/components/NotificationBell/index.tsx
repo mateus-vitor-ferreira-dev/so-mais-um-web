@@ -1,8 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Bell } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { notificationService } from '../../services/notificationService'
-import { temSessao } from '../../services/api'
-import { env } from '../../config/env'
+import { useAuth } from '../../contexts/AuthContext'
+import { useEventoDoStream, useReconexaoDoStream } from '../../hooks/useEventoDoStream'
+import { destinoDaNotificacao } from '../../utils/destinoDaNotificacao'
 import type { Notification } from '../../types/api'
 import {
   Wrapper, BellBtn, Badge, Dropdown, DropHeader, DropTitle,
@@ -24,44 +26,36 @@ export default function NotificationBell() {
   const [notifs, setNotifs] = useState<Notification[]>([])
   const [open, setOpen]     = useState(false)
   const ref                 = useRef<HTMLDivElement>(null)
-  const esRef               = useRef<EventSource | null>(null)
+  const navigate            = useNavigate()
+  const { user }            = useAuth()
 
-  async function load() {
+  const load = useCallback(async () => {
     try {
       const data = await notificationService.list()
       setNotifs(data)
     } catch {
       // não crítico
     }
-  }
+  }, [])
 
   useEffect(() => {
-    load()
+    void load()
+  }, [load])
 
-    if (!temSessao()) return
+  /**
+   * A conexão não mora mais aqui (web#472): ela é do `StreamProvider`, uma por
+   * aba, e o sino é só um dos consumidores. Ele lê o evento **sem nome** — o das
+   * notificações; os nomeados, como o `suporte`, nem chegam aqui.
+   *
+   * O `some` é o que torna a reconexão inofensiva: a notificação que chega pelo
+   * stream pode já ter vindo na releitura.
+   */
+  useEventoDoStream<Notification>('message', (notification) => {
+    setNotifs(prev => (prev.some(n => n.id === notification.id) ? prev : [notification, ...prev]))
+  })
 
-    /**
-     * `withCredentials` é o que manda o cookie de sessão na conexão. Antes o
-     * JWT ia na query string — o `EventSource` não aceita header customizado —,
-     * e URL com token acaba em log de proxy, histórico e `Referer`.
-     */
-    const es = new EventSource(`${env.apiUrl}/notifications/stream`, { withCredentials: true })
-    esRef.current = es
-
-    es.onmessage = (e) => {
-      try {
-        const notification = JSON.parse(e.data as string) as Notification
-        setNotifs(prev => [notification, ...prev])
-      } catch {
-        // ignora payloads malformados
-      }
-    }
-
-    return () => {
-      es.close()
-      esRef.current = null
-    }
-  }, [])
+  // O que chegou durante a queda se perdeu: o banco é a verdade.
+  useReconexaoDoStream(() => void load())
 
   useEffect(() => {
     function handleClick(e: globalThis.MouseEvent) {
@@ -76,9 +70,21 @@ export default function NotificationBell() {
     setNotifs(prev => prev.map(n => ({ ...n, read: true })))
   }
 
-  async function handleRead(id: string) {
-    await notificationService.readOne(id)
-    setNotifs(prev => prev.map(n => n.id === id ? { ...n, read: true } : n))
+  /**
+   * Marca como lida e, quando o tipo leva a algum lugar, vai para lá.
+   *
+   * A marcação não espera a api: navegar só depois dela faria o clique parecer
+   * travado, e uma falha ali não justifica deixar a pessoa onde estava.
+   */
+  function handleRead(notificacao: Notification) {
+    void notificationService.readOne(notificacao.id).catch(() => {})
+    setNotifs(prev => prev.map(n => n.id === notificacao.id ? { ...n, read: true } : n))
+
+    const destino = destinoDaNotificacao(notificacao, user?.role)
+    if (destino) {
+      setOpen(false)
+      navigate(destino)
+    }
   }
 
   const unread = notifs.filter(n => !n.read).length
@@ -103,7 +109,7 @@ export default function NotificationBell() {
               <EmptyMsg>Nenhuma notificação</EmptyMsg>
             ) : (
               notifs.slice(0, 10).map(n => (
-                <NotifItem key={n.id} $read={n.read} onClick={() => handleRead(n.id)}>
+                <NotifItem key={n.id} $read={n.read} onClick={() => handleRead(n)}>
                   {!n.read && <NotifDot />}
                   <div style={{ flex: 1 }}>
                     {/*

@@ -62,7 +62,7 @@ describe('ownerNavItems — o que nunca é bloqueado', () => {
     // Solicitações é como o dono entra na plataforma, Meus Estabelecimentos é o que
     // ele contratou e Planos é como ele paga. Trancar qualquer um deixaria o cliente
     // do lado de fora da própria assinatura.
-    for (const item of ['Solicitações', 'Meus Estabelecimentos', 'Planos', 'Visão Geral']) {
+    for (const item of ['Solicitações', 'Meus Estabelecimentos', 'Planos', 'Visão Geral', 'Suporte']) {
       expect(bloqueados(itens)).not.toContain(item)
     }
   })

@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, Users, ClipboardList, Building2, Home, Store, ShieldCheck, CreditCard, Package, Dumbbell,
-  GraduationCap, CalendarClock, Ticket,
+  GraduationCap, CalendarClock, Ticket, LifeBuoy,
 } from 'lucide-react'
 import type { NavItemDef } from '../components/DashboardLayout'
 import type { PlanFeature, UserRole } from '../types/api'
@@ -45,6 +45,9 @@ export const adminNavItems: NavItemDef[] = [
  * plano são as estatísticas dentro dela, e quem barra isso é a própria página.
  *
  * Professores também nunca é bloqueado, mas por outro motivo — está escrito no item.
+ *
+ * Suporte também nunca é bloqueado (web#472): o dono com a assinatura vencida é quem
+ * mais precisa falar com a gente, e a api não passa a conversa pelo gate de assinatura.
  */
 export function ownerNavItems(
   role: UserRole | undefined,
@@ -86,6 +89,11 @@ export function ownerNavItems(
     { to: '/owner/day-uses',  label: 'Day use',                icon: Ticket,
       bloqueado: !temFuncionalidade('DAY_USE') },
     { to: '/owner/requests',  label: 'Solicitações',          icon: ClipboardList   },
+    /*
+     * Leva a rota atual junto (`levaOrigem`): a primeira mensagem da visita diz de
+     * que tela o dono veio, e é o que responde a primeira pergunta de todo atendimento.
+     */
+    { to: '/owner/suporte',   label: 'Suporte',                icon: LifeBuoy, levaOrigem: true },
     ...(role === 'ADMIN'
       ? [{ to: '/admin', label: 'Painel Admin', icon: ShieldCheck, divider: true }]
       : []),

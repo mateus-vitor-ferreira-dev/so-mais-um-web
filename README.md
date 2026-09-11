@@ -56,7 +56,7 @@ O ciclo é **descobrir → entrar → jogar → avaliar**, e ele fecha em cima d
   </tbody>
 </table>
 
-São **44 rotas** sobre **42 páginas carregadas sob demanda**, **12 modalidades** (de futsal a beach tennis), reputação com **6 tags** de comportamento (Craque da Partida, Pontual, Fair Play…) e torneios com divisões em **5 níveis** — tudo consumindo a API do Só+1 via REST, com um canal SSE aberto para as notificações.
+São **45 rotas** sobre **43 páginas carregadas sob demanda**, **12 modalidades** (de futsal a beach tennis), reputação com **6 tags** de comportamento (Craque da Partida, Pontual, Fair Play…) e torneios com divisões em **5 níveis** — tudo consumindo a API do Só+1 via REST, com um canal SSE aberto para as notificações.
 
 ```mermaid
 flowchart TB
@@ -64,7 +64,7 @@ flowchart TB
     O["🏟️ Dono · OWNER"] --> WEB
     A["🛠️ Admin · ADMIN"] --> WEB
 
-    WEB["<b>Web App · React 19 + Vite 8</b><br/>rotas guardadas por papel · 42 páginas lazy<br/>Axios + JWT · styled-components · tema claro/escuro"]
+    WEB["<b>Web App · React 19 + Vite 8</b><br/>rotas guardadas por papel · 43 páginas lazy<br/>Axios + JWT · styled-components · tema claro/escuro"]
 
     WEB --> API["<b>API Só+1</b><br/>REST · /auth /events /courts<br/>/tournaments /owner /admin"]
     WEB --> G["Google Identity<br/>idToken → POST /auth/google"]
@@ -85,7 +85,7 @@ flowchart TB
 
 **Deploy novo não quebra a aba que já estava aberta.** SPA com code splitting tem um problema clássico: você publica, o hash dos chunks muda, e o usuário que estava com a página aberta clica num link e recebe um 404 de módulo. Aqui a defesa tem duas camadas. `lazyWithRetry` embrulha cada `import()` e, se o chunk sumiu, recarrega a página em vez de estourar. O que escapar cai no `ErrorBoundary`, que reconhece a assinatura do erro (`Failed to fetch dynamically imported module`, `Unable to preload CSS`) e recarrega também — só mostra a tela de erro para falhas de verdade. O `vercel.json` fecha o combo: `index.html` com `no-store`, `/assets/*` com `immutable` por um ano.
 
-**SSE autenticado por cookie.** O sino de notificações escuta `GET /notifications/stream` via `EventSource` — sem polling, sem WebSocket para manter de pé. `EventSource` não deixa mandar header `Authorization`, e era por isso que o JWT ia na query string; agora vai o cookie de sessão, com `withCredentials: true`, e a conexão é fechada no cleanup do efeito. Cada notificação nova entra no topo da lista sem refetch, e payload malformado é ignorado em silêncio: o sino é acessório, nunca derruba a tela.
+**SSE autenticado por cookie, uma conexão por aba.** O `StreamProvider` abre `GET /notifications/stream` via `EventSource` quando há usuário logado e fecha no logout — sem polling, sem WebSocket para manter de pé. `EventSource` não deixa mandar header `Authorization`, e era por isso que o JWT ia na query string; agora vai o cookie de sessão, com `withCredentials: true`. Quem precisa escuta pelo nome do evento (`useEventoDoStream`): o sino lê o evento sem nome, o das notificações, e a conversa de suporte lê o `suporte` — um nunca aparece no outro. Quando a conexão cai e volta, quem escuta é avisado (`useReconexaoDoStream`) e relê do banco o que pode ter chegado na queda. Payload malformado é ignorado em silêncio: o tempo real é acessório, nunca derruba a tela.
 
 **Filtro híbrido: rede onde importa, memória onde é barato.** `courtType` e `city` são filtros server-side — mudaram, refaz o fetch paginado do zero (`limit: 20`, `hasMore` para o "carregar mais"). Busca textual, faixa de horário, preço por pessoa, arena e "só com vaga" filtram em memória sobre o que já veio. Resultado: nenhuma requisição a cada tecla digitada, e a lista de cidades e arenas dos selects é derivada dos próprios resultados com `useMemo`, em vez de exigir um endpoint só para popular dropdown.
 
@@ -154,7 +154,7 @@ flowchart TB
     </tr>
     <tr>
       <td><strong>Tempo real</strong></td>
-      <td><img src="https://img.shields.io/badge/SSE-EventSource-FF6B35?style=flat-square"/> — sino de notificações</td>
+      <td><img src="https://img.shields.io/badge/SSE-EventSource-FF6B35?style=flat-square"/> — sino de notificações e conversa de suporte, numa conexão só</td>
     </tr>
     <tr>
       <td><strong>Mapa</strong></td>
@@ -273,7 +273,7 @@ npm run dev
 1. Abra `http://localhost:5173` — cai na animação de abertura e segue para `/login`.
 2. Crie uma conta em `/register`. Se voltar para `/home` com seu nome no topo, o front está falando com a API: `POST /auth/register` devolveu o cookie de sessão e o `AuthContext` já revalidou com `GET /auth/me`. No DevTools, o cookie aparece marcado `HttpOnly` e o `localStorage` tem só a marca `só+1:sessao`.
 3. Recarregue a página. Continuar logado prova que a restauração de sessão funciona.
-4. No DevTools → Network → filtro `EventSource`, a conexão com `/notifications/stream` deve aparecer aberta (status `pending`) — é o SSE do sino.
+4. No DevTools → Network → filtro `EventSource`, a conexão com `/notifications/stream` deve aparecer aberta (status `pending`) — é o SSE da aba, um só, que o sino e a conversa de suporte compartilham.
 
 ### 7. Problemas comuns
 
@@ -419,7 +419,7 @@ Os fluxos críticos do jogador, o que dá mais prejuízo quando quebra:
 | Gate de assinatura | `hooks/useSubscription.test.tsx` · `utils/toastErro.test.ts` | O `isActive` concordando com o middleware da API, inclusive na tolerância de `past_due`, e o erro 402 mostrando o caminho do pagamento |
 | Assinatura vencida no painel | `pages/Owner/{Places,Courts,Equipment,Requests,Inventory}/index.test.tsx` | As cinco telas se comportando igual: conteúdo consultável, ações que gravam desabilitadas e ninguém gravando antes de o status chegar |
 
-**1060 testes, ~9s.** A cobertura de linhas está em **~72%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
+**1094 testes, ~9s.** A cobertura de linhas está em **~72%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
 
 ---
 

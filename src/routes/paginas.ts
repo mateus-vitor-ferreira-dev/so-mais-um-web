@@ -71,6 +71,7 @@ const CARREGADORES = {
   '/owner/day-uses':   () => import('../pages/Owner/DayUses'),
   '/owner/day-uses/:dayUseId/entradas': () => import('../pages/Owner/EntradasDoDayUse'),
   '/owner/requests':   () => import('../pages/Owner/Requests'),
+  '/owner/suporte':    () => import('../pages/Owner/Suporte'),
 } as const
 
 /** Rotas que só redirecionam — o alvo é quem tem chunk. */
@@ -154,6 +155,7 @@ export const OwnerPlaces      = lazyWithRetry(CARREGADORES['/owner/places'])
 export const OwnerInventory   = lazyWithRetry(CARREGADORES['/owner/inventory'])
 export const OwnerEquipment   = lazyWithRetry(CARREGADORES['/owner/equipment'])
 export const OwnerRequests    = lazyWithRetry(CARREGADORES['/owner/requests'])
+export const OwnerSuporte     = lazyWithRetry(CARREGADORES['/owner/suporte'])
 
 // Rotas com parâmetro: fora do registro porque não partem do menu.
 export const PartidaDetail     = lazyWithRetry(() => import('../pages/PartidaDetail'))
