@@ -6,6 +6,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { toast } from 'sonner'
 import { toastErroDeApi } from '../../../utils/toastErro'
+import { codigoDeErro, mensagemDeErro } from '../../../utils/apiError'
+import EditorDeFaixasDePreco from '../../../components/EditorDeFaixasDePreco'
+import {
+  faixasApontadasPelaApi, precoNaLista, semanaDaApi, semanaParaApi, semanaVazia, type SemanaDeFaixas,
+} from '../../../utils/faixasDePreco'
 import { ArrowLeft } from 'lucide-react'
 import { useSubscription } from '../../../hooks/useSubscription'
 import SubscriptionGate from '../../../components/SubscriptionGate'
@@ -13,13 +18,14 @@ import { getSportMeta } from '../../../hooks/useSports'
 import SportIcon from '../../../components/SportIcon'
 import * as courtsService from '../../../services/courts'
 import * as placesService from '../../../services/places'
-import type { Court, CourtType, Place } from '../../../types/api'
+import type { Court, CourtType, FaixaDeExpediente, Place } from '../../../types/api'
 import {
   BackBtn, CourtsGrid, CourtCard, CourtCardHeader, CourtIconBox, CourtInfo,
   CourtName, CourtMeta, StatusBadge, CourtActions, ActionBtn, ErrorMsg,
   NewBtn, Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle, Form,
   FormGroup, Label, Input, Select, FieldError, ModalActions, CancelBtn,
   SubmitBtn, SeloCoberta, AvisoSemCobertura, AtalhoDoAviso, GrupoDeOpcoes, Opcoes, Opcao, Nota,
+  OpcaoDoPreco, ErroDasFaixas,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
 
@@ -95,6 +101,30 @@ export default function OwnerCourts() {
   const [toggling, setToggling]         = useState<string | null>(null)
   const [deleting, setDeleting]         = useState<string | null>(null)
 
+  /*
+   * O preço por horário (web#474). Fica fora do `react-hook-form` pelo mesmo
+   * motivo das regras de acesso na criação de partida: a semana de faixas é uma
+   * estrutura que o editor muda inteira, e não um campo.
+   */
+  const [variaPorHorario, setVariaPorHorario] = useState(false)
+  const [semana, setSemana]                   = useState<SemanaDeFaixas>(semanaVazia)
+  /** A quadra aberta já tinha faixas gravadas — é o que decide o aviso ao desmarcar. */
+  const [tinhaFaixas, setTinhaFaixas]         = useState(false)
+  const [carregandoFaixas, setCarregandoFaixas] = useState(false)
+  const [expediente, setExpediente]           = useState<FaixaDeExpediente[]>([])
+  const [destacadas, setDestacadas]           = useState<string[]>([])
+  const [erroDasFaixas, setErroDasFaixas]     = useState<string | null>(null)
+
+  /**
+   * A api já serve preço por horário? Toda quadra dela devolve
+   * `precoVariaPorHorario` desde a api#576; sem o campo, a opção não aparece.
+   *
+   * É o que deixa esta tela ir para produção antes da api sem oferecer um
+   * editor cujo "Salvar" responderia 404. Espaço sem quadra nenhuma ainda não
+   * tem de onde saber, e cria a primeira com preço único — que é o caso comum.
+   */
+  const apiTemFaixas = courts.some((court) => court.precoVariaPorHorario !== undefined)
+
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     context: { nova: editingCourt === null },
@@ -122,11 +152,30 @@ export default function OwnerCourts() {
 
   useEffect(() => { fetchData() }, [fetchData])
 
+  // O expediente só serve ao aviso de faixa fora do horário: sem ele, nenhum aviso, e nada quebra.
+  useEffect(() => {
+    if (!apiTemFaixas || !placeId) return
+    let cancelado = false
+    Promise.resolve(courtsService.getExpediente(placeId))
+      .then((res) => { if (!cancelado) setExpediente(res?.data ?? []) })
+      .catch(() => {})
+    return () => { cancelado = true }
+  }, [apiTemFaixas, placeId])
+
+  function limparFaixas() {
+    setSemana(semanaVazia())
+    setTinhaFaixas(false)
+    setDestacadas([])
+    setErroDasFaixas(null)
+  }
+
   function openCreate() {
     setEditingCourt(null)
     // pricePerHour usa null (não '') porque o schema o transforma de '' para
     // null e o tipo inferido é number | null | undefined.
     reset({ name: '', type: 'SOCIETY', pricePerHour: null, coberta: '' })
+    setVariaPorHorario(false)
+    limparFaixas()
     setShowModal(true)
   }
 
@@ -139,7 +188,25 @@ export default function OwnerCourts() {
       pricePerHour: court.pricePerHour != null ? Number(court.pricePerHour) : null,
       coberta: daApi(court.coberta),
     })
+    setVariaPorHorario(Boolean(court.precoVariaPorHorario))
+    limparFaixas()
     setShowModal(true)
+    if (apiTemFaixas) void carregarFaixas(court.id)
+  }
+
+  /** As listas trazem só o resumo do preço; a tabela vem da quadra sozinha (api#576). */
+  async function carregarFaixas(courtId: string) {
+    setCarregandoFaixas(true)
+    try {
+      const res = await courtsService.getCourt(placeId!, courtId)
+      const faixas = res?.data?.faixasDePreco ?? []
+      setSemana(semanaDaApi(faixas))
+      setTinhaFaixas(faixas.length > 0)
+    } catch (err) {
+      setErroDasFaixas(`Não foi possível carregar as faixas desta quadra: ${mensagemDeErro(err, 'tente de novo')}.`)
+    } finally {
+      setCarregandoFaixas(false)
+    }
   }
 
   function closeModal() {
@@ -149,6 +216,21 @@ export default function OwnerCourts() {
   }
 
   const onSubmit = async (data: FormValues) => {
+    setDestacadas([])
+    setErroDasFaixas(null)
+
+    const salvarFaixas = apiTemFaixas && variaPorHorario
+    const { faixas, chaves } = semanaParaApi(semana)
+    if (salvarFaixas) {
+      // Completude, e não regra: faixa sem valor não é faixa. Sobreposição é a api que diz.
+      const incompletas = chaves.filter((_, i) => !faixas[i].inicio || !faixas[i].fim || !(faixas[i].valorPorHora > 0))
+      if (incompletas.length > 0) {
+        setDestacadas(incompletas)
+        setErroDasFaixas('Preencha o início, o fim e um valor maior que zero em cada faixa, ou remova a que sobrou.')
+        return
+      }
+    }
+
     setSubmitting(true)
     try {
       const payload = {
@@ -157,14 +239,34 @@ export default function OwnerCourts() {
         ...(data.pricePerHour != null ? { pricePerHour: data.pricePerHour } : {}),
         // Sem resposta, o campo não vai: a quadra que já era `null` continua `null`.
         ...(perguntaCobertura(data.type) && data.coberta ? { coberta: PARA_A_API[data.coberta] } : {}),
+        ...(apiTemFaixas ? { precoVariaPorHorario: variaPorHorario } : {}),
       }
-      if (editingCourt) {
-        await courtsService.updateCourt(placeId!, editingCourt.id, payload)
-        toast.success('Quadra atualizada!')
-      } else {
-        await courtsService.createCourt(placeId!, payload)
-        toast.success('Quadra criada!')
+      const salva = editingCourt
+        ? (await courtsService.updateCourt(placeId!, editingCourt.id, payload)).data
+        : (await courtsService.createCourt(placeId!, payload)).data
+
+      /*
+       * Salvar são duas chamadas: a opção vai na quadra, e a tabela no PUT.
+       * A opção ligada sem faixa nenhuma é um estado válido — todo horário no
+       * padrão —, então a falha entre as duas não quebra a quadra. Ela só não
+       * pode sumir: o modal fica aberto, com as faixas recusadas em destaque, e
+       * a quadra passa a ser a salva, para o próximo "Salvar" editar em vez de
+       * criar outra.
+       */
+      if (salvarFaixas) {
+        try {
+          await courtsService.substituirFaixasDePreco(placeId!, salva.id, faixas)
+        } catch (err) {
+          const mensagem = mensagemDeErro(err, 'erro ao salvar as faixas')
+          setEditingCourt(salva)
+          setDestacadas(codigoDeErro(err) === 'FAIXAS_DE_PRECO_SOBREPOSTAS' ? faixasApontadasPelaApi(mensagem, chaves) : [])
+          setErroDasFaixas(`A quadra foi salva, mas as faixas não: ${mensagem}.`)
+          await fetchData()
+          return
+        }
       }
+
+      toast.success(editingCourt ? 'Quadra atualizada!' : 'Quadra criada!')
       closeModal()
       await fetchData()
     } catch (err) {
@@ -263,7 +365,7 @@ export default function OwnerCourts() {
                     </CourtName>
                     <CourtMeta>
                       {sport.label}
-                      {court.pricePerHour != null && ` · R$ ${Number(court.pricePerHour).toFixed(2).replace('.', ',')}/h`}
+                      {precoNaLista(court) && ` · ${precoNaLista(court)}`}
                     </CourtMeta>
                   </CourtInfo>
                   <StatusBadge bg={STATUS_BG[court.status]} color={STATUS_COLOR[court.status]}>
@@ -298,7 +400,7 @@ export default function OwnerCourts() {
         {showModal && (
           <Modal>
             <ModalOverlay onClick={closeModal} />
-            <ModalBox>
+            <ModalBox $largo={apiTemFaixas && variaPorHorario}>
               <ModalHeader>
                 <ModalTitle>{editingCourt ? 'Editar Quadra' : 'Nova Quadra'}</ModalTitle>
               </ModalHeader>
@@ -321,8 +423,9 @@ export default function OwnerCourts() {
                 </FormGroup>
 
                 <FormGroup>
-                  <Label>Preço por Hora (R$)</Label>
+                  <Label htmlFor="preco-da-quadra">{variaPorHorario ? 'Valor padrão (R$/h)' : 'Preço por Hora (R$)'}</Label>
                   <Input
+                    id="preco-da-quadra"
                     {...register('pricePerHour')}
                     type="number"
                     min="0"
@@ -330,7 +433,38 @@ export default function OwnerCourts() {
                     placeholder="Ex.: 120.00"
                   />
                   {errors.pricePerHour && <FieldError>{errors.pricePerHour.message}</FieldError>}
+                  {/* Dito uma vez, aqui, e não em cada buraco da semana (web#474). */}
+                  {variaPorHorario && <Nota>Vale nos horários que nenhuma faixa cobre.</Nota>}
+
+                  {apiTemFaixas && (
+                    <OpcaoDoPreco>
+                      <input
+                        type="checkbox"
+                        checked={variaPorHorario}
+                        onChange={(e) => setVariaPorHorario(e.target.checked)}
+                      />
+                      Valores diferentes por horário
+                    </OpcaoDoPreco>
+                  )}
+                  {apiTemFaixas && !variaPorHorario && tinhaFaixas && (
+                    <Nota>As faixas ficam guardadas e voltam se você marcar de novo.</Nota>
+                  )}
                 </FormGroup>
+
+                {apiTemFaixas && variaPorHorario && (
+                  carregandoFaixas ? (
+                    <Nota>Carregando as faixas…</Nota>
+                  ) : (
+                    <EditorDeFaixasDePreco
+                      semana={semana}
+                      aoMudar={(nova) => { setSemana(nova); setDestacadas([]) }}
+                      expediente={expediente}
+                      destacadas={destacadas}
+                      desabilitado={submitting}
+                    />
+                  )
+                )}
+                {erroDasFaixas && <ErroDasFaixas role="alert">{erroDasFaixas}</ErroDasFaixas>}
 
                 {perguntaCobertura(tipoEscolhido) && (
                   <GrupoDeOpcoes>

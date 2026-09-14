@@ -39,6 +39,7 @@ const NAO_SAO_VOCABULARIO = new Set([
   'ContentLoader', 'ConviteDeLocalizacao', 'ConvitesDeTime', 'DashboardLayout',
   'ConversaDeSuporte', // a conversa de suporte: fala com a api e guarda o estado da conversa (web#472, web#473)
   'DayUsesDoDia', 'DivisionRegistration', 'EnderecoDoJogador', 'ErrorBoundary',
+  'EditorDeFaixasDePreco', // o editor da semana de preços da quadra: estado de formulário, só existe ali (web#474)
   'FalhaAoVerificarSessao', 'LancarPlacar', 'ListaDePessoas', 'LoginComGoogle',
   'LogoSvg', 'MainLayout', 'MapaDaBusca', 'MarcaDeVisibilidade',
   'NotificationBell', 'PartidasParaApitar', 'PartidasPerto', 'PasswordInput',

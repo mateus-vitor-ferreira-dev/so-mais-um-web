@@ -164,13 +164,21 @@ export const ModalOverlay = styled.div`
   background: ${({ theme }) => theme.colors.bgOverlay};
 `
 
-export const ModalBox = styled.div`
+/**
+ * `$largo` com o editor de faixas aberto (web#474): sete dias de "das … às … R$"
+ * não cabem em 480px sem cada linha quebrar em duas. A altura rola dentro do
+ * modal, porque a semana cheia passa da tela.
+ */
+export const ModalBox = styled.div<{ $largo?: boolean }>`
   position: relative;
   background: ${({ theme }) => theme.colors.bgCard};
   border-radius: ${({ theme }) => theme.radii.xl};
   padding: 28px 32px;
-  width: 100%;
-  max-width: 480px;
+  width: calc(100% - 32px);
+  max-width: ${({ $largo }) => ($largo ? '640px' : '480px')};
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  box-sizing: border-box;
   box-shadow: ${({ theme }) => theme.shadows.lg};
 `
 
@@ -336,4 +344,23 @@ export const Nota = styled.p`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textSecondary};
+`
+
+export const OpcaoDoPreco = styled.label`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  cursor: pointer;
+`
+
+export const ErroDasFaixas = styled.p`
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: ${({ theme }) => theme.radii.sm};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.error};
+  background: ${({ theme }) => theme.colors.errorLight};
 `
