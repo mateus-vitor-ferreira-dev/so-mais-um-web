@@ -1,5 +1,5 @@
 import api from './api'
-import type { AgendaDaQuadra, ApiEnvelope, Court, CourtStatus, CourtType } from '../types/api'
+import type { AgendaDaQuadra, ApiEnvelope, Court, CourtStatus, CourtType, FaixaDeExpediente, FaixaDePrecoDaQuadra } from '../types/api'
 
 /** ⚠️ Devolve o ENVELOPE da API — quem consome escreve `res.data`. */
 
@@ -19,6 +19,7 @@ export interface CourtInput {
   pricePerHour?: number | null
   /** `null` volta a quadra para "não informado" (api#581). */
   coberta?: boolean | null
+  precoVariaPorHorario?: boolean
 }
 
 export function searchCourts(filters?: CourtFilters): Promise<ApiEnvelope<Court[]>> {
@@ -39,6 +40,31 @@ export function updateCourt(
   data: Partial<CourtInput>,
 ): Promise<ApiEnvelope<Court>> {
   return api.patch(`/places/${placeId}/courts/${courtId}`, data).then((r) => r.data)
+}
+
+/** A quadra sozinha, que é a única resposta que traz as faixas de preço (api#576). */
+export function getCourt(placeId: string, courtId: string): Promise<ApiEnvelope<Court>> {
+  return api.get(`/places/${placeId}/courts/${courtId}`).then((r) => r.data)
+}
+
+/**
+ * Substitui a semana inteira de faixas (api#576). Lista vazia é válida: é a
+ * opção ligada com todo horário no preço padrão.
+ *
+ * A api recusa sobreposição com 422 `FAIXAS_DE_PRECO_SOBREPOSTAS`, dizendo as
+ * posições das duas **na ordem desta lista** ("As faixas 2 e 5 se sobrepõem").
+ */
+export function substituirFaixasDePreco(
+  placeId: string,
+  courtId: string,
+  faixas: Array<Omit<FaixaDePrecoDaQuadra, 'valorPorHora'> & { valorPorHora: number }>,
+): Promise<ApiEnvelope<Court>> {
+  return api.put(`/places/${placeId}/courts/${courtId}/faixas-de-preco`, { faixas }).then((r) => r.data)
+}
+
+/** O expediente do espaço (api#454). Público; lista vazia é espaço sem horário cadastrado. */
+export function getExpediente(placeId: string): Promise<ApiEnvelope<FaixaDeExpediente[]>> {
+  return api.get(`/places/${placeId}/opening-hours`).then((r) => r.data)
 }
 
 export function deleteCourt(placeId: string, courtId: string): Promise<ApiEnvelope<Court>> {
