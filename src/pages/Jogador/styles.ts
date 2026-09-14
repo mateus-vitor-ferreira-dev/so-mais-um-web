@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
 export const Container = styled.div`
   max-width: 780px;
-  margin: 0 auto;
-  padding: 24px 16px 48px;
 `
 
 export const BackLink = styled.a`

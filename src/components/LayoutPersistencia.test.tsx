@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Inbox } from 'lucide-react'
 import { Link, Route, Routes } from 'react-router-dom'
 import { renderWithProviders, screen } from '../test/render'
-import DashboardLayout from './DashboardLayout'
+import DashboardLayout, { tituloPadrao } from './DashboardLayout'
 import MainLayout from './MainLayout'
 import { PageActions, usePageHeader } from './DashboardLayout/pageHeader'
 
@@ -149,5 +149,52 @@ describe('publicação da página na topbar', () => {
     )
 
     expect(await screen.findByText('7')).toBeInTheDocument()
+  })
+})
+
+/**
+ * O layout único (web#493): a área do jogador passou a usar a topbar do painel,
+ * com o título publicado pela página.
+ */
+describe('a topbar na área do jogador', () => {
+  function PaginaComTitulo() {
+    usePageHeader('Título publicado', 'o subtítulo')
+    return <Link to="/times/42">ir para um time</Link>
+  }
+
+  it('mostra o título que a página publica, e o do menu quando ela não publica nada', async () => {
+    const { user } = renderWithProviders(
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/home"      element={<PaginaComTitulo />} />
+          <Route path="/times/:id" element={<p>detalhe do time</p>} />
+        </Route>
+      </Routes>,
+      { route: '/home' },
+    )
+
+    const topbar = () => screen.getByRole('heading', { level: 1 })
+    expect(await screen.findByText('o subtítulo')).toBeInTheDocument()
+    expect(topbar()).toHaveTextContent('Título publicado')
+
+    await user.click(screen.getByRole('link', { name: 'ir para um time' }))
+
+    // A página do time não publica título: fica o do item do menu, e nem o
+    // título nem o subtítulo da página anterior sobram na topbar.
+    expect(await screen.findByText('detalhe do time')).toBeInTheDocument()
+    expect(topbar()).toHaveTextContent('Meus Times')
+    expect(screen.queryByText('o subtítulo')).not.toBeInTheDocument()
+  })
+
+  it('o título padrão é o do item com o prefixo mais longo', () => {
+    const itens = [
+      { to: '/owner', label: 'Painel', icon: Inbox },
+      { to: '/owner/places', label: 'Estabelecimentos', icon: Inbox },
+    ]
+
+    expect(tituloPadrao(itens, '/owner/places/1/courts')).toBe('Estabelecimentos')
+    expect(tituloPadrao(itens, '/owner/plans')).toBe('Painel')
+    // Prefixo de texto não é prefixo de rota: /owner-x não é filha de /owner.
+    expect(tituloPadrao(itens, '/owner-x')).toBe('')
   })
 })

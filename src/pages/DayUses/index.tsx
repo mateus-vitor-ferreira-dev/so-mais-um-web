@@ -8,7 +8,8 @@ import { useOrigemDeLocalizacao } from '../../hooks/useOrigemDeLocalizacao'
 import { useSports } from '../../hooks/useSports'
 import type { FiltrosDeDayUse } from '../../types/api'
 import { ehFaixa, FAIXAS, faixaDeHorario, type Faixa } from './horarios'
-import { Aba, Abas, Container, Filtros, Limpar, Titulo, Vazio } from './styles'
+import { Aba, Abas, Container, Filtros, Limpar, Vazio } from './styles'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /** Os passos do raio. O teto da api é 100 km, e são os mesmos da `PartidasPerto`. */
 const RAIOS = [10, 25, 50, 100]
@@ -56,6 +57,7 @@ const RAIOS = [10, 25, 50, 100]
  * vez de recomeçar.
  */
 export default function DayUses() {
+  usePageHeader('Day uses', 'Encontre um espaço, chegue e pague no local. A vaga é de quem chega.')
   const { user } = useAuth()
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
@@ -115,11 +117,6 @@ export default function DayUses() {
       <button type="button" onClick={() => navigate(-1)}>
         <ArrowLeft size={16} /> Voltar
       </button>
-
-      <Titulo>
-        <h1>Day uses</h1>
-        <p>Encontre um espaço, chegue e pague no local. A vaga é de quem chega.</p>
-      </Titulo>
 
       {/* O convite só aparece para quem não tem origem nenhuma — nem endereço
           salvo, nem permissão já concedida. Ele mesmo se cala depois de

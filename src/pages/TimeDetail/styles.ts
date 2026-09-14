@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import { hoverDeCartao } from '../../styles/cartaoClicavel'
 
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
 export const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[6]};
   max-width: 1000px;
-  margin: 0 auto;
 `
 
 export const BackLink = styled.a`

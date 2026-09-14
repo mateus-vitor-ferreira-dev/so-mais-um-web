@@ -29,11 +29,12 @@ import { MarcaDeVisibilidade } from '../../components/MarcaDeVisibilidade'
 import { teamsService } from '../../services/teams'
 import { SortearBtn } from '../../components/SorteioDeTimes/styles'
 import {
-  Container, PageHeader, CreateButton, Tabs, Tab, PixBox, ModalOverlay,
+  Container, CreateButton, Tabs, Tab, PixBox, ModalOverlay,
   ModalContent, Form, ButtonGroup,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
+import { PageActions, usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /**
  * O que cada aba diz quando não há nada, e para onde ela manda (#379).
@@ -72,6 +73,7 @@ interface FormularioPartida {
 }
 
 export default function MinhasPartidas() {
+  usePageHeader('Minhas Partidas', 'Gerencie as partidas que você criou ou está participando.')
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -233,21 +235,17 @@ export default function MinhasPartidas() {
   return (
     <>
       <Container>
-        <PageHeader>
-          <div>
-            <h1>Minhas Partidas</h1>
-            <p>Gerencie as partidas que você criou ou está participando.</p>
-          </div>
-          {/*
-            Leva ao assistente, e não ao modal daqui: lá a escolha da quadra é
-            estreitada por modalidade e estabelecimento antes de chegar na quadra,
-            enquanto o modal despeja o `GET /courts` inteiro num `select` só. Ver #268.
-          */}
+        {/*
+          Leva ao assistente, e não ao modal daqui: lá a escolha da quadra é
+          estreitada por modalidade e estabelecimento antes de chegar na quadra,
+          enquanto o modal despeja o `GET /courts` inteiro num `select` só. Ver #268.
+        */}
+        <PageActions>
           <CreateButton onClick={() => navigate('/criar-partida')}>
             <Plus size={18} style={{ display: 'inline', marginRight: 4, verticalAlign: 'middle' }} />
             Criar Partida
           </CreateButton>
-        </PageHeader>
+        </PageActions>
 
         <Tabs>
           <Tab $active={activeTab === 'participating'} onClick={() => setActiveTab('participating')}>

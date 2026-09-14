@@ -13,10 +13,10 @@ import { mensagemDeErro } from '../../utils/apiError'
 import { toastErroDeApi } from '../../utils/toastErro'
 import type { AulaDoProfessor } from '../../types/api'
 import {
-  Aluno, Botao, BotaoSecundario, CartaoDaAula, CartaoDaTurma, Chamada, Container,
-  Dia, Horario, LinhaDaAula, Onde, Opcoes, Secao, Selo, Subtitulo, Titulo,
+  Aluno, Botao, BotaoSecundario, CartaoDaAula, CartaoDaTurma, Chamada, Container, Dia, Horario, LinhaDaAula, Onde, Opcoes, Secao, Selo,
 } from './styles'
 import { diaEMes, hora } from '../../utils/datas'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /** A agenda abre na semana. Mais que isso vira lista que ninguém percorre. */
 const JANELA_DIAS = 7
@@ -173,6 +173,7 @@ function ChamadaDaAula({ aula }: { aula: AulaDoProfessor }) {
  * quem ela existe.
  */
 export default function AreaDoProfessor() {
+  usePageHeader('Minhas aulas', 'O que você dá nos próximos sete dias, em todos os espaços em que dá aula.')
   const janela = useMemo(() => {
     const de = new Date()
     const ate = new Date(de.getTime() + JANELA_DIAS * 86_400_000)
@@ -193,9 +194,6 @@ export default function AreaDoProfessor() {
 
   return (
     <Container>
-      <Titulo>Minhas aulas</Titulo>
-      <Subtitulo>O que você dá nos próximos sete dias, em todos os espaços em que dá aula.</Subtitulo>
-
       <Secao aria-labelledby="titulo-agenda">
         <h2 id="titulo-agenda">Agenda</h2>
 

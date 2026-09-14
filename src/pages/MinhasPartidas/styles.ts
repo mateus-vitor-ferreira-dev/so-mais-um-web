@@ -1,23 +1,9 @@
 import styled from 'styled-components'
 import type { TomDoStatus } from '../../constants/statusDaPartida'
 
-export const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[6]};
-  max-width: 1200px;
-  margin: 0 auto;
-`
-
-export const PageHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-
-  h1 {
-    font-size: ${({ theme }) => theme.fontSizes['3xl']};
-    color: ${({ theme }) => theme.colors.textPrimary};
-  }
-`
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
+export const Container = styled.div``
 
 export const CreateButton = styled.button`
   background: ${({ theme }) => theme.colors.primary};

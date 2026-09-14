@@ -36,6 +36,7 @@ import { valorPorPessoa } from '../../utils/formatCurrency'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
 import { dataCompletaPorExtenso, hora } from '../../utils/datas'
 import { Skeleton } from '../../components/Skeleton'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /**
  * Os três jeitos de um link de convite parar de valer (#229).
@@ -74,6 +75,8 @@ function buildMapsUrl(event: Partida): string | null {
 }
 
 export default function PartidaDetail() {
+  // Fora do login a página abre sem layout, e o título não vai a lugar nenhum.
+  usePageHeader('Partida')
   const { eventId } = useParams<{ eventId: string }>()
   const navigate = useNavigate()
   const location = useLocation()

@@ -7,38 +7,6 @@ export const PageWrapper = styled.div`
   width: 100%;
 `
 
-// ── Compact Header ──────────────────────────────────────────────────────────
-
-export const CompactHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-`
-
-export const GreetingBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-`
-
-export const GreetingText = styled.p`
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.textMuted};
-  margin: 0;
-`
-
-export const GreetingTitle = styled.h1`
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  margin: 0;
-  line-height: 1.2;
-`
-
 // ── Stats Row ─────────────────────────────────────────────────────────────────
 
 export const StatsRow = styled.div`

@@ -1,23 +1,14 @@
-import { Suspense, useState, useEffect } from 'react'
+import { useMemo } from 'react'
+import { useTheme } from 'styled-components'
 import type { LucideIcon } from 'lucide-react'
 import type { UserMe, UserRole } from '../../types/api'
-import { Home, Search, ClipboardList, History, User, Plus, Trophy, Menu, Star, Sun, Moon, LayoutDashboard, Store, LogOut, Users, UserPlus, GraduationCap, Ticket } from 'lucide-react'
-import iconUrl from '../../assets/icon-so-mais-um.svg'
-import LogoSvg from '../LogoSvg'
-import { Outlet, useNavigate, useLocation } from 'react-router-dom'
-import { useThemeMode } from '../../contexts/ThemeContext'
+import { Home, Search, ClipboardList, History, User, Plus, Trophy, Star, LayoutDashboard, Store, Users, UserPlus, GraduationCap, Ticket } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
-import NotificationBell from '../NotificationBell'
-import ContentLoader from '../ContentLoader'
-import { prefetchRota } from '../../routes/paginas'
-import {
-  AppShell, Overlay, Sidebar, Logo, LogoIcon, LogoText, LogoName, LogoTagline,
-  Nav, NavItem, NavDivider, UserCard, Avatar, UserInfo, UserName, UserBadge,
-  ContentWrapper, MobileTopbar, HamburgerBtn, TopbarLogoName, Content,
-  ThemeToggleBtn, ThemeToggleBtnCompact, LogoutBtn,
-} from './styles'
+import DashboardLayout from '../DashboardLayout'
+import type { NavItemDef } from '../DashboardLayout'
+import { formatarNota } from '../../utils/numeros'
 
-const NAV_ITEMS = [
+const NAV_ITEMS: NavItemDef[] = [
   { to: '/home',           label: 'Início',          icon: Home          },
   { to: '/quero-jogar',    label: 'Quero Jogar',     icon: Search        },
   { to: '/day-uses',       label: 'Day uses',        icon: Ticket        },
@@ -73,14 +64,6 @@ function getPanelLinks(user: UserMe | null | undefined): PanelLink[] {
   return links
 }
 
-function getInitials(name = ''): string {
-  return name
-    .split(' ')
-    .slice(0, 2)
-    .map((n) => n[0]?.toUpperCase())
-    .join('')
-}
-
 /**
  * Layout da área do jogador.
  *
@@ -88,125 +71,36 @@ function getInitials(name = ''): string {
  * #197 cada uma das dez páginas renderizava este layout dentro de si, então
  * trocar de rota desmontava a sidebar e derrubava a conexão SSE do sino.
  *
- * `user` vem do contexto de autenticação, não mais por prop — a rota-pai não
- * tem quem lhe passe a prop, e todas as páginas já liam do mesmo `useAuth`.
+ * ## Um layout só (web#493)
+ *
+ * Até a #493 este arquivo tinha a própria sidebar, e a área do jogador e o
+ * painel do dono eram dois desenhos: aqui o título ficava dentro de cada
+ * página e o sino só existia no celular; lá havia barra de topo com título,
+ * sino e ações. Quem é dono e joga passava de um para o outro e mudava de
+ * aplicativo no meio do caminho.
+ *
+ * Agora o jogador usa o `DashboardLayout`, e este arquivo só monta o menu. A
+ * página publica o título com `usePageHeader` e as ações com `<PageActions>`;
+ * a que não publica fica com o rótulo do item do menu.
  */
 export default function MainLayout() {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { isDark, toggleTheme } = useThemeMode()
-  const { logout, user } = useAuth()
-  const initials = getInitials(user?.name)
+  const { user } = useAuth()
+  const { colors } = useTheme()
 
-  function handleLogout() {
-    logout()
-    navigate('/login')
-  }
-
-  useEffect(() => {
-    setSidebarOpen(false)
-  }, [location.pathname])
+  const navItems = useMemo<NavItemDef[]>(() => {
+    const paineis = getPanelLinks(user)
+    return [
+      ...NAV_ITEMS,
+      ...paineis.map((link, i) => ({ ...link, divider: i === 0 })),
+    ]
+  }, [user])
 
   return (
-    <AppShell>
-      <Overlay $open={sidebarOpen} onClick={() => setSidebarOpen(false)} />
-
-      <Sidebar $open={sidebarOpen}>
-        <Logo>
-          <LogoIcon>
-            <LogoSvg height={32} />
-          </LogoIcon>
-          <LogoText>
-            <LogoName>Só+1</LogoName>
-            <LogoTagline>Encontre sua partida</LogoTagline>
-          </LogoText>
-        </Logo>
-
-        <Nav>
-          {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
-            // `onFocus` junto do hover para quem navega por teclado ter o
-            // mesmo ganho — só o mouse deixaria esse usuário de fora.
-            <NavItem key={to} to={to} onMouseEnter={() => prefetchRota(to)} onFocus={() => prefetchRota(to)}>
-              <Icon />
-              {label}
-            </NavItem>
-          ))}
-
-          {getPanelLinks(user).length > 0 && (
-            <>
-              <NavDivider />
-              {getPanelLinks(user).map(({ to, label, icon: Icon }) => (
-                <NavItem key={to} to={to} onMouseEnter={() => prefetchRota(to)} onFocus={() => prefetchRota(to)}>
-                  <Icon />
-                  {label}
-                </NavItem>
-              ))}
-            </>
-          )}
-        </Nav>
-
-        <ThemeToggleBtn type="button" onClick={toggleTheme} title={isDark ? 'Modo claro' : 'Modo escuro'}>
-          {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          {isDark ? 'Modo claro' : 'Modo escuro'}
-        </ThemeToggleBtn>
-
-        <LogoutBtn onClick={handleLogout}>
-          <LogOut size={18} />
-          Sair da conta
-        </LogoutBtn>
-
-        {user && (
-          <UserCard onClick={() => navigate('/perfil')}>
-            <Avatar>{initials}</Avatar>
-            <UserInfo>
-              <UserName>{user.name}</UserName>
-              {/*
-                * Era `user.rating` — campo que a API não devolve em nenhum
-                * endpoint. O `?? '—'` sempre vencia, então a nota nunca
-                * aparecia. O valor real vive em stats.averageStars.
-                *
-                * O `stats` faltava no /auth/me, que é de onde o AuthContext
-                * popula o usuário — então aqui e na Home a nota seguia em '—'
-                * para quem via 4,8 em Histórico e Avaliações, na mesma sessão.
-                * A rota passou a devolvê-lo na api#239, sem custar requisição
-                * a mais na abertura do app.
-                *
-                * O `?.` fica: o campo continua opcional no tipo, e quem nunca
-                * foi avaliado recebe `averageStars: null` de propósito — '—' é
-                * o que se deve mostrar aí, e não um zero.
-                */}
-              <UserBadge>⭐ {user.stats?.averageStars ?? '—'} · {user.badge ?? 'Jogador'}</UserBadge>
-            </UserInfo>
-          </UserCard>
-        )}
-      </Sidebar>
-
-      <ContentWrapper>
-        <MobileTopbar>
-          <HamburgerBtn onClick={() => setSidebarOpen(true)} aria-label="Abrir menu">
-            <Menu size={20} />
-          </HamburgerBtn>
-          <TopbarLogoName>
-            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: '#3BAA34', borderRadius: 8, width: 32, height: 32, marginRight: 8, verticalAlign: 'middle', flexShrink: 0 }}>
-              <img src={iconUrl} alt="" height="22" style={{ display: 'block' }} />
-            </span>
-            Só+1
-          </TopbarLogoName>
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <NotificationBell />
-            <ThemeToggleBtnCompact type="button" onClick={toggleTheme} title={isDark ? 'Modo claro' : 'Modo escuro'}>
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            </ThemeToggleBtnCompact>
-          </div>
-        </MobileTopbar>
-
-        <Content>
-          <Suspense fallback={<ContentLoader />}>
-            <Outlet />
-          </Suspense>
-        </Content>
-      </ContentWrapper>
-    </AppShell>
+    <DashboardLayout
+      navItems={navItems}
+      tagline="Área do Jogador"
+      accent={colors.primary}
+      sobreOUsuario={user ? `⭐ ${user.stats?.averageStars != null ? formatarNota(user.stats.averageStars) : '—'} · ${user.badge ?? 'Jogador'}` : undefined}
+    />
   )
 }

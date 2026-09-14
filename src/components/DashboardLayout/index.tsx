@@ -1,6 +1,7 @@
 import { Sun, Moon, LogOut, Menu, X, Lock } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Suspense, useCallback, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useThemeMode } from '../../contexts/ThemeContext'
 import { useAuth } from '../../contexts/AuthContext'
@@ -14,7 +15,7 @@ import {
   Divider, Nav, NavItem, NavItemBloqueado, NavBadge,
   UserCard, Avatar, UserInfo, UserName, UserRole,
   ThemeToggleBtn, LogoutBtn,
-  Main, Topbar, TopbarRow, TopbarTitle, TopbarSub, TopbarActions, Content,
+  Main, Topbar, TopbarRow, TopbarTitle, TopbarSub, TopbarActions, Content, LarguraDoConteudo,
   MobileMenuBtn, MobileOverlay,
 } from './styles'
 
@@ -64,6 +65,24 @@ export interface DashboardLayoutProps {
   navItems: NavItemDef[]
   tagline: string
   accent: string
+  /**
+   * A segunda linha do cartão do usuário, embaixo do nome. Nos painéis é o
+   * papel; na área do jogador, a nota e o selo.
+   */
+  sobreOUsuario?: ReactNode
+}
+
+/**
+ * O título da topbar quando a página não publica nenhum: o rótulo do item do
+ * menu que casa com a rota, pelo prefixo mais longo. `/torneios/42` fica com
+ * "Torneios", e `/owner/places/1/courts` com "Meus Estabelecimentos".
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export function tituloPadrao(navItems: NavItemDef[], pathname: string): string {
+  const casa = navItems
+    .filter(({ to }) => pathname === to || pathname.startsWith(`${to}/`))
+    .sort((a, b) => b.to.length - a.to.length)
+  return casa[0]?.label ?? ''
 }
 
 /**
@@ -80,6 +99,7 @@ export default function DashboardLayout({
   navItems,
   tagline,
   accent,
+  sobreOUsuario,
 }: DashboardLayoutProps) {
   const { isDark, toggleTheme } = useThemeMode()
   const navigate = useNavigate()
@@ -96,6 +116,8 @@ export default function DashboardLayout({
       anterior.title === title && anterior.sub === sub ? anterior : { title, sub },
     )
   }, [])
+
+  const titulo = header.title || tituloPadrao(navItems, location.pathname)
 
   const headerContext = useMemo(
     () => ({ setHeader, actionsSlot }),
@@ -176,7 +198,7 @@ export default function DashboardLayout({
             <Avatar>{getInitials(user.name)}</Avatar>
             <UserInfo>
               <UserName>{user.name}</UserName>
-              <UserRole accent={accent}>{user.role}</UserRole>
+              <UserRole accent={sobreOUsuario ? undefined : accent}>{sobreOUsuario ?? user.role}</UserRole>
             </UserInfo>
           </UserCard>
         )}
@@ -194,24 +216,26 @@ export default function DashboardLayout({
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </MobileMenuBtn>
             <div className="page-heading">
-              <TopbarTitle>{header.title}</TopbarTitle>
-              {header.sub && <TopbarSub>{header.sub}</TopbarSub>}
+              <TopbarTitle>{titulo}</TopbarTitle>
+              {header.title && header.sub && <TopbarSub>{header.sub}</TopbarSub>}
             </div>
             <TopbarActions>
               <NotificationBell />
               {/* Alvo do portal de `<PageActions>`. `display: contents` faz os
                   filhos virarem itens do flex de TopbarActions, preservando o
                   espaçamento que existia quando as ações vinham por prop. */}
-              <span ref={setActionsSlot} style={{ display: 'contents' }} />
+              <span ref={setActionsSlot} className="acoes-da-pagina" style={{ display: 'contents' }} />
             </TopbarActions>
           </TopbarRow>
         </Topbar>
 
         <Content>
           <PageHeaderProvider value={headerContext}>
-            <Suspense fallback={<ContentLoader />}>
-              <Outlet />
-            </Suspense>
+            <LarguraDoConteudo>
+              <Suspense fallback={<ContentLoader />}>
+                <Outlet />
+              </Suspense>
+            </LarguraDoConteudo>
           </PageHeaderProvider>
         </Content>
       </Main>

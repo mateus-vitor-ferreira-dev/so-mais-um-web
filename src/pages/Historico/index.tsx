@@ -16,6 +16,7 @@ import {
 } from './styles'
 import { formatarNota } from '../../utils/numeros'
 import { dataCurta, hora } from '../../utils/datas'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 const TAG_OPTIONS = [
   { label: 'Craque da Partida', value: 'CRAQUE_DA_PARTIDA' },
@@ -37,6 +38,7 @@ interface AvaliacaoEmEdicao {
 }
 
 export default function Historico() {
+  usePageHeader('Meu Histórico')
   const { user } = useAuth()
   const [history, setHistory] = useState<Participation[]>([])
   const [reviewSummary, setReviewSummary] = useState<Partial<UserStats>>({})
@@ -132,8 +134,6 @@ export default function Historico() {
   return (
     <>
       <Container>
-        <h1>Meu Histórico</h1>
-
         <StatsCard>
           <div className="stat-item">
             <h2>⭐ {avgStars}</h2>
