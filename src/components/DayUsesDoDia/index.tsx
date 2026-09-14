@@ -8,15 +8,15 @@ import SeloDoTempo from '../SeloDoTempo'
 import type { ReactNode } from 'react'
 import type { DayUsePublico, FiltrosDeDayUse } from '../../types/api'
 import { Atalho, Aviso, Cabecalho, Carregando, Cartao, Grade, Precos, Secao, Selo } from './styles'
+import { diaDaSemanaEData, hora } from '../../utils/datas'
+import { formatarNumero } from '../../utils/numeros'
+import { formatarReais } from '../../utils/formatCurrency'
 
-const emReais = (valor: string) =>
-  Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const emReais = formatarReais
 
-const hora = (iso: string) =>
-  new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
 
-const dia = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })
+
+const dia = diaDaSemanaEData
 
 interface Props {
   /** Tudo que a api aceita. No Quero Jogar são os mesmos do grid de partidas. */
@@ -143,7 +143,7 @@ export default function DayUsesDoDia({ filtros = {}, modo = 'lista', vazio }: Pr
                 {dayUse.distanceKm !== undefined && (
                   <strong>
                     {dayUse.court.place.neighborhood ? ' · ' : ''}
-                    {dayUse.distanceKm.toLocaleString('pt-BR')} km
+                    {formatarNumero(dayUse.distanceKm)} km
                   </strong>
                 )}
               </span>

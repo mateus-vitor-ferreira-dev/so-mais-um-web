@@ -7,6 +7,8 @@ import {
   ReviewHeader, TagBadge, ReviewComment,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
+import { dataCurta } from '../../utils/datas'
+import { formatarNota } from '../../utils/numeros'
 
 const TAG_LABELS: Record<string, string> = {
   CRAQUE_DA_PARTIDA: 'Craque da Partida',
@@ -22,7 +24,7 @@ function renderStars(count: number) {
 }
 
 function formatDate(dateStr: string) {
-  return dateStr ? new Date(dateStr).toLocaleDateString('pt-BR') : ''
+  return dateStr ? dataCurta(dateStr) : ''
 }
 
 export default function Avaliacoes() {
@@ -54,7 +56,7 @@ export default function Avaliacoes() {
   }, [user])
 
   const avgStars = summary.averageStars
-    ? Number(summary.averageStars).toFixed(1)
+    ? formatarNota(summary.averageStars)
     : 'N/A'
 
   return (

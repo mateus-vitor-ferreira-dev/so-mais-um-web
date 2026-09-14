@@ -17,6 +17,7 @@ import {
   Layout, Caixa, ItemDaCaixa, NomeDoDono, Quando, Trecho, NaoLidas, Painel, Escolha, Voltar,
   Dono, DonoNome, DonoEmail, DonoLinha, Situacao, Carregando,
 } from './styles'
+import { dataCurta } from '../../../utils/datas'
 
 /**
  * A caixa do suporte, do lado da equipe (web#473, épico api#570).
@@ -106,7 +107,7 @@ function situacao(assinatura: AssinaturaNoSuporte | null): { rotulo: string; tom
 }
 
 const dataCivil = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric' })
+  dataCurta(iso, 'America/Sao_Paulo')
 
 function ConversaAberta({ conversaId, aoLer }: { conversaId: string; aoLer: () => void }) {
   const { user } = useAuth()

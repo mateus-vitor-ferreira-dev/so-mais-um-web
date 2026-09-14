@@ -6,11 +6,12 @@ import type { RefereeingMatch, TournamentMatch } from '../../types/api'
 import {
   Bloco, Titulo, Partida, Topo, Onde, Confronto, Contexto, Botao, Resultado,
 } from './styles'
+import { dataEHora } from '../../utils/datas'
 
 const nomeDe = (lado: TournamentMatch['participantA']) => lado?.user.name ?? 'A definir'
 
 const quando = (iso: string | null) =>
-  iso ? new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : null
+  iso ? dataEHora(iso) : null
 
 /**
  * As partidas em que o usuário foi designado árbitro, de todos os campeonatos.

@@ -6,6 +6,7 @@ import {
   DetailModal, DetailOverlay, DetailBox, DetailHeader, DetailTitle, CloseBtn,
   DetailRow, DetailLabel, DetailValue,
 } from './styles'
+import { dataCurta } from '../../../utils/datas'
 
 const STATUS_LABEL: Record<string, string> = { active: 'Ativo', trialing: 'Trial', past_due: 'Vencida', canceled: 'Cancelada', inactive: 'Inativo' }
 const STATUS_COLOR: Record<string, string> = { active: '#15803d', trialing: '#1d4ed8', past_due: '#dc2626', canceled: '#6b7280', inactive: '#6b7280' }
@@ -129,7 +130,7 @@ export default function AdminDashboard() {
             <tbody>
               {payments.map((payment: Payment) => (
                 <tr key={payment.id}>
-                  <td>{new Date(payment.date).toLocaleDateString('pt-BR')}</td>
+                  <td>{dataCurta(payment.date)}</td>
                   <td>{payment.place?.name}</td>
                   <td>R$ {payment.amount}</td>
                   <td>{payment.method}</td>
@@ -186,7 +187,7 @@ export default function AdminDashboard() {
             {detailContract.currentPeriodEnd && (
               <DetailRow>
                 <DetailLabel>Vencimento</DetailLabel>
-                <DetailValue>{new Date(detailContract.currentPeriodEnd).toLocaleDateString('pt-BR')}</DetailValue>
+                <DetailValue>{dataCurta(detailContract.currentPeriodEnd)}</DetailValue>
               </DetailRow>
             )}
           </DetailBox>

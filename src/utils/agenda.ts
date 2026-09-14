@@ -1,4 +1,5 @@
 import type { OcupacaoDaQuadra } from '../types/api'
+import { hora as horaDoDia } from './datas'
 
 /**
  * As contas da agenda da quadra (api#443), fora de componente e de hook.
@@ -83,7 +84,7 @@ export function conflitoNaAgenda(
 
 /** `19:00` — a hora local de um instante ISO, para a tela escrever. */
 export function hora(iso: string): string {
-  return new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  return horaDoDia(iso)
 }
 
 /**

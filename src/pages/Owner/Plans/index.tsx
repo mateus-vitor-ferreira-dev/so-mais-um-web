@@ -19,6 +19,7 @@ import {
   Modal, ModalOverlay, ModalBox, ModalTitle, EffectRow, WarningBox, ModalActions, CancelBtn, ConfirmBtn,
   CenteredSpinner, ScheduledBox, CancelScheduleBtn, PaymentWarning, PixBox, PixLink, TrialNotice,
 } from './styles'
+import { dataCurta } from '../../../utils/datas'
 
 const STATUS_COM_TROCA = ['active', 'trialing', 'past_due']
 
@@ -58,7 +59,7 @@ const linkDoPix = (plano: Plan) => linkDeAssinaturaNoWhatsApp(mensagemDoPix(plan
 
 /** Mesma formatação do resto do painel — ver Admin/Dashboard e Owner/Requests. */
 function formatarData(iso: string): string {
-  return new Date(iso).toLocaleDateString('pt-BR')
+  return dataCurta(iso)
 }
 
 export default function OwnerPlans() {

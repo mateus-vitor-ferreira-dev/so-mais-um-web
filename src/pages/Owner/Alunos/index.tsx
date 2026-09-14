@@ -18,6 +18,7 @@ import {
   Form, Input, Item, Lista, Lotada, Nome, Ocupacao, Quando, Rotulo, TemConta, TituloDaCaixa, Topo,
   Vazio, Voltar,
 } from './styles'
+import { dataCurta } from '../../../utils/datas'
 
 const DIAS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
 
@@ -38,7 +39,7 @@ const schema = yup.object({
 type Formulario = yup.InferType<typeof schema>
 
 const data = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  dataCurta(iso)
 
 /**
  * Os alunos de uma turma, para o dono (web#391, api#474).

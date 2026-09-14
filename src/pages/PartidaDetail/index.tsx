@@ -34,6 +34,7 @@ import {
 } from './styles'
 import { valorPorPessoa } from '../../utils/formatCurrency'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
+import { dataCompletaPorExtenso, hora } from '../../utils/datas'
 
 /**
  * Os três jeitos de um link de convite parar de valer (#229).
@@ -253,8 +254,8 @@ export default function PartidaDetail() {
   const mapsUrl         = buildMapsUrl(event)
 
   const dateObj = new Date(event.date)
-  const dateStr = dateObj.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })
-  const timeStr = dateObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  const dateStr = dataCompletaPorExtenso(dateObj)
+  const timeStr = hora(dateObj)
 
   /**
    * O horário mostra começo e fim, e não a duração em minutos (api#445).
@@ -264,7 +265,7 @@ export default function PartidaDetail() {
    * trabalho de quem lê.
    */
   const fimStr = event.endsAt
-    ? new Date(event.endsAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    ? hora(event.endsAt)
     : null
   const pricePerPerson  = valorPorPessoa(event.totalValue, maxPlayers)
 

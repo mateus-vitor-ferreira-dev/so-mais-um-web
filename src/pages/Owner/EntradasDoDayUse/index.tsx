@@ -16,6 +16,7 @@ import {
   AcoesDoForm, Botao, BotaoLeve, Caixa, Campo, Erro, ErroDoCampo, Explicacao, Faixa, Form,
   Input, LinhaDaPessoa, Lista, Resumo, Rotulo, Select, TituloDaCaixa, Topo, Vazio,
 } from '../DayUses/styles'
+import { formatarReais } from '../../../utils/formatCurrency'
 
 const schema = yup.object({
   nome: yup.string().trim().min(2, 'Nome muito curto').required('Informe o nome'),
@@ -33,8 +34,7 @@ const schema = yup.object({
 type Formulario = yup.InferType<typeof schema>
 const VAZIO: Formulario = { nome: '', contato: '', faixa: 'GERAL' }
 
-const emReais = (valor: string | number) =>
-  Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const emReais = formatarReais
 
 /**
  * Quem está dentro de um day use, para o dono (web#415, api#505).

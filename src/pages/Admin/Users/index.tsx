@@ -16,6 +16,7 @@ import {
   ModalCancelBtn, ModalConfirmBtn,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
+import { dataCurta } from '../../../utils/datas'
 
 const ROLES = ['Todos', 'PLAYER', 'OWNER', 'ADMIN']
 
@@ -169,7 +170,7 @@ export default function AdminUsers() {
                 <Td><RoleBadge role={u.role} /></Td>
                 <Td center>{u._count?.matchesCreated ?? 0}</Td>
                 <Td center>{u._count?.placesOwned ?? 0}</Td>
-                <Td>{new Date(u.createdAt).toLocaleDateString('pt-BR')}</Td>
+                <Td>{dataCurta(u.createdAt)}</Td>
                 <Td>
                   {u.role !== 'ADMIN' && (
                     <ActionBtn

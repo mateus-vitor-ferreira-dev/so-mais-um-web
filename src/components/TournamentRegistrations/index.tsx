@@ -14,6 +14,7 @@ import {
   CaixaDeRecusa, Justificativa, Nota, Vazio,
 } from './styles'
 import type { EstadoTom } from './styles'
+import { diaEMes } from '../../utils/datas'
 
 interface Props {
   tournament: Tournament
@@ -29,7 +30,7 @@ const ESTADO: Record<string, { texto: string; tom: EstadoTom }> = {
 }
 
 const quando = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+  diaEMes(iso)
 
 /**
  * As inscrições do campeonato, na visão de quem organiza.

@@ -36,6 +36,7 @@ import {
 } from './styles'
 import EmptyState from '../../components/EmptyState'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
+import { dataCurta, hora } from '../../utils/datas'
 
 /**
  * O que cada aba diz quando não há nada, e para onde ela manda (#379).
@@ -331,8 +332,8 @@ export default function MinhasPartidas() {
 
                   {/* A modalidade e o valor, que o cartão de Minhas Partidas não dizia (web#491). */}
                   <InfoRow><SportIcon icon={esporte.icon} fallback={esporte.iconFallback} /> {esporte.label}</InfoRow>
-                  <InfoRow><Calendar /> {new Date(ev.date).toLocaleDateString('pt-BR')}</InfoRow>
-                  <InfoRow><Clock /> {new Date(ev.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</InfoRow>
+                  <InfoRow><Calendar /> {dataCurta(ev.date)}</InfoRow>
+                  <InfoRow><Clock /> {hora(ev.date)}</InfoRow>
 
                   <ProgressBarContainer>
                     <ProgressBar $progress={progress}><div /></ProgressBar>
