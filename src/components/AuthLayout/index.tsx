@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import type { CourtType } from '../../types/api'
 import { useSports } from '../../hooks/useSports'
 import SportIcon from '../SportIcon'
+import iconUrl from '../../assets/icon-so-mais-um.svg'
 import { useEstatisticas } from '../../hooks/useEstatisticas'
 import type { NumerosPublicos } from '../../services/stats'
 import {
@@ -48,6 +49,35 @@ const SPORT_IMAGES: Partial<Record<CourtType, string>> = {
   BASQUETE:     imgBasquete,
   TENIS:        imgTenis,
   POKER:        imgPoker,
+}
+
+/**
+ * A ordem da vitrine: as modalidades alternadas, e nunca abrindo no futebol
+ * (web#493).
+ *
+ * A roda seguia a ordem do `GET /sports`, que agrupa por família e começa em
+ * Society. Então quem chegava para logar via, primeiro, uma foto de futebol e
+ * três modalidades de futebol seguidas na roda: a tela contava o Só+1 como
+ * app de futebol, o mesmo defeito que a landing#100 tirou da landing.
+ *
+ * Aqui o futebol entra a cada quatro, entre famílias diferentes. A lista só
+ * **ordena**: modalidade que a API não devolve não aparece, e a que ela devolver
+ * sem estar aqui entra no fim, em vez de sumir.
+ */
+const ORDEM_DA_VITRINE: string[] = [
+  'BEACH_TENNIS', 'VOLEI_AREIA', 'BASQUETE', 'SOCIETY',
+  'AREIA', 'TENIS', 'VOLEI', 'FUTSAL',
+  'PETECA', 'HANDBALL', 'POKER', 'CAMPO',
+]
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function ordenarVitrine<T extends { id: string }>(modalidades: T[]): T[] {
+  const posicao = (id: string) => {
+    const i = ORDEM_DA_VITRINE.indexOf(id)
+    return i === -1 ? ORDEM_DA_VITRINE.length : i
+  }
+  // `sort` é estável: as que ficam de fora da lista mantêm a ordem da API.
+  return [...modalidades].sort((a, b) => posicao(a.id) - posicao(b.id))
 }
 
 /**
@@ -172,7 +202,8 @@ const SLOT_PADRAO: Slot = { scale: 0.72, opacity: 0.30 }
  *
  */
 export default function AuthLayout({ children }: { children: ReactNode }) {
-  const { sports } = useSports()
+  const { sports: catalogo } = useSports()
+  const sports = useMemo(() => ordenarVitrine(catalogo), [catalogo])
   const { numeros } = useEstatisticas()
 
   const stats = useMemo(() => montarCartoes(numeros), [numeros])
@@ -250,7 +281,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         <BgOverlay />
 
         <Logo style={{ zIndex: 2 }}>
-          <LogoIcon>⚽</LogoIcon>
+          <LogoIcon><img src={iconUrl} alt="" height={22} /></LogoIcon>
           <LogoText>
             <LogoName>Só+1</LogoName>
             <LogoTagline>Jogue hoje, sem combinar.</LogoTagline>
@@ -261,8 +292,8 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <div>
             <Headline>Encontre sua partida.<br />Agora mesmo.</Headline>
             <HeadlineDesc style={{ marginTop: 10 }}>
-              Futebol, futevôlei, vôlei, beach tennis e muito mais —
-              tudo em um lugar só.
+              Beach tennis, vôlei, basquete, futevôlei, futebol e muito
+              mais — tudo em um lugar só.
             </HeadlineDesc>
           </div>
 
