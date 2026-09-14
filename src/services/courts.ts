@@ -17,6 +17,8 @@ export interface CourtInput {
   name: string
   type: CourtType
   pricePerHour?: number | null
+  /** `null` volta a quadra para "não informado" (api#581). */
+  coberta?: boolean | null
 }
 
 export function searchCourts(filters?: CourtFilters): Promise<ApiEnvelope<Court[]>> {

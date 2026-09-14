@@ -90,3 +90,13 @@ export const Aviso = styled.p<{ $tom: 'erro' | 'atencao' }>`
   background: ${({ theme, $tom }) =>
     $tom === 'erro' ? theme.colors.errorLight : theme.colors.warningLight};
 `
+
+/** O motivo vai por escrito ao lado da marcação em risco: a cor sozinha não diz qual é. */
+export const MotivoDoRisco = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  color: ${({ theme }) => theme.colors.error};
+  background: ${({ theme }) => theme.colors.errorLight};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  padding: 1px 6px;
+`

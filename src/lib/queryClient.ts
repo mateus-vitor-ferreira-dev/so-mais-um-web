@@ -135,6 +135,13 @@ export const chaves = {
    * foi para quarta veria as marcações de terça desenhadas sobre a quarta.
    */
   agendaDaQuadra: (courtId: string, dia: string) => ['quadras', courtId, 'agenda', dia] as const,
+  /** Os espaços do dono logado, para quem precisa escolher um antes de mostrar qualquer coisa. */
+  meusEspacos: (userId: string) => ['meus-espacos', userId] as const,
+  /**
+   * A previsão do dia da agenda do dono (web#477). Por espaço **e por dia**,
+   * pelo mesmo motivo da agenda: outro dia é outra resposta.
+   */
+  previsaoDoEspaco: (placeId: string, dia: string) => ['espacos', placeId, 'previsao', dia] as const,
   /**
    * A rede social (api#387).
    *

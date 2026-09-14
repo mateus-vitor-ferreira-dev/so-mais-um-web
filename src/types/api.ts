@@ -320,6 +320,14 @@ export interface Court {
     type: CourtType;
     status: CourtStatus;
     pricePerHour: string | number | null;
+    /**
+     * Se a quadra tem teto (api#581). `null` é "não informado", e a api o trata
+     * como descoberta: a quadra recebe previsão e aviso de chuva.
+     *
+     * Opcional porque as respostas resumidas (a quadra dentro da partida, do day
+     * use) não o trazem.
+     */
+    coberta?: boolean | null;
     placeId: string;
     place?: PlaceSummary & { owner?: { id: string; name: string } | null };
     createdAt: IsoDate;
@@ -1486,6 +1494,81 @@ export interface AgendaDaQuadra {
     de: string;
     ate: string;
     ocupacoes: OcupacaoDaQuadra[];
+}
+
+/**
+ * A leitura do tempo (api#583, épico api#580).
+ *
+ * **A web mostra, e não calcula.** Risco e motivos vêm prontos da api, que é
+ * onde moram os limiares: conta que mora em dois lugares passa a discordar, e a
+ * mesma quadra seria "risco alto" numa tela e "atenção" na outra.
+ *
+ * - `HORA`: o jogo está a até 48h, e `horas` traz cada hora que ele toca;
+ * - `DIA`: de 2 a 10 dias, e `dia` traz a previsão do dia civil;
+ * - `AINDA_LONGE`: `disponivelEm` diz a partir de quando a previsão aparece;
+ * - `COBERTA`, `SEM_LOCAL` e `PASSOU`: nada a mostrar além disso.
+ */
+export type AlcanceDaPrevisao = "HORA" | "DIA" | "AINDA_LONGE" | "COBERTA" | "SEM_LOCAL" | "PASSOU";
+export type RiscoDoTempo = "NENHUM" | "ATENCAO" | "ALTO";
+/** Do mais grave ao mais leve — é a ordem em que a api os devolve. */
+export type MotivoDoRisco = "TEMPESTADE" | "CHUVA" | "VENTO" | "CALOR";
+
+export interface AvaliacaoDoTempo {
+    risco: RiscoDoTempo;
+    motivos: MotivoDoRisco[];
+}
+
+/** Uma hora da previsão. Número que a Google não mandou vem `null`. */
+export interface HoraDoTempo extends AvaliacaoDoTempo {
+    inicio: IsoDate;
+    fim: IsoDate;
+    /** °C */
+    temperatura: number | null;
+    sensacao: number | null;
+    /** % */
+    chanceDeChuva: number | null;
+    chuvaMm: number | null;
+    chanceDeTempestade: number | null;
+    /** km/h */
+    vento: number | null;
+    rajada: number | null;
+    uv: number | null;
+    /** O `weatherCondition.type` da Google — `RAIN`, `CLEAR`… —, para o ícone. */
+    condicao: string | null;
+}
+
+export interface DiaDoTempo extends AvaliacaoDoTempo {
+    /** `AAAA-MM-DD`, o dia civil do espaço. */
+    data: string;
+    maxima: number | null;
+    minima: number | null;
+    sensacaoMaxima: number | null;
+    chanceDeChuva: number | null;
+    chanceDeTempestade: number | null;
+    vento: number | null;
+    condicao: string | null;
+}
+
+export interface LeituraDoTempo extends AvaliacaoDoTempo {
+    alcance: AlcanceDaPrevisao;
+    /** Só no `AINDA_LONGE`: `AAAA-MM-DD`. */
+    disponivelEm?: string;
+    /** Só no `HORA`. */
+    horas?: HoraDoTempo[];
+    /** Só no `DIA`. */
+    dia?: DiaDoTempo;
+}
+
+/** `GET /places/:placeId/previsao?data=` — o dia da agenda do dono, uma leitura por quadra. */
+export interface PrevisaoDoEspaco {
+    data: string;
+    quadras: Array<{
+        courtId: string;
+        nome: string;
+        tipo: CourtType;
+        coberta: boolean | null;
+        leitura: LeituraDoTempo;
+    }>;
 }
 
 /**

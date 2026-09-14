@@ -45,6 +45,7 @@ const NAO_SAO_VOCABULARIO = new Set([
   'PerfilEsportivo', 'PhoneInput', 'PlanGate', 'RegrasDaPartida',
   'RequisitosDaPartida', 'SorteioDeTimes', 'SportIcon', 'SportSelect',
   'StatCard', 'SubscriptionGate', 'TournamentBracket', 'TournamentRegistrations',
+  'TempoNaAgenda', // a agenda do dia do dono com a previsão: fala com a api (web#477)
   'VinculosDeProfessor',
 ])
 
