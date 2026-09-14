@@ -1,10 +1,8 @@
 import styled from 'styled-components'
 
-export const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[6]};
-  max-width: 1200px;
-  margin: 0 auto;
-`
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
+export const Container = styled.div``
 
 export const StatsCard = styled.div`
   background: ${({ theme }) => theme.colors.primary};

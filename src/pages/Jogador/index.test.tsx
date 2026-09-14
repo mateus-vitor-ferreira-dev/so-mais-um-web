@@ -70,7 +70,8 @@ describe('Jogador', () => {
     monta()
 
     expect(await screen.findByRole('heading', { name: 'Ana Ribeiro' })).toBeInTheDocument()
-    expect(screen.getByText(/4\.6/)).toBeInTheDocument()
+    // Com vírgula desde a web#492: a nota passa pelo formatarNota.
+    expect(screen.getByText(/4,6/)).toBeInTheDocument()
     expect(screen.getByText(/21 partidas/)).toBeInTheDocument()
     expect(await screen.findByRole('button', { name: 'Seguir Ana Ribeiro' })).toBeInTheDocument()
   })

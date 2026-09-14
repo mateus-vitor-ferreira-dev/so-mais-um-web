@@ -25,11 +25,9 @@ import CaptainBadge from '../../components/CaptainBadge'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
 import ErrorState from '../../components/ErrorState'
 import EmptyState from '../../components/EmptyState'
+import { dataEHora } from '../../utils/datas'
 
-const formatarData = (iso: string) =>
-  new Date(iso).toLocaleString('pt-BR', {
-    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit',
-  })
+const formatarData = (iso: string) => dataEHora(iso)
 
 const iniciais = (nome: string) => nome.trim().charAt(0).toUpperCase()
 

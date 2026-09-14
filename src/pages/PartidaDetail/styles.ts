@@ -395,15 +395,6 @@ export const MapLink = styled.a`
   &:hover { text-decoration: underline; }
 `
 
-export const LoadingBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60vh;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`
-
 /* ── Sair da partida ─────────────────────────────────────────────────────── */
 
 export const LeaveBtn = styled.button`

@@ -1,25 +1,22 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { MapPin, Clock, Users, Search, Zap } from 'lucide-react'
+import { Search, Zap, Trophy, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
-import { useSports, getSportMeta } from '../../hooks/useSports'
+import { useSports } from '../../hooks/useSports'
+import CartaoDePartida, { type PartidaDoCartao } from '../../components/CartaoDePartida'
 import SportIcon from '../../components/SportIcon'
-import { PartidasPerto } from '../../components/PartidasPerto'
 import type { CourtType } from '../../types/api'
+import { PartidasPerto } from '../../components/PartidasPerto'
 import {
-  PageWrapper, CompactHeader, GreetingBlock, GreetingText, GreetingTitle,
-  StatsRow, StatBox, StatIconBox, StatInfo, StatValue, StatLabel,
-  TabsWrapper, TabsRow, TabsFade, Tab, SectionBlock, SectionHeader,
-  SectionTitle, SectionSubtitle, GamesGrid, GameCardWrapper, CardTop,
-  CardCourtIcon, CardCourtInfo, CourtName, SportBadge, VagasBadge, CardMeta,
-  MetaRow, CardBottom, PlayerCount, Price, ProgressBar, ProgressFill, CTARow,
-  CTAPrimary, CTASecondary,
+  PageWrapper, StatsRow, StatBox, StatIconBox, StatInfo, StatValue, StatLabel, TabsWrapper, TabsRow, TabsFade, TabsSeta, Tab, SectionBlock, SectionHeader, SectionTitle, SectionSubtitle, GamesGrid, CTARow, CTAPrimary, CTASecondary,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
 import { SkeletonCard } from '../../components/Skeleton'
+import { formatarNota } from '../../utils/numeros'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 interface FiltroTab {
   id: string
@@ -67,31 +64,26 @@ function getParticipationCount(event: EventoSolto): number {
   return 0
 }
 
-function getEventDateStr(event: EventoSolto): string {
-  const raw = (event.scheduledAt || event.startTime || event.date || event.startsAt) as string | undefined
-  if (!raw) return ''
-  const d = new Date(raw)
-  const datePart = d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }).replace(/\.$/, '')
-  const timePart = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-  return `${datePart} · ${timePart}`
-}
-
-function getCourtName(event: EventoSolto): string {
-  return (event.courtName || event.court?.name || event.name || 'Quadra') as string
-}
-
-function getAddress(event: EventoSolto): string {
-  return (event.address || event.court?.address || event.court?.place?.address || event.place || event.city || '') as string
-}
-
-function getPricePerPlayer(event: EventoSolto): string {
-  const total = parseFloat(String(event.totalValue ?? event.price ?? 0))
-  const players = Number(event.maxPlayers) || 1
-  return (total / players).toFixed(0)
+/**
+ * O evento solto no formato do `CartaoDePartida` (web#492). Os nomes
+ * alternativos de campo continuam aceitos, pelo mesmo motivo do comentário
+ * acima: a Home ainda recebe listas de mais de uma origem.
+ */
+function paraOCartao(event: EventoSolto): PartidaDoCartao {
+  return {
+    id: String(event.id),
+    date: String(event.scheduledAt || event.startTime || event.date || event.startsAt || ''),
+    maxPlayers: Number(event.maxPlayers) || 0,
+    totalValue: String(event.totalValue ?? event.price ?? 0),
+    _count: { participations: getParticipationCount(event) },
+    court: event.court as PartidaDoCartao['court'],
+  }
 }
 
 export default function Home() {
   const { user } = useAuth()
+  // A saudação vai para a topbar, no lugar do título (web#493).
+  usePageHeader(`${getGreeting()}, ${user?.name?.split(' ')[0] || 'Jogador'}!`, 'E aí, bora jogar hoje?')
   const navigate = useNavigate()
   const { sports: allSports } = useSports()
   const SPORT_TABS = [ALL_TAB, ...allSports]
@@ -143,6 +135,11 @@ export default function Home() {
     setShowRightFade(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
   }, [])
 
+  const rolarModalidades = (lado: 1 | -1) => {
+    const el = tabsRef.current
+    el?.scrollBy({ left: lado * el.clientWidth * 0.6, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     updateFades()
     window.addEventListener('resize', updateFades)
@@ -153,19 +150,9 @@ export default function Home() {
     activeTabRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
   }, [activeSport])
 
-  const firstName = user?.name?.split(' ')[0] || 'Jogador'
-
   return (
     <>
       <PageWrapper>
-
-        {/* Saudação compacta */}
-        <CompactHeader>
-          <GreetingBlock>
-            <GreetingText>👋 {getGreeting()}, {firstName}!</GreetingText>
-            <GreetingTitle>E aí, bora jogar hoje?</GreetingTitle>
-          </GreetingBlock>
-        </CompactHeader>
 
         {/* Ações — encontrar ou criar uma partida, lado a lado, sem precisar rolar a tela */}
         <CTARow>
@@ -182,21 +169,21 @@ export default function Home() {
         {/* Métricas do jogador */}
         <StatsRow>
           <StatBox>
-            <StatIconBox>🏆</StatIconBox>
+            <StatIconBox><Trophy size={22} aria-hidden /></StatIconBox>
             <StatInfo>
               <StatValue>{totalGames}</StatValue>
               <StatLabel>Partidas</StatLabel>
             </StatInfo>
           </StatBox>
           <StatBox>
-            <StatIconBox>⭐</StatIconBox>
+            <StatIconBox><Star size={22} aria-hidden /></StatIconBox>
             <StatInfo>
               {/*
                 * Era user.rating — campo inexistente na API, então o ternário
                 * sempre caía no '—'. O valor real é stats.averageStars, que
                 * /auth/me passou a devolver na api#239.
                 */}
-              <StatValue>{user?.stats?.averageStars != null ? Number(user.stats.averageStars).toFixed(1) : '—'}</StatValue>
+              <StatValue>{user?.stats?.averageStars != null ? formatarNota(user.stats.averageStars) : '—'}</StatValue>
               <StatLabel>Nota</StatLabel>
             </StatInfo>
           </StatBox>
@@ -223,6 +210,16 @@ export default function Home() {
           </TabsRow>
           <TabsFade $side="left" $visible={showLeftFade} />
           <TabsFade $side="right" $visible={showRightFade} />
+          {showLeftFade && (
+            <TabsSeta type="button" $side="left" aria-label="Modalidades anteriores" onClick={() => rolarModalidades(-1)}>
+              <ChevronLeft size={18} aria-hidden />
+            </TabsSeta>
+          )}
+          {showRightFade && (
+            <TabsSeta type="button" $side="right" aria-label="Mais modalidades" onClick={() => rolarModalidades(1)}>
+              <ChevronRight size={18} aria-hidden />
+            </TabsSeta>
+          )}
         </TabsWrapper>
 
         {/* Partidas disponíveis — conteúdo dominante */}
@@ -251,58 +248,13 @@ export default function Home() {
             <EmptyState>Nenhuma partida disponível no momento.</EmptyState>
           ) : (
             <GamesGrid>
-              {filteredEvents.slice(0, 4).map((event: EventoSolto) => {
-                const participations = getParticipationCount(event)
-                const maxPlayers = Number(event.maxPlayers) || 0
-                const vagas = maxPlayers - participations
-                const pct = maxPlayers > 0 ? Math.round((participations / maxPlayers) * 100) : 0
-                const courtName = getCourtName(event)
-                const sport = getSportMeta(event.court?.type as CourtType)
-                const sportLabel = sport.label
-                const address = getAddress(event)
-                const dateStr = getEventDateStr(event)
-                const pricePerPlayer = getPricePerPlayer(event)
-
-                return (
-                  <GameCardWrapper key={String(event.id)} onClick={() => navigate(`/partida/${String(event.id)}`)}>
-                    <CardTop>
-                      <CardCourtIcon><SportIcon icon={sport.icon} fallback={sport.iconFallback} /></CardCourtIcon>
-                      <CardCourtInfo>
-                        <CourtName>{courtName}</CourtName>
-                        <SportBadge>{sportLabel}</SportBadge>
-                      </CardCourtInfo>
-                      {vagas > 0 && <VagasBadge>{vagas} vagas</VagasBadge>}
-                    </CardTop>
-
-                    <CardMeta>
-                      {address && (
-                        <MetaRow>
-                          <MapPin size={14} />
-                          {address}
-                        </MetaRow>
-                      )}
-                      {dateStr && (
-                        <MetaRow>
-                          <Clock size={14} />
-                          {dateStr}
-                        </MetaRow>
-                      )}
-                    </CardMeta>
-
-                    <CardBottom>
-                      <PlayerCount>
-                        <Users size={14} />
-                        {participations}/{maxPlayers}
-                      </PlayerCount>
-                      {Number(pricePerPlayer) > 0 && <Price>R$ {pricePerPlayer}</Price>}
-                    </CardBottom>
-
-                    <ProgressBar>
-                      <ProgressFill $pct={pct} />
-                    </ProgressBar>
-                  </GameCardWrapper>
-                )
-              })}
+              {filteredEvents.slice(0, 4).map((event: EventoSolto) => (
+                <CartaoDePartida
+                  key={String(event.id)}
+                  partida={paraOCartao(event)}
+                  aoAbrir={() => navigate(`/partida/${String(event.id)}`)}
+                />
+              ))}
             </GamesGrid>
           )}
         </SectionBlock>

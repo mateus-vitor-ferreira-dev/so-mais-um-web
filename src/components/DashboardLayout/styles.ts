@@ -280,7 +280,7 @@ export const UserName = styled.span`
 export const UserRole = styled.span<{ accent?: string; }>`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  color: ${({ accent }) => accent};
+  color: ${({ accent, theme }) => accent ?? theme.colors.textMuted};
 `
 
 // ── Main area ─────────────────────────────────────────────────────────────────
@@ -326,18 +326,51 @@ export const TopbarTitle = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.textPrimary};
   margin: 0 0 2px;
+
+  /* No celular o título divide a linha com o menu, o sino e a ação da página:
+     uma linha só, cortada, em vez de empurrar a barra para duas (web#493). */
+  @media (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `
 
 export const TopbarSub = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 0;
+
+  @media (max-width: 768px) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `
 
 export const TopbarActions = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+
+  /* No celular, a ação da página que tem ícone fica só com o ícone (web#493).
+     Com o rótulo inteiro, "Criar Partida" deixava para o título "Minhas ...".
+     O texto continua no botão, só sem tamanho: é ele que dá o nome acessível. */
+  @media (max-width: 768px) {
+    .acoes-da-pagina > button:has(svg) {
+      font-size: 0;
+      gap: 0;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      justify-content: center;
+    }
+
+    .acoes-da-pagina > button:has(svg) svg {
+      margin: 0 !important;
+    }
+  }
 `
 
 export const TopbarRow = styled.div`
@@ -364,4 +397,15 @@ export const Content = styled.main`
   @media (max-width: 768px) {
     padding: 20px 16px;
   }
+`
+
+/**
+ * A largura do conteúdo, a mesma para jogador, dono e admin (web#493).
+ *
+ * Até a #493 cada página do jogador escolhia a sua (1100, 1200, 780 centrado,
+ * 680 à esquerda), e o painel do dono ocupava a tela toda. Numa tela larga, o
+ * título da topbar ficava num lugar e o conteúdo começava em outro.
+ */
+export const LarguraDoConteudo = styled.div`
+  max-width: 1200px;
 `

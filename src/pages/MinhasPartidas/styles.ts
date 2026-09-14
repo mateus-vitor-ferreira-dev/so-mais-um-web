@@ -1,22 +1,9 @@
 import styled from 'styled-components'
+import type { TomDoStatus } from '../../constants/statusDaPartida'
 
-export const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[6]};
-  max-width: 1200px;
-  margin: 0 auto;
-`
-
-export const PageHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-
-  h1 {
-    font-size: ${({ theme }) => theme.fontSizes['3xl']};
-    color: ${({ theme }) => theme.colors.textPrimary};
-  }
-`
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
+export const Container = styled.div``
 
 export const CreateButton = styled.button`
   background: ${({ theme }) => theme.colors.primary};
@@ -171,4 +158,48 @@ export const ButtonGroup = styled.div`
       cursor: not-allowed;
     }
   }
+`
+
+/**
+ * O selo de status com a cor do tom (web#491), pelas mesmas cores semânticas do
+ * tema — que o `contraste.test.ts` mede nos dois temas.
+ */
+export const SeloDeStatus = styled.span<{ $tom: TomDoStatus }>`
+  white-space: nowrap;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  padding: 4px 8px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  color: ${({ theme, $tom }) =>
+    ({ aberta: theme.colors.success, cheia: theme.colors.warningText, fim: theme.colors.textSecondary, cancelada: theme.colors.error })[$tom]};
+  background: ${({ theme, $tom }) =>
+    ({ aberta: theme.colors.successLight, cheia: theme.colors.warningLight, fim: theme.colors.border, cancelada: theme.colors.errorLight })[$tom]};
+`
+
+export const AcoesDoStatus = styled.div`
+  display: flex;
+  gap: 8px;
+`
+
+/**
+ * Os botões de quem organiza, pelas cores do tema (web#492). Eram estilo em
+ * linha com `#f0fdf4`, `#fee2e2` e `#eff6ff` fixos, e no tema escuro saíam
+ * como três placas claras no meio do cartão escuro.
+ */
+export const AcaoDoOrganizador = styled.button<{ $tom: 'finalizar' | 'cancelar' | 'presencas' }>`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  cursor: pointer;
+  border: 1px solid
+    ${({ theme, $tom }) => ({ finalizar: theme.colors.border, cancelar: theme.colors.errorLight, presencas: theme.colors.info })[$tom]};
+  background: ${({ theme, $tom }) => ({ finalizar: theme.colors.primarySubtle, cancelar: theme.colors.errorLight, presencas: theme.colors.infoLight })[$tom]};
+  color: ${({ theme, $tom }) => ({ finalizar: theme.colors.primaryDark, cancelar: theme.colors.error, presencas: theme.colors.info })[$tom]};
 `

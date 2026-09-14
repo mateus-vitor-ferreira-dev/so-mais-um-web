@@ -205,18 +205,10 @@ export const EmptyBracket = styled.div`
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: ${({ theme }) => theme.fontSizes.sm};
 
-  span {
-    font-size: 2.5rem;
+  svg {
     display: block;
-    margin-bottom: 12px;
+    margin: 0 auto 12px;
   }
-`
-
-export const LoadingBracket = styled.div`
-  text-align: center;
-  padding: 48px 20px;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
 `
 
 export const LevelBadge = styled.span`

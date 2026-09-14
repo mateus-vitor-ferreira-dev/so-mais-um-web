@@ -4,6 +4,7 @@ import { descreveRequisito } from '../../utils/requisitos'
 import { teamsService } from '../../services/teams'
 import { chaves } from '../../lib/queryClient'
 import { Bloco, Titulo, Lista, Item, Marca, Texto, Falta, Etiqueta, ApenasLeitor } from './styles'
+import { formatarNota } from '../../utils/numeros'
 
 interface Props {
   /** As regras da partida, como vêm na leitura — inclusive para quem não está logado. */
@@ -41,7 +42,7 @@ function oQueFalta(resultado: EntryRequirementResult): string | null {
   }
 
   if (resultado.type === 'MIN_AVERAGE_RATING') {
-    return `A sua está em ${numeros.atual.toFixed(1)}.`
+    return `A sua está em ${formatarNota(numeros.atual)}.`
   }
 
   return null

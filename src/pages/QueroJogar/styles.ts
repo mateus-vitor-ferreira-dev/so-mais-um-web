@@ -1,10 +1,8 @@
 import styled from 'styled-components'
 
-export const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[6]};
-  max-width: 1200px;
-  margin: 0 auto;
-`
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
+export const Container = styled.div``
 
 /**
  * Voltar, no mesmo desenho do `BackBtn` do detalhe da partida — botão de texto
@@ -28,21 +26,6 @@ export const BackBtn = styled.button`
   &:hover { color: ${({ theme }) => theme.colors.textPrimary}; }
 `
 
-export const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-
-  h1 {
-    font-size: ${({ theme }) => theme.fontSizes['3xl']};
-    color: ${({ theme }) => theme.colors.textPrimary};
-    font-weight: ${({ theme }) => theme.fontWeights.bold};
-  }
-
-  p {
-    color: ${({ theme }) => theme.colors.textSecondary};
-    margin-top: ${({ theme }) => theme.spacing[2]};
-  }
-`
-
 export const FiltersArea = styled.div`
   display: flex;
   flex-direction: column;
@@ -57,6 +40,9 @@ export const SearchInput = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   padding: 0 ${({ theme }) => theme.spacing[4]};
+  /* Sem isto a largura natural do input empurrava o botão de filtros para
+     fora da tela no celular (#492). */
+  min-width: 0;
 
   svg {
     color: ${({ theme }) => theme.colors.textMuted};
@@ -65,6 +51,7 @@ export const SearchInput = styled.div`
 
   input {
     flex: 1;
+    min-width: 0;
     padding: ${({ theme }) => theme.spacing[3]} 0;
     border: none;
     outline: none;
@@ -85,6 +72,9 @@ export const ChipsContainer = styled.div`
 `
 
 export const Chip = styled.button<{ $active?: boolean; }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: ${({ theme, $active }) =>
     $active ? theme.colors.primary : theme.colors.bgCard};
   color: ${({ theme, $active }) =>
@@ -103,14 +93,6 @@ export const Chip = styled.button<{ $active?: boolean; }>`
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
   }
-`
-
-export const HeaderRow = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
 `
 
 export const ViewToggle = styled.div`
@@ -180,11 +162,27 @@ export const Card = styled.div`
   }
 `
 
+/**
+ * O `gap` e o `min-width: 0` são o conserto da web#491: sem eles o nome longo
+ * do espaço ("Associação Olímpica de Lavras") quebrava linha por baixo dos
+ * selos, e o texto encostava no status. O texto encolhe; os selos, não.
+ */
 export const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing[3]};
   margin-bottom: ${({ theme }) => theme.spacing[4]};
+
+  > div:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  > div:last-child {
+    flex-shrink: 0;
+    max-width: 60%;
+  }
 
   h3 {
     font-size: ${({ theme }) => theme.fontSizes.lg};
@@ -199,6 +197,7 @@ export const CardHeader = styled.div`
   }
 
   .badge {
+    white-space: nowrap;
     font-size: ${({ theme }) => theme.fontSizes.xs};
     color: ${({ theme }) => theme.colors.primaryDark};
     background: ${({ theme }) => theme.colors.primaryLight};
@@ -481,8 +480,11 @@ export const ActionButton = styled.button<{ $isJoined?: boolean; }>`
   }
 `
 
+/* Os dois botões não cabem lado a lado num celular de 390px: quebram para a
+   linha de baixo em vez de sair da tela e arrastar a página para o lado (#492). */
 export const SportBtnsRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing[3]};
 `
 

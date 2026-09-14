@@ -150,7 +150,7 @@ describe('RequisitosDaPartida', () => {
     // "Faltam 30%" soaria como conta, não como caminho: presença e nota
     // dependem de COMO a pessoa joga, e não de quantas vezes.
     expect(screen.getByText('A sua está em 50%.')).toBeInTheDocument()
-    expect(screen.getByText('A sua está em 3.2.')).toBeInTheDocument()
+    expect(screen.getByText('A sua está em 3,2.')).toBeInTheDocument()
     expect(screen.queryByText(/Faltam/)).not.toBeInTheDocument()
   })
 

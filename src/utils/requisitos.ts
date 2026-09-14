@@ -5,6 +5,7 @@ import type {
   PartidaVisibility,
   UserBadge,
 } from '../types/api'
+import { formatarNota } from './numeros'
 
 /**
  * O vocabulário das regras de entrada, num lugar só (#228).
@@ -147,7 +148,7 @@ export function descreveRequisito(
       // `1` seria ambíguo. A tela é quem traduz para o número que se lê.
       return `Presença mínima de ${Math.round((min ?? 0) * 100)}%`
     case 'MIN_AVERAGE_RATING':
-      return `Nota média a partir de ${(min ?? 0).toFixed(1)}`
+      return `Nota média a partir de ${formatarNota(min ?? 0)}`
     case 'MIN_MATCHES_PLAYED':
       return min === 1 ? 'Ter jogado ao menos 1 partida' : `Ter jogado ao menos ${min ?? 0} partidas`
     case 'BADGE': {

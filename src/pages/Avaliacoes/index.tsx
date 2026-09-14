@@ -7,6 +7,9 @@ import {
   ReviewHeader, TagBadge, ReviewComment,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
+import { dataCurta } from '../../utils/datas'
+import { formatarNota } from '../../utils/numeros'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 const TAG_LABELS: Record<string, string> = {
   CRAQUE_DA_PARTIDA: 'Craque da Partida',
@@ -22,10 +25,11 @@ function renderStars(count: number) {
 }
 
 function formatDate(dateStr: string) {
-  return dateStr ? new Date(dateStr).toLocaleDateString('pt-BR') : ''
+  return dateStr ? dataCurta(dateStr) : ''
 }
 
 export default function Avaliacoes() {
+  usePageHeader('Minhas Avaliações')
   const { user } = useAuth()
   const [summary, setSummary]           = useState<Partial<UserStats>>({})
   const [reviews, setReviews]           = useState<Review[]>([])
@@ -54,14 +58,12 @@ export default function Avaliacoes() {
   }, [user])
 
   const avgStars = summary.averageStars
-    ? Number(summary.averageStars).toFixed(1)
+    ? formatarNota(summary.averageStars)
     : 'N/A'
 
   return (
     <>
       <Container>
-        <h1>Minhas Avaliações</h1>
-
         <StatsCard>
           <div className="stat-item">
             <h2>⭐ {avgStars}</h2>

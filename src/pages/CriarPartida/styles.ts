@@ -4,23 +4,6 @@ export const Container = styled.div`
   max-width: 680px;
 `
 
-export const PageHeader = styled.div`
-  margin-bottom: 28px;
-`
-
-export const Title = styled.h2`
-  font-size: ${({ theme }) => theme.fontSizes['2xl']};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  margin: 0 0 4px;
-`
-
-export const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  margin: 0;
-`
-
 export const StepIndicator = styled.div`
   display: flex;
   align-items: center;

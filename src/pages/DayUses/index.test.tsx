@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useSearchParams } from 'react-router-dom'
 import { renderWithProviders, screen } from '../../test/render'
+import { ComTopbar } from '../../test/topbar'
 import DayUses from './index'
 import type { FiltrosDeDayUse } from '../../types/api'
 
@@ -89,7 +90,7 @@ describe('DayUses', () => {
     })
 
     it('não promete "hoje" no título, porque a lista não corta em hoje', () => {
-      renderWithProviders(<DayUses />)
+      renderWithProviders(<ComTopbar><DayUses /></ComTopbar>)
 
       expect(screen.getByRole('heading', { name: 'Day uses' })).toBeInTheDocument()
       expect(screen.queryByRole('heading', { name: /de hoje/i })).not.toBeInTheDocument()

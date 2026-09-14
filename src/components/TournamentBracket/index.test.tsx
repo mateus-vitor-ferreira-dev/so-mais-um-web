@@ -114,6 +114,18 @@ beforeEach(() => {
   buscaPartidas.mockResolvedValue({ success: true, data: [] })
 })
 
+describe('TournamentBracket — enquanto carrega', () => {
+  // Era "Carregando chaveamento..." solto no meio da seção (web#493).
+  it('mostra a forma da chave, e não um texto', () => {
+    buscaDivisoes.mockReturnValue(new Promise(() => {}))
+
+    renderWithProviders(<TournamentBracket tournamentId="torneio-1" />)
+
+    expect(screen.getByLabelText('Carregando chaveamento')).toHaveAttribute('aria-busy', 'true')
+    expect(screen.queryByText(/Carregando/)).not.toBeInTheDocument()
+  })
+})
+
 describe('TournamentBracket — divisão sem chaveamento', () => {
   it('não inventa participante nenhum quando a divisão tem vagas', async () => {
     buscaDivisoes.mockResolvedValue({ success: true, data: [divisao()] })

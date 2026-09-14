@@ -50,7 +50,12 @@ export const BgOverlay = styled.div`
 export const Logo = styled.div`
   display: flex; align-items: center; gap: 10px; z-index: 1;
 `
-export const LogoIcon    = styled.span`font-size: 26px; line-height: 1;`
+export const LogoIcon    = styled.span`
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; flex-shrink: 0;
+  background: #3BAA34; border-radius: 9px;
+  img { display: block; }
+`
 export const LogoText    = styled.div`display: flex; flex-direction: column;`
 export const LogoName    = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.lg};

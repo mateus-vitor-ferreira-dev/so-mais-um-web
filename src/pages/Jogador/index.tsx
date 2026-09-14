@@ -13,6 +13,8 @@ import {
   Aba, Avatar, BackLink, Container, Contadores, Erro, Hero, Identidade,
   Nome, Reputacao,
 } from './styles'
+import { formatarNota } from '../../utils/numeros'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 const iniciais = (nome: string) => nome.trim().charAt(0).toUpperCase()
 
@@ -44,6 +46,7 @@ type AbaAtiva = 'seguidores' | 'seguindo'
  * com esta pessoa, no selo ao lado do botão, e nada além.
  */
 export default function Jogador() {
+  usePageHeader('Perfil do jogador')
   const { userId = '' } = useParams<{ userId: string }>()
   const navigate = useNavigate()
   const [aba, setAba] = useState<AbaAtiva>('seguidores')
@@ -113,7 +116,7 @@ export default function Jogador() {
               'Sem avaliações ainda'
             ) : (
               <>
-                <Star size={13} aria-hidden /> {stats.averageStars.toFixed(1)} ·{' '}
+                <Star size={13} aria-hidden /> {formatarNota(stats.averageStars)} ·{' '}
                 {stats.totalReviews} {stats.totalReviews === 1 ? 'avaliação' : 'avaliações'}
               </>
             )}

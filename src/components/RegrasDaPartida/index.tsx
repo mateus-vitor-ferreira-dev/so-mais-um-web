@@ -15,6 +15,7 @@ import {
   NotaDeEfeito,
   Subtitulo,
 } from './styles'
+import { dataCurta } from '../../utils/datas'
 
 interface Props {
   partida: Partida
@@ -140,7 +141,7 @@ export function RegrasDaPartida({ partida, onClose, onSaved }: Props) {
       >
         <h2>Regras de acesso</h2>
         <Subtitulo>
-          {partida.court?.place?.name} &mdash; {new Date(partida.date).toLocaleDateString('pt-BR')}
+          {partida.court?.place?.name} &mdash; {dataCurta(partida.date)}
         </Subtitulo>
 
         {carregando ? (

@@ -34,6 +34,10 @@ export function usePageHeader(title: string, sub?: string) {
 
   useEffect(() => {
     setHeader?.(title, sub)
+    // Ao sair, a página leva o título junto (web#493). Sem isto, a página
+    // seguinte que não publica nada herdaria o título da anterior; com isto,
+    // ela cai no título padrão do layout, o do item do menu.
+    return () => setHeader?.('')
   }, [setHeader, title, sub])
 }
 
@@ -46,9 +50,12 @@ export function usePageHeader(title: string, sub?: string) {
  */
 export function PageActions({ children }: { children: ReactNode }) {
   const ctx = useContext(PageHeaderContext)
+  // Fora de layout nenhum, as ações ficam no corpo da página: é o caso do
+  // teste que monta a página sozinha, e de rota que um dia a monte sem painel.
+  if (!ctx) return <>{children}</>
   // Na primeira passada o slot ainda não existe: o ref do layout só resolve
   // depois da montagem. O re-render que o `useState` do slot dispara traz o
   // conteúdo no ciclo seguinte.
-  if (!ctx?.actionsSlot) return null
+  if (!ctx.actionsSlot) return null
   return createPortal(children, ctx.actionsSlot)
 }

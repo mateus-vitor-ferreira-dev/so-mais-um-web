@@ -14,6 +14,9 @@ import {
   EvalModalOverlay, EvalModalContent, ParticipantRow,
   ProgressInfo, ProgressBarWrap, CommentTextarea,
 } from './styles'
+import { formatarNota } from '../../utils/numeros'
+import { dataCurta, hora } from '../../utils/datas'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 const TAG_OPTIONS = [
   { label: 'Craque da Partida', value: 'CRAQUE_DA_PARTIDA' },
@@ -35,6 +38,7 @@ interface AvaliacaoEmEdicao {
 }
 
 export default function Historico() {
+  usePageHeader('Meu Histórico')
   const { user } = useAuth()
   const [history, setHistory] = useState<Participation[]>([])
   const [reviewSummary, setReviewSummary] = useState<Partial<UserStats>>({})
@@ -120,7 +124,7 @@ export default function Historico() {
   }
 
   const avgStars = reviewSummary.averageStars
-    ? Number(reviewSummary.averageStars).toFixed(1)
+    ? formatarNota(reviewSummary.averageStars)
     : 'N/A'
 
   const progressPct = reviewProgress
@@ -130,8 +134,6 @@ export default function Historico() {
   return (
     <>
       <Container>
-        <h1>Meu Histórico</h1>
-
         <StatsCard>
           <div className="stat-item">
             <h2>⭐ {avgStars}</h2>
@@ -160,8 +162,8 @@ export default function Historico() {
                 <div className="info">
                   <h4>{ev.court?.place?.name} — <SportIcon icon={sport.icon} fallback={sport.iconFallback} /> {sport.label}</h4>
                   <p>
-                    {new Date(ev.date).toLocaleDateString('pt-BR')} às{' '}
-                    {new Date(ev.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {dataCurta(ev.date)} às{' '}
+                    {hora(ev.date)}
                   </p>
                 </div>
                 <div className="action">

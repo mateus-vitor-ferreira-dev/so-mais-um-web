@@ -45,7 +45,7 @@ export default function ResetPassword() {
   if (!token) {
     return (
       <AuthLayout>
-        <FormTitle>Link inválido ⚠️</FormTitle>
+        <FormTitle>Link inválido</FormTitle>
         <FormSubtitle>Este link de redefinição é inválido ou já expirou.</FormSubtitle>
         <SwitchText>
           <button onClick={() => navigate('/esqueci-senha')}>Solicitar novo link</button>
@@ -57,7 +57,7 @@ export default function ResetPassword() {
   if (isSubmitSuccessful) {
     return (
       <AuthLayout>
-        <FormTitle>Senha redefinida! ✅</FormTitle>
+        <FormTitle>Senha redefinida!</FormTitle>
         <FormSubtitle>Sua senha foi atualizada com sucesso. Agora você pode entrar.</FormSubtitle>
         <SubmitButton type="button" onClick={() => navigate('/login')}>
           Ir para o login
@@ -68,7 +68,7 @@ export default function ResetPassword() {
 
   return (
     <AuthLayout>
-      <FormTitle>Nova senha 🔐</FormTitle>
+      <FormTitle>Nova senha</FormTitle>
       <FormSubtitle>Escolha uma senha segura para sua conta.</FormSubtitle>
 
       <Form onSubmit={handleSubmit(onSubmit)} noValidate>

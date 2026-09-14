@@ -19,9 +19,10 @@ import { Skeleton } from '../../components/Skeleton'
 import {
   Acoes, Cartao, Emblema, Fundo, LinkPrincipal, LinkSecundario, Prazo, Principal, Texto, Titulo,
 } from '../ConviteDeProfessor/styles'
+import { dataPorExtenso } from '../../utils/datas'
 
 const formataPrazo = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+  dataPorExtenso(iso)
 
 /**
  * Por que o link não vale mais — **três motivos, três frases** (api#509).

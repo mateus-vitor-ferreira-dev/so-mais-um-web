@@ -20,6 +20,8 @@ import {
   ErroDoCampo, Explicacao, Form, Horario, Input, Lado, Lista, Ocupacao, Rotulo, Select,
   Selo, SeletorDeEspaco, TituloDaCaixa, Topo, Valor, Vazio,
 } from './styles'
+import { formatarReais } from '../../../utils/formatCurrency'
+import { diaDaSemanaEData, hora } from '../../../utils/datas'
 
 const schema = yup.object({
   courtId: yup.string().required('Escolha a quadra'),
@@ -49,14 +51,10 @@ type Formulario = yup.InferType<typeof schema>
 const VAZIO: Formulario = { courtId: '', inicio: '', fim: '', precoGeral: 0, precoAluno: '', maxPessoas: '' }
 
 /** Os preços vêm string (são `Decimal` na api) — some com `Number` antes. */
-const emReais = (valor: string | number) =>
-  Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const emReais = formatarReais
 
-const dia = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })
+const dia = diaDaSemanaEData
 
-const hora = (iso: string) =>
-  new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
 
 /**
  * `datetime-local` fala `"YYYY-MM-DDTHH:mm"` em hora local, e a api fala ISO

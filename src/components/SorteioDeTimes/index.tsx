@@ -10,6 +10,7 @@ import {
   TeamVersus, VersusMark, AcoesDoResultado,
   EscolhaDeModo, OpcaoDeModo, ForcaDoTime, ResumoDoEquilibrio,
 } from './styles'
+import { dataCurta } from '../../utils/datas'
 
 const TEAM_COLORS = [
   '#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6',
@@ -116,7 +117,7 @@ export function SorteioDeTimes({ partida, onClose }: SorteioDeTimesProps) {
           <>
             <h2>Sortear Times</h2>
             <Subtitulo>
-              {partida.court?.place?.name} &mdash; {new Date(partida.date).toLocaleDateString('pt-BR')}
+              {partida.court?.place?.name} &mdash; {dataCurta(partida.date)}
             </Subtitulo>
 
             <EscolhaDeModo role="radiogroup" aria-label="Modo de sorteio">
@@ -164,7 +165,7 @@ export function SorteioDeTimes({ partida, onClose }: SorteioDeTimesProps) {
                 onClick={handleDraw}
                 disabled={drawLoading}
               >
-                {drawLoading ? 'Sorteando...' : '⚽ Sortear!'}
+                {drawLoading ? 'Sorteando...' : <><Shuffle size={16} aria-hidden /> Sortear!</>}
               </button>
             </AcoesDoModal>
           </>

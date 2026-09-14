@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { ArrowLeft, Calendar, MapPin, Users, Trophy, Tag, Layers } from 'lucide-react'
+import { ArrowLeft, Calendar, MapPin, Users, Trophy, Tag, Layers, ChevronDown, ChevronUp } from 'lucide-react'
+import { ICONE_DO_FORMATO } from '../../utils/iconeDoFormato'
+import { Skeleton } from '../../components/Skeleton'
 import TournamentBracket from '../../components/TournamentBracket'
 import DivisionRegistration from '../../components/DivisionRegistration'
 import TournamentRegistrations from '../../components/TournamentRegistrations'
@@ -18,9 +20,11 @@ import {
   Body, InfoGrid, InfoItem, InfoIcon, InfoLabel, InfoValue,
   Divider, FormatCard, FormatIcon, FormatDesc, FormatHint,
   DivisionsSection, SectionTitle,
-  BracketSection, LoadingBox,
+  BracketSection,
 } from './styles'
+import { formatarReais } from '../../utils/formatCurrency'
 import type { BadgeTone } from './styles'
+import { dataPorExtenso } from '../../utils/datas'
 
 const STATUS_LABEL = {
   DRAFT:               { label: 'Rascunho',              color: 'default' },
@@ -32,16 +36,16 @@ const STATUS_LABEL = {
 }
 
 const FORMAT_META = {
-  KNOCKOUT:            { icon: '⚡', label: 'Eliminatório Simples',  desc: 'Times se eliminam a cada rodada — perde, está fora.',             hint: 'Funciona melhor com potência de 2: 4, 8, 16 ou 32 times.' },
-  LEAGUE:              { icon: '📊', label: 'Pontos Corridos',        desc: 'Todos jogam entre si e acumulam pontos na tabela.',               hint: 'Mínimo recomendado: 3 times.' },
-  GROUPS_AND_KNOCKOUT: { icon: '🎯', label: 'Grupos + Eliminatório',  desc: 'Fase de grupos seguida de eliminatória entre os melhores.',      hint: 'Mínimo recomendado: 4 times.' },
-  DOUBLE_ELIMINATION:  { icon: '🔁', label: 'Dupla Eliminação',       desc: 'Cada time precisa perder duas vezes para ser eliminado.',         hint: 'Mínimo recomendado: 4 times.' },
-  SWISS:               { icon: '♟️', label: 'Sistema Suíço',          desc: 'Rodadas pareadas por desempenho — ninguém é eliminado até o fim.', hint: 'Flexível, mínimo 4 times.' },
+  KNOCKOUT:            { label: 'Eliminatório Simples',  desc: 'Times se eliminam a cada rodada — perde, está fora.',             hint: 'Funciona melhor com potência de 2: 4, 8, 16 ou 32 times.' },
+  LEAGUE:              { label: 'Pontos Corridos',        desc: 'Todos jogam entre si e acumulam pontos na tabela.',               hint: 'Mínimo recomendado: 3 times.' },
+  GROUPS_AND_KNOCKOUT: { label: 'Grupos + Eliminatório',  desc: 'Fase de grupos seguida de eliminatória entre os melhores.',      hint: 'Mínimo recomendado: 4 times.' },
+  DOUBLE_ELIMINATION:  { label: 'Dupla Eliminação',       desc: 'Cada time precisa perder duas vezes para ser eliminado.',         hint: 'Mínimo recomendado: 4 times.' },
+  SWISS:               { label: 'Sistema Suíço',          desc: 'Rodadas pareadas por desempenho — ninguém é eliminado até o fim.', hint: 'Flexível, mínimo 4 times.' },
 }
 
 function fmtDate(d: string | null | undefined): string {
   if (!d) return '—'
-  return new Date(d).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+  return dataPorExtenso(d)
 }
 
 export default function TournamentDetail() {
@@ -81,11 +85,33 @@ export default function TournamentDetail() {
 
   useEffect(() => { load() }, [load])
 
-  if (loading) return <><LoadingBox>Carregando...</LoadingBox></>
+  // A forma da página, e não um "Carregando..." no meio de 60vh vazios
+  // (web#493): o cabeçalho e o corpo aparecem onde vão estar.
+  if (loading) {
+    return (
+      <Container aria-busy="true" aria-label="Carregando torneio">
+        <Skeleton width={64} height={16} style={{ marginBottom: 20 }} />
+        <Header>
+          <Skeleton width={32} height={32} radius="50%" />
+          <HeaderInfo>
+            <Skeleton width="60%" height={22} style={{ marginBottom: 8 }} />
+            <Skeleton width="40%" height={14} />
+          </HeaderInfo>
+        </Header>
+        <Body>
+          <Skeleton height={64} radius={10} />
+          <Skeleton width="70%" height={14} />
+          <Skeleton width="55%" height={14} />
+          <Skeleton width="65%" height={14} />
+        </Body>
+      </Container>
+    )
+  }
   if (!tournament) return null
 
   const sport   = getSportMeta(tournament.sportType)
   const fmt     = FORMAT_META[tournament.format]
+  const IconeDoFormato = ICONE_DO_FORMATO[tournament.format]
   const status  = STATUS_LABEL[tournament.status] ?? { label: tournament.status, color: 'default' }
 
   return (
@@ -112,7 +138,7 @@ export default function TournamentDetail() {
           {/* Formato com descrição visual */}
           {fmt && (
             <FormatCard>
-              <FormatIcon>{fmt.icon}</FormatIcon>
+              <FormatIcon>{IconeDoFormato && <IconeDoFormato size={24} aria-hidden />}</FormatIcon>
               <div>
                 <FormatDesc>{fmt.label} — {fmt.desc}</FormatDesc>
                 <FormatHint>{fmt.hint}</FormatHint>
@@ -162,7 +188,7 @@ export default function TournamentDetail() {
                 <InfoIcon><Tag size={16} /></InfoIcon>
                 <div>
                   <InfoLabel>Taxa de inscrição</InfoLabel>
-                  <InfoValue>R$ {Number(tournament.registrationFee).toFixed(2)}</InfoValue>
+                  <InfoValue>{formatarReais(tournament.registrationFee)}</InfoValue>
                 </div>
               </InfoItem>
             )}
@@ -234,7 +260,8 @@ export default function TournamentDetail() {
               style={{ cursor: 'pointer', userSelect: 'none' }}
               onClick={() => setShowBracket(v => !v)}
             >
-              🏆 Chaveamento {showBracket ? '▲' : '▼'}
+              <Trophy size={16} aria-hidden /> Chaveamento
+              {showBracket ? <ChevronUp size={16} aria-hidden /> : <ChevronDown size={16} aria-hidden />}
             </SectionTitle>
             {showBracket && id && (
               /* `mostrarInscritos` é o sinal de que o 403 NÃO veio — ou seja,

@@ -11,7 +11,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderWithProviders, screen, waitFor } from '../../test/render'
 import { erroDaApi } from '../../test/factories'
 import type { Sport } from '../../types/api'
-import AuthLayout from './index'
+import AuthLayout, { ordenarVitrine } from './index'
 import { WHEEL_ITEM_HEIGHT } from './styles'
 
 vi.mock('../../services/stats')
@@ -252,5 +252,41 @@ describe('<AuthLayout /> — roda de modalidades', () => {
     for (const cartao of cartoesDaRoda(container)) {
       expect(getComputedStyle(cartao).height).toBe(`${WHEEL_ITEM_HEIGHT}px`)
     }
+  })
+})
+
+/**
+ * A vitrine abria em Society, com a foto de futebol atrás, e as três
+ * modalidades de futebol vinham seguidas (web#493).
+ */
+describe('<AuthLayout /> — a ordem da vitrine', () => {
+  const API = ['SOCIETY', 'CAMPO', 'FUTSAL', 'AREIA', 'VOLEI', 'VOLEI_AREIA', 'HANDBALL', 'PETECA', 'BEACH_TENNIS', 'BASQUETE', 'TENIS', 'POKER']
+  const FUTEBOL = ['SOCIETY', 'CAMPO', 'FUTSAL']
+
+  it('não abre no futebol, e nunca põe duas de futebol seguidas', () => {
+    const ordem = ordenarVitrine(API.map((id) => ({ id }))).map((m) => m.id)
+
+    expect(FUTEBOL).not.toContain(ordem[0])
+    // A roda é circular: o último encosta no primeiro.
+    ordem.forEach((id, i) => {
+      const proximo = ordem[(i + 1) % ordem.length]!
+      expect(FUTEBOL.includes(id) && FUTEBOL.includes(proximo)).toBe(false)
+    })
+  })
+
+  it('só ordena: não inventa modalidade, e a que a lista não conhece entra no fim', () => {
+    const ordem = ordenarVitrine([{ id: 'SURF' }, { id: 'SOCIETY' }, { id: 'BEACH_TENNIS' }]).map((m) => m.id)
+
+    expect(ordem).toEqual(['BEACH_TENNIS', 'SOCIETY', 'SURF'])
+  })
+
+  it('a roda abre na primeira modalidade da vitrine', async () => {
+    buscaNumeros.mockResolvedValue(NUMEROS)
+    const { container } = await renderizaRoda(modalidades())
+
+    // Das cinco da lista de teste, a vitrine põe Futevôlei primeiro, e o
+    // cartão em foco é o de escala 1.
+    const emFoco = cartoesDaRoda(container).find((c) => c.style.transform.endsWith('scale(1)'))
+    expect(emFoco).toHaveTextContent('Futevôlei')
   })
 })

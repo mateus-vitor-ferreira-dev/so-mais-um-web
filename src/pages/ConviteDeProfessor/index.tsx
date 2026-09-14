@@ -11,9 +11,10 @@ import {
   Acoes, Aviso, Cartao, ContaAtual, Emblema, Fundo, LinkPrincipal, LinkSecundario,
   Prazo, Principal, Secundario, Texto, Titulo,
 } from './styles'
+import { dataPorExtenso } from '../../utils/datas'
 
 const formataPrazo = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+  dataPorExtenso(iso)
 
 /**
  * O convite de professor, aberto pelo link do e-mail (web#377, api#451).

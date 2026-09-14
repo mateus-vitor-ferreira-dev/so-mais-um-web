@@ -6,10 +6,12 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { SkeletonCard } from '../../components/Skeleton'
-import { Calendar, Clock, Copy, Plus, Shuffle, Flag, XCircle, CheckSquare, ShieldCheck } from 'lucide-react'
+import { Copy, Plus, Shuffle, Flag, XCircle, CheckSquare, ShieldCheck } from 'lucide-react'
+import CartaoDePartida from '../../components/CartaoDePartida'
 import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
-import { Grid, Card, CardHeader, InfoRow, ProgressBarContainer, ProgressBar, SpotsInfo } from '../QueroJogar/styles'
+import { Grid } from '../QueroJogar/styles'
+import { AcaoDoOrganizador, AcoesDoStatus, SeloDeStatus } from './styles'
 import { mensagemDeErro } from '../../utils/apiError'
 import type {
   Court,
@@ -27,11 +29,12 @@ import { MarcaDeVisibilidade } from '../../components/MarcaDeVisibilidade'
 import { teamsService } from '../../services/teams'
 import { SortearBtn } from '../../components/SorteioDeTimes/styles'
 import {
-  Container, PageHeader, CreateButton, Tabs, Tab, PixBox, ModalOverlay,
+  Container, CreateButton, Tabs, Tab, PixBox, ModalOverlay,
   ModalContent, Form, ButtonGroup,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
+import { PageActions, usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /**
  * O que cada aba diz quando não há nada, e para onde ela manda (#379).
@@ -70,6 +73,7 @@ interface FormularioPartida {
 }
 
 export default function MinhasPartidas() {
+  usePageHeader('Minhas Partidas', 'Gerencie as partidas que você criou ou está participando.')
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -231,21 +235,17 @@ export default function MinhasPartidas() {
   return (
     <>
       <Container>
-        <PageHeader>
-          <div>
-            <h1>Minhas Partidas</h1>
-            <p>Gerencie as partidas que você criou ou está participando.</p>
-          </div>
-          {/*
-            Leva ao assistente, e não ao modal daqui: lá a escolha da quadra é
-            estreitada por modalidade e estabelecimento antes de chegar na quadra,
-            enquanto o modal despeja o `GET /courts` inteiro num `select` só. Ver #268.
-          */}
+        {/*
+          Leva ao assistente, e não ao modal daqui: lá a escolha da quadra é
+          estreitada por modalidade e estabelecimento antes de chegar na quadra,
+          enquanto o modal despeja o `GET /courts` inteiro num `select` só. Ver #268.
+        */}
+        <PageActions>
           <CreateButton onClick={() => navigate('/criar-partida')}>
             <Plus size={18} style={{ display: 'inline', marginRight: 4, verticalAlign: 'middle' }} />
             Criar Partida
           </CreateButton>
-        </PageHeader>
+        </PageActions>
 
         <Tabs>
           <Tab $active={activeTab === 'participating'} onClick={() => setActiveTab('participating')}>
@@ -302,36 +302,23 @@ export default function MinhasPartidas() {
               const ev = ('match' in event && event.match ? event.match : event) as Partida
               if (!ev || !ev.id) return null
 
-              const currentPlayers = ev._count?.participations || 0
-              const maxPlayers = ev.maxPlayers
-              const progress = (currentPlayers / maxPlayers) * 100
+              const status = rotuloDoStatus(ev.status)
 
               return (
                 // O cartão inteiro navega para o detalhe, então todo controle dentro dele
                 // precisa de stopPropagation — senão o modal abre e fecha no mesmo clique.
-                <Card key={ev.id} onClick={() => navigate(`/partida/${ev.id}`)} style={{ cursor: 'pointer' }}>
-                  <CardHeader>
-                    <div>
-                      <h3>{ev.court?.place?.name || 'Local'}</h3>
-                      <span style={{ fontSize: 12, color: '#6b7280' }}>{ev.court?.name}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                <CartaoDePartida
+                  key={ev.id}
+                  partida={ev}
+                  aoAbrir={() => navigate(`/partida/${ev.id}`)}
+                  selos={
+                    <>
                       <MarcaDeVisibilidade visibility={ev.visibility} />
-                      <span className="badge" style={{ color: '#f59e0b', background: '#fef3c7' }}>
-                        {rotuloDoStatus(ev.status).label}
-                      </span>
-                    </div>
-                  </CardHeader>
-
-                  <InfoRow><Calendar /> {new Date(ev.date).toLocaleDateString('pt-BR')}</InfoRow>
-                  <InfoRow><Clock /> {new Date(ev.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</InfoRow>
-
-                  <ProgressBarContainer>
-                    <ProgressBar $progress={progress}><div /></ProgressBar>
-                    <SpotsInfo><span>{currentPlayers} / {maxPlayers} confirmados</span></SpotsInfo>
-                  </ProgressBarContainer>
-
-                  {activeTab === 'created' && (
+                      {/* Cor pelo tom do status (web#491). */}
+                      <SeloDeStatus $tom={status.tom}>{status.label}</SeloDeStatus>
+                    </>
+                  }
+                  rodape={activeTab === 'created' && (
                     <>
                       <PixBox>
                         <span>PIX: {ev.pixKey}</span>
@@ -345,33 +332,24 @@ export default function MinhasPartidas() {
                           <SortearBtn onClick={(e) => { e.stopPropagation(); setDrawEvent(ev) }}>
                             <Shuffle size={14} /> Sortear Times
                           </SortearBtn>
-                          <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); handleUpdateStatus(ev, 'FINISHED') }}
-                              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '8px 12px', borderRadius: 8, border: '1px solid #e5e7eb', background: '#f0fdf4', color: '#166534', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
-                            >
+                          <AcoesDoStatus>
+                            <AcaoDoOrganizador $tom="finalizar" onClick={(e) => { e.stopPropagation(); handleUpdateStatus(ev, 'FINISHED') }}>
                               <Flag size={13} /> Finalizar
-                            </button>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); handleUpdateStatus(ev, 'CANCELLED') }}
-                              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '8px 12px', borderRadius: 8, border: '1px solid #fee2e2', background: '#fee2e2', color: '#991b1b', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
-                            >
+                            </AcaoDoOrganizador>
+                            <AcaoDoOrganizador $tom="cancelar" onClick={(e) => { e.stopPropagation(); handleUpdateStatus(ev, 'CANCELLED') }}>
                               <XCircle size={13} /> Cancelar
-                            </button>
-                          </div>
+                            </AcaoDoOrganizador>
+                          </AcoesDoStatus>
                         </>
                       )}
                       {ev.status === 'FINISHED' && (
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setAttendanceEvent(ev) }}
-                          style={{ width: '100%', marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '8px 12px', borderRadius: 8, border: '1px solid #3b82f6', background: '#eff6ff', color: '#1d4ed8', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
-                        >
+                        <AcaoDoOrganizador $tom="presencas" onClick={(e) => { e.stopPropagation(); setAttendanceEvent(ev) }}>
                           <CheckSquare size={13} /> Confirmar Presenças
-                        </button>
+                        </AcaoDoOrganizador>
                       )}
                     </>
                   )}
-                </Card>
+                />
               )
             })}
           </Grid>

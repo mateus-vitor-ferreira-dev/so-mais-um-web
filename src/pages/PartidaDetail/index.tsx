@@ -27,12 +27,16 @@ import {
   ParticipantsSection, SectionTitle,
   ParticipantList, ParticipantItem, Avatar, ParticipantLink, ParticipantName, ParticipantNickname,
   ParticipantsCount,
-  MapLink, LoadingBox,
+  MapLink,
   LinkInvalidoBox, LinkInvalidoTitulo, LinkInvalidoTexto,
   LeaveBtn, Modal, ModalOverlay, ModalBox, ModalTitle,
   ReasonInput, ReasonCounter, ModalActions, ModalCancelBtn, ModalConfirmBtn,
 } from './styles'
+import { valorPorPessoa } from '../../utils/formatCurrency'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
+import { dataCompletaPorExtenso, hora } from '../../utils/datas'
+import { Skeleton } from '../../components/Skeleton'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /**
  * Os três jeitos de um link de convite parar de valer (#229).
@@ -71,6 +75,8 @@ function buildMapsUrl(event: Partida): string | null {
 }
 
 export default function PartidaDetail() {
+  // Fora do login a página abre sem layout, e o título não vai a lugar nenhum.
+  usePageHeader('Partida')
   const { eventId } = useParams<{ eventId: string }>()
   const navigate = useNavigate()
   const location = useLocation()
@@ -159,7 +165,29 @@ export default function PartidaDetail() {
     return () => { cancelado = true }
   }, [event, isAuthenticated, convite])
 
-  if (loading) return <><LoadingBox>Carregando...</LoadingBox></>
+  // A forma do cartão, e não um "Carregando..." no meio da tela (web#493).
+  if (loading) {
+    return (
+      <Container aria-busy="true" aria-label="Carregando partida">
+        <Skeleton width={64} height={16} style={{ marginBottom: 20 }} />
+        <Card>
+          <CardHeader>
+            <Skeleton width={48} height={48} radius={12} />
+            <div style={{ flex: 1 }}>
+              <Skeleton width="55%" height={22} style={{ marginBottom: 8 }} />
+              <Skeleton width="35%" height={14} />
+            </div>
+          </CardHeader>
+          <Body>
+            <Skeleton width="70%" height={14} style={{ marginBottom: 12 }} />
+            <Skeleton width="50%" height={14} style={{ marginBottom: 24 }} />
+            <Skeleton height={8} radius={4} style={{ marginBottom: 24 }} />
+            <Skeleton height={44} radius={10} />
+          </Body>
+        </Card>
+      </Container>
+    )
+  }
 
   /*
    * O link falhou — e a tela diz qual dos três motivos foi.
@@ -252,8 +280,8 @@ export default function PartidaDetail() {
   const mapsUrl         = buildMapsUrl(event)
 
   const dateObj = new Date(event.date)
-  const dateStr = dateObj.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })
-  const timeStr = dateObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  const dateStr = dataCompletaPorExtenso(dateObj)
+  const timeStr = hora(dateObj)
 
   /**
    * O horário mostra começo e fim, e não a duração em minutos (api#445).
@@ -263,9 +291,9 @@ export default function PartidaDetail() {
    * trabalho de quem lê.
    */
   const fimStr = event.endsAt
-    ? new Date(event.endsAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    ? hora(event.endsAt)
     : null
-  const pricePerPerson  = maxPlayers > 0 ? (Number(event.totalValue) / maxPlayers).toFixed(2) : '0.00'
+  const pricePerPerson  = valorPorPessoa(event.totalValue, maxPlayers)
 
   async function handleJoin() {
     setJoining(true)
@@ -372,7 +400,7 @@ export default function PartidaDetail() {
                 <InfoIcon><DollarSign size={16} /></InfoIcon>
                 <div>
                   <InfoLabel>Valor por pessoa</InfoLabel>
-                  <InfoValue>R$ {pricePerPerson}</InfoValue>
+                  <InfoValue>{pricePerPerson}</InfoValue>
                 </div>
               </InfoItem>
             </InfoGrid>

@@ -4,7 +4,8 @@ import { useAuth } from '../../contexts/AuthContext'
 import { followsService } from '../../services/follows'
 import { chaves } from '../../lib/queryClient'
 import { ListaDePessoas } from '../../components/ListaDePessoas'
-import { Aba, Abas, Cabecalho, Container, Explicacao, Subtitulo, Titulo } from './styles'
+import { Aba, Abas, Container, Explicacao } from './styles'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 type AbaAtiva = 'amigos' | 'seguidores' | 'seguindo'
 
@@ -36,6 +37,7 @@ type AbaAtiva = 'amigos' | 'seguidores' | 'seguindo'
  * mais barato que responder à dúvida depois.
  */
 export default function Amigos() {
+  usePageHeader('Amigos', 'Amigo é quem você segue e que segue você de volta. Aqui também estão quem te segue e quem você segue.')
   const { user } = useAuth()
   const [aba, setAba] = useState<AbaAtiva>('amigos')
   const eu = user?.id
@@ -71,14 +73,6 @@ export default function Amigos() {
 
   return (
     <Container>
-      <Cabecalho>
-        <Titulo>Amigos</Titulo>
-        <Subtitulo>
-          Amigo é quem você segue e que segue você de volta. Aqui também estão quem te
-          segue e quem você segue.
-        </Subtitulo>
-      </Cabecalho>
-
       <Abas role="tablist">
         <Aba
           type="button"

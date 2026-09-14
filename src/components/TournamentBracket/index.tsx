@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { Construction } from 'lucide-react'
+import { Skeleton } from '../Skeleton'
 import type {
   LeituraDoTempo,
   CompetitionLevel,
@@ -11,7 +13,7 @@ import LancarPlacar from '../LancarPlacar'
 import SeloDoTempo from '../SeloDoTempo'
 import {
   Wrapper, DivisionTitle, LevelBadge,
-  EmptyBracket, LoadingBracket,
+  EmptyBracket, 
   BracketGrid, Round, RoundLabel, MatchesColumn, MatchSlot, MatchCard,
   TeamRow, TeamName, Score, StatusTag, MatchMeta, Connector, BotaoDeResultado,
   ChampionCard, ChampionTrophy, ChampionName,
@@ -369,13 +371,32 @@ export default function TournamentBracket({
   }, [tournamentId])
 
   if (loading) {
-    return <LoadingBracket>Carregando chaveamento...</LoadingBracket>
+    // Três rodadas de uma chave de oito, na mesma grade da chave de verdade
+    // (web#493): quem espera já vê que vem um chaveamento, e onde.
+    return (
+      <Wrapper aria-busy="true" aria-label="Carregando chaveamento">
+        <BracketGrid>
+          {[4, 2, 1].map((confrontos) => (
+            <Round key={confrontos}>
+              <Skeleton width={80} height={12} style={{ marginBottom: 16 }} />
+              <MatchesColumn>
+                {Array.from({ length: confrontos }, (_, i) => (
+                  <MatchSlot key={i}>
+                    <Skeleton height={72} radius={10} />
+                  </MatchSlot>
+                ))}
+              </MatchesColumn>
+            </Round>
+          ))}
+        </BracketGrid>
+      </Wrapper>
+    )
   }
 
   if (divisions.length === 0) {
     return (
       <EmptyBracket>
-        <span>🏗️</span>
+        <Construction size={40} aria-hidden />
         O chaveamento ainda não foi gerado para este torneio.
       </EmptyBracket>
     )
@@ -413,7 +434,7 @@ export default function TournamentBracket({
 
             {rodadas.length === 0 ? (
               <EmptyBracket>
-                <span>🏗️</span>
+                <Construction size={40} aria-hidden />
                 O chaveamento desta divisão ainda não foi gerado. Ele aparece aqui
                 quando as inscrições forem abertas e os confrontos, sorteados.
               </EmptyBracket>

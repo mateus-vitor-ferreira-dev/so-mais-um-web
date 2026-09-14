@@ -14,6 +14,8 @@ import {
   CaixaDeRecusa, Justificativa, Nota, Vazio,
 } from './styles'
 import type { EstadoTom } from './styles'
+import { diaEMes } from '../../utils/datas'
+import { SkeletonList } from '../Skeleton'
 
 interface Props {
   tournament: Tournament
@@ -29,7 +31,7 @@ const ESTADO: Record<string, { texto: string; tom: EstadoTom }> = {
 }
 
 const quando = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+  diaEMes(iso)
 
 /**
  * As inscrições do campeonato, na visão de quem organiza.
@@ -127,7 +129,7 @@ export default function TournamentRegistrations({ tournament, divisions, onIndis
   }
 
   if (!autorizado) return null
-  if (carregando) return <Vazio>Carregando inscrições...</Vazio>
+  if (carregando) return <div aria-busy="true" aria-label="Carregando inscrições"><SkeletonList count={3} /></div>
 
   // Campeonato aberto a todos não tem o que aprovar: a inscrição já nasce
   // `APPROVED`. A lista continua valendo — saber quem entrou é do organizador

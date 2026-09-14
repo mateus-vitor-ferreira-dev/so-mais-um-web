@@ -20,6 +20,7 @@ import {
   ErroDoCampo, Explicacao, Form, Gerar, Input, Item, LinhaDoLink, Lista, Quando, Ressalva,
   Revogar, RodapeDoLink, Selo, SeletorDeEspaco, TituloDaCaixa, Usos, Vazio,
 } from './styles'
+import { dataCurta } from '../../../utils/datas'
 
 const schema = yup.object({
   email: yup.string().trim().email('E-mail inválido').required('Informe o e-mail do professor'),
@@ -28,7 +29,7 @@ const schema = yup.object({
 type Formulario = yup.InferType<typeof schema>
 
 const data = (iso: string) =>
-  new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  dataCurta(iso)
 
 /**
  * Como cada convite aparece — e `vencido` não é um `status`.

@@ -125,6 +125,20 @@ describe('MinhasPartidas — as duas abas', () => {
   })
 })
 
+describe('MinhasPartidas — o cartão (web#491)', () => {
+  it('diz a modalidade, o valor por pessoa e o status com a cor do tom', async () => {
+    buscaParticipando.mockResolvedValue(
+      envelope([participacao(criaPartida({ maxPlayers: 4, totalValue: '90.00', status: 'FINISHED' }))]),
+    )
+
+    renderWithProviders(<MinhasPartidas />)
+
+    expect(await screen.findByText('R$ 22,50 / pessoa')).toBeInTheDocument()
+    expect(screen.getByText(/Society/)).toBeInTheDocument()
+    expect(screen.getByText('Finalizada')).toBeInTheDocument()
+  })
+})
+
 describe('MinhasPartidas — ações de organizador', () => {
   const PARTIDA_ABERTA = criaPartida({
     id: 'minha-partida',

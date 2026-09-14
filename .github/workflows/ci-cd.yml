@@ -88,6 +88,11 @@ jobs:
       - name: Confere o que a primeira tela carrega
         run: npm run primeira-tela:check
 
+      # Data formatada à mão não quebra teste: só volta a escrever o mesmo dia de
+      # dois jeitos em duas telas. Ver scripts/verifica-formatacao.mjs (web#492).
+      - name: Confere que data, hora e número passam pelos formatadores
+        run: npm run formatacao:check
+
       - name: Build
         run: npm run build
 

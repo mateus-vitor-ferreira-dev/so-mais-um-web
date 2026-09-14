@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import PartidasParaApitar from '../../components/PartidasParaApitar'
-import { Plus, MapPin, Calendar, Users, Trophy, X, Layers } from 'lucide-react'
+import { Plus, MapPin, Calendar, Users, Trophy, X, Layers, ChevronUp } from 'lucide-react'
+import { ICONE_DO_FORMATO } from '../../utils/iconeDoFormato'
 import { useForm, useWatch } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -18,20 +19,20 @@ import type { KeyboardEvent, ReactElement } from 'react'
 import type { Place, Tournament, TournamentStatus } from '../../types/api'
 import type { InferType } from 'yup'
 import type { CreateTournamentInput } from '../../services/tournaments'
+import { PageActions, usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /** Campos do formulário, derivados do schema yup usado no resolver. */
 type FormularioTorneio = InferType<typeof schema>
 import { mensagemDeErro } from '../../utils/apiError'
 import {
-  Container, PageHeader, Title, Subtitle, CreateButton, FiltersBar,
-  FilterChip, Grid, TournamentCard, CardTop, TournamentName, SportIcon,
-  StatusBadge, CardMeta, MetaRow, ViewBracketBtn, BracketSection,
-  BracketTitle, Modal, ModalBox, ModalHeader, ModalTitle, CloseBtn, Form,
-  Field, Label, Input, Select, ErrorMsg, ModalActions, CancelButton,
-  SubmitButton, LoadingState, FormatHint, FormatPreview, CategorySection,
-  CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
+  Container, CreateButton, FiltersBar, FilterChip, Grid, TournamentCard, CardTop, TournamentName, SportIcon, StatusBadge, CardMeta, MetaRow, ViewBracketBtn, BracketSection, BracketTitle, Modal, ModalBox, ModalHeader, ModalTitle, CloseBtn, Form, Field, Label, Input, Select, ErrorMsg, ModalActions, CancelButton, SubmitButton, FormatHint, FormatPreview, CategorySection, CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
 } from './styles'
+import { formatarReais } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
+import { dataCurta } from '../../utils/datas'
+import { contagem } from '../../utils/plural'
+import { AlvoDoCartao } from '../../styles/cartaoClicavel'
+import { SkeletonCard } from '../../components/Skeleton'
 
 const STATUS_FILTERS = [
   { label: 'Todos',           value: '' },
@@ -57,16 +58,9 @@ const STATUS_LABELS: Record<string, string> = {
  * Corridos" criava um campeonato que nunca teria chaveamento, partida nem
  * resultado. Ver api#263.
  *
- * Os ícones ficam, porque são decisão de front: a API devolve `id`, `label`,
- * `description` e `implemented`, e não opina sobre emoji.
+ * Os ícones ficam no front, em `utils/iconeDoFormato`: a API devolve `id`,
+ * `label`, `description` e `implemented`, e não opina sobre ícone.
  */
-const FORMAT_ICONS: Record<string, string> = {
-  KNOCKOUT:            '⚡',
-  LEAGUE:              '📊',
-  GROUPS_AND_KNOCKOUT: '🎯',
-  DOUBLE_ELIMINATION:  '🔁',
-  SWISS:               '♟️',
-}
 
 interface FormatInfo {
   desc: string
@@ -274,7 +268,7 @@ const schema = yup.object({
 
 function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return '—'
-  return new Date(dateStr).toLocaleDateString('pt-BR')
+  return dataCurta(dateStr)
 }
 
 export default function Tournaments() {
@@ -301,6 +295,11 @@ export default function Tournaments() {
 
   const [tournaments, setTournaments]   = useState<Tournament[]>([])
   const [loading, setLoading]           = useState(true)
+
+  usePageHeader(
+    'Torneios',
+    loading ? undefined : contagem(tournaments.length, 'torneio encontrado', 'torneios encontrados'),
+  )
   const [statusFilter, setStatusFilter] = useState('')
   const [selected, setSelected]         = useState<Tournament | null>(null)
   const [showModal, setShowModal]       = useState(false)
@@ -427,21 +426,14 @@ export default function Tournaments() {
           */}
         <PartidasParaApitar />
 
-        {/* ── Cabeçalho ── */}
-        <PageHeader>
-          <div>
-            <Title>Torneios</Title>
-            <Subtitle>
-              {loading ? 'Carregando...' : `${tournaments.length} torneio${tournaments.length !== 1 ? 's' : ''} encontrado${tournaments.length !== 1 ? 's' : ''}`}
-            </Subtitle>
-          </div>
-          {canCreate && (
+        {canCreate && (
+          <PageActions>
             <CreateButton onClick={() => setShowModal(true)}>
               <Plus size={16} />
               Novo Torneio
             </CreateButton>
-          )}
-        </PageHeader>
+          </PageActions>
+        )}
 
         {/* ── Filtros ── */}
         <FiltersBar>
@@ -458,7 +450,7 @@ export default function Tournaments() {
 
         {/* ── Lista de torneios ── */}
         {loading ? (
-          <LoadingState>Carregando torneios...</LoadingState>
+          <Grid aria-busy="true" aria-label="Carregando torneios"><SkeletonCard count={6} /></Grid>
         ) : tournaments.length === 0 ? (
           <EmptyState icone="🏆">Nenhum torneio encontrado.</EmptyState>
         ) : (
@@ -468,6 +460,7 @@ export default function Tournaments() {
               // campeonato gravado como LEAGUE antes da api#263 continua na
               // lista e precisa aparecer com o nome certo.
               const fmt = { label: rotuloDoFormato(t.format) }
+              const IconeDoFormato = ICONE_DO_FORMATO[t.format]
               const divCount = t._count?.divisions ?? 0
               // Modalidade que a API devolve e o catálogo não conhece cai no
               // próprio código, que é feio mas legível — melhor que um ícone
@@ -480,7 +473,7 @@ export default function Tournaments() {
                       <SportIcon role="img" title={modalidade.label} aria-label={modalidade.label}>
                         <SportGlyph icon={modalidade.icon} fallback={modalidade.iconFallback} />
                       </SportIcon>
-                      {t.name}
+                      <AlvoDoCartao>{t.name}</AlvoDoCartao>
                     </TournamentName>
                     <StatusBadge $status={t.status}>
                       {STATUS_LABELS[t.status] ?? t.status}
@@ -490,7 +483,7 @@ export default function Tournaments() {
                   <CardMeta>
                     {fmt && (
                       <MetaRow>
-                        <span style={{ fontSize: 14 }}>{FORMAT_ICONS[t.format]}</span>
+                        {IconeDoFormato && <IconeDoFormato aria-hidden />}
                         {fmt.label}
                       </MetaRow>
                     )}
@@ -513,7 +506,7 @@ export default function Tournaments() {
                     {Number(t.registrationFee) > 0 && (
                       <MetaRow>
                         <Trophy size={14} />
-                        Taxa: R$ {Number(t.registrationFee).toFixed(2)}
+                        Taxa: {formatarReais(t.registrationFee)}
                       </MetaRow>
                     )}
                   </CardMeta>
@@ -522,7 +515,9 @@ export default function Tournaments() {
                     e.stopPropagation()
                     setSelected(selected?.id === t.id ? null : t)
                   }}>
-                    {selected?.id === t.id ? '▲ Fechar Chaveamento' : '🏆 Ver Chaveamento'}
+                    {selected?.id === t.id
+                      ? <><ChevronUp size={16} aria-hidden /> Fechar chaveamento</>
+                      : <><Trophy size={16} aria-hidden /> Ver chaveamento</>}
                   </ViewBracketBtn>
                 </TournamentCard>
               )
@@ -533,7 +528,7 @@ export default function Tournaments() {
         {/* ── Bracket do torneio selecionado ── */}
         {selected && (
           <BracketSection>
-            <BracketTitle>🏆 Chaveamento — {selected.name}</BracketTitle>
+            <BracketTitle><Trophy size={20} aria-hidden /> Chaveamento — {selected.name}</BracketTitle>
             <TournamentBracket tournamentId={selected.id} />
           </BracketSection>
         )}

@@ -8,12 +8,13 @@ import { chaves } from '../../../lib/queryClient'
 import { mensalidadesService } from '../../../services/mensalidades'
 import { toastErroDeApi } from '../../../utils/toastErro'
 import { Botao, Caixa, CampoMes, Detalhe, Estado, Explicacao, Linha, Lista, Mes, Nome, Selo, Titulo, Topo, Voltar } from './styles'
+import { formatarReais } from '../../../utils/formatCurrency'
 
 const competenciaAtual = () => {
   const agora = new Date()
   return `${agora.getFullYear()}-${String(agora.getMonth() + 1).padStart(2, '0')}`
 }
-const reais = (valor: string) => Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const reais = formatarReais
 
 export default function OwnerMensalidades() {
   const { turmaId = '' } = useParams()

@@ -7,38 +7,6 @@ export const PageWrapper = styled.div`
   width: 100%;
 `
 
-// ── Compact Header ──────────────────────────────────────────────────────────
-
-export const CompactHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-`
-
-export const GreetingBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-`
-
-export const GreetingText = styled.p`
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.textMuted};
-  margin: 0;
-`
-
-export const GreetingTitle = styled.h1`
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: ${({ theme }) => theme.colors.textPrimary};
-  margin: 0;
-  line-height: 1.2;
-`
-
 // ── Stats Row ─────────────────────────────────────────────────────────────────
 
 export const StatsRow = styled.div`
@@ -74,7 +42,7 @@ export const StatIconBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  color: ${({ theme }) => theme.colors.primary};
   flex-shrink: 0;
 `
 
@@ -117,11 +85,47 @@ export const TabsFade = styled.div<{ $side: 'left' | 'right'; $visible: boolean;
   top: 0;
   bottom: 0;
   ${({ $side }) => $side}: 0;
-  width: 32px;
+  width: 72px;
   pointer-events: none;
   opacity: ${({ $visible }) => $visible ? 1 : 0};
   transition: opacity 0.15s;
   background: ${({ $side, theme }) => `linear-gradient(to ${$side === 'left' ? 'right' : 'left'}, ${theme.colors.bgApp}, transparent)`};
+`
+
+/**
+ * A seta sobre o degradê da faixa de modalidades (#492).
+ *
+ * O degradê sozinho cortava o último chip, e cortar parecia defeito, não
+ * convite. No computador, sem gesto de arrastar, a faixa só rolava com
+ * Shift + roda. A seta diz que tem mais e leva até lá; some junto com o
+ * degradê quando não há mais nada daquele lado.
+ */
+export const TabsSeta = styled.button<{ $side: 'left' | 'right' }>`
+  position: absolute;
+  top: 50%;
+  ${({ $side }) => $side}: 0;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.bgCard};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  box-shadow: ${({ theme }) => theme.shadows.sm};
+  cursor: pointer;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
 `
 
 export const Tab = styled.button<{ $active?: boolean; }>`

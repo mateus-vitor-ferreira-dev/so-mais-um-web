@@ -108,8 +108,8 @@ export const FormatCard = styled.div`
 `
 
 export const FormatIcon = styled.span`
-  font-size: 1.5rem;
-  line-height: 1;
+  display: flex;
+  color: ${({ theme }) => theme.colors.primary};
   flex-shrink: 0;
 `
 
@@ -194,11 +194,4 @@ export const BracketSection = styled.div`
   gap: 12px;
 `
 
-export const LoadingBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60vh;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`
+

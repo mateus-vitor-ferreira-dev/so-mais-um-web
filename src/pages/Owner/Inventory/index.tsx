@@ -27,6 +27,7 @@ import {
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
 import { SkeletonCard } from '../../../components/Skeleton'
+import { dataEHora } from '../../../utils/datas'
 
 const UNIDADES: Array<{ value: InventoryUnit; label: string }> = [
   { value: 'UNIDADE', label: 'Unidade' },
@@ -418,10 +419,7 @@ export default function OwnerInventory() {
                       <span>{MOTIVO_LABEL[movement.motivo]} por {movement.actor.name}</span>
                     </div>
                     <time>
-                      {new Date(movement.createdAt).toLocaleString('pt-BR', {
-                        dateStyle: 'short',
-                        timeStyle: 'short',
-                      })}
+                      {dataEHora(movement.createdAt)}
                     </time>
                   </HistoryItem>
                 ))}

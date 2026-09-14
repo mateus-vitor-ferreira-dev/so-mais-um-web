@@ -14,6 +14,7 @@
 
 import type { Partida } from '../../types/api'
 import type { PontoDaPartida } from './tipos'
+import { diaDaSemanaEHora } from '../../utils/datas'
 
 export function pontosDaBusca(partidas: Partida[]): PontoDaPartida[] {
   return partidas.flatMap((partida) => {
@@ -25,11 +26,7 @@ export function pontosDaBusca(partidas: Partida[]): PontoDaPartida[] {
       latitude: local.latitude,
       longitude: local.longitude,
       titulo: local.name,
-      detalhe: `${partida.court?.name ?? ''} · ${new Date(partida.date).toLocaleDateString('pt-BR', {
-        weekday: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-      })}`,
+      detalhe: `${partida.court?.name ?? ''} · ${diaDaSemanaEHora(partida.date)}`,
     }]
   })
 }

@@ -20,6 +20,7 @@ import {
   FieldError,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
+import { dataCurta } from '../../../utils/datas'
 
 const STATUS_LABEL = { PENDING: 'Aguardando', APPROVED: 'Aprovada', REJECTED: 'Rejeitada' }
 const STATUS_COLOR = { PENDING: '#d97706', APPROVED: '#16a34a', REJECTED: '#dc2626' }
@@ -212,7 +213,7 @@ export default function OwnerRequests() {
 
             <RequestFooter>
               <RequestSentAt>
-                Enviada em {new Date(req.createdAt).toLocaleDateString('pt-BR')}
+                Enviada em {dataCurta(req.createdAt)}
               </RequestSentAt>
               {req.status === 'APPROVED' && (
                 <RequestMeta style={{ color: '#16a34a', fontWeight: 600 }}>

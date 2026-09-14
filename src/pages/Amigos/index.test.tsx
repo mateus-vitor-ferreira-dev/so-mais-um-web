@@ -16,6 +16,7 @@ import { renderWithProviders } from '../../test/render'
 import { followsService } from '../../services/follows'
 import { arvoreDeRotas } from '../../routes/arvore'
 import MainLayout from '../../components/MainLayout'
+import { ComTopbar } from '../../test/topbar'
 import Amigos from './index'
 
 vi.mock('../../services/follows')
@@ -63,7 +64,7 @@ describe('Amigos', () => {
   })
 
   it('abre nas três listas, com os amigos primeiro', async () => {
-    renderWithProviders(<Amigos />)
+    renderWithProviders(<ComTopbar><Amigos /></ComTopbar>)
 
     expect(await screen.findByRole('heading', { name: 'Amigos' })).toBeInTheDocument()
 
