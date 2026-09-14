@@ -133,3 +133,17 @@ export const EmptyMsg = styled.p`
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 0;
 `
+
+export const NotifCorpo = styled.p`
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  margin: 0 0 2px;
+  line-height: 1.4;
+`
+
+export const NotifIcone = styled.span<{ $melhorou: boolean }>`
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: ${({ theme, $melhorou }) => ($melhorou ? theme.colors.success : theme.colors.warning)};
+`

@@ -1,6 +1,8 @@
 import { faixaDeHorario } from '../../utils/agenda'
-import type { OcupacaoDaQuadra } from '../../types/api'
-import { Bloco, Titulo, Lista, Item, Faixa, Descricao, Vazio, Aviso } from './styles'
+import { motivosPorExtenso, riscoDaOcupacao } from '../../utils/previsao'
+import FaixaDoTempo from '../FaixaDoTempo'
+import type { HoraDoTempo, OcupacaoDaQuadra } from '../../types/api'
+import { Bloco, Titulo, Lista, Item, Faixa, Descricao, Vazio, Aviso, MotivoDoRisco } from './styles'
 
 /**
  * O que já ocupa a quadra no dia escolhido (api#443, web#368).
@@ -22,6 +24,13 @@ import { Bloco, Titulo, Lista, Item, Faixa, Descricao, Vazio, Aviso } from './st
  * Ela não é uma mensagem de erro: é o que faltava para escolher. Mostrá-la só
  * quando dá conflito devolveria a pessoa ao "tente de novo até acertar" — que é
  * exatamente o que esta issue veio tirar.
+ *
+ * ## O tempo, quando quem chama o tem (web#477)
+ *
+ * Na agenda do dono, cada quadra recebe as horas da previsão do dia. A faixa
+ * aparece em cima da lista, e a marcação que atravessa uma hora de risco `ALTO`
+ * ganha destaque com o motivo por escrito. Sem `horasDoTempo` — dia além do
+ * alcance, quadra coberta, previsão fora do ar —, a agenda é a de sempre.
  */
 
 export interface AgendaDaQuadraProps {
@@ -33,6 +42,13 @@ export interface AgendaDaQuadraProps {
   conflito: OcupacaoDaQuadra | null
   /** `false` enquanto não há data escolhida: não há dia sobre o que falar. */
   temData: boolean
+  /** O título do bloco. Na agenda do dono é o nome da quadra. */
+  titulo?: string
+  /**
+   * As horas da previsão do dia, já avaliadas pela api **para esta quadra**.
+   * Só vêm quando a quadra é descoberta e o dia está no alcance por hora.
+   */
+  horasDoTempo?: HoraDoTempo[]
 }
 
 export function AgendaDaQuadra({
@@ -41,11 +57,13 @@ export function AgendaDaQuadra({
   erro,
   conflito,
   temData,
+  titulo,
+  horasDoTempo,
 }: AgendaDaQuadraProps) {
   if (!temData) {
     return (
       <Bloco>
-        <Titulo>Agenda da quadra</Titulo>
+        <Titulo>{titulo ?? 'Agenda da quadra'}</Titulo>
         <Vazio>Escolha a data para ver o que já está marcado.</Vazio>
       </Bloco>
     )
@@ -53,7 +71,9 @@ export function AgendaDaQuadra({
 
   return (
     <Bloco>
-      <Titulo>Agenda da quadra neste dia</Titulo>
+      <Titulo>{titulo ?? 'Agenda da quadra neste dia'}</Titulo>
+
+      {horasDoTempo && <FaixaDoTempo horas={horasDoTempo} />}
 
       {carregando && <Vazio>Consultando a agenda...</Vazio>}
 
@@ -81,12 +101,14 @@ export function AgendaDaQuadra({
         <Lista>
           {ocupacoes.map((ocupacao, i) => {
             const atropela = conflito != null && conflito.inicio === ocupacao.inicio
+            const risco = horasDoTempo ? riscoDaOcupacao(ocupacao, horasDoTempo) : null
             return (
               // A chave inclui o índice porque `id` é `null` em toda marcação
               // reservada — duas delas no mesmo dia colidiriam numa chave só.
-              <Item key={`${ocupacao.inicio}-${ocupacao.id ?? i}`} $atropela={atropela}>
+              <Item key={`${ocupacao.inicio}-${ocupacao.id ?? i}`} $atropela={atropela || risco !== null}>
                 <Faixa>{faixaDeHorario(ocupacao)}</Faixa>
                 <Descricao>{ocupacao.descricao}</Descricao>
+                {risco && <MotivoDoRisco>Risco de {motivosPorExtenso(risco.motivos)}</MotivoDoRisco>}
               </Item>
             )
           })}

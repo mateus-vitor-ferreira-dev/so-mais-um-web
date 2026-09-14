@@ -273,3 +273,67 @@ export const SubmitBtn = styled.button`
   &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.primaryHover}; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 `
+
+/** O selo ao lado do nome. Discreto: é informação da quadra, e não estado dela como o Aberta/Fechada. */
+export const SeloCoberta = styled.span`
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  color: ${({ theme }) => theme.colors.info};
+  background: ${({ theme }) => theme.colors.infoLight};
+  vertical-align: middle;
+`
+
+export const AvisoSemCobertura = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.warningText};
+  background: ${({ theme }) => theme.colors.warningLight};
+`
+
+/** Fieldset para os dois rádios terem nome acessível; sem a moldura que o navegador desenha. */
+export const GrupoDeOpcoes = styled.fieldset`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+`
+
+/** O `ActionBtn` estica para dividir o rodapé do cartão; no aviso ele é um atalho, do tamanho do texto. */
+export const AtalhoDoAviso = styled(ActionBtn)`
+  flex: 0 0 auto;
+  padding: 8px 16px;
+`
+
+export const Opcoes = styled.div`
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+`
+
+export const Opcao = styled.label`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  cursor: pointer;
+`
+
+export const Nota = styled.p`
+  margin: 0;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textSecondary};
+`

@@ -8,6 +8,7 @@ import { useSubscription } from '../../../hooks/useSubscription'
 import { ownerService } from '../../../services/ownerService'
 import { formatarPrecoCentavos } from '../../../utils/formatCurrency'
 import { ROTULOS_DE_FUNCIONALIDADE, INCLUSO_EM_TODO_PLANO } from '../../../constants/planFeatures'
+import TempoNaAgenda from '../../../components/TempoNaAgenda'
 import { Container, Grid, Card, PlanHighlight, RowList, PrimaryButton, Badge, StatsGrid, StatCard, StatIcon, StatInfo, StatValue, StatLabel, ConviteEstatisticas, PassosList } from './styles'
 import type { OwnerStats, SubscriptionStatus } from '../../../types/api'
 
@@ -135,6 +136,10 @@ export default function OwnerDashboard() {
             <PrimaryButton onClick={() => navigate('/owner/plans')}>Ver planos</PrimaryButton>
           </ConviteEstatisticas>
         )}
+
+        {/* A agenda do dia com o tempo (web#477). Não depende de plano: é a agenda
+            que o dono já tem, com a previsão de cada hora por cima. */}
+        <TempoNaAgenda />
 
         <Grid>
           <Card>

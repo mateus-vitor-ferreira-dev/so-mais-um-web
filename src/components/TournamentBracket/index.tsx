@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import type {
+  LeituraDoTempo,
   CompetitionLevel,
   TournamentDivision,
   TournamentMatch,
@@ -7,6 +8,7 @@ import type {
 } from '../../types/api'
 import { getTournamentDivisions, getDivisionMatches } from '../../services/tournaments'
 import LancarPlacar from '../LancarPlacar'
+import SeloDoTempo from '../SeloDoTempo'
 import {
   Wrapper, DivisionTitle, LevelBadge,
   EmptyBracket, LoadingBracket,
@@ -211,10 +213,12 @@ function LadoDoConfronto({
 }
 
 function CartaoDoConfronto({
-  partida, tournamentId, podeLancar, onLancado,
+  partida, tournamentId, podeLancar, onLancado, tempo,
 }: {
   partida: TournamentMatch
   tournamentId: string
+  /** A leitura do tempo deste jogo, quando ele tem hora marcada (web#476). */
+  tempo?: LeituraDoTempo
   /**
    * Se quem olha pode lançar o resultado desta partida.
    *
@@ -252,6 +256,12 @@ function CartaoDoConfronto({
               destacado acima, então a etiqueta é o que explica. */}
           {partida.status === 'WALKOVER' && <StatusTag $tone="wo">W.O.</StatusTag>}
           {detalhes.join(' · ')}
+        </MatchMeta>
+      )}
+
+      {tempo && tempo.risco !== 'NENHUM' && (
+        <MatchMeta>
+          <SeloDoTempo leitura={tempo} soRisco />
         </MatchMeta>
       )}
 
@@ -302,11 +312,16 @@ function CartaoDoConfronto({
  * aparece quando a final fechou, e o nome sai do `winner` que a API gravou.
  */
 export default function TournamentBracket({
-  tournamentId, podeLancar,
+  tournamentId, podeLancar, tempoPorJogo,
 }: {
   tournamentId: string
   /** Quem gerencia o campeonato lança placar pelos cartões — ver #261. */
   podeLancar?: boolean
+  /**
+   * A leitura do tempo de cada jogo com hora marcada, pelo id do jogo (web#476).
+   * Vem da página, que já pediu a previsão do torneio para os dias.
+   */
+  tempoPorJogo?: ReadonlyMap<string, LeituraDoTempo>
 }) {
   const [divisions, setDivisions] = useState<TournamentDivision[]>([])
   const [chavePorDivisao, setChavePorDivisao] = useState<Record<string, TournamentMatch[]>>({})
@@ -420,6 +435,7 @@ export default function TournamentBracket({
                               tournamentId={tournamentId}
                               podeLancar={podeLancar}
                               onLancado={aoLancar}
+                              tempo={tempoPorJogo?.get(partida.id)}
                             />
                           ))}
                         </MatchSlot>
@@ -478,6 +494,7 @@ export default function TournamentBracket({
                     tournamentId={tournamentId}
                     podeLancar={podeLancar}
                     onLancado={aoLancar}
+                    tempo={tempoPorJogo?.get(disputa.id)}
                   />
                 </ThirdPlaceCard>
               </ThirdPlaceSection>

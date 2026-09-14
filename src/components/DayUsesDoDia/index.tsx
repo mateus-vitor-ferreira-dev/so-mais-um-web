@@ -2,6 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import { Clock, MapPin, Users } from 'lucide-react'
 import { dayUsesService } from '../../services/dayUses'
 import { chaves } from '../../lib/queryClient'
+import { usePrevisaoDosDayUses } from '../../hooks/usePrevisao'
+import AtribuicaoDoTempo from '../AtribuicaoDoTempo'
+import SeloDoTempo from '../SeloDoTempo'
 import type { ReactNode } from 'react'
 import type { DayUsePublico, FiltrosDeDayUse } from '../../types/api'
 import { Atalho, Aviso, Cabecalho, Carregando, Cartao, Grade, Precos, Secao, Selo } from './styles'
@@ -74,6 +77,11 @@ export default function DayUsesDoDia({ filtros = {}, modo = 'lista', vazio }: Pr
   })
 
   const dayUses = data?.dayUses ?? []
+  // No atalho não há cartão: pedir previsão ali seria gastar o limite da api à toa.
+  const previsoes = usePrevisaoDosDayUses(modo === 'lista' ? dayUses.map((d) => d.id) : [])
+  const mostraAlgumaPrevisao = previsoes.some(
+    (p) => p.data && (p.data.alcance === 'HORA' || p.data.alcance === 'DIA'),
+  )
 
   // Carregando é diferente de vazio, e trocar um pelo outro faz a tela dizer
   // "nada encontrado" antes de ter perguntado.
@@ -111,7 +119,7 @@ export default function DayUsesDoDia({ filtros = {}, modo = 'lista', vazio }: Pr
       </Aviso>
 
       <Grade>
-        {dayUses.map((dayUse: DayUsePublico) => (
+        {dayUses.map((dayUse: DayUsePublico, i) => (
           <Cartao key={dayUse.id} $lotado={dayUse.lotado}>
             <header>
               <span className="quadra">{dayUse.court.name}</span>
@@ -141,6 +149,8 @@ export default function DayUsesDoDia({ filtros = {}, modo = 'lista', vazio }: Pr
               </span>
             )}
 
+            <SeloDoTempo leitura={previsoes[i]?.data} />
+
             <Precos>
               <span className="geral">{emReais(dayUse.precoGeral)}</span>
               {/* Nulo é preço único — repetir o geral desenharia duas faixas
@@ -161,6 +171,7 @@ export default function DayUsesDoDia({ filtros = {}, modo = 'lista', vazio }: Pr
           </Cartao>
         ))}
       </Grade>
+      {mostraAlgumaPrevisao && <AtribuicaoDoTempo />}
     </Secao>
   )
 }

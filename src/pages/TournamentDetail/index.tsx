@@ -1,10 +1,13 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { ArrowLeft, Calendar, MapPin, Users, Trophy, Tag, Layers } from 'lucide-react'
 import TournamentBracket from '../../components/TournamentBracket'
 import DivisionRegistration from '../../components/DivisionRegistration'
 import TournamentRegistrations from '../../components/TournamentRegistrations'
+import PrevisaoDosDias from '../../components/PrevisaoDosDias'
+import AtribuicaoDoTempo from '../../components/AtribuicaoDoTempo'
+import { usePrevisaoDoTorneio } from '../../hooks/usePrevisao'
 import { getTournament, getTournamentDivisions } from '../../services/tournaments'
 import { getSportMeta } from '../../hooks/useSports'
 import SportGlyph from '../../components/SportIcon'
@@ -51,6 +54,13 @@ export default function TournamentDetail() {
   const [showBracket, setShowBracket] = useState(false)
   /* Some sozinho quando a API responde 403 — ver o TournamentRegistrations. */
   const [mostrarInscritos, setMostrarInscritos] = useState(true)
+  /* Depois do torneio, e nunca junto: com a previsão fora do ar a página abre igual (web#476). */
+  const previsao = usePrevisaoDoTorneio(tournament ? id : undefined)
+  const tempoPorJogo = useMemo(
+    () => new Map(previsao.data?.jogos.map((jogo) => [jogo.matchId, jogo.leitura]) ?? []),
+    [previsao.data],
+  )
+  const algumJogoEmRisco = previsao.data?.jogos.some((jogo) => jogo.leitura.risco !== 'NENHUM') ?? false
 
   const load = useCallback(async () => {
     try {
@@ -158,6 +168,12 @@ export default function TournamentDetail() {
             )}
           </InfoGrid>
 
+          <PrevisaoDosDias
+            dias={previsao.data?.dias}
+            carregando={previsao.isLoading}
+            erro={previsao.isError}
+          />
+
           {tournament.description && (
             <>
               <Divider />
@@ -224,8 +240,9 @@ export default function TournamentDetail() {
               /* `mostrarInscritos` é o sinal de que o 403 NÃO veio — ou seja,
                  quem olha gerencia este campeonato. O mesmo sinal libera o
                  lançamento de placar pelos cartões da chave (#261). */
-              <TournamentBracket tournamentId={id} podeLancar={mostrarInscritos} />
+              <TournamentBracket tournamentId={id} podeLancar={mostrarInscritos} tempoPorJogo={tempoPorJogo} />
             )}
+            {showBracket && algumJogoEmRisco && <AtribuicaoDoTempo />}
           </BracketSection>
         </Body>
       </Container>
