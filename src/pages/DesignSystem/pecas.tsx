@@ -1,11 +1,14 @@
+import AtribuicaoDoTempo from '../../components/AtribuicaoDoTempo'
 import CaptainBadge from '../../components/CaptainBadge'
 import EmptyState from '../../components/EmptyState'
 import ErrorState from '../../components/ErrorState'
+import FaixaDoTempo from '../../components/FaixaDoTempo'
 import MarcaDoTime from '../../components/MarcaDoTime'
 import RoleBadge from '../../components/RoleBadge'
 import SeletorDeCorDoTime from '../../components/SeletorDeCorDoTime'
 import { Skeleton, SkeletonCard } from '../../components/Skeleton'
 import { CORES_DE_TIME, NOME_DA_COR } from '../../constants/coresDeTime'
+import type { HoraDoTempo } from '../../types/api'
 import { Amostra, BotaoDeExemplo, Fileira } from './styles'
 
 export interface Peca {
@@ -45,6 +48,30 @@ export interface Peca {
  * escolha tenha **um lugar**, e que dê para vê-la nos dois temas antes de
  * repeti-la numa tela nova.
  */
+const horaDeExemplo = (h: number, extra: Partial<HoraDoTempo>): HoraDoTempo => ({
+  inicio: new Date(2026, 8, 14, h).toISOString(),
+  fim: new Date(2026, 8, 14, h + 1).toISOString(),
+  temperatura: 26 - (h - 17),
+  sensacao: 26,
+  chanceDeChuva: 10,
+  chuvaMm: 0,
+  chanceDeTempestade: 0,
+  vento: 8,
+  rajada: 15,
+  uv: 1,
+  condicao: 'PARTLY_CLOUDY',
+  risco: 'NENHUM',
+  motivos: [],
+  ...extra,
+})
+
+const HORAS_DE_EXEMPLO: HoraDoTempo[] = [
+  horaDeExemplo(17, { condicao: 'CLEAR' }),
+  horaDeExemplo(18, {}),
+  horaDeExemplo(19, { chanceDeChuva: 40, condicao: 'LIGHT_RAIN', risco: 'ATENCAO', motivos: ['CHUVA'] }),
+  horaDeExemplo(20, { chanceDeChuva: 80, chanceDeTempestade: 45, condicao: 'THUNDERSTORM', risco: 'ALTO', motivos: ['TEMPESTADE', 'CHUVA'] }),
+]
+
 export const PECAS: Peca[] = [
   {
     nome: 'EmptyState',
@@ -199,5 +226,25 @@ export const PECAS: Peca[] = [
       { rotulo: 'linha', render: () => <Skeleton height={16} /> },
       { rotulo: 'cartão', render: () => <SkeletonCard count={1} /> },
     ],
+  },
+  {
+    nome: 'FaixaDoTempo',
+    onde: 'components/FaixaDoTempo',
+    porque:
+      'O tempo hora a hora aparece na agenda do dono e na página da partida, e as duas precisam ler ' +
+      'o risco do mesmo jeito. A cor está só na borda, e o motivo vai por escrito no nome acessível: ' +
+      'quem não distingue o vermelho não perde a tempestade.',
+    estados: [
+      { rotulo: 'sem risco', render: () => <FaixaDoTempo horas={HORAS_DE_EXEMPLO.slice(0, 2)} /> },
+      { rotulo: 'com atenção e risco alto', render: () => <FaixaDoTempo horas={HORAS_DE_EXEMPLO} /> },
+    ],
+  },
+  {
+    nome: 'AtribuicaoDoTempo',
+    onde: 'components/AtribuicaoDoTempo',
+    porque:
+      'Os termos da Weather API exigem o crédito no mesmo bloco do dado. É contrato, e não enfeite: ' +
+      'escrita à mão em cada tela, a frase diverge ou some na terceira.',
+    estados: [{ rotulo: 'abaixo do dado', render: () => <AtribuicaoDoTempo /> }],
   },
 ]

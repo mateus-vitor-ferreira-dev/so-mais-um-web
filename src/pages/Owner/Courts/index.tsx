@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { usePageHeader, PageActions } from '../../../components/DashboardLayout/pageHeader'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { toast } from 'sonner'
@@ -19,7 +19,7 @@ import {
   CourtName, CourtMeta, StatusBadge, CourtActions, ActionBtn, ErrorMsg,
   NewBtn, Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle, Form,
   FormGroup, Label, Input, Select, FieldError, ModalActions, CancelBtn,
-  SubmitBtn,
+  SubmitBtn, SeloCoberta, AvisoSemCobertura, AtalhoDoAviso, GrupoDeOpcoes, Opcoes, Opcao, Nota,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
 
@@ -42,10 +42,40 @@ const STATUS_LABEL = { OPEN: 'Aberta', CLOSED: 'Fechada' }
 const STATUS_COLOR = { OPEN: '#16a34a', CLOSED: '#6b7280' }
 const STATUS_BG    = { OPEN: '#dcfce7', CLOSED: '#f3f4f6' }
 
+/**
+ * Se a quadra tem teto, como o formulário guarda (api#581, web#477).
+ *
+ * Texto, e não booleano, porque há um terceiro estado que o formulário precisa
+ * mostrar: `''` é a quadra que já existia antes da pergunta, com `coberta: null`
+ * na api. Um `boolean` com `false` por padrão diria "descoberta" por ela.
+ */
+type Cobertura = 'coberta' | 'descoberta' | ''
+
+const PARA_A_API: Record<Cobertura, boolean | null> = { coberta: true, descoberta: false, '': null }
+
+const daApi = (coberta: boolean | null | undefined): Cobertura =>
+  coberta === true ? 'coberta' : coberta === false ? 'descoberta' : ''
+
+/** Poker não tem previsão em caso nenhum, e a pergunta não faz sentido para ele. */
+const perguntaCobertura = (tipo: string | undefined) => tipo !== 'POKER'
+
 const schema = yup.object({
   name:         yup.string().required('Nome obrigatório'),
   type:         yup.string().required('Modalidade obrigatória'),
   pricePerHour: yup.number().typeError('Valor inválido').min(0).nullable().transform((v, o) => (o === '' ? null : v)),
+  /*
+   * Obrigatória só na quadra nova. A que já existe com `null` pode ser salva
+   * sem responder: travar a edição do preço por uma pergunta nova transformaria
+   * "mudar o valor" em "descobrir um campo obrigatório que ninguém pediu".
+   */
+  coberta: yup
+    .string<Cobertura>()
+    .oneOf(['coberta', 'descoberta', ''])
+    .default('')
+    .test('obrigatoria-na-quadra-nova', 'Diga se a quadra é coberta', function (valor) {
+      const { nova } = (this.options.context ?? {}) as { nova?: boolean }
+      return !nova || !perguntaCobertura(this.parent.type) || Boolean(valor)
+    }),
 })
 
 type FormValues = yup.InferType<typeof schema>
@@ -65,9 +95,12 @@ export default function OwnerCourts() {
   const [toggling, setToggling]         = useState<string | null>(null)
   const [deleting, setDeleting]         = useState<string | null>(null)
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const { register, handleSubmit, reset, control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
+    context: { nova: editingCourt === null },
   })
+  const tipoEscolhido = useWatch({ control, name: 'type' })
+  const coberturaEscolhida = useWatch({ control, name: 'coberta' })
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -93,7 +126,7 @@ export default function OwnerCourts() {
     setEditingCourt(null)
     // pricePerHour usa null (não '') porque o schema o transforma de '' para
     // null e o tipo inferido é number | null | undefined.
-    reset({ name: '', type: 'SOCIETY', pricePerHour: null })
+    reset({ name: '', type: 'SOCIETY', pricePerHour: null, coberta: '' })
     setShowModal(true)
   }
 
@@ -104,6 +137,7 @@ export default function OwnerCourts() {
       type: court.type,
       // Decimal do Prisma chega como string no JSON; o campo do form é number.
       pricePerHour: court.pricePerHour != null ? Number(court.pricePerHour) : null,
+      coberta: daApi(court.coberta),
     })
     setShowModal(true)
   }
@@ -121,6 +155,8 @@ export default function OwnerCourts() {
         name: data.name,
         type: data.type as CourtType,
         ...(data.pricePerHour != null ? { pricePerHour: data.pricePerHour } : {}),
+        // Sem resposta, o campo não vai: a quadra que já era `null` continua `null`.
+        ...(perguntaCobertura(data.type) && data.coberta ? { coberta: PARA_A_API[data.coberta] } : {}),
       }
       if (editingCourt) {
         await courtsService.updateCourt(placeId!, editingCourt.id, payload)
@@ -167,6 +203,9 @@ export default function OwnerCourts() {
 
   const placeName = place?.name ?? 'Estabelecimento'
 
+  // As que não disseram se têm teto: recebem previsão e aviso de chuva como descobertas.
+  const semCobertura = courts.filter((c) => perguntaCobertura(c.type) && c.coberta == null)
+
   usePageHeader(`Quadras — ${placeName}`, "Gerencie as quadras deste estabelecimento")
 
   return (
@@ -184,6 +223,24 @@ export default function OwnerCourts() {
 
         {error && <ErrorMsg>{error}</ErrorMsg>}
 
+        {semCobertura.length > 0 && (
+          <AvisoSemCobertura>
+            <span>
+              {semCobertura.length === 1
+                ? '1 quadra sem dizer se é coberta.'
+                : `${semCobertura.length} quadras sem dizer se são cobertas.`}{' '}
+              Até lá, a previsão do tempo e o aviso de chuva tratam como descoberta.
+            </span>
+            <AtalhoDoAviso
+              variant="secondary"
+              onClick={() => openEdit(semCobertura[0])}
+              disabled={!podeAlterar}
+            >
+              Informar
+            </AtalhoDoAviso>
+          </AvisoSemCobertura>
+        )}
+
         {!loading && courts.length === 0 && !error && (
           <EmptyState>
             Nenhuma quadra cadastrada ainda.
@@ -200,7 +257,10 @@ export default function OwnerCourts() {
                 <CourtCardHeader>
                   <CourtIconBox><SportIcon icon={sport.icon} fallback={sport.iconFallback} /></CourtIconBox>
                   <CourtInfo>
-                    <CourtName>{court.name}</CourtName>
+                    <CourtName>
+                      {court.name}
+                      {court.coberta === true && <SeloCoberta>coberta</SeloCoberta>}
+                    </CourtName>
                     <CourtMeta>
                       {sport.label}
                       {court.pricePerHour != null && ` · R$ ${Number(court.pricePerHour).toFixed(2).replace('.', ',')}/h`}
@@ -271,6 +331,28 @@ export default function OwnerCourts() {
                   />
                   {errors.pricePerHour && <FieldError>{errors.pricePerHour.message}</FieldError>}
                 </FormGroup>
+
+                {perguntaCobertura(tipoEscolhido) && (
+                  <GrupoDeOpcoes>
+                    <Label as="legend">A quadra é coberta?{editingCourt ? '' : ' *'}</Label>
+                    <Opcoes>
+                      <Opcao>
+                        <input type="radio" value="coberta" {...register('coberta')} />
+                        Coberta
+                      </Opcao>
+                      <Opcao>
+                        <input type="radio" value="descoberta" {...register('coberta')} />
+                        Descoberta
+                      </Opcao>
+                    </Opcoes>
+                    {editingCourt && !coberturaEscolhida && (
+                      <Nota>
+                        Sem essa informação, a gente mostra a previsão do tempo e manda aviso de chuva para esta quadra.
+                      </Nota>
+                    )}
+                    {errors.coberta && <FieldError>{errors.coberta.message}</FieldError>}
+                  </GrupoDeOpcoes>
+                )}
 
                 <ModalActions>
                   <CancelBtn type="button" onClick={closeModal}>Cancelar</CancelBtn>

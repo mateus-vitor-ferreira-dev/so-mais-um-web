@@ -16,6 +16,8 @@ vi.mock('react-router-dom', async () => {
 
 vi.mock('../../../services/subscriptionService')
 vi.mock('../../../services/ownerService')
+// A agenda do dia tem teste próprio; aqui ela só não pode sair pela rede.
+vi.mock('../../../components/TempoNaAgenda', () => ({ default: () => null }))
 vi.mock('sonner', () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn() } }))
 
 const temFuncionalidade = vi.fn()
