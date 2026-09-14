@@ -334,10 +334,66 @@ export interface Court {
      * use) não o trazem.
      */
     coberta?: boolean | null;
+    /**
+     * Preço por horário (api#576). Os três vêm juntos, e **só da api que já tem
+     * a funcionalidade**: `undefined` quer dizer que a api ainda não serve preço
+     * por horário, e a tela esconde a opção em vez de oferecer o que vai falhar.
+     */
+    precoVariaPorHorario?: boolean;
+    /** O menor e o maior preço da quadra, já com as faixas quando a opção está ligada. `null` sem preço nenhum. */
+    precoMinimo?: number | null;
+    precoMaximo?: number | null;
+    /** Só na quadra sozinha (`GET /places/:placeId/courts/:courtId`): as listas trazem o resumo, e não a tabela. */
+    faixasDePreco?: FaixaDePrecoDaQuadra[];
     placeId: string;
     place?: PlaceSummary & { owner?: { id: string; name: string } | null };
     createdAt: IsoDate;
     updatedAt: IsoDate;
+}
+
+/**
+ * Uma faixa de preço da quadra (api#576): das tantas às tantas, em hora de
+ * parede, num dia da semana (0 = domingo). `fim <= inicio` atravessa a
+ * meia-noite, e a faixa pertence ao dia em que começa.
+ */
+export interface FaixaDePrecoDaQuadra {
+    diaDaSemana: number;
+    /** `HH:mm` */
+    inicio: string;
+    fim: string;
+    /** Decimal do Prisma: chega como string no JSON. */
+    valorPorHora: string | number;
+}
+
+/** Um trecho da cotação: minutos seguidos no mesmo preço (api#577). */
+export interface TrechoDaCotacao {
+    de: IsoDate;
+    ate: IsoDate;
+    valorPorHora: number;
+    minutos: number;
+}
+
+/**
+ * `GET /courts/:courtId/preco?inicio=&duracaoMinutos=` — o preço de um horário (api#577).
+ *
+ * `total` é `null` quando algum minuto não tem preço nenhum (sem faixa e sem
+ * padrão): o preço é a combinar, e não zero.
+ */
+export interface CotacaoDoHorario {
+    courtId: string;
+    inicio: IsoDate;
+    duracaoMinutos: number;
+    total: number | null;
+    detalhamento: TrechoDaCotacao[];
+}
+
+/** Uma faixa do expediente do espaço (api#454), `GET /places/:placeId/opening-hours`. */
+export interface FaixaDeExpediente {
+    id: string;
+    diaDaSemana: number;
+    abre: string;
+    /** `fecha <= abre` atravessa a meia-noite. */
+    fecha: string;
 }
 
 /** Um jogador como o time o mostra: identidade e reputação, nunca contato. */
