@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { ArrowLeft, Calendar, MapPin, Users, Trophy, Tag, Layers, ChevronDown, ChevronUp } from 'lucide-react'
 import { ICONE_DO_FORMATO } from '../../utils/iconeDoFormato'
+import { Skeleton } from '../../components/Skeleton'
 import TournamentBracket from '../../components/TournamentBracket'
 import DivisionRegistration from '../../components/DivisionRegistration'
 import TournamentRegistrations from '../../components/TournamentRegistrations'
@@ -19,7 +20,7 @@ import {
   Body, InfoGrid, InfoItem, InfoIcon, InfoLabel, InfoValue,
   Divider, FormatCard, FormatIcon, FormatDesc, FormatHint,
   DivisionsSection, SectionTitle,
-  BracketSection, LoadingBox,
+  BracketSection,
 } from './styles'
 import { formatarReais } from '../../utils/formatCurrency'
 import type { BadgeTone } from './styles'
@@ -84,7 +85,28 @@ export default function TournamentDetail() {
 
   useEffect(() => { load() }, [load])
 
-  if (loading) return <><LoadingBox>Carregando...</LoadingBox></>
+  // A forma da página, e não um "Carregando..." no meio de 60vh vazios
+  // (web#493): o cabeçalho e o corpo aparecem onde vão estar.
+  if (loading) {
+    return (
+      <Container aria-busy="true" aria-label="Carregando torneio">
+        <Skeleton width={64} height={16} style={{ marginBottom: 20 }} />
+        <Header>
+          <Skeleton width={32} height={32} radius="50%" />
+          <HeaderInfo>
+            <Skeleton width="60%" height={22} style={{ marginBottom: 8 }} />
+            <Skeleton width="40%" height={14} />
+          </HeaderInfo>
+        </Header>
+        <Body>
+          <Skeleton height={64} radius={10} />
+          <Skeleton width="70%" height={14} />
+          <Skeleton width="55%" height={14} />
+          <Skeleton width="65%" height={14} />
+        </Body>
+      </Container>
+    )
+  }
   if (!tournament) return null
 
   const sport   = getSportMeta(tournament.sportType)

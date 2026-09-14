@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { cartaoClicavel } from '../../styles/cartaoClicavel'
 
 export const Cartao = styled.article`
   display: flex;
@@ -9,20 +10,8 @@ export const Cartao = styled.article`
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
   border-radius: ${({ theme }) => theme.radii.lg};
   box-shadow: ${({ theme }) => theme.shadows.sm};
-  cursor: pointer;
-  transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
   min-width: 0;
-
-  &:hover {
-    box-shadow: ${({ theme }) => theme.shadows.md};
-    border-color: ${({ theme }) => theme.colors.primaryLight};
-    transform: translateY(-2px);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    &:hover { transform: none; }
-  }
+  ${cartaoClicavel}
 `
 
 export const Cabecalho = styled.div`

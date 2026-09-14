@@ -194,11 +194,4 @@ export const BracketSection = styled.div`
   gap: 12px;
 `
 
-export const LoadingBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 60vh;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`
+

@@ -211,13 +211,6 @@ export const EmptyBracket = styled.div`
   }
 `
 
-export const LoadingBracket = styled.div`
-  text-align: center;
-  padding: 48px 20px;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`
-
 export const LevelBadge = styled.span`
   font-size: 10px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
