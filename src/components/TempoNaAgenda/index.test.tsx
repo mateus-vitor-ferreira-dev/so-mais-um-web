@@ -144,6 +144,16 @@ describe('TempoNaAgenda', () => {
     expect(screen.queryByText(/Risco de/)).not.toBeInTheDocument()
   })
 
+  it('a agenda que falha fala do painel, e não da criação de partida (web#491)', async () => {
+    vi.mocked(previsaoService.doEspaco).mockResolvedValue(previsao({}))
+    vi.mocked(courtsService.getAgendaDaQuadra).mockRejectedValue(new Error('fora do ar'))
+
+    renderWithProviders(<TempoNaAgenda />)
+
+    expect((await screen.findAllByText(/Recarregue a página para tentar de novo/)).length).toBeGreaterThan(0)
+    expect(screen.queryByText(/Você pode criar assim mesmo/)).not.toBeInTheDocument()
+  })
+
   it('espaço sem coordenada diz por que não há previsão', async () => {
     vi.mocked(previsaoService.doEspaco).mockResolvedValue(
       previsao({

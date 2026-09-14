@@ -9,6 +9,7 @@ import { ownerService } from '../../../services/ownerService'
 import { formatarPrecoCentavos } from '../../../utils/formatCurrency'
 import { ROTULOS_DE_FUNCIONALIDADE, INCLUSO_EM_TODO_PLANO } from '../../../constants/planFeatures'
 import TempoNaAgenda from '../../../components/TempoNaAgenda'
+import { contagem } from '../../../utils/plural'
 import { Container, Grid, Card, PlanHighlight, RowList, PrimaryButton, Badge, StatsGrid, StatCard, StatIcon, StatInfo, StatValue, StatLabel, ConviteEstatisticas, PassosList } from './styles'
 import type { OwnerStats, SubscriptionStatus } from '../../../types/api'
 
@@ -101,7 +102,8 @@ export default function OwnerDashboard() {
   const isActive = sub?.status === 'active' || sub?.status === 'trialing'
   const nomePlano = sub?.plan?.nome ?? 'Nenhum plano ativo'
 
-  usePageHeader("Minha Assinatura", "Acompanhe seu uso e gerencie sua assinatura.")
+  // "Minha Assinatura" era o título de quando a página só tinha o plano (web#491).
+  usePageHeader("Visão geral", "Seus números, a agenda do dia e a sua assinatura.")
 
   return (
     <>
@@ -174,11 +176,11 @@ export default function OwnerDashboard() {
                       continua aqui porque é o tamanho do espaço, não uma cota. */}
                   <div className="row">
                     <span className="label">Quadras</span>
-                    <span className="value">{sub?.usage?.quadras ?? 0} cadastradas</span>
+                    <span className="value">{contagem(sub?.usage?.quadras ?? 0, 'cadastrada', 'cadastradas')}</span>
                   </div>
                   <div className="row">
                     <span className="label">Estabelecimentos</span>
-                    <span className="value">{sub?.usage?.estabelecimentos ?? 0} cadastrados</span>
+                    <span className="value">{contagem(sub?.usage?.estabelecimentos ?? 0, 'cadastrado', 'cadastrados')}</span>
                   </div>
                 </RowList>
                 <PrimaryButton onClick={() => navigate('/owner/plans')}>

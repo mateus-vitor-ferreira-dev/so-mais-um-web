@@ -15,6 +15,7 @@ import {
   Cancelar, Confirmar, Dados, Data, Detalhe, Estado, Grupo, Linha, Lista, ModalAcoes, ModalCaixa,
   ModalFundo, ModalTexto, ModalTitulo, Nome, Selecao, Selo, Selos, Topo, Travado,
 } from './styles'
+import { formatarPrecoCentavos } from '../../../utils/formatCurrency'
 import type { TomDeSelo } from './styles'
 
 const DIA_MS = 24 * 60 * 60 * 1000
@@ -483,7 +484,7 @@ export default function AdminSubscriptions() {
                     </option>
                     {(planos.data ?? []).map((plano) => (
                       <option key={plano.id} value={plano.id}>
-                        {plano.nome} — R$ {(plano.precoCentavos / 100).toFixed(2).replace('.', ',')}
+                        {plano.nome} — {formatarPrecoCentavos(plano.precoCentavos)}
                       </option>
                     ))}
                   </Selecao>

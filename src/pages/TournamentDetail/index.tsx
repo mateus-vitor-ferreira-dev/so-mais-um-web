@@ -20,6 +20,7 @@ import {
   DivisionsSection, SectionTitle,
   BracketSection, LoadingBox,
 } from './styles'
+import { formatarReais } from '../../utils/formatCurrency'
 import type { BadgeTone } from './styles'
 
 const STATUS_LABEL = {
@@ -162,7 +163,7 @@ export default function TournamentDetail() {
                 <InfoIcon><Tag size={16} /></InfoIcon>
                 <div>
                   <InfoLabel>Taxa de inscrição</InfoLabel>
-                  <InfoValue>R$ {Number(tournament.registrationFee).toFixed(2)}</InfoValue>
+                  <InfoValue>{formatarReais(tournament.registrationFee)}</InfoValue>
                 </div>
               </InfoItem>
             )}

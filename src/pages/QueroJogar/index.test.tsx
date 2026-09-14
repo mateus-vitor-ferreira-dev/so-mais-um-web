@@ -333,6 +333,19 @@ describe('QueroJogar — entrar na partida', () => {
     expect(await screen.findByText('7 / 10 confirmados')).toBeInTheDocument()
     expect(screen.getByText('3 vagas restantes')).toBeInTheDocument()
   })
+
+  it('a última vaga no singular, e o valor por pessoa com vírgula (web#491)', async () => {
+    buscaEventos.mockResolvedValue(
+      criaBuscaDePartidas([
+        criaPartida({ maxPlayers: 4, totalValue: '90.00', _count: { participations: 3 } }),
+      ]),
+    )
+
+    renderWithProviders(<QueroJogar />)
+
+    expect(await screen.findByText('1 vaga restante')).toBeInTheDocument()
+    expect(screen.getByText('R$ 22,50 / pessoa')).toBeInTheDocument()
+  })
 })
 
 describe('QueroJogar — voltar', () => {

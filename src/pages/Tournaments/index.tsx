@@ -31,6 +31,7 @@ import {
   SubmitButton, LoadingState, FormatHint, FormatPreview, CategorySection,
   CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
 } from './styles'
+import { formatarReais } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
 
 const STATUS_FILTERS = [
@@ -513,7 +514,7 @@ export default function Tournaments() {
                     {Number(t.registrationFee) > 0 && (
                       <MetaRow>
                         <Trophy size={14} />
-                        Taxa: R$ {Number(t.registrationFee).toFixed(2)}
+                        Taxa: {formatarReais(t.registrationFee)}
                       </MetaRow>
                     )}
                   </CardMeta>

@@ -143,6 +143,7 @@ function AgendaDoDiaDaQuadra({ quadra, dia, leitura }: { quadra: Court; dia: str
       conflito={null}
       temData
       horasDoTempo={leitura?.alcance === 'HORA' ? leitura.horas : undefined}
+      mensagemDeErro="Não foi possível carregar o que está marcado nesta quadra. Recarregue a página para tentar de novo."
     />
   )
 }

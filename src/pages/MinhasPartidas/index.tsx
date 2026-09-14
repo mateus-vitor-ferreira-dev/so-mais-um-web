@@ -7,12 +7,16 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { SkeletonCard } from '../../components/Skeleton'
 import { Calendar, Clock, Copy, Plus, Shuffle, Flag, XCircle, CheckSquare, ShieldCheck } from 'lucide-react'
+import SportIcon from '../../components/SportIcon'
+import { valorPorPessoa } from '../../utils/formatCurrency'
 import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
-import { Grid, Card, CardHeader, InfoRow, ProgressBarContainer, ProgressBar, SpotsInfo } from '../QueroJogar/styles'
+import { Grid, Card, CardHeader, InfoRow, ProgressBarContainer, ProgressBar, SpotsInfo, PriceInfo } from '../QueroJogar/styles'
+import { SeloDeStatus } from './styles'
 import { mensagemDeErro } from '../../utils/apiError'
 import type {
   Court,
+  CourtType,
   Participation,
   Partida,
   PartidaRequirement,
@@ -305,6 +309,8 @@ export default function MinhasPartidas() {
               const currentPlayers = ev._count?.participations || 0
               const maxPlayers = ev.maxPlayers
               const progress = (currentPlayers / maxPlayers) * 100
+              const esporte = getSportMeta(ev.court?.type as CourtType)
+              const status = rotuloDoStatus(ev.status)
 
               return (
                 // O cartão inteiro navega para o detalhe, então todo controle dentro dele
@@ -313,16 +319,18 @@ export default function MinhasPartidas() {
                   <CardHeader>
                     <div>
                       <h3>{ev.court?.place?.name || 'Local'}</h3>
-                      <span style={{ fontSize: 12, color: '#6b7280' }}>{ev.court?.name}</span>
+                      <span className="address">{ev.court?.name}</span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                       <MarcaDeVisibilidade visibility={ev.visibility} />
-                      <span className="badge" style={{ color: '#f59e0b', background: '#fef3c7' }}>
-                        {rotuloDoStatus(ev.status).label}
-                      </span>
+                      {/* Cor pelo tom do status (web#491): era sempre o amarelo, e
+                          "Finalizada" parecia tão pendente quanto "Aguardando". */}
+                      <SeloDeStatus $tom={status.tom}>{status.label}</SeloDeStatus>
                     </div>
                   </CardHeader>
 
+                  {/* A modalidade e o valor, que o cartão de Minhas Partidas não dizia (web#491). */}
+                  <InfoRow><SportIcon icon={esporte.icon} fallback={esporte.iconFallback} /> {esporte.label}</InfoRow>
                   <InfoRow><Calendar /> {new Date(ev.date).toLocaleDateString('pt-BR')}</InfoRow>
                   <InfoRow><Clock /> {new Date(ev.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</InfoRow>
 
@@ -330,6 +338,8 @@ export default function MinhasPartidas() {
                     <ProgressBar $progress={progress}><div /></ProgressBar>
                     <SpotsInfo><span>{currentPlayers} / {maxPlayers} confirmados</span></SpotsInfo>
                   </ProgressBarContainer>
+
+                  <PriceInfo>{valorPorPessoa(ev.totalValue, maxPlayers)} / pessoa</PriceInfo>
 
                   {activeTab === 'created' && (
                     <>

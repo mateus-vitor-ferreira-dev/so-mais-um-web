@@ -180,11 +180,27 @@ export const Card = styled.div`
   }
 `
 
+/**
+ * O `gap` e o `min-width: 0` são o conserto da web#491: sem eles o nome longo
+ * do espaço ("Associação Olímpica de Lavras") quebrava linha por baixo dos
+ * selos, e o texto encostava no status. O texto encolhe; os selos, não.
+ */
 export const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing[3]};
   margin-bottom: ${({ theme }) => theme.spacing[4]};
+
+  > div:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  > div:last-child {
+    flex-shrink: 0;
+    max-width: 60%;
+  }
 
   h3 {
     font-size: ${({ theme }) => theme.fontSizes.lg};
@@ -199,6 +215,7 @@ export const CardHeader = styled.div`
   }
 
   .badge {
+    white-space: nowrap;
     font-size: ${({ theme }) => theme.fontSizes.xs};
     color: ${({ theme }) => theme.colors.primaryDark};
     background: ${({ theme }) => theme.colors.primaryLight};

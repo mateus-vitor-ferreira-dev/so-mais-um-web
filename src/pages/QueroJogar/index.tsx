@@ -20,6 +20,8 @@ import { mensagemDeErro } from '../../utils/apiError'
 import type { EventFilters } from '../../services/events'
 import type { CourtType, Partida } from '../../types/api'
 import type { SportOption } from '../../hooks/useSports'
+import { valorPorPessoa } from '../../utils/formatCurrency'
+import { contagem } from '../../utils/plural'
 import {
   Container, BackBtn, Header, HeaderRow,
   FiltersArea, SearchInput, ChipsContainer, Chip, ResultsCount,
@@ -484,7 +486,7 @@ export default function QueroJogar() {
             const progress = (currentPlayers / maxPlayers) * 100
             const isFull = currentPlayers >= maxPlayers
             const isJoined = event.participations?.some(p => p.userId === user?.id)
-            const pricePerPerson = (Number(event.totalValue) / maxPlayers).toFixed(2)
+            const pricePerPerson = valorPorPessoa(event.totalValue, maxPlayers)
             const mapsUrl = buildGoogleMapsUrl(event)
             const sportMeta = getSportMeta(event.court?.type as CourtType)
 
@@ -541,11 +543,11 @@ export default function QueroJogar() {
                   </ProgressBar>
                   <SpotsInfo>
                     <span>{currentPlayers} / {maxPlayers} confirmados</span>
-                    <span>{maxPlayers - currentPlayers} vagas restantes</span>
+                    <span>{contagem(maxPlayers - currentPlayers, 'vaga restante', 'vagas restantes')}</span>
                   </SpotsInfo>
                 </ProgressBarContainer>
 
-                <PriceInfo>R$ {pricePerPerson} / pessoa</PriceInfo>
+                <PriceInfo>{pricePerPerson} / pessoa</PriceInfo>
 
                 <ActionButton
                   disabled={isFull || isJoined}
