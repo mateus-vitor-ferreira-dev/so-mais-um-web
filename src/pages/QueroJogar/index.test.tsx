@@ -113,8 +113,13 @@ function selectComOpcao(textoDaOpcao: string): HTMLSelectElement {
  * partir da lista completa. Afirmar por texto daria o card como presente
  * mesmo depois de ele sumir da grade.
  */
+/**
+ * O cartão pelo nome do espaço. Desde a web#492 o título do cartão é o esporte,
+ * e o espaço é a linha do local — por isso o texto, e não mais o heading.
+ */
 function cardDaArena(nome: string): HTMLElement | null {
-  return screen.queryByRole('heading', { name: nome })
+  // `All`: o nome também aparece fora do cartão, no ponto do mapa.
+  return screen.queryAllByText(nome).map((el) => el.closest('article')).find(Boolean) ?? null
 }
 
 describe('QueroJogar — listagem', () => {
@@ -280,7 +285,8 @@ describe('QueroJogar — entrar na partida', () => {
 
     const botao = await screen.findByRole('button', { name: 'Partida lotada' })
     expect(botao).toBeDisabled()
-    expect(screen.getByText('0 vagas restantes')).toBeInTheDocument()
+    // O cartão único diz "Lotada" no lugar de "0 vagas restantes" (web#492).
+    expect(screen.getByText('Lotada')).toBeInTheDocument()
   })
 
   it('mostra "Você entrou" e bloqueia quando o usuário já participa', async () => {
@@ -488,7 +494,7 @@ describe('QueroJogar — filtro por distância', () => {
     renderWithProviders(<QueroJogar />)
     await esperaResultados()
 
-    expect(await screen.findByText('3.2 km')).toBeInTheDocument()
+    expect(await screen.findByText('3,2 km')).toBeInTheDocument()
   })
 
   it('a busca textual não mostra distância nenhuma', async () => {

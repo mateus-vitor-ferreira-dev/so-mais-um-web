@@ -1,5 +1,6 @@
 import AtribuicaoDoTempo from '../../components/AtribuicaoDoTempo'
 import CaptainBadge from '../../components/CaptainBadge'
+import CartaoDePartida, { type PartidaDoCartao } from '../../components/CartaoDePartida'
 import EmptyState from '../../components/EmptyState'
 import ErrorState from '../../components/ErrorState'
 import FaixaDoTempo from '../../components/FaixaDoTempo'
@@ -90,6 +91,15 @@ const LEITURA_DO_DIA: LeituraDoTempo = {
     data: '2026-09-20', maxima: 24, minima: 15, sensacaoMaxima: 25, chanceDeChuva: 70,
     chanceDeTempestade: 10, vento: 12, condicao: 'RAIN', risco: 'ATENCAO', motivos: ['CHUVA'],
   },
+}
+
+const PARTIDA_DE_EXEMPLO: PartidaDoCartao = {
+  id: 'exemplo',
+  date: new Date(2026, 8, 17, 19, 0).toISOString(),
+  maxPlayers: 4,
+  totalValue: '90.00',
+  _count: { participations: 3 },
+  court: { name: 'Quadra 2', type: 'BEACH_TENNIS', place: { name: 'Associação Olímpica de Lavras', neighborhood: 'Centro', city: 'Lavras' } },
 }
 
 export const PECAS: Peca[] = [
@@ -245,6 +255,32 @@ export const PECAS: Peca[] = [
     estados: [
       { rotulo: 'linha', render: () => <Skeleton height={16} /> },
       { rotulo: 'cartão', render: () => <SkeletonCard count={1} /> },
+    ],
+  },
+  {
+    nome: 'CartaoDePartida',
+    onde: 'components/CartaoDePartida',
+    porque:
+      'O Início, o Quero Jogar e Minhas Partidas desenhavam a mesma partida de três jeitos, com o dia, ' +
+      'as vagas e o valor em lugares diferentes. Um cartão só, com esporte, dia e hora primeiro — que é ' +
+      'a pergunta de quem procura jogo — e o espaço depois. As vagas e o valor sempre embaixo.',
+    estados: [
+      { rotulo: 'uma vaga', render: () => <CartaoDePartida partida={PARTIDA_DE_EXEMPLO} aoAbrir={() => {}} mapaUrl="#" /> },
+      {
+        rotulo: 'lotada',
+        render: () => <CartaoDePartida partida={{ ...PARTIDA_DE_EXEMPLO, _count: { participations: 4 } }} aoAbrir={() => {}} />,
+      },
+      {
+        rotulo: 'com selo e rodapé',
+        render: () => (
+          <CartaoDePartida
+            partida={{ ...PARTIDA_DE_EXEMPLO, court: { ...PARTIDA_DE_EXEMPLO.court, type: 'VOLEI' } }}
+            aoAbrir={() => {}}
+            selos={<span>Aguardando</span>}
+            rodape={<BotaoDeExemplo type="button">Entrar na partida</BotaoDeExemplo>}
+          />
+        ),
+      },
     ],
   },
   {
