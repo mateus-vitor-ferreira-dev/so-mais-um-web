@@ -365,6 +365,28 @@ export interface FaixaDePrecoDaQuadra {
     valorPorHora: string | number;
 }
 
+/** Um trecho da cotação: minutos seguidos no mesmo preço (api#577). */
+export interface TrechoDaCotacao {
+    de: IsoDate;
+    ate: IsoDate;
+    valorPorHora: number;
+    minutos: number;
+}
+
+/**
+ * `GET /courts/:courtId/preco?inicio=&duracaoMinutos=` — o preço de um horário (api#577).
+ *
+ * `total` é `null` quando algum minuto não tem preço nenhum (sem faixa e sem
+ * padrão): o preço é a combinar, e não zero.
+ */
+export interface CotacaoDoHorario {
+    courtId: string;
+    inicio: IsoDate;
+    duracaoMinutos: number;
+    total: number | null;
+    detalhamento: TrechoDaCotacao[];
+}
+
 /** Uma faixa do expediente do espaço (api#454), `GET /places/:placeId/opening-hours`. */
 export interface FaixaDeExpediente {
     id: string;

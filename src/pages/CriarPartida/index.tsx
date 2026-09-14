@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useForm, useWatch } from 'react-hook-form'
@@ -17,6 +17,8 @@ import { ConfiguracaoDeAcesso } from '../../components/ConfiguracaoDeAcesso'
 import { AgendaDaQuadra } from '../../components/AgendaDaQuadra'
 import { useAgendaDaQuadra } from '../../hooks/useAgendaDaQuadra'
 import { conflitoNaAgenda, fimDaPartida, faixaDeHorario } from '../../utils/agenda'
+import { useCotacaoDoHorario } from '../../hooks/useCotacaoDoHorario'
+import { detalhamentoPorExtenso, reaisCurtos, seloDePrecoDaQuadra } from '../../utils/faixasDePreco'
 import {
   Container, PageHeader, Title, Subtitle, StepIndicator, Step, StepDot,
   StepLine, Card, SectionTitle, CourtsGrid, CourtCard, CourtName, CourtInfo,
@@ -24,7 +26,7 @@ import {
   BackButton, NextButton, LoadingState, SuccessBox, SuccessActions,
   PrimaryBtn, SecondaryBtn, SportChipsGrid, SportChip, PlacesGrid, PlaceCard,
   PlaceName, PlaceAddress, PlaceCourtCount, BreadcrumbBar, BreadcrumbTag,
-  BreadcrumbSep,
+  BreadcrumbSep, CotacaoBox,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
 
@@ -114,6 +116,8 @@ export default function CriarPartida() {
     register,
     handleSubmit,
     control,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) })
 
@@ -267,6 +271,44 @@ export default function CriarPartida() {
     if (!fim || Number.isNaN(inicio.getTime())) return null
     return conflitoNaAgenda(agenda.ocupacoes, inicio, fim)
   })()
+  /**
+   * O preço deste horário, perguntado à api (web#475).
+   *
+   * Só com a api que já cota: sem `precoVariaPorHorario` na quadra, a rota de
+   * cotação não existe, e perguntar seria um 404 por tecla.
+   */
+  const cotacao = useCotacaoDoHorario(
+    selectedCourt?.id,
+    watchedDate,
+    watchedDuration,
+    selectedCourt?.precoVariaPorHorario !== undefined,
+  )
+  const totalCotado = cotacao.cotacao?.total ?? null
+
+  /**
+   * O valor total é **sugerido**, e continua sendo de quem organiza (épico api#574).
+   *
+   * - campo vazio recebe a cotação;
+   * - campo digitado à mão não é mexido — quem organiza pode ter combinado
+   *   outro valor com o dono;
+   * - a cotação nova só reescreve o campo se o valor ainda é o que a própria
+   *   tela sugeriu da última vez.
+   *
+   * O ref guarda essa última sugestão. Comparar com ela, e não com "o campo
+   * mudou?", é o que distingue "a tela escreveu 250" de "a pessoa digitou 250".
+   */
+  const ultimaSugestao = useRef<number | null>(null)
+  useEffect(() => {
+    if (totalCotado === null) return
+    const atual = getValues('totalValue') as unknown
+    const vazio = atual === undefined || atual === null || atual === ''
+    const aindaESugestao = ultimaSugestao.current !== null && Number(atual) === ultimaSugestao.current
+    if (vazio || aindaESugestao) {
+      setValue('totalValue', totalCotado)
+      ultimaSugestao.current = totalCotado
+    }
+  }, [totalCotado, getValues, setValue])
+
   const pricePerPerson = watchedTotalValue && watchedMaxPlayers
     ? (Number(watchedTotalValue) / Number(watchedMaxPlayers)).toFixed(2)
     : null
@@ -383,9 +425,8 @@ export default function CriarPartida() {
                             <div>{court.place.neighborhood} · {court.place.city}</div>
                           )}
                         </CourtInfo>
-                        {court.pricePerHour && (
-                          <SportBadge>R$ {Number(court.pricePerHour).toFixed(0)}/h</SportBadge>
-                        )}
+                        {/* Sem horário escolhido ainda, a quadra com faixas diz "a partir de" (web#475). */}
+                        {seloDePrecoDaQuadra(court) && <SportBadge>{seloDePrecoDaQuadra(court)}</SportBadge>}
                       </CourtCard>
                     ))}
                   </CourtsGrid>
@@ -480,6 +521,22 @@ export default function CriarPartida() {
                     $error={!!errors.totalValue}
                   />
                   {errors.totalValue && <ErrorMsg>{errors.totalValue.message}</ErrorMsg>}
+                  {cotacao.cotacao && (
+                    <CotacaoBox role="status">
+                      {cotacao.cotacao.total === null ? (
+                        <strong>Preço a combinar com o espaço</strong>
+                      ) : (
+                        <strong>Quadra neste horário: {reaisCurtos(cotacao.cotacao.total)}</strong>
+                      )}
+                      {/* O detalhamento só quando há mais de um preço: com um só, a linha de cima basta. */}
+                      {cotacao.cotacao.total !== null && cotacao.cotacao.detalhamento.length > 1 && (
+                        <span>{detalhamentoPorExtenso(cotacao.cotacao.detalhamento)}</span>
+                      )}
+                      {cotacao.usouDuracaoPadrao && (
+                        <span>Cotado para {cotacao.duracaoCotada} minutos, a duração padrão.</span>
+                      )}
+                    </CotacaoBox>
+                  )}
                   {pricePerPerson && (
                     <HintMsg>≈ R$ {pricePerPerson} por pessoa</HintMsg>
                   )}

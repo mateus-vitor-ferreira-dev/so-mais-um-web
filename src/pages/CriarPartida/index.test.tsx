@@ -15,7 +15,7 @@ import type { UserEvent } from '@testing-library/user-event'
 import { renderWithProviders, screen, waitFor } from '../../test/render'
 import { criaUsuario, envelope, erroDaApi } from '../../test/factories'
 import { marcarSessao } from '../../services/api'
-import type { Court, OcupacaoDaQuadra } from '../../types/api'
+import type { CotacaoDoHorario, Court, OcupacaoDaQuadra } from '../../types/api'
 import CriarPartida from './index'
 
 vi.mock('../../services/courts')
@@ -26,7 +26,7 @@ vi.mock('../../services/notificationService')
 vi.mock('../../services/playerService')
 vi.mock('../../services/teams')
 
-import { searchCourts, getAgendaDaQuadra } from '../../services/courts'
+import { searchCourts, getAgendaDaQuadra, cotarHorario } from '../../services/courts'
 import { createEvent } from '../../services/events'
 import { playerService } from '../../services/playerService'
 import { teamsService } from '../../services/teams'
@@ -555,5 +555,153 @@ describe('CriarPartida — horário ocupado é barrado na tela', () => {
 
     expect(criaEvento).toHaveBeenCalled()
     expect(await screen.findByText(/já existe uma partida agendada/i)).toBeInTheDocument()
+  })
+})
+
+/**
+ * O preço do horário na criação de partida (web#475, api#577).
+ *
+ * A cotação é da api; o que a tela decide é **quando o valor total pode ser
+ * escrito por ela**. É isso que estes testes travam: campo vazio recebe a
+ * sugestão, campo digitado nunca é sobrescrito, e trocar o horário só reescreve
+ * o que a própria tela tinha sugerido.
+ */
+describe('CriarPartida — o preço do horário', () => {
+  const COM_FAIXAS: Court = { ...QUADRA, pricePerHour: '80', precoVariaPorHorario: true, precoMinimo: 80, precoMaximo: 150 }
+  const cotar = vi.mocked(cotarHorario)
+
+  const cotacao = (total: number | null, precos: number[] = [total ?? 0]): CotacaoDoHorario => ({
+    courtId: QUADRA.id,
+    inicio: '',
+    duracaoMinutos: 60 * precos.length,
+    total,
+    detalhamento: total === null ? [] : precos.map((valorPorHora, i) => ({
+      de: new Date(2027, 5, 10, 17 + i).toISOString(),
+      ate: new Date(2027, 5, 10, 18 + i).toISOString(),
+      valorPorHora,
+      minutos: 60,
+    })),
+  })
+
+  beforeEach(() => {
+    buscaQuadras.mockResolvedValue(envelope([COM_FAIXAS]))
+    cotar.mockResolvedValue(envelope(cotacao(80)))
+  })
+
+  it('no passo 1, a quadra com faixas diz "a partir de", e a de valor único o preço dela', async () => {
+    buscaQuadras.mockResolvedValue(
+      envelope([COM_FAIXAS, { ...QUADRA, id: 'quadra-2', name: 'Quadra 2', precoVariaPorHorario: false, precoMinimo: 120, precoMaximo: 120 }]),
+    )
+    const { user } = renderWithProviders(<CriarPartida />)
+
+    await user.click(await screen.findByRole('button', { name: /Society/ }))
+    await user.click(await screen.findByText('Arena Sul'))
+
+    expect(await screen.findByText('a partir de R$ 80/h')).toBeInTheDocument()
+    expect(screen.getByText('R$ 120/h')).toBeInTheDocument()
+  })
+
+  it('valor único: mostra o total sem detalhamento, e o campo vazio recebe a sugestão', async () => {
+    const { user, container } = await vaiAteOFormulario()
+    const campos = preenche(container)
+
+    await user.type(campos.data, '2027-06-10T17:00')
+
+    expect(await screen.findByText('Quadra neste horário: R$ 80')).toBeInTheDocument()
+    await waitFor(() => expect(campos.valor).toHaveValue(80))
+    expect(screen.queryByText(/–.* a R\$/)).not.toBeInTheDocument()
+  })
+
+  it('duas faixas no intervalo: o detalhamento aparece', async () => {
+    cotar.mockResolvedValue(envelope(cotacao(250, [100, 150])))
+    const { user, container } = await vaiAteOFormulario()
+
+    await user.type(preenche(container).data, '2027-06-10T17:00')
+    await user.type(screen.getByPlaceholderText('60'), '120')
+
+    expect(await screen.findByText('Quadra neste horário: R$ 250')).toBeInTheDocument()
+    expect(screen.getByText('17h–18h a R$ 100/h · 18h–19h a R$ 150/h')).toBeInTheDocument()
+    await waitFor(() => expect(cotar).toHaveBeenLastCalledWith(QUADRA.id, expect.any(String), 120))
+  })
+
+  it('campo já digitado não é sobrescrito, e a cotação aparece ao lado para comparar', async () => {
+    const { user, container } = await vaiAteOFormulario()
+    const campos = preenche(container)
+
+    await user.type(campos.valor, '200')
+    await user.type(campos.data, '2027-06-10T17:00')
+
+    expect(await screen.findByText('Quadra neste horário: R$ 80')).toBeInTheDocument()
+    expect(campos.valor).toHaveValue(200)
+  })
+
+  it('trocar o horário atualiza a sugestão, mas não apaga o valor digitado à mão', async () => {
+    const { user, container } = await vaiAteOFormulario()
+    const campos = preenche(container)
+
+    await user.type(campos.data, '2027-06-10T17:00')
+    await waitFor(() => expect(campos.valor).toHaveValue(80))
+
+    cotar.mockResolvedValue(envelope(cotacao(150)))
+    await user.clear(campos.data)
+    await user.type(campos.data, '2027-06-10T19:00')
+    await waitFor(() => expect(campos.valor).toHaveValue(150))
+
+    await user.clear(campos.valor)
+    await user.type(campos.valor, '90')
+    cotar.mockResolvedValue(envelope(cotacao(120)))
+    await user.clear(campos.data)
+    await user.type(campos.data, '2027-06-10T20:00')
+
+    expect(await screen.findByText('Quadra neste horário: R$ 120')).toBeInTheDocument()
+    expect(campos.valor).toHaveValue(90)
+  })
+
+  it('cotação null: preço a combinar, e o campo fica como está', async () => {
+    cotar.mockResolvedValue(envelope(cotacao(null)))
+    const { user, container } = await vaiAteOFormulario()
+    const campos = preenche(container)
+
+    await user.type(campos.data, '2027-06-10T17:00')
+
+    expect(await screen.findByText('Preço a combinar com o espaço')).toBeInTheDocument()
+    expect(campos.valor).toHaveValue(null)
+  })
+
+  it('cotação que falha some, e a partida continua podendo ser criada', async () => {
+    cotar.mockRejectedValue(erroDaApi('fora do ar', 503))
+    criaEvento.mockResolvedValue(envelope({ id: 'partida-nova' } as never))
+    const { user, container } = await vaiAteOFormulario()
+    const campos = preenche(container)
+
+    await user.type(campos.data, '2027-06-10T17:00')
+    await waitFor(() => expect(cotar).toHaveBeenCalled())
+    await user.type(campos.vagas, '10')
+    await user.type(campos.valor, '200')
+    await user.type(campos.pix, 'pix@exemplo.com')
+    await user.click(campos.enviar)
+
+    await waitFor(() => expect(criaEvento).toHaveBeenCalled())
+    expect(screen.queryByText(/Quadra neste horário/)).not.toBeInTheDocument()
+  })
+
+  it('sem duração, diz que cotou os 60 minutos padrão', async () => {
+    const { user, container } = await vaiAteOFormulario()
+
+    await user.type(preenche(container).data, '2027-06-10T17:00')
+
+    expect(await screen.findByText('Cotado para 60 minutos, a duração padrão.')).toBeInTheDocument()
+    expect(cotar).toHaveBeenCalledWith(QUADRA.id, expect.any(String), undefined)
+  })
+
+  it('com a api que ainda não cota, não pergunta nada', async () => {
+    buscaQuadras.mockResolvedValue(envelope([QUADRA]))
+    const { user, container } = await vaiAteOFormulario()
+
+    await user.type(preenche(container).data, '2027-06-10T17:00')
+    await screen.findByText(/nada marcado neste dia/i)
+
+    expect(cotar).not.toHaveBeenCalled()
+    expect(screen.queryByText(/Quadra neste horário/)).not.toBeInTheDocument()
   })
 })

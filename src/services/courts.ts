@@ -1,5 +1,5 @@
 import api from './api'
-import type { AgendaDaQuadra, ApiEnvelope, Court, CourtStatus, CourtType, FaixaDeExpediente, FaixaDePrecoDaQuadra } from '../types/api'
+import type { AgendaDaQuadra, ApiEnvelope, CotacaoDoHorario, Court, CourtStatus, CourtType, FaixaDeExpediente, FaixaDePrecoDaQuadra } from '../types/api'
 
 /** ⚠️ Devolve o ENVELOPE da API — quem consome escreve `res.data`. */
 
@@ -60,6 +60,18 @@ export function substituirFaixasDePreco(
   faixas: Array<Omit<FaixaDePrecoDaQuadra, 'valorPorHora'> & { valorPorHora: number }>,
 ): Promise<ApiEnvelope<Court>> {
   return api.put(`/places/${placeId}/courts/${courtId}/faixas-de-preco`, { faixas }).then((r) => r.data)
+}
+
+/**
+ * O preço deste horário, com o detalhamento por trecho (api#577). Pública.
+ *
+ * Sem `duracaoMinutos`, a api cota os 60 minutos padrão da partida — e quem
+ * chama precisa dizer isso na tela.
+ */
+export function cotarHorario(courtId: string, inicio: string, duracaoMinutos?: number): Promise<ApiEnvelope<CotacaoDoHorario>> {
+  return api
+    .get(`/courts/${courtId}/preco`, { params: { inicio, ...(duracaoMinutos ? { duracaoMinutos } : {}) } })
+    .then((r) => r.data)
 }
 
 /** O expediente do espaço (api#454). Público; lista vazia é espaço sem horário cadastrado. */

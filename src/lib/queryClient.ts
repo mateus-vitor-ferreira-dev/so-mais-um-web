@@ -135,6 +135,9 @@ export const chaves = {
    * foi para quarta veria as marcações de terça desenhadas sobre a quarta.
    */
   agendaDaQuadra: (courtId: string, dia: string) => ['quadras', courtId, 'agenda', dia] as const,
+  /** A cotação de um horário (web#475): outra hora ou outra duração é outra resposta. */
+  cotacaoDoHorario: (courtId: string, inicio: string, duracaoMinutos: number) =>
+    ['quadras', courtId, 'preco', inicio, duracaoMinutos] as const,
   /** Os espaços do dono logado, para quem precisa escolher um antes de mostrar qualquer coisa. */
   meusEspacos: (userId: string) => ['meus-espacos', userId] as const,
   /**
