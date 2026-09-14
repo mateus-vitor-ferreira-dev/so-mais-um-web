@@ -13,6 +13,7 @@ import {
   ConfirmBtn,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
+import { dataCurta } from '../../../utils/datas'
 
 const STATUS_TABS: Array<{ key: PlaceRequestStatus | undefined; label: string }> = [
   { key: undefined,    label: 'Todas'      },
@@ -140,7 +141,7 @@ export default function AdminRequests() {
 
             <RequestFooter>
               <RequestSentAt>
-                Enviada em {new Date(req.createdAt).toLocaleDateString('pt-BR')}
+                Enviada em {dataCurta(req.createdAt)}
               </RequestSentAt>
 
               {req.status === 'PENDING' && (

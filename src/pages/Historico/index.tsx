@@ -14,6 +14,8 @@ import {
   EvalModalOverlay, EvalModalContent, ParticipantRow,
   ProgressInfo, ProgressBarWrap, CommentTextarea,
 } from './styles'
+import { formatarNota } from '../../utils/numeros'
+import { dataCurta, hora } from '../../utils/datas'
 
 const TAG_OPTIONS = [
   { label: 'Craque da Partida', value: 'CRAQUE_DA_PARTIDA' },
@@ -120,7 +122,7 @@ export default function Historico() {
   }
 
   const avgStars = reviewSummary.averageStars
-    ? Number(reviewSummary.averageStars).toFixed(1)
+    ? formatarNota(reviewSummary.averageStars)
     : 'N/A'
 
   const progressPct = reviewProgress
@@ -160,8 +162,8 @@ export default function Historico() {
                 <div className="info">
                   <h4>{ev.court?.place?.name} — <SportIcon icon={sport.icon} fallback={sport.iconFallback} /> {sport.label}</h4>
                   <p>
-                    {new Date(ev.date).toLocaleDateString('pt-BR')} às{' '}
-                    {new Date(ev.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {dataCurta(ev.date)} às{' '}
+                    {hora(ev.date)}
                   </p>
                 </div>
                 <div className="action">

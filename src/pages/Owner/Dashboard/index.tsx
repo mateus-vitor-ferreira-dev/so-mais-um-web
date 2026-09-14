@@ -12,6 +12,7 @@ import TempoNaAgenda from '../../../components/TempoNaAgenda'
 import { contagem } from '../../../utils/plural'
 import { Container, Grid, Card, PlanHighlight, RowList, PrimaryButton, Badge, StatsGrid, StatCard, StatIcon, StatInfo, StatValue, StatLabel, ConviteEstatisticas, PassosList } from './styles'
 import type { OwnerStats, SubscriptionStatus } from '../../../types/api'
+import { dataCurta } from '../../../utils/datas'
 
 const STATUS_LABEL: Record<string, string> = {
   active:    'Ativo',
@@ -168,7 +169,7 @@ export default function OwnerDashboard() {
                     <div className="row">
                       <span className="label">Próximo Vencimento</span>
                       <span className="value" style={{ color: isActive ? undefined : '#ef4444' }}>
-                        {new Date(sub.currentPeriodEnd).toLocaleDateString('pt-BR')}
+                        {dataCurta(sub.currentPeriodEnd)}
                       </span>
                     </div>
                   )}

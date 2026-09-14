@@ -23,3 +23,13 @@ export function valorPorPessoa(total: number | string | null | undefined, vagas:
   const quantas = Number(vagas)
   return formatarReais(quantas > 0 ? Number(total) / quantas : 0)
 }
+
+/** `120,00` — o valor sem o "R$", para quando a frase já tem o símbolo. */
+export function formatarValor(valor: number | string): string {
+  return Number(valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+
+/** `R$ 250` ou `R$ 58,33`: centavo só quando existe — o preço de uma cotação. */
+export function formatarReaisCurtos(valor: number): string {
+  return `R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: Number.isInteger(valor) ? 0 : 2, maximumFractionDigits: 2 })}`
+}

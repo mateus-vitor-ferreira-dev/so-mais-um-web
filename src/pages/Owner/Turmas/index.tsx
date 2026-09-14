@@ -22,6 +22,7 @@ import {
   Ocupacao, Rotulo, Select, SelectDoCartao, Selo, SemProfessor, SeletorDeEspaco, TituloDaCaixa,
   TituloDoDia, Topo, Valor, Vazio,
 } from './styles'
+import { formatarReais } from '../../../utils/formatCurrency'
 
 /**
  * `0 = domingo`, e a ordem é a da api.
@@ -74,8 +75,7 @@ function faixaDeHorario(horario: string, duracaoMinutos: number) {
 }
 
 /** `valorMensalidade` vem string (é `Decimal` na api) — some com `Number` antes. */
-const emReais = (valor: string | number) =>
-  Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+const emReais = formatarReais
 
 /**
  * As turmas do espaço, para o dono (web#390, api#472).

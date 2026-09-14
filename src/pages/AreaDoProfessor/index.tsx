@@ -16,14 +16,13 @@ import {
   Aluno, Botao, BotaoSecundario, CartaoDaAula, CartaoDaTurma, Chamada, Container,
   Dia, Horario, LinhaDaAula, Onde, Opcoes, Secao, Selo, Subtitulo, Titulo,
 } from './styles'
+import { diaEMes, hora } from '../../utils/datas'
 
 /** A agenda abre na semana. Mais que isso vira lista que ninguém percorre. */
 const JANELA_DIAS = 7
 
 const DIAS = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
 
-const hora = (iso: string) =>
-  new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
 
 const rotuloDoDia = (iso: string) => {
   const d = new Date(iso)
@@ -33,7 +32,7 @@ const rotuloDoDia = (iso: string) => {
 
   if (mesmoDia(d, hoje)) return 'Hoje'
   if (mesmoDia(d, amanha)) return 'Amanhã'
-  return `${DIAS[d.getDay()]}, ${d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}`
+  return `${DIAS[d.getDay()]}, ${diaEMes(d)}`
 }
 
 /** Agrupa por dia preservando a ordem que a api já entregou (por tempo). */

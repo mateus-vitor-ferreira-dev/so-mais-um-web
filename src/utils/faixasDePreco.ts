@@ -1,4 +1,5 @@
 import type { Court, FaixaDeExpediente, FaixaDePrecoDaQuadra } from '../types/api'
+import { formatarReaisCurtos, formatarValor } from './formatCurrency'
 
 /**
  * As contas do editor de faixas de preço (web#474, api#576), fora do JSX.
@@ -154,8 +155,7 @@ export function faixasApontadasPelaApi(mensagem: string, chaves: string[]): stri
   return [Number(achado[1]), Number(achado[2])].map((posicao) => chaves[posicao - 1]).filter(Boolean)
 }
 
-const reais = (valor: number) =>
-  valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+const reais = formatarValor
 
 /**
  * O preço da quadra na lista do dono: `R$ 120,00/h`, ou `R$ 80,00 a 150,00/h`.
@@ -173,9 +173,7 @@ export function precoNaLista(court: Pick<Court, 'pricePerHour' | 'precoVariaPorH
 }
 
 /** `R$ 250` ou `R$ 58,33`: centavo só quando existe. */
-export function reaisCurtos(valor: number): string {
-  return `R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: Number.isInteger(valor) ? 0 : 2, maximumFractionDigits: 2 })}`
-}
+export const reaisCurtos = formatarReaisCurtos
 
 /**
  * O selo da quadra na escolha, antes de existir horário (web#475).

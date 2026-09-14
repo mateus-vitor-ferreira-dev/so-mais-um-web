@@ -33,6 +33,7 @@ import {
 } from './styles'
 import { formatarReais } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
+import { dataCurta } from '../../utils/datas'
 
 const STATUS_FILTERS = [
   { label: 'Todos',           value: '' },
@@ -275,7 +276,7 @@ const schema = yup.object({
 
 function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return '—'
-  return new Date(dateStr).toLocaleDateString('pt-BR')
+  return dataCurta(dateStr)
 }
 
 export default function Tournaments() {

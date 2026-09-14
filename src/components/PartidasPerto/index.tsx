@@ -24,6 +24,7 @@ import {
   TopoDoCartao,
   Vazio,
 } from './styles'
+import { diaMesEHora } from '../../utils/datas'
 
 /** Passos de raio, para o "ampliar" do estado vazio. O teto da API é 100 km. */
 const RAIOS = [10, 25, 50, 100]
@@ -134,12 +135,7 @@ export function PartidasPerto() {
 
                 <Linha>
                   <Clock size={13} aria-hidden />
-                  {new Date(partida.date).toLocaleString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
+                  {diaMesEHora(partida.date)}
                 </Linha>
                 <Linha>
                   <Users size={13} aria-hidden />

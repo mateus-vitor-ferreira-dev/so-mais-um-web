@@ -14,6 +14,7 @@ import {
   Participante,
   Subtitulo,
 } from './styles'
+import { dataCurta } from '../../utils/datas'
 
 interface ConfirmacaoDePresencasProps {
   partida: Partida
@@ -85,7 +86,7 @@ export function ConfirmacaoDePresencas({ partida, onClose, onSaved }: Confirmaca
       >
         <h2>Confirmar Presenças</h2>
         <Subtitulo>
-          {partida.court?.place?.name} &mdash; {new Date(partida.date).toLocaleDateString('pt-BR')}
+          {partida.court?.place?.name} &mdash; {dataCurta(partida.date)}
         </Subtitulo>
 
         {carregando ? (

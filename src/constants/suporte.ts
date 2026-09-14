@@ -1,4 +1,5 @@
 import { ownerNavItems } from './navItems'
+import { diaEMes, hora } from '../utils/datas'
 
 /**
  * A conversa de suporte, dos dois lados (web#472, web#473 — épico api#570).
@@ -66,7 +67,7 @@ export function rotuloDaTela(tela: string): string {
 /** Só a hora para hoje; data e hora para o resto. No relógio de quem lê. */
 export function horaDaMensagem(iso: string): string {
   const data = new Date(iso)
-  const hora = data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-  if (data.toDateString() === new Date().toDateString()) return hora
-  return `${data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })} às ${hora}`
+  const horario = hora(data)
+  if (data.toDateString() === new Date().toDateString()) return horario
+  return `${diaEMes(data)} às ${horario}`
 }

@@ -22,6 +22,7 @@ import {
 } from './styles'
 import { formatarReais } from '../../utils/formatCurrency'
 import type { BadgeTone } from './styles'
+import { dataPorExtenso } from '../../utils/datas'
 
 const STATUS_LABEL = {
   DRAFT:               { label: 'Rascunho',              color: 'default' },
@@ -42,7 +43,7 @@ const FORMAT_META = {
 
 function fmtDate(d: string | null | undefined): string {
   if (!d) return '—'
-  return new Date(d).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+  return dataPorExtenso(d)
 }
 
 export default function TournamentDetail() {

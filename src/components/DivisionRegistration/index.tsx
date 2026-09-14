@@ -12,6 +12,7 @@ import {
   Lista, Card, Identificacao, Nome, Vagas, Acao, Botao, BotaoSecundario, Estado, Motivo, Aviso, LinkBotao,
 } from './styles'
 import type { EstadoTom } from './styles'
+import { dataCurta } from '../../utils/datas'
 
 interface Props {
   tournament: Tournament
@@ -24,10 +25,6 @@ const LEVEL_LABEL: Record<string, string> = {
   AMATEUR: 'Amador',
   ADVANCED: 'Avançado',
   PROFESSIONAL: 'Profissional',
-}
-
-function dataCurta(iso: string): string {
-  return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
 /**

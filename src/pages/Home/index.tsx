@@ -22,6 +22,8 @@ import EmptyState from '../../components/EmptyState'
 import { valorPorPessoa } from '../../utils/formatCurrency'
 import { contagem } from '../../utils/plural'
 import { SkeletonCard } from '../../components/Skeleton'
+import { diaDaSemanaEMes, hora } from '../../utils/datas'
+import { formatarNota } from '../../utils/numeros'
 
 interface FiltroTab {
   id: string
@@ -73,8 +75,8 @@ function getEventDateStr(event: EventoSolto): string {
   const raw = (event.scheduledAt || event.startTime || event.date || event.startsAt) as string | undefined
   if (!raw) return ''
   const d = new Date(raw)
-  const datePart = d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }).replace(/\.$/, '')
-  const timePart = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  const datePart = diaDaSemanaEMes(d)
+  const timePart = hora(d)
   return `${datePart} · ${timePart}`
 }
 
@@ -197,7 +199,7 @@ export default function Home() {
                 * sempre caía no '—'. O valor real é stats.averageStars, que
                 * /auth/me passou a devolver na api#239.
                 */}
-              <StatValue>{user?.stats?.averageStars != null ? Number(user.stats.averageStars).toFixed(1) : '—'}</StatValue>
+              <StatValue>{user?.stats?.averageStars != null ? formatarNota(user.stats.averageStars) : '—'}</StatValue>
               <StatLabel>Nota</StatLabel>
             </StatInfo>
           </StatBox>

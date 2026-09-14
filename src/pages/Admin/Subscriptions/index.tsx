@@ -17,6 +17,7 @@ import {
 } from './styles'
 import { formatarPrecoCentavos } from '../../../utils/formatCurrency'
 import type { TomDeSelo } from './styles'
+import { dataCurta } from '../../../utils/datas'
 
 const DIA_MS = 24 * 60 * 60 * 1000
 
@@ -47,7 +48,7 @@ const paraCampoDeData = (data: Date) =>
 
 const daquiADias = (dias: number) => paraCampoDeData(new Date(Date.now() + dias * DIA_MS))
 
-const dia = (iso: string) => new Date(iso).toLocaleDateString('pt-BR')
+const dia = (iso: string) => dataCurta(iso)
 
 /**
  * A validade que a renovação sugere: um mês a partir do que ainda vale.

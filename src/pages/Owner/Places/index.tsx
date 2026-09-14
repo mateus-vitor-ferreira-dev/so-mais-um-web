@@ -20,6 +20,7 @@ import {
   Label, Input, FieldError, ModalActions, CancelBtn, SubmitBtn,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
+import { formatarNota } from '../../../utils/numeros'
 
 const editSchema = yup.object({
   name:         yup.string().required('Nome obrigatório'),
@@ -124,7 +125,7 @@ export default function OwnerPlaces() {
    */
   const totalEvents = places.reduce((acc, p) => acc + ((p._count as { events?: number })?.events ?? 0), 0)
   const avgRating   = places.length
-    ? (places.reduce((acc, p) => acc + ((p as { averageRating?: number }).averageRating ?? 0), 0) / places.length).toFixed(1)
+    ? formatarNota(places.reduce((acc, p) => acc + ((p as { averageRating?: number }).averageRating ?? 0), 0) / places.length)
     : '—'
 
   usePageHeader("Meus Estabelecimentos", "Gerencie seus locais, quadras e status de cada estabelecimento")

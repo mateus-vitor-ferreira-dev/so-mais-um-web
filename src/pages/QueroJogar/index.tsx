@@ -34,6 +34,7 @@ import {
   RaioLinha, RaioChip, RaioExplicacao, DistanciaBadge,
   MapaCarregando,
 } from './styles'
+import { dataCurta, hora } from '../../utils/datas'
 
 function buildGoogleMapsUrl(event: Partida): string | null {
   const parts = [
@@ -523,10 +524,10 @@ export default function QueroJogar() {
                   */}
                 <EtiquetaDeRequisitos requirements={event.requirements ?? []} />
 
-                <InfoRow><Calendar size={14} /> {new Date(event.date).toLocaleDateString('pt-BR')}</InfoRow>
+                <InfoRow><Calendar size={14} /> {dataCurta(event.date)}</InfoRow>
                 <InfoRow>
                   <Clock size={14} />
-                  {new Date(event.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                  {hora(event.date)}
                 </InfoRow>
                 {mapsUrl && (
                   <InfoRow as="a" href={mapsUrl} target="_blank" rel="noopener noreferrer"

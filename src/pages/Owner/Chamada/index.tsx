@@ -8,10 +8,10 @@ import { chaves } from '../../../lib/queryClient'
 import { aulasService } from '../../../services/aulas'
 import { toastErroDeApi } from '../../../utils/toastErro'
 import { Ajuda, Botao, Caixa, Data, Estado, Linha, Lista, NaoChamado, Opcoes, Titulo, Topo, Voltar } from './styles'
+import { hora } from '../../../utils/datas'
 
 const hoje = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` }
 const intervalo = (dia: string) => ({ de: new Date(`${dia}T00:00:00-03:00`).toISOString(), ate: new Date(`${dia}T23:59:59-03:00`).toISOString() })
-const hora = (iso: string) => new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
 
 export default function OwnerChamada() {
   const { turmaId = '' } = useParams(); const [params] = useSearchParams(); const placeId = params.get('placeId') ?? ''

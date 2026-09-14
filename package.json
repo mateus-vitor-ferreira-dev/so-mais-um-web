@@ -16,6 +16,7 @@
     "readme:check": "node scripts/verifica-numeros-do-readme.mjs",
     "readme:fix": "node scripts/verifica-numeros-do-readme.mjs --fix",
     "primeira-tela:check": "node scripts/verifica-primeira-tela.mjs",
+    "formatacao:check": "node scripts/verifica-formatacao.mjs",
     "contrato:check": "node scripts/verifica-contrato-com-o-produto.mjs"
   },
   "dependencies": {
