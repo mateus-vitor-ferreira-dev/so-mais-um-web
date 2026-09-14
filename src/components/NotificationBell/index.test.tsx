@@ -57,6 +57,7 @@ function abre() {
       <Routes>
         <Route path="/owner/suporte" element={<p>conversa de suporte aberta</p>} />
         <Route path="/admin/suporte/c9" element={<p>conversa c9 aberta na caixa</p>} />
+        <Route path="/partida/m1" element={<p>partida m1 aberta</p>} />
         <Route path="*" element={null} />
       </Routes>
     </stream.Provider>,
@@ -106,6 +107,25 @@ describe('NotificationBell', () => {
     await user.click(await screen.findByText('A equipe do Só+1 respondeu'))
 
     expect(await screen.findByText('conversa de suporte aberta')).toBeInTheDocument()
+    expect(marcaUma).toHaveBeenCalledWith('n1')
+  })
+
+  it('o aviso de tempo mostra quando é, e o clique abre a partida (web#476)', async () => {
+    lista.mockResolvedValue([
+      notificacao({
+        type: 'WEATHER_ALERT',
+        title: 'Previsão de tempestade para sua partida',
+        body: 'Previsão de tempestade para sua partida amanhã às 19h, na quadra Society (80% de chance).',
+        data: { atividade: 'PARTIDA', matchId: 'm1', risco: 'ALTO' },
+      }),
+    ])
+    const { user } = abre()
+
+    await user.click(screen.getByRole('button', { name: 'Notificações' }))
+    expect(await screen.findByText(/amanhã às 19h, na quadra Society/)).toBeInTheDocument()
+    await user.click(screen.getByText('Previsão de tempestade para sua partida'))
+
+    expect(await screen.findByText('partida m1 aberta')).toBeInTheDocument()
     expect(marcaUma).toHaveBeenCalledWith('n1')
   })
 

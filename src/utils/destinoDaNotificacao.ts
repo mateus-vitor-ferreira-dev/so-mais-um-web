@@ -25,6 +25,24 @@ export function destinoDaNotificacao(
         return conversaId ? `/admin/suporte/${conversaId}` : '/admin/suporte'
       }
       return null
+    /*
+     * O aviso de tempo abre a atividade (web#476). O `atividade` do `data` diz
+     * qual é, e cada uma tem a sua tela: a partida é de quem joga, o day use é
+     * do dono (é ele quem recebe o aviso), e o jogo abre o torneio.
+     */
+    case 'WEATHER_ALERT': {
+      const data = notificacao.data
+      switch (data?.atividade) {
+        case 'PARTIDA':
+          return data.matchId ? `/partida/${data.matchId}` : null
+        case 'DAY_USE':
+          return data.dayUseId ? `/owner/day-uses/${data.dayUseId}/entradas` : null
+        case 'JOGO_DE_TORNEIO':
+          return data.tournamentId ? `/torneios/${data.tournamentId}` : null
+        default:
+          return null
+      }
+    }
     default:
       return null
   }

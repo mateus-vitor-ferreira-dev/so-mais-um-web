@@ -318,6 +318,20 @@ describe('TournamentBracket — chaveamento vindo da API', () => {
     expect(await screen.findByText(/Tênis 1 · .* · árb\. Rafael Quintão/)).toBeInTheDocument()
   })
 
+  it('o jogo marcado com risco no tempo ganha o selo (web#476)', async () => {
+    buscaPartidas.mockResolvedValue({
+      success: true,
+      data: [
+        partida({ id: 'j1', participantA: juliana, participantAId: 'insc-1', participantB: aline, participantBId: 'insc-2', status: 'SCHEDULED', scheduledAt: '2026-08-20T12:00:00.000Z' }),
+      ],
+    })
+    const tempo = new Map([['j1', { alcance: 'HORA' as const, risco: 'ALTO' as const, motivos: ['TEMPESTADE' as const], horas: [] }]])
+
+    renderWithProviders(<TournamentBracket tournamentId="torneio-1" tempoPorJogo={tempo} />)
+
+    expect(await screen.findByText('Risco: tempestade')).toBeInTheDocument()
+  })
+
   it('pede a chave de cada divisão, e uma que falhe não apaga as outras', async () => {
     buscaDivisoes.mockResolvedValue({
       success: true,

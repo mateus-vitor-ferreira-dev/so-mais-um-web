@@ -20,10 +20,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
 import { renderWithProviders } from '../../test/render'
 import { dayUsesService } from '../../services/dayUses'
+import { previsaoService } from '../../services/previsao'
+import { horaDoTempo, leituraPorHora } from '../../test/previsao'
 import DayUsesDoDia from './index'
 import type { BuscaDeDayUse, DayUsePublico } from '../../types/api'
 
 vi.mock('../../services/dayUses')
+vi.mock('../../services/previsao')
 const servico = vi.mocked(dayUsesService)
 
 function dayUse(over: Partial<DayUsePublico> = {}): DayUsePublico {
@@ -63,6 +66,47 @@ const resposta = (dayUses: DayUsePublico[]): BuscaDeDayUse => ({
 beforeEach(() => {
   vi.clearAllMocks()
   servico.buscar.mockResolvedValue(resposta([dayUse()]))
+  vi.mocked(previsaoService.doDayUse).mockResolvedValue({ alcance: 'SEM_LOCAL', risco: 'NENHUM', motivos: [] })
+})
+
+describe('DayUsesDoDia — previsão do tempo (web#476)', () => {
+  it('o cartão mostra a temperatura e o risco, e a seção a atribuição', async () => {
+    vi.mocked(previsaoService.doDayUse).mockResolvedValue(
+      leituraPorHora([horaDoTempo(9, { temperatura: 31 }), horaDoTempo(10, { risco: 'ALTO', motivos: ['VENTO'] })]),
+    )
+
+    renderWithProviders(<DayUsesDoDia />)
+
+    expect(await screen.findByText('31°')).toBeInTheDocument()
+    expect(screen.getByText('Risco: vento forte')).toBeInTheDocument()
+    expect(screen.getByText(/Google Maps/)).toBeInTheDocument()
+    expect(previsaoService.doDayUse).toHaveBeenCalledWith('d1')
+  })
+
+  it('com a previsão fora do ar, o cartão fica como sempre, sem atribuição', async () => {
+    vi.mocked(previsaoService.doDayUse).mockRejectedValue({ response: { status: 503 } })
+
+    renderWithProviders(<DayUsesDoDia />)
+
+    expect(await screen.findByText('Quadra 1')).toBeInTheDocument()
+    await vi.waitFor(() => expect(previsaoService.doDayUse).toHaveBeenCalled())
+    expect(screen.queryByText(/Google Maps/)).not.toBeInTheDocument()
+  })
+
+  it('pede a previsão só dos primeiros cartões, para não estourar o limite da api', async () => {
+    servico.buscar.mockResolvedValue(resposta(Array.from({ length: 20 }, (_, i) => dayUse({ id: `d${i}` }))))
+
+    renderWithProviders(<DayUsesDoDia />)
+
+    await vi.waitFor(() => expect(previsaoService.doDayUse).toHaveBeenCalledTimes(12))
+  })
+
+  it('o atalho do Quero Jogar não pede previsão nenhuma', async () => {
+    renderWithProviders(<DayUsesDoDia modo="atalho" />)
+
+    expect(await screen.findByText(/day use acontecendo hoje/)).toBeInTheDocument()
+    expect(previsaoService.doDayUse).not.toHaveBeenCalled()
+  })
 })
 
 describe('DayUsesDoDia', () => {

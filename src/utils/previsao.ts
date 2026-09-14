@@ -88,3 +88,27 @@ export function riscoDaOcupacao(ocupacao: OcupacaoDaQuadra, horas: HoraDoTempo[]
     motivos: ordem.filter((m) => emRisco.some((h) => h.motivos.includes(m))),
   }
 }
+
+/** `20/09` — o dia civil `AAAA-MM-DD` que a api manda, sem passar por `Date` e por fuso nenhum. */
+export function diaEMes(data: string): string {
+  const [, mes, dia] = data.split('-')
+  return `${dia}/${mes}`
+}
+
+/**
+ * A frase do risco de uma leitura por hora: `Risco de tempestade às 19h`, ou
+ * `Atenção: chuva às 16h`. `null` quando não há risco.
+ *
+ * A hora é a **primeira** que chega ao pior nível, e os motivos são os dela:
+ * é a pergunta de quem vai jogar — *a partir de quando?* —, e juntar os motivos
+ * de todas as horas diria "tempestade às 17h" por um raio que é das 20h.
+ */
+export function fraseDoRisco(horas: HoraDoTempo[], risco: AvaliacaoDoTempo['risco']): string | null {
+  if (risco === 'NENHUM') return null
+  const primeira = horas.find((h) => h.risco === risco)
+  if (!primeira) return null
+  const motivos = motivosPorExtenso(primeira.motivos)
+  return risco === 'ALTO'
+    ? `Risco de ${motivos} às ${horaCheia(primeira.inicio)}`
+    : `Atenção: ${motivos} às ${horaCheia(primeira.inicio)}`
+}
