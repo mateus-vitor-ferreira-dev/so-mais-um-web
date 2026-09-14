@@ -25,6 +25,8 @@ import { AuthProvider } from '../contexts/AuthContext'
 export interface RenderWithProvidersOptions extends Omit<RenderOptions, 'wrapper'> {
   /** Rota inicial do MemoryRouter. Ex.: `/partida/42`. Padrão: `/`. */
   route?: string
+  /** O `state` da navegação que trouxe até `route` — como o link do menu que leva a origem. */
+  state?: unknown
   /**
    * Padrão da rota, quando o componente lê parâmetro da URL com `useParams`.
    *
@@ -67,7 +69,7 @@ export interface RenderWithProvidersResult extends RenderResult {
  * é passado direto para o teste poder fixá-lo sem depender do localStorage nem
  * do matchMedia.
  */
-function criarProviders({ route = '/', path, theme = 'light', queryClient: clienteDoTeste }: RenderWithProvidersOptions) {
+function criarProviders({ route = '/', state, path, theme = 'light', queryClient: clienteDoTeste }: RenderWithProvidersOptions) {
   // Cliente novo a cada montagem: cache de query é global por natureza, e
   // reaproveitá-lo entre testes faria um teste ver o dado que o anterior
   // buscou — acoplamento que só aparece quando a ordem dos testes muda.
@@ -82,7 +84,7 @@ function criarProviders({ route = '/', path, theme = 'light', queryClient: clien
       <QueryClientProvider client={queryClient}>
         <ThemeContextProvider>
           <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
-            <MemoryRouter initialEntries={[route]}>
+            <MemoryRouter initialEntries={[state === undefined ? route : { pathname: route, state }]}>
               <AuthProvider>
                 {path
                   ? <Routes><Route path={path} element={children} /></Routes>
@@ -98,11 +100,11 @@ function criarProviders({ route = '/', path, theme = 'light', queryClient: clien
 
 export function renderWithProviders(
   ui: ReactElement,
-  { route, path, theme, queryClient, ...options }: RenderWithProvidersOptions = {},
+  { route, state, path, theme, queryClient, ...options }: RenderWithProvidersOptions = {},
 ): RenderWithProvidersResult {
   return {
     user: userEvent.setup(),
-    ...render(ui, { wrapper: criarProviders({ route, path, theme, queryClient }), ...options }),
+    ...render(ui, { wrapper: criarProviders({ route, state, path, theme, queryClient }), ...options }),
   }
 }
 

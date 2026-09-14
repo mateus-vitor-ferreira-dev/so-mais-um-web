@@ -27,10 +27,10 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 })
 
-// O jsdom também não implementa EventSource, e o NotificationBell — que vive
-// dentro do MainLayout, ou seja, em toda página logada — abre um stream SSE
-// assim que encontra token no localStorage. Sem o stub, qualquer teste de
-// página logada quebra com "EventSource is not defined".
+// O jsdom também não implementa EventSource, e o StreamProvider — que envolve
+// o app inteiro desde a web#472 — abre um stream SSE assim que há usuário
+// logado. Sem o stub, qualquer teste que monte o provider com sessão quebra com
+// "EventSource is not defined".
 //
 // O stub não entrega mensagem nenhuma de propósito: teste que precise de
 // notificação chegando deve mockar o serviço, não depender deste boneco.

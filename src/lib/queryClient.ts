@@ -190,4 +190,13 @@ export const chaves = {
    */
   usuariosDoAdmin: (papel: string) => ['admin', 'usuarios', papel] as const,
   planos: () => ['planos'] as const,
+  /**
+   * A conversa de suporte do dono logado (web#472). Sem id: a conversa é sempre
+   * a de quem chama. É uma `useInfiniteQuery` — as páginas anteriores entram
+   * quando o dono sobe a rolagem.
+   */
+  suporteDoDono: () => ['suporte', 'dono'] as const,
+  /** A caixa da equipe (web#473): relida a cada evento `suporte`, que muda ordem e contagem. */
+  caixaDoSuporte: () => ['suporte', 'caixa'] as const,
+  conversaDoSuporte: (conversaId: string) => ['suporte', 'conversa', conversaId] as const,
 }

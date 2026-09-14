@@ -1,7 +1,7 @@
 import { Sun, Moon, LogOut, Menu, X, Lock } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Suspense, useCallback, useMemo, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useThemeMode } from '../../contexts/ThemeContext'
 import { useAuth } from '../../contexts/AuthContext'
 import LogoSvg from '../LogoSvg'
@@ -40,6 +40,14 @@ export interface NavItemDef {
    * porque morava num `useState` deste layout.
    */
   badge?: number
+  /**
+   * O link leva a rota atual no `state` da navegação, como `{ de: '/owner/...' }`.
+   *
+   * Existe para a conversa de suporte (web#472): a primeira mensagem da visita
+   * manda de que tela o dono veio. Opt-in por item, e não em todos os links,
+   * porque nenhuma outra tela lê esse dado.
+   */
+  levaOrigem?: boolean
   /** Insere um separador acima deste item. */
   divider?: boolean
   /** Repassado ao NavLink: exige correspondência exata da rota. */
@@ -75,6 +83,7 @@ export default function DashboardLayout({
 }: DashboardLayoutProps) {
   const { isDark, toggleTheme } = useThemeMode()
   const navigate = useNavigate()
+  const location = useLocation()
   const { logout, user } = useAuth()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [header, setHeaderState] = useState<{ title: string; sub?: string }>({ title: '' })
@@ -115,7 +124,7 @@ export default function DashboardLayout({
         <Divider />
 
         <Nav>
-          {navItems.map(({ to, label, icon: Icon, badge, divider, end, bloqueado }) => (
+          {navItems.map(({ to, label, icon: Icon, badge, divider, end, bloqueado, levaOrigem }) => (
             <span key={to}>
               {divider && <Divider />}
               {bloqueado ? (
@@ -137,6 +146,7 @@ export default function DashboardLayout({
                 <NavItem
                   to={to}
                   end={!!end}
+                  state={levaOrigem ? { de: location.pathname } : undefined}
                   onClick={() => setMobileMenuOpen(false)}
                   onMouseEnter={() => prefetchRota(to)}
                   onFocus={() => prefetchRota(to)}

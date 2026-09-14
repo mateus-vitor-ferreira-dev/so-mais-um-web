@@ -18,7 +18,9 @@ const BENEFITS = [
   'Quadras e horários ilimitados',
   'Solicitações de jogadores em tempo real',
   'Relatórios e histórico de eventos',
-  'Suporte prioritário',
+  // Era 'Suporte prioritário', que ninguém sabia medir. Agora é o que existe:
+  // a conversa com a equipe dentro do painel (web#472, épico api#570).
+  'Suporte direto pelo painel',
 ]
 
 const loginSchema = yup.object({

@@ -7,9 +7,11 @@ export { default as ResetPassword }  from './ResetPassword'
 export { default as AdminUsers } from './Admin/Users'
 export { default as AdminRequests } from './Admin/Requests'
 export { default as AdminPlaces } from './Admin/Places'
+export { default as AdminSuporte } from './Admin/Suporte'
 
 export { default as OwnerPlaces } from './Owner/Places'
 export { default as OwnerRequests } from './Owner/Requests'
+export { default as OwnerSuporte } from './Owner/Suporte'
 
 export { default as QueroJogar } from './QueroJogar'
 export { default as MinhasPartidas } from './MinhasPartidas'
