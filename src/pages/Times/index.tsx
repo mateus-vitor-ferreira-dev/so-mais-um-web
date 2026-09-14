@@ -17,12 +17,12 @@ import ConvitesDeTime from '../../components/ConvitesDeTime'
 import SportIcon from '../../components/SportIcon'
 import type { CourtType, TeamSummary } from '../../types/api'
 import {
-  Container, PageHeader, CreateButton, Grid, TeamCard, CartaoDeNovoTime, ModalOverlay,
-  ModalContent, Form, ButtonGroup, SecondaryButton,
+  Container, CreateButton, Grid, TeamCard, CartaoDeNovoTime, ModalOverlay, ModalContent, Form, ButtonGroup, SecondaryButton,
 } from './styles'
 import CaptainBadge from '../../components/CaptainBadge'
 import ErrorState from '../../components/ErrorState'
 import EmptyState from '../../components/EmptyState'
+import { PageActions, usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 const MAX_NOME = 60
 const MAX_CIDADE = 80
@@ -38,6 +38,7 @@ interface Formulario {
 const VAZIO: Formulario = { name: '', sport: '', city: '', cor: null }
 
 export default function Times() {
+  usePageHeader('Meus Times')
   const { user } = useAuth()
   const queryClient = useQueryClient()
   const { sports } = useSports()
@@ -93,13 +94,12 @@ export default function Times() {
 
   return (
     <Container>
-      <PageHeader>
-        <h1>Meus Times</h1>
+      <PageActions>
         <CreateButton type="button" onClick={() => setModalAberto(true)}>
           <Plus size={18} aria-hidden="true" />
           Criar time
         </CreateButton>
-      </PageHeader>
+      </PageActions>
 
       {/*
         Antes da lista: é para cá que a pessoa vem depois da notificação, e um

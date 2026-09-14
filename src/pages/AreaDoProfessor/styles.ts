@@ -1,21 +1,9 @@
 import styled from 'styled-components'
 
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
 export const Container = styled.div`
   max-width: 900px;
-  margin: 0 auto;
-  padding: ${({ theme }) => theme.spacing[6]} ${({ theme }) => theme.spacing[4]};
-`
-
-export const Titulo = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes['2xl']};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  margin: 0 0 ${({ theme }) => theme.spacing[1]};
-`
-
-export const Subtitulo = styled.p`
-  color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  margin: 0 0 ${({ theme }) => theme.spacing[6]};
 `
 
 export const Secao = styled.section`

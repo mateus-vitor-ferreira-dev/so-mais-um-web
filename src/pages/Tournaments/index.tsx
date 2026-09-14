@@ -19,24 +19,20 @@ import type { KeyboardEvent, ReactElement } from 'react'
 import type { Place, Tournament, TournamentStatus } from '../../types/api'
 import type { InferType } from 'yup'
 import type { CreateTournamentInput } from '../../services/tournaments'
+import { PageActions, usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /** Campos do formulário, derivados do schema yup usado no resolver. */
 type FormularioTorneio = InferType<typeof schema>
 import { mensagemDeErro } from '../../utils/apiError'
 import {
-  Container, PageHeader, Title, Subtitle, CreateButton, FiltersBar,
-  FilterChip, Grid, TournamentCard, CardTop, TournamentName, SportIcon,
-  StatusBadge, CardMeta, MetaRow, ViewBracketBtn, BracketSection,
-  BracketTitle, Modal, ModalBox, ModalHeader, ModalTitle, CloseBtn, Form,
-  Field, Label, Input, Select, ErrorMsg, ModalActions, CancelButton,
-  SubmitButton, FormatHint, FormatPreview, CategorySection,
-  CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
+  Container, CreateButton, FiltersBar, FilterChip, Grid, TournamentCard, CardTop, TournamentName, SportIcon, StatusBadge, CardMeta, MetaRow, ViewBracketBtn, BracketSection, BracketTitle, Modal, ModalBox, ModalHeader, ModalTitle, CloseBtn, Form, Field, Label, Input, Select, ErrorMsg, ModalActions, CancelButton, SubmitButton, FormatHint, FormatPreview, CategorySection, CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
 } from './styles'
 import { formatarReais } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
 import { dataCurta } from '../../utils/datas'
+import { contagem } from '../../utils/plural'
 import { AlvoDoCartao } from '../../styles/cartaoClicavel'
-import { Skeleton, SkeletonCard } from '../../components/Skeleton'
+import { SkeletonCard } from '../../components/Skeleton'
 
 const STATUS_FILTERS = [
   { label: 'Todos',           value: '' },
@@ -299,6 +295,11 @@ export default function Tournaments() {
 
   const [tournaments, setTournaments]   = useState<Tournament[]>([])
   const [loading, setLoading]           = useState(true)
+
+  usePageHeader(
+    'Torneios',
+    loading ? undefined : contagem(tournaments.length, 'torneio encontrado', 'torneios encontrados'),
+  )
   const [statusFilter, setStatusFilter] = useState('')
   const [selected, setSelected]         = useState<Tournament | null>(null)
   const [showModal, setShowModal]       = useState(false)
@@ -425,21 +426,14 @@ export default function Tournaments() {
           */}
         <PartidasParaApitar />
 
-        {/* ── Cabeçalho ── */}
-        <PageHeader>
-          <div>
-            <Title>Torneios</Title>
-            <Subtitle>
-              {loading ? <Skeleton width={140} height={14} /> : `${tournaments.length} torneio${tournaments.length !== 1 ? 's' : ''} encontrado${tournaments.length !== 1 ? 's' : ''}`}
-            </Subtitle>
-          </div>
-          {canCreate && (
+        {canCreate && (
+          <PageActions>
             <CreateButton onClick={() => setShowModal(true)}>
               <Plus size={16} />
               Novo Torneio
             </CreateButton>
-          )}
-        </PageHeader>
+          </PageActions>
+        )}
 
         {/* ── Filtros ── */}
         <FiltersBar>

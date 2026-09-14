@@ -1,10 +1,8 @@
 import styled from 'styled-components'
 
-export const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[6]};
-  max-width: 1200px;
-  margin: 0 auto;
-`
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
+export const Container = styled.div``
 
 /**
  * Voltar, no mesmo desenho do `BackBtn` do detalhe da partida — botão de texto
@@ -26,21 +24,6 @@ export const BackBtn = styled.button`
   transition: color 0.15s;
 
   &:hover { color: ${({ theme }) => theme.colors.textPrimary}; }
-`
-
-export const Header = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-
-  h1 {
-    font-size: ${({ theme }) => theme.fontSizes['3xl']};
-    color: ${({ theme }) => theme.colors.textPrimary};
-    font-weight: ${({ theme }) => theme.fontWeights.bold};
-  }
-
-  p {
-    color: ${({ theme }) => theme.colors.textSecondary};
-    margin-top: ${({ theme }) => theme.spacing[2]};
-  }
 `
 
 export const FiltersArea = styled.div`
@@ -110,14 +93,6 @@ export const Chip = styled.button<{ $active?: boolean; }>`
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
   }
-`
-
-export const HeaderRow = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
 `
 
 export const ViewToggle = styled.div`

@@ -22,16 +22,9 @@ import type { CourtType, Partida } from '../../types/api'
 import type { SportOption } from '../../hooks/useSports'
 import { formatarNumero } from '../../utils/numeros'
 import {
-  Container, BackBtn, Header, HeaderRow,
-  FiltersArea, SearchInput, ChipsContainer, Chip, ResultsCount,
-  SportBtnsRow, SportAllBtn, SportSelectWrapper,
-  Grid, ActionButton,
-  AdvancedFilters, FilterRow, FilterGroup, FilterLabel,
-  FilterSelect, FilterToggle, FiltersBtn, ActiveFilterBadge, ClearBtn,
-  PriceSliderWrapper,
-  RaioLinha, RaioChip, RaioExplicacao, DistanciaBadge,
-  MapaCarregando,
+  Container, BackBtn, FiltersArea, SearchInput, ChipsContainer, Chip, ResultsCount, SportBtnsRow, SportAllBtn, SportSelectWrapper, Grid, ActionButton, AdvancedFilters, FilterRow, FilterGroup, FilterLabel, FilterSelect, FilterToggle, FiltersBtn, ActiveFilterBadge, ClearBtn, PriceSliderWrapper, RaioLinha, RaioChip, RaioExplicacao, DistanciaBadge, MapaCarregando,
 } from './styles'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 function buildGoogleMapsUrl(event: Partida): string | null {
   const parts = [
@@ -63,6 +56,7 @@ const MAX_PRICE = 200
 const MapaDaBusca = lazy(() => import('../../components/MapaDaBusca'))
 
 export default function QueroJogar() {
+  usePageHeader('Quero Jogar', 'Encontre a partida perfeita para você participar hoje.')
   const { user } = useAuth()
   const { sports: allSports } = useSports()
   const [searchParams] = useSearchParams()
@@ -228,13 +222,6 @@ export default function QueroJogar() {
         <BackBtn onClick={() => (podeVoltar ? navigate(-1) : navigate('/home'))}>
           <ArrowLeft size={16} /> Voltar
         </BackBtn>
-
-        <HeaderRow>
-          <Header>
-            <h1>Quero Jogar</h1>
-            <p>Encontre a partida perfeita para você participar hoje.</p>
-          </Header>
-        </HeaderRow>
 
         <FiltersArea>
           {/* Busca + botão de filtros */}

@@ -2,29 +2,9 @@ import styled from 'styled-components'
 import { cartaoClicavel } from '../../styles/cartaoClicavel'
 import type { TournamentStatus } from '../../types/api'
 
-export const Container = styled.div`
-  max-width: 1100px;
-`
-
-export const PageHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 28px;
-`
-
-export const Title = styled.h2`
-  font-size: ${({ theme }) => theme.fontSizes['2xl']};
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  margin: 0;
-`
-
-export const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.textSecondary};
-  margin: 4px 0 0;
-`
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
+export const Container = styled.div``
 
 export const CreateButton = styled.button`
   display: flex;

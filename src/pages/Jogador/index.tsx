@@ -14,6 +14,7 @@ import {
   Nome, Reputacao,
 } from './styles'
 import { formatarNota } from '../../utils/numeros'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 const iniciais = (nome: string) => nome.trim().charAt(0).toUpperCase()
 
@@ -45,6 +46,7 @@ type AbaAtiva = 'seguidores' | 'seguindo'
  * com esta pessoa, no selo ao lado do botão, e nada além.
  */
 export default function Jogador() {
+  usePageHeader('Perfil do jogador')
   const { userId = '' } = useParams<{ userId: string }>()
   const navigate = useNavigate()
   const [aba, setAba] = useState<AbaAtiva>('seguidores')

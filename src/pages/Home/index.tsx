@@ -11,15 +11,12 @@ import SportIcon from '../../components/SportIcon'
 import type { CourtType } from '../../types/api'
 import { PartidasPerto } from '../../components/PartidasPerto'
 import {
-  PageWrapper, CompactHeader, GreetingBlock, GreetingText, GreetingTitle,
-  StatsRow, StatBox, StatIconBox, StatInfo, StatValue, StatLabel,
-  TabsWrapper, TabsRow, TabsFade, TabsSeta, Tab, SectionBlock, SectionHeader,
-  SectionTitle, SectionSubtitle, GamesGrid, CTARow,
-  CTAPrimary, CTASecondary,
+  PageWrapper, StatsRow, StatBox, StatIconBox, StatInfo, StatValue, StatLabel, TabsWrapper, TabsRow, TabsFade, TabsSeta, Tab, SectionBlock, SectionHeader, SectionTitle, SectionSubtitle, GamesGrid, CTARow, CTAPrimary, CTASecondary,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
 import { SkeletonCard } from '../../components/Skeleton'
 import { formatarNota } from '../../utils/numeros'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 interface FiltroTab {
   id: string
@@ -85,6 +82,8 @@ function paraOCartao(event: EventoSolto): PartidaDoCartao {
 
 export default function Home() {
   const { user } = useAuth()
+  // A saudação vai para a topbar, no lugar do título (web#493).
+  usePageHeader(`${getGreeting()}, ${user?.name?.split(' ')[0] || 'Jogador'}!`, 'E aí, bora jogar hoje?')
   const navigate = useNavigate()
   const { sports: allSports } = useSports()
   const SPORT_TABS = [ALL_TAB, ...allSports]
@@ -151,19 +150,9 @@ export default function Home() {
     activeTabRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
   }, [activeSport])
 
-  const firstName = user?.name?.split(' ')[0] || 'Jogador'
-
   return (
     <>
       <PageWrapper>
-
-        {/* Saudação compacta */}
-        <CompactHeader>
-          <GreetingBlock>
-            <GreetingText>👋 {getGreeting()}, {firstName}!</GreetingText>
-            <GreetingTitle>E aí, bora jogar hoje?</GreetingTitle>
-          </GreetingBlock>
-        </CompactHeader>
 
         {/* Ações — encontrar ou criar uma partida, lado a lado, sem precisar rolar a tela */}
         <CTARow>

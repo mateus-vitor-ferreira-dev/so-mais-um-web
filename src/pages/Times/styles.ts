@@ -1,31 +1,9 @@
 import styled from 'styled-components'
 import { hoverDeCartao } from '../../styles/cartaoClicavel'
 
-export const Container = styled.div`
-  padding: ${({ theme }) => theme.spacing[6]};
-  max-width: 1200px;
-  margin: 0 auto;
-`
-
-export const PageHeader = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing[4]};
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
-
-  h1 {
-    font-size: ${({ theme }) => theme.fontSizes['2xl']};
-    color: ${({ theme }) => theme.colors.textPrimary};
-  }
-
-  /* No celular o botão desce para a linha de baixo e ocupa a largura toda:
-     lado a lado, o título de um time longo espremeria o rótulo até quebrar. */
-  @media (max-width: 640px) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-`
+/* Largura, respiro e alinhamento são do layout (web#493): a página não
+   repete o padding do conteúdo nem se centraliza por conta própria. */
+export const Container = styled.div``
 
 export const CreateButton = styled.button`
   display: inline-flex;

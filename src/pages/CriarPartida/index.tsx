@@ -20,16 +20,11 @@ import { conflitoNaAgenda, fimDaPartida, faixaDeHorario } from '../../utils/agen
 import { useCotacaoDoHorario } from '../../hooks/useCotacaoDoHorario'
 import { detalhamentoPorExtenso, reaisCurtos, seloDePrecoDaQuadra } from '../../utils/faixasDePreco'
 import {
-  Container, PageHeader, Title, Subtitle, StepIndicator, Step, StepDot,
-  StepLine, Card, SectionTitle, CourtsGrid, CourtCard, CourtName, CourtInfo,
-  SportBadge, Form, Row, Field, Label, Input, ErrorMsg, HintMsg, Actions,
-  BackButton, NextButton, LoadingState, SuccessBox, SuccessActions,
-  PrimaryBtn, SecondaryBtn, SportChipsGrid, SportChip, PlacesGrid, PlaceCard,
-  PlaceName, PlaceAddress, PlaceCourtCount, BreadcrumbBar, BreadcrumbTag,
-  BreadcrumbSep, CotacaoBox,
+  Container, StepIndicator, Step, StepDot, StepLine, Card, SectionTitle, CourtsGrid, CourtCard, CourtName, CourtInfo, SportBadge, Form, Row, Field, Label, Input, ErrorMsg, HintMsg, Actions, BackButton, NextButton, LoadingState, SuccessBox, SuccessActions, PrimaryBtn, SecondaryBtn, SportChipsGrid, SportChip, PlacesGrid, PlaceCard, PlaceName, PlaceAddress, PlaceCourtCount, BreadcrumbBar, BreadcrumbTag, BreadcrumbSep, CotacaoBox,
 } from './styles'
 import { valorPorPessoa } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
+import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
 /**
  * Campo numérico vazio chega como `''` e a conversão do yup vira `NaN` — que
@@ -87,6 +82,7 @@ const STEPS = ['Escolher Quadra', 'Detalhes da Partida', 'Confirmação']
 const MIN_DATE = new Date(Date.now() + 60000).toISOString().slice(0, 16)
 
 export default function CriarPartida() {
+  usePageHeader('Criar Partida', 'Abra vagas e chame a galera para jogar.')
   const navigate   = useNavigate()
   const { sports } = useSports()
 
@@ -325,11 +321,6 @@ export default function CriarPartida() {
   return (
     <>
       <Container>
-        <PageHeader>
-          <Title>Criar Partida</Title>
-          <Subtitle>Abra vagas e chame a galera para jogar.</Subtitle>
-        </PageHeader>
-
         <StepIndicator>
           {STEPS.map((label, i) => (
             <div key={label} style={{ display: 'contents' }}>

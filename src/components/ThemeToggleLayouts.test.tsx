@@ -23,7 +23,10 @@ describe('seletor de tema dos layouts', () => {
     expect(localStorage.getItem('só+1:theme')).toBe('dark')
   })
 
-  it('mantém os seletores desktop e mobile sincronizados no layout principal', async () => {
+  // Até a #493 a área do jogador tinha dois seletores, um na barra lateral e
+  // outro na barra do celular. Com o layout único, é um só, no mesmo lugar do
+  // painel.
+  it('alterna o tema na área do jogador, com um seletor só', async () => {
     const { user } = renderWithProviders(
       <Routes>
         <Route element={<MainLayout />}>
@@ -32,10 +35,9 @@ describe('seletor de tema dos layouts', () => {
       </Routes>,
     )
 
-    const [desktopToggle] = screen.getAllByRole('button', { name: 'Modo escuro' })
-    await user.click(desktopToggle)
+    await user.click(screen.getByRole('button', { name: 'Modo escuro' }))
 
-    expect(screen.getAllByTitle('Modo claro')).toHaveLength(2)
+    expect(screen.getAllByTitle('Modo claro')).toHaveLength(1)
     expect(localStorage.getItem('só+1:theme')).toBe('dark')
   })
 })

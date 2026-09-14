@@ -126,7 +126,7 @@ export function AdminPanelLayout() {
     () => comContadorDeSolicitacoes(adminNavItems, '/admin/requests', pendentes),
     [pendentes],
   )
-  return <DashboardLayout navItems={navItems} tagline="Admin Panel" accent="#16a34a" />
+  return <DashboardLayout navItems={navItems} tagline="Painel Admin" accent="#16a34a" />
 }
 
 /** Layout do painel do owner, com o menu que depende do papel e do plano. */
@@ -149,6 +149,6 @@ export function OwnerPanelLayout() {
     ),
     [user?.role, loading, temFuncionalidade, pendentes],
   )
-  return <DashboardLayout navItems={navItems} tagline="Owner Panel" accent="#f59e0b" />
+  return <DashboardLayout navItems={navItems} tagline="Painel do Dono" accent="#f59e0b" />
 }
 
