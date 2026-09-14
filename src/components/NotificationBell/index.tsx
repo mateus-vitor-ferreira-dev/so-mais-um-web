@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Bell } from 'lucide-react'
+import { Bell, CloudLightning, CloudSun } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { notificationService } from '../../services/notificationService'
 import { useAuth } from '../../contexts/AuthContext'
@@ -9,7 +9,7 @@ import { useSuporteLido } from '../../utils/suporteLido'
 import type { Notification } from '../../types/api'
 import {
   Wrapper, BellBtn, Badge, Dropdown, DropHeader, DropTitle,
-  MarkAllBtn, NotifList, NotifItem, NotifDot, NotifText,
+  MarkAllBtn, NotifList, NotifItem, NotifDot, NotifText, NotifCorpo, NotifIcone,
   NotifTime, EmptyMsg,
 } from './styles'
 
@@ -126,6 +126,14 @@ export default function NotificationBell() {
               notifs.slice(0, 10).map(n => (
                 <NotifItem key={n.id} $read={n.read} onClick={() => handleRead(n)}>
                   {!n.read && <NotifDot />}
+                  {/* O aviso de tempo tem ícone próprio (web#476): no meio de
+                      "fulano entrou", ele é o que pede atenção. A melhora ganha
+                      o sol, para não ser lida como mais um alarme. */}
+                  {n.type === 'WEATHER_ALERT' && (
+                    <NotifIcone $melhorou={n.data?.risco === 'NENHUM'} aria-hidden="true">
+                      {n.data?.risco === 'NENHUM' ? <CloudSun size={16} /> : <CloudLightning size={16} />}
+                    </NotifIcone>
+                  )}
                   <div style={{ flex: 1 }}>
                     {/*
                       * Era `n.title || n.message`: `message` não existe no
@@ -135,6 +143,8 @@ export default function NotificationBell() {
                       * de um formato antigo.
                       */}
                     <NotifText>{n.title}</NotifText>
+                    {/* O título do aviso de tempo não diz quando; o corpo diz o quê, quando e quanto. */}
+                    {n.type === 'WEATHER_ALERT' && n.body && <NotifCorpo>{n.body}</NotifCorpo>}
                     <NotifTime>{timeAgo(n.createdAt)}</NotifTime>
                   </div>
                 </NotifItem>

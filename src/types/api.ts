@@ -57,7 +57,13 @@ export type NotificationType =
     | "TEAM_INVITE"
     | "TEAM_MATCH_CREATED"
     /** A equipe respondeu no suporte (api#572). Um aviso por conversa, e não um por mensagem. */
-    | "SUPPORT_MESSAGE";
+    | "SUPPORT_MESSAGE"
+    /**
+     * A previsão ficou ruim para uma atividade, ou melhorou depois de ter
+     * ficado (api#584). O `data.atividade` diz qual, e é por ele que o sino abre
+     * o lugar certo.
+     */
+    | "WEATHER_ALERT";
 
 export type TournamentStatus =
     | "DRAFT"
@@ -751,7 +757,17 @@ export interface Notification {
     type: NotificationType;
     title: string;
     body: string;
-    data: { matchId?: string; conversaId?: string } | null;
+    data: {
+        matchId?: string;
+        conversaId?: string;
+        /** Só no `WEATHER_ALERT` (api#584): de que atividade é o aviso, e os ids dela. */
+        atividade?: "PARTIDA" | "DAY_USE" | "JOGO_DE_TORNEIO";
+        dayUseId?: string;
+        tournamentId?: string;
+        tournamentMatchId?: string;
+        /** `ALTO` no aviso de risco, `NENHUM` no "a previsão melhorou". */
+        risco?: "ALTO" | "NENHUM";
+    } | null;
     read: boolean;
     createdAt: IsoDate;
 }
@@ -1557,6 +1573,19 @@ export interface LeituraDoTempo extends AvaliacaoDoTempo {
     horas?: HoraDoTempo[];
     /** Só no `DIA`. */
     dia?: DiaDoTempo;
+}
+
+/** `GET /tournaments/:tournamentId/previsao` — cada dia do torneio, e cada jogo com hora marcada. */
+export interface PrevisaoDoTorneio {
+    torneioId: string;
+    dias: Array<{ data: string; leitura: LeituraDoTempo }>;
+    jogos: Array<{
+        matchId: string;
+        courtId: string | null;
+        scheduledAt: IsoDate;
+        endsAt: IsoDate;
+        leitura: LeituraDoTempo;
+    }>;
 }
 
 /** `GET /places/:placeId/previsao?data=` — o dia da agenda do dono, uma leitura por quadra. */

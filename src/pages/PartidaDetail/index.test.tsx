@@ -23,6 +23,7 @@ import PartidaDetail from './index'
 vi.mock('../../services/playerService')
 vi.mock('../../services/auth')
 vi.mock('../../services/notificationService')
+vi.mock('../../services/previsao')
 vi.mock('sonner', () => ({
   toast: { success: vi.fn(), error: vi.fn() },
   Toaster: () => null,
@@ -31,6 +32,7 @@ vi.mock('sonner', () => ({
 import { playerService } from '../../services/playerService'
 import * as authService from '../../services/auth'
 import { notificationService } from '../../services/notificationService'
+import { previsaoService } from '../../services/previsao'
 import { toast } from 'sonner'
 
 const buscaPartida = vi.mocked(playerService.getEvent)
@@ -50,6 +52,7 @@ beforeEach(() => {
   // e mantém todos os testes anteriores descrevendo o mesmo cenário de sempre.
   consultaEntrada.mockResolvedValue(envelope({ allowed: true, failures: [], requirements: [] }))
   saiDaPartida.mockResolvedValue(envelope({ remainingPlayers: 0 } as never))
+  vi.mocked(previsaoService.daPartida).mockResolvedValue({ alcance: 'PASSOU', risco: 'NENHUM', motivos: [] })
 })
 
 /** Renderiza já na rota da partida, com o padrão que alimenta o useParams. */
@@ -100,6 +103,37 @@ describe('PartidaDetail — horário', () => {
 
     const hora = new Date(inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
     expect(await screen.findByText(hora)).toBeInTheDocument()
+  })
+})
+
+describe('PartidaDetail — previsão do tempo (web#476)', () => {
+  it('a página abre e funciona com a previsão respondendo 503', async () => {
+    buscaPartida.mockResolvedValue(envelope(criaPartida({ maxPlayers: 10, _count: { participations: 6 } })))
+    vi.mocked(previsaoService.daPartida).mockRejectedValue({ response: { status: 503 } })
+
+    abrePartida()
+
+    expect(await screen.findByText('Previsão indisponível agora.')).toBeInTheDocument()
+    expect(screen.getByText('6 / 10 confirmados')).toBeInTheDocument()
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('a página não espera a previsão que demora', async () => {
+    buscaPartida.mockResolvedValue(envelope(criaPartida({ maxPlayers: 10, _count: { participations: 6 } })))
+    vi.mocked(previsaoService.daPartida).mockReturnValue(new Promise(() => {}))
+
+    abrePartida()
+
+    expect(await screen.findByText('6 / 10 confirmados')).toBeInTheDocument()
+    expect(screen.getByText('Previsão do tempo').closest('[aria-busy="true"]')).not.toBeNull()
+  })
+
+  it('pede a previsão com o convite da URL, depois do detalhe', async () => {
+    buscaPartida.mockResolvedValue(envelope(criaPartida()))
+
+    renderWithProviders(<PartidaDetail />, { route: '/partida/partida-1?convite=tok', path: '/partida/:eventId' })
+
+    await vi.waitFor(() => expect(previsaoService.daPartida).toHaveBeenCalledWith('partida-1', 'tok'))
   })
 })
 

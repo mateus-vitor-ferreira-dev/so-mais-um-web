@@ -4,11 +4,14 @@ import EmptyState from '../../components/EmptyState'
 import ErrorState from '../../components/ErrorState'
 import FaixaDoTempo from '../../components/FaixaDoTempo'
 import MarcaDoTime from '../../components/MarcaDoTime'
+import PrevisaoDoTempo from '../../components/PrevisaoDoTempo'
+import PrevisaoDosDias from '../../components/PrevisaoDosDias'
 import RoleBadge from '../../components/RoleBadge'
 import SeletorDeCorDoTime from '../../components/SeletorDeCorDoTime'
+import SeloDoTempo from '../../components/SeloDoTempo'
 import { Skeleton, SkeletonCard } from '../../components/Skeleton'
 import { CORES_DE_TIME, NOME_DA_COR } from '../../constants/coresDeTime'
-import type { HoraDoTempo } from '../../types/api'
+import type { HoraDoTempo, LeituraDoTempo } from '../../types/api'
 import { Amostra, BotaoDeExemplo, Fileira } from './styles'
 
 export interface Peca {
@@ -71,6 +74,23 @@ const HORAS_DE_EXEMPLO: HoraDoTempo[] = [
   horaDeExemplo(19, { chanceDeChuva: 40, condicao: 'LIGHT_RAIN', risco: 'ATENCAO', motivos: ['CHUVA'] }),
   horaDeExemplo(20, { chanceDeChuva: 80, chanceDeTempestade: 45, condicao: 'THUNDERSTORM', risco: 'ALTO', motivos: ['TEMPESTADE', 'CHUVA'] }),
 ]
+
+const LEITURA_POR_HORA: LeituraDoTempo = {
+  alcance: 'HORA',
+  risco: 'ALTO',
+  motivos: ['TEMPESTADE', 'CHUVA'],
+  horas: HORAS_DE_EXEMPLO,
+}
+
+const LEITURA_DO_DIA: LeituraDoTempo = {
+  alcance: 'DIA',
+  risco: 'ATENCAO',
+  motivos: ['CHUVA'],
+  dia: {
+    data: '2026-09-20', maxima: 24, minima: 15, sensacaoMaxima: 25, chanceDeChuva: 70,
+    chanceDeTempestade: 10, vento: 12, condicao: 'RAIN', risco: 'ATENCAO', motivos: ['CHUVA'],
+  },
+}
 
 export const PECAS: Peca[] = [
   {
@@ -246,5 +266,64 @@ export const PECAS: Peca[] = [
       'Os termos da Weather API exigem o crédito no mesmo bloco do dado. É contrato, e não enfeite: ' +
       'escrita à mão em cada tela, a frase diverge ou some na terceira.',
     estados: [{ rotulo: 'abaixo do dado', render: () => <AtribuicaoDoTempo /> }],
+  },
+  {
+    nome: 'PrevisaoDoTempo',
+    onde: 'components/PrevisaoDoTempo',
+    porque:
+      'Um estado por alcance, e o texto de cada um é a decisão: sem "a previsão por hora aparece dois ' +
+      'dias antes", a pessoa pergunta por que não há faixa. O erro é cinza, e não vermelho: previsão ' +
+      'fora do ar não é defeito da partida.',
+    estados: [
+      { rotulo: 'por hora, com risco', render: () => <PrevisaoDoTempo leitura={LEITURA_POR_HORA} carregando={false} erro={false} /> },
+      { rotulo: 'do dia', render: () => <PrevisaoDoTempo leitura={LEITURA_DO_DIA} carregando={false} erro={false} /> },
+      {
+        rotulo: 'ainda longe',
+        render: () => (
+          <PrevisaoDoTempo
+            leitura={{ alcance: 'AINDA_LONGE', disponivelEm: '2026-09-21', risco: 'NENHUM', motivos: [] }}
+            carregando={false}
+            erro={false}
+          />
+        ),
+      },
+      { rotulo: 'quadra coberta', render: () => <PrevisaoDoTempo leitura={{ alcance: 'COBERTA', risco: 'NENHUM', motivos: [] }} carregando={false} erro={false} /> },
+      { rotulo: 'indisponível', render: () => <PrevisaoDoTempo carregando={false} erro /> },
+    ],
+  },
+  {
+    nome: 'SeloDoTempo',
+    onde: 'components/SeloDoTempo',
+    porque:
+      'O tempo num cartão cabe numa linha: a temperatura e, havendo, o risco. Sem previsão o selo some, ' +
+      'porque "sem previsão" repetido em vinte cartões não diz nada.',
+    estados: [
+      { rotulo: 'por hora', render: () => <SeloDoTempo leitura={LEITURA_POR_HORA} /> },
+      { rotulo: 'do dia', render: () => <SeloDoTempo leitura={LEITURA_DO_DIA} /> },
+      { rotulo: 'só o risco, no jogo da chave', render: () => <SeloDoTempo leitura={LEITURA_POR_HORA} soRisco /> },
+    ],
+  },
+  {
+    nome: 'PrevisaoDosDias',
+    onde: 'components/PrevisaoDosDias',
+    porque:
+      'Torneio dura dias, e a pergunta de quem organiza é que dia vai chover. Uma linha por dia, com a ' +
+      'previsão do dia; o risco por horário fica no selo de cada jogo.',
+    estados: [
+      {
+        rotulo: 'três dias',
+        render: () => (
+          <PrevisaoDosDias
+            carregando={false}
+            erro={false}
+            dias={[
+              { data: '2026-09-19', leitura: { ...LEITURA_DO_DIA, risco: 'NENHUM', motivos: [] } },
+              { data: '2026-09-20', leitura: LEITURA_DO_DIA },
+              { data: '2026-09-30', leitura: { alcance: 'AINDA_LONGE', disponivelEm: '2026-09-21', risco: 'NENHUM', motivos: [] } },
+            ]}
+          />
+        ),
+      },
+    ],
   },
 ]

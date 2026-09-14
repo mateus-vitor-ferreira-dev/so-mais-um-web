@@ -13,6 +13,8 @@ import { SorteioDeTimes } from '../../components/SorteioDeTimes'
 import CompartilharPartida from '../../components/CompartilharPartida'
 import { MarcaDeVisibilidade } from '../../components/MarcaDeVisibilidade'
 import { ConfirmacaoDePresencas } from '../../components/ConfirmacaoDePresencas'
+import PrevisaoDoTempo from '../../components/PrevisaoDoTempo'
+import { usePrevisaoDaPartida } from '../../hooks/usePrevisao'
 import { SortearBtn } from '../../components/SorteioDeTimes/styles'
 import {
   Container, BackBtn, Card, CardHeader, SportIcon, HeaderInfo,
@@ -97,6 +99,9 @@ export default function PartidaDetail() {
   /** O motivo de o link não abrir a partida, quando é o link que falhou (#229). */
   const [linkInvalido, setLinkInvalido]  = useState<MotivoDoLink | null>(null)
   const [veredito, setVeredito]         = useState<EntryVerdict | null>(null)
+  /* Só depois do detalhe: a previsão não pode atrasar a página, e quem não vê a
+     partida também não vê a previsão dela (web#476). */
+  const previsao = usePrevisaoDaPartida(event ? eventId : undefined, convite)
 
   const load = useCallback(async () => {
     try {
@@ -380,6 +385,8 @@ export default function PartidaDetail() {
                 <ExternalLink size={12} />
               </MapLink>
             )}
+
+            <PrevisaoDoTempo leitura={previsao.data} carregando={previsao.isLoading} erro={previsao.isError} />
 
             <Divider />
 

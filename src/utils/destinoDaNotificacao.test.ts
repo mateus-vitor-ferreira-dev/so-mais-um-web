@@ -22,3 +22,31 @@ describe('destinoDaNotificacao (web#472)', () => {
     expect(destinoDaNotificacao({ type: 'PLAYER_JOINED', data: { matchId: 'm1' } }, 'OWNER')).toBeNull()
   })
 })
+
+describe('destinoDaNotificacao — aviso de tempo (web#476)', () => {
+  it('o aviso da partida abre a partida', () => {
+    expect(
+      destinoDaNotificacao({ type: 'WEATHER_ALERT', data: { atividade: 'PARTIDA', matchId: 'm1' } }, 'PLAYER'),
+    ).toBe('/partida/m1')
+  })
+
+  it('o aviso do day use abre as entradas dele, que é a tela do dono', () => {
+    expect(
+      destinoDaNotificacao({ type: 'WEATHER_ALERT', data: { atividade: 'DAY_USE', dayUseId: 'd1' } }, 'OWNER'),
+    ).toBe('/owner/day-uses/d1/entradas')
+  })
+
+  it('o aviso do jogo de torneio abre o torneio', () => {
+    expect(
+      destinoDaNotificacao(
+        { type: 'WEATHER_ALERT', data: { atividade: 'JOGO_DE_TORNEIO', tournamentId: 't1', tournamentMatchId: 'j1' } },
+        'PLAYER',
+      ),
+    ).toBe('/torneios/t1')
+  })
+
+  it('sem a atividade ou sem o id, só informa', () => {
+    expect(destinoDaNotificacao({ type: 'WEATHER_ALERT', data: null }, 'PLAYER')).toBeNull()
+    expect(destinoDaNotificacao({ type: 'WEATHER_ALERT', data: { atividade: 'PARTIDA' } }, 'PLAYER')).toBeNull()
+  })
+})

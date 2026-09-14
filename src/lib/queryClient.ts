@@ -143,6 +143,17 @@ export const chaves = {
    */
   previsaoDoEspaco: (placeId: string, dia: string) => ['espacos', placeId, 'previsao', dia] as const,
   /**
+   * A leitura do tempo de cada atividade (web#476).
+   *
+   * Sob `previsao`, e não sob `eventos`: o "entrei na partida" invalida
+   * `['eventos']` inteiro, e a previsão iria junto — uma consulta a mais, no
+   * limite de 30 por minuto da api, por um dado que não mudou. O convite entra
+   * na chave porque, sem ele, a partida privada é outra resposta.
+   */
+  previsaoDaPartida: (eventId: string, convite: string) => ['previsao', 'partida', eventId, convite] as const,
+  previsaoDoDayUse: (dayUseId: string) => ['previsao', 'day-use', dayUseId] as const,
+  previsaoDoTorneio: (tournamentId: string) => ['previsao', 'torneio', tournamentId] as const,
+  /**
    * A rede social (api#387).
    *
    * `seguindo` e `amigos` do próprio usuário entram separados das listas de

@@ -7,7 +7,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import type { HoraDoTempo, OcupacaoDaQuadra } from '../types/api'
-import { graus, hojeLocal, iconeDaCondicao, motivosPorExtenso, porcento, riscoDaOcupacao } from './previsao'
+import { diaEMes, fraseDoRisco, graus, hojeLocal, iconeDaCondicao, motivosPorExtenso, porcento, riscoDaOcupacao } from './previsao'
 
 function hora(inicio: string, fim: string, extra: Partial<HoraDoTempo> = {}): HoraDoTempo {
   return {
@@ -88,5 +88,27 @@ describe('riscoDaOcupacao', () => {
 
   it('encostar na hora de risco não é tocar', () => {
     expect(riscoDaOcupacao(partida('2026-09-14T20:00:00.000Z', '2026-09-14T22:00:00.000Z'), horas)).toBeNull()
+  })
+})
+
+describe('fraseDoRisco (web#476)', () => {
+  const h = (inicio: string, extra: Partial<HoraDoTempo>) =>
+    hora(inicio, new Date(new Date(inicio).getTime() + 3_600_000).toISOString(), extra)
+
+  it('diz a primeira hora que chega ao pior nível, com os motivos dela', () => {
+    const inicio = new Date(2026, 8, 14, 17).toISOString()
+    const depois = new Date(2026, 8, 14, 20).toISOString()
+    const horas = [
+      h(inicio, { risco: 'ATENCAO', motivos: ['CALOR'] }),
+      h(depois, { risco: 'ALTO', motivos: ['TEMPESTADE'] }),
+    ]
+
+    expect(fraseDoRisco(horas, 'ALTO')).toBe('Risco de tempestade às 20h')
+    expect(fraseDoRisco(horas, 'ATENCAO')).toBe('Atenção: calor às 17h')
+    expect(fraseDoRisco(horas, 'NENHUM')).toBeNull()
+  })
+
+  it('o dia e o mês saem da data civil, sem fuso', () => {
+    expect(diaEMes('2026-09-01')).toBe('01/09')
   })
 })
