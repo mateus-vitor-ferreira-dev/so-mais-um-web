@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { Search, Zap } from 'lucide-react'
+import { Search, Zap, Trophy, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
@@ -13,7 +13,7 @@ import { PartidasPerto } from '../../components/PartidasPerto'
 import {
   PageWrapper, CompactHeader, GreetingBlock, GreetingText, GreetingTitle,
   StatsRow, StatBox, StatIconBox, StatInfo, StatValue, StatLabel,
-  TabsWrapper, TabsRow, TabsFade, Tab, SectionBlock, SectionHeader,
+  TabsWrapper, TabsRow, TabsFade, TabsSeta, Tab, SectionBlock, SectionHeader,
   SectionTitle, SectionSubtitle, GamesGrid, CTARow,
   CTAPrimary, CTASecondary,
 } from './styles'
@@ -136,6 +136,11 @@ export default function Home() {
     setShowRightFade(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
   }, [])
 
+  const rolarModalidades = (lado: 1 | -1) => {
+    const el = tabsRef.current
+    el?.scrollBy({ left: lado * el.clientWidth * 0.6, behavior: 'smooth' })
+  }
+
   useEffect(() => {
     updateFades()
     window.addEventListener('resize', updateFades)
@@ -175,14 +180,14 @@ export default function Home() {
         {/* Métricas do jogador */}
         <StatsRow>
           <StatBox>
-            <StatIconBox>🏆</StatIconBox>
+            <StatIconBox><Trophy size={22} aria-hidden /></StatIconBox>
             <StatInfo>
               <StatValue>{totalGames}</StatValue>
               <StatLabel>Partidas</StatLabel>
             </StatInfo>
           </StatBox>
           <StatBox>
-            <StatIconBox>⭐</StatIconBox>
+            <StatIconBox><Star size={22} aria-hidden /></StatIconBox>
             <StatInfo>
               {/*
                 * Era user.rating — campo inexistente na API, então o ternário
@@ -216,6 +221,16 @@ export default function Home() {
           </TabsRow>
           <TabsFade $side="left" $visible={showLeftFade} />
           <TabsFade $side="right" $visible={showRightFade} />
+          {showLeftFade && (
+            <TabsSeta type="button" $side="left" aria-label="Modalidades anteriores" onClick={() => rolarModalidades(-1)}>
+              <ChevronLeft size={18} aria-hidden />
+            </TabsSeta>
+          )}
+          {showRightFade && (
+            <TabsSeta type="button" $side="right" aria-label="Mais modalidades" onClick={() => rolarModalidades(1)}>
+              <ChevronRight size={18} aria-hidden />
+            </TabsSeta>
+          )}
         </TabsWrapper>
 
         {/* Partidas disponíveis — conteúdo dominante */}

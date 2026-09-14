@@ -165,7 +165,7 @@ export function SorteioDeTimes({ partida, onClose }: SorteioDeTimesProps) {
                 onClick={handleDraw}
                 disabled={drawLoading}
               >
-                {drawLoading ? 'Sorteando...' : '⚽ Sortear!'}
+                {drawLoading ? 'Sorteando...' : <><Shuffle size={16} aria-hidden /> Sortear!</>}
               </button>
             </AcoesDoModal>
           </>

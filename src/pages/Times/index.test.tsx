@@ -91,6 +91,29 @@ describe('Meus Times', () => {
       expect(await screen.findByText('Você ainda não tem time')).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /Criar meu primeiro time/ })).toBeInTheDocument()
     })
+
+    // Um time só deixava a grade com um cartão no canto e o resto vazio (#492).
+    it('com poucos times, o espaço da grade chama para criar outro', async () => {
+      listar.mockResolvedValue([criaResumoDeTime({ id: 't1', name: 'Os Boleiros' })])
+
+      const { user } = renderWithProviders(<Times />)
+
+      await user.click(await screen.findByRole('button', { name: /Criar outro time/ }))
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    it('com a grade cheia, o cartão de criar some e fica só o botão do topo', async () => {
+      listar.mockResolvedValue([
+        criaResumoDeTime({ id: 't1', name: 'Um' }),
+        criaResumoDeTime({ id: 't2', name: 'Dois' }),
+        criaResumoDeTime({ id: 't3', name: 'Três' }),
+      ])
+
+      renderWithProviders(<Times />)
+
+      await screen.findByText('Três')
+      expect(screen.queryByRole('button', { name: /Criar outro time/ })).not.toBeInTheDocument()
+    })
   })
 
   describe('Erro', () => {

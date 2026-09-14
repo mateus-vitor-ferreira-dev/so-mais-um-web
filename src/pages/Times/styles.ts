@@ -114,6 +114,65 @@ export const TeamCard = styled.li`
 
 
 
+/**
+ * O último cartão da grade, que chama para criar outro time (#492).
+ *
+ * Tracejado e sem fundo, para não se passar por um time de verdade: é um
+ * lugar vazio que convida, e não mais um item da lista.
+ */
+export const CartaoDeNovoTime = styled.li`
+  button {
+    width: 100%;
+    height: 100%;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: ${({ theme }) => theme.spacing[2]};
+    padding: ${({ theme }) => theme.spacing[5]};
+    background: transparent;
+    border: 1.5px dashed ${({ theme }) => theme.colors.border};
+    border-radius: ${({ theme }) => theme.radii.xl};
+    color: ${({ theme }) => theme.colors.textSecondary};
+    font-family: inherit;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  button:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  button:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+
+  .icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: ${({ theme }) => theme.radii.full};
+    background: ${({ theme }) => theme.colors.primarySubtle};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  .titulo {
+    font-size: ${({ theme }) => theme.fontSizes.md};
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  .texto {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    max-width: 240px;
+  }
+`
 
 export const ModalOverlay = styled.div`
   position: fixed;

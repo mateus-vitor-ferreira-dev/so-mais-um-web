@@ -93,6 +93,10 @@ export const AcoesDoModal = styled.div`
 
   button {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     padding: ${({ theme }) => theme.spacing[3]};
     border-radius: ${({ theme }) => theme.radii.md};
     font-weight: bold;

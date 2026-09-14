@@ -6,10 +6,14 @@ import styled from 'styled-components'
  * A seção carrega depois do resto da home. Sem reservar espaço, ela apareceria
  * empurrando tudo para baixo no meio da leitura — e um toque mirado num cartão
  * acertaria outro. É a mesma razão de o `CLS` existir como métrica.
+ *
+ * Só reserva quando algo vai carregar (#492). O convite de localização se sabe
+ * na hora, sem requisição: reservar a altura ali só abria um buraco entre o
+ * convite e as partidas em destaque. Pela mesma leitura, o espaço até a seção
+ * seguinte é o `gap` da home, sem margem somada por cima.
  */
-export const Bloco = styled.section`
-  min-height: 232px;
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
+export const Bloco = styled.section<{ $reservaAltura: boolean }>`
+  min-height: ${({ $reservaAltura }) => ($reservaAltura ? '232px' : '0')};
 `
 
 export const Cabecalho = styled.div`

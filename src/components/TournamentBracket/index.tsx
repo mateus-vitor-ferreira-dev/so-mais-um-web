@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Construction } from 'lucide-react'
 import type {
   LeituraDoTempo,
   CompetitionLevel,
@@ -375,7 +376,7 @@ export default function TournamentBracket({
   if (divisions.length === 0) {
     return (
       <EmptyBracket>
-        <span>🏗️</span>
+        <Construction size={40} aria-hidden />
         O chaveamento ainda não foi gerado para este torneio.
       </EmptyBracket>
     )
@@ -413,7 +414,7 @@ export default function TournamentBracket({
 
             {rodadas.length === 0 ? (
               <EmptyBracket>
-                <span>🏗️</span>
+                <Construction size={40} aria-hidden />
                 O chaveamento desta divisão ainda não foi gerado. Ele aparece aqui
                 quando as inscrições forem abertas e os confrontos, sorteados.
               </EmptyBracket>

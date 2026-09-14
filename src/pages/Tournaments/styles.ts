@@ -209,6 +209,10 @@ export const MetaRow = styled.div`
  */
 export const ViewBracketBtn = styled.button`
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   width: 100%;
   padding: 9px;
   border-radius: ${({ theme }) => theme.radii.md};
@@ -230,6 +234,9 @@ export const BracketSection = styled.div`
 `
 
 export const BracketTitle = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.textPrimary};
