@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import type { TomDoStatus } from '../../constants/statusDaPartida'
 
 export const Container = styled.div`
   padding: ${({ theme }) => theme.spacing[6]};
@@ -171,4 +172,20 @@ export const ButtonGroup = styled.div`
       cursor: not-allowed;
     }
   }
+`
+
+/**
+ * O selo de status com a cor do tom (web#491), pelas mesmas cores semânticas do
+ * tema — que o `contraste.test.ts` mede nos dois temas.
+ */
+export const SeloDeStatus = styled.span<{ $tom: TomDoStatus }>`
+  white-space: nowrap;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  padding: 4px 8px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  color: ${({ theme, $tom }) =>
+    ({ aberta: theme.colors.success, cheia: theme.colors.warningText, fim: theme.colors.textSecondary, cancelada: theme.colors.error })[$tom]};
+  background: ${({ theme, $tom }) =>
+    ({ aberta: theme.colors.successLight, cheia: theme.colors.warningLight, fim: theme.colors.border, cancelada: theme.colors.errorLight })[$tom]};
 `

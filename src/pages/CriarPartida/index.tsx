@@ -28,6 +28,7 @@ import {
   PlaceName, PlaceAddress, PlaceCourtCount, BreadcrumbBar, BreadcrumbTag,
   BreadcrumbSep, CotacaoBox,
 } from './styles'
+import { valorPorPessoa } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
 
 /**
@@ -310,7 +311,7 @@ export default function CriarPartida() {
   }, [totalCotado, getValues, setValue])
 
   const pricePerPerson = watchedTotalValue && watchedMaxPlayers
-    ? (Number(watchedTotalValue) / Number(watchedMaxPlayers)).toFixed(2)
+    ? valorPorPessoa(watchedTotalValue, Number(watchedMaxPlayers))
     : null
 
   const selectedSport = sports.find(s => s.id === filterSport)
@@ -538,7 +539,7 @@ export default function CriarPartida() {
                     </CotacaoBox>
                   )}
                   {pricePerPerson && (
-                    <HintMsg>≈ R$ {pricePerPerson} por pessoa</HintMsg>
+                    <HintMsg>≈ {pricePerPerson} por pessoa</HintMsg>
                   )}
                 </Field>
               </Row>

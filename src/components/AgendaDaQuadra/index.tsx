@@ -49,6 +49,12 @@ export interface AgendaDaQuadraProps {
    * Só vêm quando a quadra é descoberta e o dia está no alcance por hora.
    */
   horasDoTempo?: HoraDoTempo[]
+  /**
+   * O que dizer quando a agenda não carrega. O padrão é o da criação de partida,
+   * onde a api ainda barra o horário ocupado; no painel do dono não há nada
+   * sendo criado, e a frase de lá não faz sentido (web#491).
+   */
+  mensagemDeErro?: string
 }
 
 export function AgendaDaQuadra({
@@ -59,6 +65,7 @@ export function AgendaDaQuadra({
   temData,
   titulo,
   horasDoTempo,
+  mensagemDeErro = 'Não foi possível carregar a agenda. Você pode criar assim mesmo — se o horário estiver ocupado, o servidor vai avisar.',
 }: AgendaDaQuadraProps) {
   if (!temData) {
     return (
@@ -87,8 +94,7 @@ export function AgendaDaQuadra({
         <Aviso $tom="atencao">
           <span aria-hidden="true">⚠️</span>
           <span>
-            Não foi possível carregar a agenda. Você pode criar assim mesmo — se
-            o horário estiver ocupado, o servidor vai avisar.
+            {mensagemDeErro}
           </span>
         </Aviso>
       )}

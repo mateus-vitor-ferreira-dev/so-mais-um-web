@@ -239,7 +239,7 @@ describe('CriarPartida — validação do formulário', () => {
     await user.type(campos.valor, '250')
 
     // É a conta que o jogador vai conferir antes de aceitar entrar.
-    expect(await screen.findByText('≈ R$ 25.00 por pessoa')).toBeInTheDocument()
+    expect(await screen.findByText('≈ R$ 25,00 por pessoa')).toBeInTheDocument()
   })
 })
 

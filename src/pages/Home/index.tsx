@@ -19,6 +19,8 @@ import {
   CTAPrimary, CTASecondary,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
+import { valorPorPessoa } from '../../utils/formatCurrency'
+import { contagem } from '../../utils/plural'
 import { SkeletonCard } from '../../components/Skeleton'
 
 interface FiltroTab {
@@ -84,10 +86,9 @@ function getAddress(event: EventoSolto): string {
   return (event.address || event.court?.address || event.court?.place?.address || event.place || event.city || '') as string
 }
 
+/** Com centavos: o `toFixed(0)` daqui mostrava R$ 23 numa partida de R$ 22,50 (web#491). */
 function getPricePerPlayer(event: EventoSolto): string {
-  const total = parseFloat(String(event.totalValue ?? event.price ?? 0))
-  const players = Number(event.maxPlayers) || 1
-  return (total / players).toFixed(0)
+  return valorPorPessoa(String(event.totalValue ?? event.price ?? 0), Number(event.maxPlayers) || 1)
 }
 
 export default function Home() {
@@ -271,7 +272,7 @@ export default function Home() {
                         <CourtName>{courtName}</CourtName>
                         <SportBadge>{sportLabel}</SportBadge>
                       </CardCourtInfo>
-                      {vagas > 0 && <VagasBadge>{vagas} vagas</VagasBadge>}
+                      {vagas > 0 && <VagasBadge>{contagem(vagas, 'vaga', 'vagas')}</VagasBadge>}
                     </CardTop>
 
                     <CardMeta>
@@ -294,7 +295,7 @@ export default function Home() {
                         <Users size={14} />
                         {participations}/{maxPlayers}
                       </PlayerCount>
-                      {Number(pricePerPlayer) > 0 && <Price>R$ {pricePerPlayer}</Price>}
+                      {Number(String(event.totalValue ?? event.price ?? 0)) > 0 && <Price>{pricePerPlayer}</Price>}
                     </CardBottom>
 
                     <ProgressBar>

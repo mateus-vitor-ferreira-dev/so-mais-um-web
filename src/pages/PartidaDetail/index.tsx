@@ -32,6 +32,7 @@ import {
   LeaveBtn, Modal, ModalOverlay, ModalBox, ModalTitle,
   ReasonInput, ReasonCounter, ModalActions, ModalCancelBtn, ModalConfirmBtn,
 } from './styles'
+import { valorPorPessoa } from '../../utils/formatCurrency'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
 
 /**
@@ -265,7 +266,7 @@ export default function PartidaDetail() {
   const fimStr = event.endsAt
     ? new Date(event.endsAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
     : null
-  const pricePerPerson  = maxPlayers > 0 ? (Number(event.totalValue) / maxPlayers).toFixed(2) : '0.00'
+  const pricePerPerson  = valorPorPessoa(event.totalValue, maxPlayers)
 
   async function handleJoin() {
     setJoining(true)
@@ -372,7 +373,7 @@ export default function PartidaDetail() {
                 <InfoIcon><DollarSign size={16} /></InfoIcon>
                 <div>
                   <InfoLabel>Valor por pessoa</InfoLabel>
-                  <InfoValue>R$ {pricePerPerson}</InfoValue>
+                  <InfoValue>{pricePerPerson}</InfoValue>
                 </div>
               </InfoItem>
             </InfoGrid>
