@@ -1,28 +1,24 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { MapPin, Clock, Users, Search, Zap } from 'lucide-react'
+import { Search, Zap } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
-import { useSports, getSportMeta } from '../../hooks/useSports'
+import { useSports } from '../../hooks/useSports'
+import CartaoDePartida, { type PartidaDoCartao } from '../../components/CartaoDePartida'
 import SportIcon from '../../components/SportIcon'
-import { PartidasPerto } from '../../components/PartidasPerto'
 import type { CourtType } from '../../types/api'
+import { PartidasPerto } from '../../components/PartidasPerto'
 import {
   PageWrapper, CompactHeader, GreetingBlock, GreetingText, GreetingTitle,
   StatsRow, StatBox, StatIconBox, StatInfo, StatValue, StatLabel,
   TabsWrapper, TabsRow, TabsFade, Tab, SectionBlock, SectionHeader,
-  SectionTitle, SectionSubtitle, GamesGrid, GameCardWrapper, CardTop,
-  CardCourtIcon, CardCourtInfo, CourtName, SportBadge, VagasBadge, CardMeta,
-  MetaRow, CardBottom, PlayerCount, Price, ProgressBar, ProgressFill, CTARow,
+  SectionTitle, SectionSubtitle, GamesGrid, CTARow,
   CTAPrimary, CTASecondary,
 } from './styles'
 import EmptyState from '../../components/EmptyState'
-import { valorPorPessoa } from '../../utils/formatCurrency'
-import { contagem } from '../../utils/plural'
 import { SkeletonCard } from '../../components/Skeleton'
-import { diaDaSemanaEMes, hora } from '../../utils/datas'
 import { formatarNota } from '../../utils/numeros'
 
 interface FiltroTab {
@@ -71,26 +67,20 @@ function getParticipationCount(event: EventoSolto): number {
   return 0
 }
 
-function getEventDateStr(event: EventoSolto): string {
-  const raw = (event.scheduledAt || event.startTime || event.date || event.startsAt) as string | undefined
-  if (!raw) return ''
-  const d = new Date(raw)
-  const datePart = diaDaSemanaEMes(d)
-  const timePart = hora(d)
-  return `${datePart} · ${timePart}`
-}
-
-function getCourtName(event: EventoSolto): string {
-  return (event.courtName || event.court?.name || event.name || 'Quadra') as string
-}
-
-function getAddress(event: EventoSolto): string {
-  return (event.address || event.court?.address || event.court?.place?.address || event.place || event.city || '') as string
-}
-
-/** Com centavos: o `toFixed(0)` daqui mostrava R$ 23 numa partida de R$ 22,50 (web#491). */
-function getPricePerPlayer(event: EventoSolto): string {
-  return valorPorPessoa(String(event.totalValue ?? event.price ?? 0), Number(event.maxPlayers) || 1)
+/**
+ * O evento solto no formato do `CartaoDePartida` (web#492). Os nomes
+ * alternativos de campo continuam aceitos, pelo mesmo motivo do comentário
+ * acima: a Home ainda recebe listas de mais de uma origem.
+ */
+function paraOCartao(event: EventoSolto): PartidaDoCartao {
+  return {
+    id: String(event.id),
+    date: String(event.scheduledAt || event.startTime || event.date || event.startsAt || ''),
+    maxPlayers: Number(event.maxPlayers) || 0,
+    totalValue: String(event.totalValue ?? event.price ?? 0),
+    _count: { participations: getParticipationCount(event) },
+    court: event.court as PartidaDoCartao['court'],
+  }
 }
 
 export default function Home() {
@@ -254,58 +244,13 @@ export default function Home() {
             <EmptyState>Nenhuma partida disponível no momento.</EmptyState>
           ) : (
             <GamesGrid>
-              {filteredEvents.slice(0, 4).map((event: EventoSolto) => {
-                const participations = getParticipationCount(event)
-                const maxPlayers = Number(event.maxPlayers) || 0
-                const vagas = maxPlayers - participations
-                const pct = maxPlayers > 0 ? Math.round((participations / maxPlayers) * 100) : 0
-                const courtName = getCourtName(event)
-                const sport = getSportMeta(event.court?.type as CourtType)
-                const sportLabel = sport.label
-                const address = getAddress(event)
-                const dateStr = getEventDateStr(event)
-                const pricePerPlayer = getPricePerPlayer(event)
-
-                return (
-                  <GameCardWrapper key={String(event.id)} onClick={() => navigate(`/partida/${String(event.id)}`)}>
-                    <CardTop>
-                      <CardCourtIcon><SportIcon icon={sport.icon} fallback={sport.iconFallback} /></CardCourtIcon>
-                      <CardCourtInfo>
-                        <CourtName>{courtName}</CourtName>
-                        <SportBadge>{sportLabel}</SportBadge>
-                      </CardCourtInfo>
-                      {vagas > 0 && <VagasBadge>{contagem(vagas, 'vaga', 'vagas')}</VagasBadge>}
-                    </CardTop>
-
-                    <CardMeta>
-                      {address && (
-                        <MetaRow>
-                          <MapPin size={14} />
-                          {address}
-                        </MetaRow>
-                      )}
-                      {dateStr && (
-                        <MetaRow>
-                          <Clock size={14} />
-                          {dateStr}
-                        </MetaRow>
-                      )}
-                    </CardMeta>
-
-                    <CardBottom>
-                      <PlayerCount>
-                        <Users size={14} />
-                        {participations}/{maxPlayers}
-                      </PlayerCount>
-                      {Number(String(event.totalValue ?? event.price ?? 0)) > 0 && <Price>{pricePerPlayer}</Price>}
-                    </CardBottom>
-
-                    <ProgressBar>
-                      <ProgressFill $pct={pct} />
-                    </ProgressBar>
-                  </GameCardWrapper>
-                )
-              })}
+              {filteredEvents.slice(0, 4).map((event: EventoSolto) => (
+                <CartaoDePartida
+                  key={String(event.id)}
+                  partida={paraOCartao(event)}
+                  aoAbrir={() => navigate(`/partida/${String(event.id)}`)}
+                />
+              ))}
             </GamesGrid>
           )}
         </SectionBlock>

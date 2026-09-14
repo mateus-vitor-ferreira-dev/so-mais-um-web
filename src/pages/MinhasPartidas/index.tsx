@@ -6,17 +6,15 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { SkeletonCard } from '../../components/Skeleton'
-import { Calendar, Clock, Copy, Plus, Shuffle, Flag, XCircle, CheckSquare, ShieldCheck } from 'lucide-react'
-import SportIcon from '../../components/SportIcon'
-import { valorPorPessoa } from '../../utils/formatCurrency'
+import { Copy, Plus, Shuffle, Flag, XCircle, CheckSquare, ShieldCheck } from 'lucide-react'
+import CartaoDePartida from '../../components/CartaoDePartida'
 import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
-import { Grid, Card, CardHeader, InfoRow, ProgressBarContainer, ProgressBar, SpotsInfo, PriceInfo } from '../QueroJogar/styles'
-import { SeloDeStatus } from './styles'
+import { Grid } from '../QueroJogar/styles'
+import { AcaoDoOrganizador, AcoesDoStatus, SeloDeStatus } from './styles'
 import { mensagemDeErro } from '../../utils/apiError'
 import type {
   Court,
-  CourtType,
   Participation,
   Partida,
   PartidaRequirement,
@@ -36,7 +34,6 @@ import {
 } from './styles'
 import EmptyState from '../../components/EmptyState'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
-import { dataCurta, hora } from '../../utils/datas'
 
 /**
  * O que cada aba diz quando não há nada, e para onde ela manda (#379).
@@ -307,42 +304,23 @@ export default function MinhasPartidas() {
               const ev = ('match' in event && event.match ? event.match : event) as Partida
               if (!ev || !ev.id) return null
 
-              const currentPlayers = ev._count?.participations || 0
-              const maxPlayers = ev.maxPlayers
-              const progress = (currentPlayers / maxPlayers) * 100
-              const esporte = getSportMeta(ev.court?.type as CourtType)
               const status = rotuloDoStatus(ev.status)
 
               return (
                 // O cartão inteiro navega para o detalhe, então todo controle dentro dele
                 // precisa de stopPropagation — senão o modal abre e fecha no mesmo clique.
-                <Card key={ev.id} onClick={() => navigate(`/partida/${ev.id}`)} style={{ cursor: 'pointer' }}>
-                  <CardHeader>
-                    <div>
-                      <h3>{ev.court?.place?.name || 'Local'}</h3>
-                      <span className="address">{ev.court?.name}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                <CartaoDePartida
+                  key={ev.id}
+                  partida={ev}
+                  aoAbrir={() => navigate(`/partida/${ev.id}`)}
+                  selos={
+                    <>
                       <MarcaDeVisibilidade visibility={ev.visibility} />
-                      {/* Cor pelo tom do status (web#491): era sempre o amarelo, e
-                          "Finalizada" parecia tão pendente quanto "Aguardando". */}
+                      {/* Cor pelo tom do status (web#491). */}
                       <SeloDeStatus $tom={status.tom}>{status.label}</SeloDeStatus>
-                    </div>
-                  </CardHeader>
-
-                  {/* A modalidade e o valor, que o cartão de Minhas Partidas não dizia (web#491). */}
-                  <InfoRow><SportIcon icon={esporte.icon} fallback={esporte.iconFallback} /> {esporte.label}</InfoRow>
-                  <InfoRow><Calendar /> {dataCurta(ev.date)}</InfoRow>
-                  <InfoRow><Clock /> {hora(ev.date)}</InfoRow>
-
-                  <ProgressBarContainer>
-                    <ProgressBar $progress={progress}><div /></ProgressBar>
-                    <SpotsInfo><span>{currentPlayers} / {maxPlayers} confirmados</span></SpotsInfo>
-                  </ProgressBarContainer>
-
-                  <PriceInfo>{valorPorPessoa(ev.totalValue, maxPlayers)} / pessoa</PriceInfo>
-
-                  {activeTab === 'created' && (
+                    </>
+                  }
+                  rodape={activeTab === 'created' && (
                     <>
                       <PixBox>
                         <span>PIX: {ev.pixKey}</span>
@@ -356,33 +334,24 @@ export default function MinhasPartidas() {
                           <SortearBtn onClick={(e) => { e.stopPropagation(); setDrawEvent(ev) }}>
                             <Shuffle size={14} /> Sortear Times
                           </SortearBtn>
-                          <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); handleUpdateStatus(ev, 'FINISHED') }}
-                              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '8px 12px', borderRadius: 8, border: '1px solid #e5e7eb', background: '#f0fdf4', color: '#166534', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
-                            >
+                          <AcoesDoStatus>
+                            <AcaoDoOrganizador $tom="finalizar" onClick={(e) => { e.stopPropagation(); handleUpdateStatus(ev, 'FINISHED') }}>
                               <Flag size={13} /> Finalizar
-                            </button>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); handleUpdateStatus(ev, 'CANCELLED') }}
-                              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '8px 12px', borderRadius: 8, border: '1px solid #fee2e2', background: '#fee2e2', color: '#991b1b', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
-                            >
+                            </AcaoDoOrganizador>
+                            <AcaoDoOrganizador $tom="cancelar" onClick={(e) => { e.stopPropagation(); handleUpdateStatus(ev, 'CANCELLED') }}>
                               <XCircle size={13} /> Cancelar
-                            </button>
-                          </div>
+                            </AcaoDoOrganizador>
+                          </AcoesDoStatus>
                         </>
                       )}
                       {ev.status === 'FINISHED' && (
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setAttendanceEvent(ev) }}
-                          style={{ width: '100%', marginTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '8px 12px', borderRadius: 8, border: '1px solid #3b82f6', background: '#eff6ff', color: '#1d4ed8', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
-                        >
+                        <AcaoDoOrganizador $tom="presencas" onClick={(e) => { e.stopPropagation(); setAttendanceEvent(ev) }}>
                           <CheckSquare size={13} /> Confirmar Presenças
-                        </button>
+                        </AcaoDoOrganizador>
                       )}
                     </>
                   )}
-                </Card>
+                />
               )
             })}
           </Grid>

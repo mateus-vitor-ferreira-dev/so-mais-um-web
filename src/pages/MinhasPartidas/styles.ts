@@ -189,3 +189,31 @@ export const SeloDeStatus = styled.span<{ $tom: TomDoStatus }>`
   background: ${({ theme, $tom }) =>
     ({ aberta: theme.colors.successLight, cheia: theme.colors.warningLight, fim: theme.colors.border, cancelada: theme.colors.errorLight })[$tom]};
 `
+
+export const AcoesDoStatus = styled.div`
+  display: flex;
+  gap: 8px;
+`
+
+/**
+ * Os botões de quem organiza, pelas cores do tema (web#492). Eram estilo em
+ * linha com `#f0fdf4`, `#fee2e2` e `#eff6ff` fixos, e no tema escuro saíam
+ * como três placas claras no meio do cartão escuro.
+ */
+export const AcaoDoOrganizador = styled.button<{ $tom: 'finalizar' | 'cancelar' | 'presencas' }>`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  cursor: pointer;
+  border: 1px solid
+    ${({ theme, $tom }) => ({ finalizar: theme.colors.border, cancelar: theme.colors.errorLight, presencas: theme.colors.info })[$tom]};
+  background: ${({ theme, $tom }) => ({ finalizar: theme.colors.primarySubtle, cancelar: theme.colors.errorLight, presencas: theme.colors.infoLight })[$tom]};
+  color: ${({ theme, $tom }) => ({ finalizar: theme.colors.primaryDark, cancelar: theme.colors.error, presencas: theme.colors.info })[$tom]};
+`

@@ -2,7 +2,7 @@ import { Suspense, lazy, useState, useMemo } from 'react'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'sonner'
-import { ArrowLeft, Search, Calendar, Clock, CheckCircle, MapPin, SlidersHorizontal, X, Navigation } from 'lucide-react'
+import { ArrowLeft, Search, CheckCircle, SlidersHorizontal, X, Navigation } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
@@ -11,30 +11,27 @@ import ConviteDeLocalizacao from '../../components/ConviteDeLocalizacao'
 import DayUsesDoDia from '../../components/DayUsesDoDia'
 import { pontosDaBusca } from '../../components/MapaDaBusca/pontos'
 import { temDistancia } from '../../types/api'
-import { useSports, getSportMeta } from '../../hooks/useSports'
+import { useSports } from '../../hooks/useSports'
 import { SkeletonCard } from '../../components/Skeleton'
 import { EtiquetaDeRequisitos } from '../../components/RequisitosDaPartida'
-import SportIcon from '../../components/SportIcon'
+import CartaoDePartida from '../../components/CartaoDePartida'
 import { sportTextLabel } from '../../utils/sportText'
 import { mensagemDeErro } from '../../utils/apiError'
 import type { EventFilters } from '../../services/events'
 import type { CourtType, Partida } from '../../types/api'
 import type { SportOption } from '../../hooks/useSports'
-import { valorPorPessoa } from '../../utils/formatCurrency'
-import { contagem } from '../../utils/plural'
+import { formatarNumero } from '../../utils/numeros'
 import {
   Container, BackBtn, Header, HeaderRow,
   FiltersArea, SearchInput, ChipsContainer, Chip, ResultsCount,
   SportBtnsRow, SportAllBtn, SportSelectWrapper,
-  Grid, Card, CardHeader, InfoRow, ProgressBarContainer, ProgressBar,
-  SpotsInfo, PriceInfo, ActionButton,
+  Grid, ActionButton,
   AdvancedFilters, FilterRow, FilterGroup, FilterLabel,
   FilterSelect, FilterToggle, FiltersBtn, ActiveFilterBadge, ClearBtn,
   PriceSliderWrapper,
   RaioLinha, RaioChip, RaioExplicacao, DistanciaBadge,
   MapaCarregando,
 } from './styles'
-import { dataCurta, hora } from '../../utils/datas'
 
 function buildGoogleMapsUrl(event: Partida): string | null {
   const parts = [
@@ -482,84 +479,44 @@ export default function QueroJogar() {
 
         <Grid>
           {loading ? <SkeletonCard count={3} /> : filteredEvents.map((event: Partida) => {
-            const currentPlayers = event._count?.participations || 0
-            const maxPlayers = event.maxPlayers
-            const progress = (currentPlayers / maxPlayers) * 100
-            const isFull = currentPlayers >= maxPlayers
+            const isFull = (event._count?.participations || 0) >= event.maxPlayers
             const isJoined = event.participations?.some(p => p.userId === user?.id)
-            const pricePerPerson = valorPorPessoa(event.totalValue, maxPlayers)
-            const mapsUrl = buildGoogleMapsUrl(event)
-            const sportMeta = getSportMeta(event.court?.type as CourtType)
 
             return (
-              <Card key={event.id} onClick={() => navigate(`/partida/${event.id}`)} style={{ cursor: 'pointer' }}>
-                <CardHeader>
-                  <div>
-                    <h3>{event.court?.place?.name || 'Local'}</h3>
-                    <span className="address">
-                      {/* `street` não vem no select de place — renderizava "undefined, Bairro". */}
-                      {event.court?.place?.neighborhood}, {event.court?.place?.city}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                    {/* Só na busca por raio: sem origem não há distância a
-                        mostrar, e um "—" no lugar seria ruído em toda busca
-                        textual. */}
-                    {temDistancia(event) && (
-                      <DistanciaBadge>
-                        <Navigation size={11} aria-hidden /> {event.distanceKm} km
-                      </DistanciaBadge>
-                    )}
-                    <span className="badge"><SportIcon icon={sportMeta.icon} fallback={sportMeta.iconFallback} /> {sportMeta.label}</span>
-                  </div>
-                </CardHeader>
-
-                {/*
-                  * Uma linha só dizendo que a partida TEM regra (#230).
-                  *
-                  * O card não diz se este jogador passa: a busca não consulta o
-                  * portão por partida, e fazer isso seria uma requisição por
-                  * resultado. O detalhe é que responde essa pergunta — aqui o
-                  * papel é a pessoa não abrir a partida achando que é aberta.
-                  */}
-                <EtiquetaDeRequisitos requirements={event.requirements ?? []} />
-
-                <InfoRow><Calendar size={14} /> {dataCurta(event.date)}</InfoRow>
-                <InfoRow>
-                  <Clock size={14} />
-                  {hora(event.date)}
-                </InfoRow>
-                {mapsUrl && (
-                  <InfoRow as="a" href={mapsUrl} target="_blank" rel="noopener noreferrer"
-                    style={{ color: '#2563eb', textDecoration: 'none', cursor: 'pointer' }}
-                    onClick={e => e.stopPropagation()}
+              <CartaoDePartida
+                key={event.id}
+                partida={event}
+                aoAbrir={() => navigate(`/partida/${event.id}`)}
+                mapaUrl={buildGoogleMapsUrl(event)}
+                selos={
+                  /* Só na busca por raio: sem origem não há distância a mostrar,
+                     e um "—" no lugar seria ruído em toda busca textual. */
+                  temDistancia(event) && (
+                    <DistanciaBadge>
+                      <Navigation size={11} aria-hidden /> {formatarNumero(event.distanceKm)} km
+                    </DistanciaBadge>
+                  )
+                }
+                extra={
+                  /*
+                   * Uma linha só dizendo que a partida TEM regra (#230). O card
+                   * não diz se este jogador passa: a busca não consulta o portão
+                   * por partida. O detalhe é que responde essa pergunta.
+                   */
+                  <EtiquetaDeRequisitos requirements={event.requirements ?? []} />
+                }
+                rodape={
+                  <ActionButton
+                    disabled={isFull || isJoined}
+                    $isJoined={isJoined}
+                    onClick={(e) => { e.stopPropagation(); handleJoin(event.courtId, event.id) }}
                   >
-                    <MapPin size={14} /> Ver no Google Maps
-                  </InfoRow>
-                )}
-
-                <ProgressBarContainer>
-                  <ProgressBar $progress={progress} $isFull={isFull}>
-                    <div />
-                  </ProgressBar>
-                  <SpotsInfo>
-                    <span>{currentPlayers} / {maxPlayers} confirmados</span>
-                    <span>{contagem(maxPlayers - currentPlayers, 'vaga restante', 'vagas restantes')}</span>
-                  </SpotsInfo>
-                </ProgressBarContainer>
-
-                <PriceInfo>{pricePerPerson} / pessoa</PriceInfo>
-
-                <ActionButton
-                  disabled={isFull || isJoined}
-                  $isJoined={isJoined}
-                  onClick={(e) => { e.stopPropagation(); handleJoin(event.courtId, event.id) }}
-                >
-                  {isJoined
-                    ? <><CheckCircle size={18} /> Você entrou</>
-                    : isFull ? 'Partida lotada' : 'Entrar na partida'}
-                </ActionButton>
-              </Card>
+                    {isJoined
+                      ? <><CheckCircle size={18} /> Você entrou</>
+                      : isFull ? 'Partida lotada' : 'Entrar na partida'}
+                  </ActionButton>
+                }
+              />
             )
           })}
           </Grid>
