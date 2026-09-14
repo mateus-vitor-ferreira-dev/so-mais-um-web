@@ -164,7 +164,7 @@ export default function Register({ initialMode = 'register' }) {
         <Tab $active={isRegister}  onClick={() => switchMode('register')}>Cadastrar</Tab>
       </Tabs>
 
-      <FormTitle>{isRegister ? 'Crie sua conta 🧡' : 'Entre na sua conta 👋'}</FormTitle>
+      <FormTitle>{isRegister ? 'Crie sua conta' : 'Entre na sua conta'}</FormTitle>
       <FormSubtitle>
         {isRegister ? 'É rápido, grátis e sem enrolação.' : 'Bem-vindo de volta!'}
       </FormSubtitle>
@@ -273,7 +273,7 @@ export default function Register({ initialMode = 'register' }) {
         <SubmitButton type="submit" disabled={isSubmitting}>
           {isSubmitting
             ? 'Aguarde…'
-            : isRegister ? 'Criar conta grátis 🚀' : 'Entrar'}
+            : isRegister ? 'Criar conta grátis' : 'Entrar'}
         </SubmitButton>
       </Form>
 

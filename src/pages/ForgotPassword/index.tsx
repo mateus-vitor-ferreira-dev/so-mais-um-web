@@ -41,7 +41,7 @@ export default function ForgotPassword() {
   if (sent) {
     return (
       <AuthLayout>
-        <FormTitle>Verifique seu e-mail 📬</FormTitle>
+        <FormTitle>Verifique seu e-mail</FormTitle>
         <FormSubtitle>
           Se o endereço estiver cadastrado, você receberá um link de redefinição em alguns minutos.
           Verifique também a caixa de spam.
@@ -58,7 +58,7 @@ export default function ForgotPassword() {
 
   return (
     <AuthLayout>
-      <FormTitle>Esqueceu a senha? 🔑</FormTitle>
+      <FormTitle>Esqueceu a senha?</FormTitle>
       <FormSubtitle>
         Digite seu e-mail e enviaremos um link para redefinir sua senha.
       </FormSubtitle>
