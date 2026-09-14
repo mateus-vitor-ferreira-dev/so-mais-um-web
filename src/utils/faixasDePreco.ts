@@ -171,3 +171,32 @@ export function precoNaLista(court: Pick<Court, 'pricePerHour' | 'precoVariaPorH
   }
   return court.pricePerHour != null ? `R$ ${reais(Number(court.pricePerHour))}/h` : null
 }
+
+/** `R$ 250` ou `R$ 58,33`: centavo só quando existe. */
+export function reaisCurtos(valor: number): string {
+  return `R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: Number.isInteger(valor) ? 0 : 2, maximumFractionDigits: 2 })}`
+}
+
+/**
+ * O selo da quadra na escolha, antes de existir horário (web#475).
+ *
+ * No passo 1 não há hora escolhida, então o preço exato ainda não existe:
+ * a quadra com faixas diz **"a partir de"** o menor preço dela.
+ */
+export function seloDePrecoDaQuadra(court: Pick<Court, 'pricePerHour' | 'precoVariaPorHorario' | 'precoMinimo' | 'precoMaximo'>): string | null {
+  if (court.precoVariaPorHorario && court.precoMinimo != null) {
+    return court.precoMinimo === court.precoMaximo
+      ? `${reaisCurtos(court.precoMinimo)}/h`
+      : `a partir de ${reaisCurtos(court.precoMinimo)}/h`
+  }
+  return court.pricePerHour != null && Number(court.pricePerHour) > 0 ? `${reaisCurtos(Number(court.pricePerHour))}/h` : null
+}
+
+/** `17h–18h a R$ 100/h · 18h–19h a R$ 150/h` — o detalhamento da cotação, na hora de quem olha. */
+export function detalhamentoPorExtenso(trechos: Array<{ de: string; ate: string; valorPorHora: number }>): string {
+  const hora = (iso: string) => {
+    const d = new Date(iso)
+    return d.getMinutes() === 0 ? `${d.getHours()}h` : `${d.getHours()}h${String(d.getMinutes()).padStart(2, '0')}`
+  }
+  return trechos.map((t) => `${hora(t.de)}–${hora(t.ate)} a ${reaisCurtos(t.valorPorHora)}/h`).join(' · ')
+}
