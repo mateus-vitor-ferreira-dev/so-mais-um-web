@@ -2,7 +2,7 @@ import { Suspense, lazy, useState, useMemo } from 'react'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'sonner'
-import { ArrowLeft, Search, CheckCircle, SlidersHorizontal, X, Navigation } from 'lucide-react'
+import { ArrowLeft, Search, CheckCircle, SlidersHorizontal, X, Navigation, Sunrise, Sun, Moon, LayoutGrid, ChevronDown } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { playerService } from '../../services/playerService'
 import { chaves } from '../../lib/queryClient'
@@ -46,9 +46,9 @@ function buildGoogleMapsUrl(event: Partida): string | null {
 }
 
 const TIME_OPTIONS = [
-  { id: 'manha',  label: '🌅 Manhã',   from: 5,  to: 12 },
-  { id: 'tarde',  label: '☀️ Tarde',   from: 12, to: 18 },
-  { id: 'noite',  label: '🌙 Noite',   from: 18, to: 24 },
+  { id: 'manha',  label: 'Manhã', Icone: Sunrise, from: 5,  to: 12 },
+  { id: 'tarde',  label: 'Tarde', Icone: Sun,     from: 12, to: 18 },
+  { id: 'noite',  label: 'Noite', Icone: Moon,    from: 18, to: 24 },
 ]
 
 const MAX_PRICE = 200
@@ -265,14 +265,14 @@ export default function QueroJogar() {
               $active={selectedSport === ''}
               onClick={() => setSelectedSport('')}
             >
-              🎯 Todas as modalidades
+              <LayoutGrid size={16} aria-hidden /> Todas as modalidades
             </SportAllBtn>
             <SportSelectWrapper $active={selectedSport !== ''}>
               <span>
                 {selectedSport
                   ? sportTextLabel(allSports.find(s => s.id === selectedSport) ?? { label: '' })
-                  : '⚽ Selecionar modalidade'}
-                {' ▾'}
+                  : 'Selecionar modalidade'}
+                <ChevronDown size={16} aria-hidden />
               </span>
               <select
                 value={selectedSport}
@@ -312,7 +312,7 @@ export default function QueroJogar() {
                         $active={filterTime === t.id}
                         onClick={() => setFilterTime(filterTime === t.id ? '' : t.id)}
                       >
-                        {t.label}
+                        <t.Icone size={14} aria-hidden /> {t.label}
                       </Chip>
                     ))}
                   </ChipsContainer>

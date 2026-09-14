@@ -219,7 +219,7 @@ describe('QueroJogar — filtros aplicados sobre o que já veio', () => {
     const buscasAteAqui = buscaEventos.mock.calls.length
 
     await user.click(screen.getByRole('button', { name: /filtros/i }))
-    await user.click(screen.getByRole('button', { name: /🌙 Noite/ }))
+    await user.click(screen.getByRole('button', { name: /Noite/ }))
 
     await waitFor(() => {
       expect(cardDaArena('Arena Manhã')).not.toBeInTheDocument()
@@ -252,7 +252,7 @@ describe('QueroJogar — filtros aplicados sobre o que já veio', () => {
     expect(within(botaoFiltros).queryByText('1')).not.toBeInTheDocument()
 
     await user.click(botaoFiltros)
-    await user.click(screen.getByRole('button', { name: /🌙 Noite/ }))
+    await user.click(screen.getByRole('button', { name: /Noite/ }))
 
     expect(await within(botaoFiltros).findByText('1')).toBeInTheDocument()
   })
@@ -263,7 +263,7 @@ describe('QueroJogar — filtros aplicados sobre o que já veio', () => {
     await esperaResultados()
 
     await user.click(screen.getByRole('button', { name: /filtros/i }))
-    await user.click(screen.getByRole('button', { name: /🌙 Noite/ }))
+    await user.click(screen.getByRole('button', { name: /Noite/ }))
     await waitFor(() => expect(screen.getByText('1 partida encontrada')).toBeInTheDocument())
 
     await user.click(screen.getByRole('button', { name: /limpar filtros/i }))

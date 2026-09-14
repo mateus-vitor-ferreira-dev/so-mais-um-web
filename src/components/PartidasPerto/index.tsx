@@ -78,7 +78,7 @@ export function PartidasPerto() {
   const proximoRaio = RAIOS.find((raio) => raio > raioKm)
 
   return (
-    <Bloco aria-labelledby="titulo-perto">
+    <Bloco aria-labelledby="titulo-perto" $reservaAltura={!semOrigem}>
       <Cabecalho>
         <div>
           <Titulo id="titulo-perto">Partidas perto de você</Titulo>

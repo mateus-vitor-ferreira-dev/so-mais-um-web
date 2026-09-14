@@ -17,7 +17,7 @@ import ConvitesDeTime from '../../components/ConvitesDeTime'
 import SportIcon from '../../components/SportIcon'
 import type { CourtType, TeamSummary } from '../../types/api'
 import {
-  Container, PageHeader, CreateButton, Grid, TeamCard, ModalOverlay,
+  Container, PageHeader, CreateButton, Grid, TeamCard, CartaoDeNovoTime, ModalOverlay,
   ModalContent, Form, ButtonGroup, SecondaryButton,
 } from './styles'
 import CaptainBadge from '../../components/CaptainBadge'
@@ -170,6 +170,24 @@ export default function Times() {
               </TeamCard>
             )
           })}
+
+          {/*
+            Com um ou dois times a grade ficava com um cartão num canto e a
+            tela vazia do lado (#492). O espaço vira o convite para o próximo
+            time — quem joga em mais de uma turma costuma ter um para cada.
+            De três em diante a grade já se preenche e o botão do topo basta.
+          */}
+          {times.length < 3 && (
+            <CartaoDeNovoTime>
+              <button type="button" onClick={() => setModalAberto(true)}>
+                <span className="icone"><Plus size={20} aria-hidden="true" /></span>
+                <span className="titulo">Criar outro time</span>
+                <span className="texto">
+                  Joga com outra turma em outro dia? Cada turma pode ter o seu time.
+                </span>
+              </button>
+            </CartaoDeNovoTime>
+          )}
         </Grid>
       )}
 

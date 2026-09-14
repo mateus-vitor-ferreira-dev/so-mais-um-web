@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import PartidasParaApitar from '../../components/PartidasParaApitar'
-import { Plus, MapPin, Calendar, Users, Trophy, X, Layers } from 'lucide-react'
+import { Plus, MapPin, Calendar, Users, Trophy, X, Layers, ChevronUp } from 'lucide-react'
+import { ICONE_DO_FORMATO } from '../../utils/iconeDoFormato'
 import { useForm, useWatch } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -59,16 +60,9 @@ const STATUS_LABELS: Record<string, string> = {
  * Corridos" criava um campeonato que nunca teria chaveamento, partida nem
  * resultado. Ver api#263.
  *
- * Os ícones ficam, porque são decisão de front: a API devolve `id`, `label`,
- * `description` e `implemented`, e não opina sobre emoji.
+ * Os ícones ficam no front, em `utils/iconeDoFormato`: a API devolve `id`,
+ * `label`, `description` e `implemented`, e não opina sobre ícone.
  */
-const FORMAT_ICONS: Record<string, string> = {
-  KNOCKOUT:            '⚡',
-  LEAGUE:              '📊',
-  GROUPS_AND_KNOCKOUT: '🎯',
-  DOUBLE_ELIMINATION:  '🔁',
-  SWISS:               '♟️',
-}
 
 interface FormatInfo {
   desc: string
@@ -470,6 +464,7 @@ export default function Tournaments() {
               // campeonato gravado como LEAGUE antes da api#263 continua na
               // lista e precisa aparecer com o nome certo.
               const fmt = { label: rotuloDoFormato(t.format) }
+              const IconeDoFormato = ICONE_DO_FORMATO[t.format]
               const divCount = t._count?.divisions ?? 0
               // Modalidade que a API devolve e o catálogo não conhece cai no
               // próprio código, que é feio mas legível — melhor que um ícone
@@ -492,7 +487,7 @@ export default function Tournaments() {
                   <CardMeta>
                     {fmt && (
                       <MetaRow>
-                        <span style={{ fontSize: 14 }}>{FORMAT_ICONS[t.format]}</span>
+                        {IconeDoFormato && <IconeDoFormato aria-hidden />}
                         {fmt.label}
                       </MetaRow>
                     )}
@@ -524,7 +519,9 @@ export default function Tournaments() {
                     e.stopPropagation()
                     setSelected(selected?.id === t.id ? null : t)
                   }}>
-                    {selected?.id === t.id ? '▲ Fechar Chaveamento' : '🏆 Ver Chaveamento'}
+                    {selected?.id === t.id
+                      ? <><ChevronUp size={16} aria-hidden /> Fechar chaveamento</>
+                      : <><Trophy size={16} aria-hidden /> Ver chaveamento</>}
                   </ViewBracketBtn>
                 </TournamentCard>
               )
@@ -535,7 +532,7 @@ export default function Tournaments() {
         {/* ── Bracket do torneio selecionado ── */}
         {selected && (
           <BracketSection>
-            <BracketTitle>🏆 Chaveamento — {selected.name}</BracketTitle>
+            <BracketTitle><Trophy size={20} aria-hidden /> Chaveamento — {selected.name}</BracketTitle>
             <TournamentBracket tournamentId={selected.id} />
           </BracketSection>
         )}

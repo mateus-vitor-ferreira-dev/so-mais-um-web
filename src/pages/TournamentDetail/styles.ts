@@ -108,8 +108,8 @@ export const FormatCard = styled.div`
 `
 
 export const FormatIcon = styled.span`
-  font-size: 1.5rem;
-  line-height: 1;
+  display: flex;
+  color: ${({ theme }) => theme.colors.primary};
   flex-shrink: 0;
 `
 

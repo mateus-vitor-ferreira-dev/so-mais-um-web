@@ -57,6 +57,9 @@ export const SearchInput = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   padding: 0 ${({ theme }) => theme.spacing[4]};
+  /* Sem isto a largura natural do input empurrava o botão de filtros para
+     fora da tela no celular (#492). */
+  min-width: 0;
 
   svg {
     color: ${({ theme }) => theme.colors.textMuted};
@@ -65,6 +68,7 @@ export const SearchInput = styled.div`
 
   input {
     flex: 1;
+    min-width: 0;
     padding: ${({ theme }) => theme.spacing[3]} 0;
     border: none;
     outline: none;
@@ -85,6 +89,9 @@ export const ChipsContainer = styled.div`
 `
 
 export const Chip = styled.button<{ $active?: boolean; }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: ${({ theme, $active }) =>
     $active ? theme.colors.primary : theme.colors.bgCard};
   color: ${({ theme, $active }) =>
@@ -498,8 +505,11 @@ export const ActionButton = styled.button<{ $isJoined?: boolean; }>`
   }
 `
 
+/* Os dois botões não cabem lado a lado num celular de 390px: quebram para a
+   linha de baixo em vez de sair da tela e arrastar a página para o lado (#492). */
 export const SportBtnsRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing[3]};
 `
 
