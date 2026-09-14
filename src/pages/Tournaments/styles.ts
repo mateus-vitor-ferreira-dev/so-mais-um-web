@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { cartaoClicavel } from '../../styles/cartaoClicavel'
 import type { TournamentStatus } from '../../types/api'
 
 export const Container = styled.div`
@@ -98,13 +99,7 @@ export const TournamentCard = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
   padding: 20px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
-  transition: box-shadow 0.15s, transform 0.15s;
-  cursor: pointer;
-
-  &:hover {
-    box-shadow: ${({ theme }) => theme.shadows.md};
-    transform: translateY(-2px);
-  }
+  ${cartaoClicavel}
 `
 
 export const CardTop = styled.div`
@@ -381,13 +376,6 @@ export const SubmitButton = styled.button`
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 `
 
-
-export const LoadingState = styled.div`
-  text-align: center;
-  padding: 60px 20px;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-`
 
 export const FormatHint = styled.div`
   margin-top: 6px;

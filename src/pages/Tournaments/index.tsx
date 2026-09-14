@@ -29,12 +29,14 @@ import {
   StatusBadge, CardMeta, MetaRow, ViewBracketBtn, BracketSection,
   BracketTitle, Modal, ModalBox, ModalHeader, ModalTitle, CloseBtn, Form,
   Field, Label, Input, Select, ErrorMsg, ModalActions, CancelButton,
-  SubmitButton, LoadingState, FormatHint, FormatPreview, CategorySection,
+  SubmitButton, FormatHint, FormatPreview, CategorySection,
   CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
 } from './styles'
 import { formatarReais } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
 import { dataCurta } from '../../utils/datas'
+import { AlvoDoCartao } from '../../styles/cartaoClicavel'
+import { Skeleton, SkeletonCard } from '../../components/Skeleton'
 
 const STATUS_FILTERS = [
   { label: 'Todos',           value: '' },
@@ -428,7 +430,7 @@ export default function Tournaments() {
           <div>
             <Title>Torneios</Title>
             <Subtitle>
-              {loading ? 'Carregando...' : `${tournaments.length} torneio${tournaments.length !== 1 ? 's' : ''} encontrado${tournaments.length !== 1 ? 's' : ''}`}
+              {loading ? <Skeleton width={140} height={14} /> : `${tournaments.length} torneio${tournaments.length !== 1 ? 's' : ''} encontrado${tournaments.length !== 1 ? 's' : ''}`}
             </Subtitle>
           </div>
           {canCreate && (
@@ -454,7 +456,7 @@ export default function Tournaments() {
 
         {/* ── Lista de torneios ── */}
         {loading ? (
-          <LoadingState>Carregando torneios...</LoadingState>
+          <Grid aria-busy="true" aria-label="Carregando torneios"><SkeletonCard count={6} /></Grid>
         ) : tournaments.length === 0 ? (
           <EmptyState icone="🏆">Nenhum torneio encontrado.</EmptyState>
         ) : (
@@ -477,7 +479,7 @@ export default function Tournaments() {
                       <SportIcon role="img" title={modalidade.label} aria-label={modalidade.label}>
                         <SportGlyph icon={modalidade.icon} fallback={modalidade.iconFallback} />
                       </SportIcon>
-                      {t.name}
+                      <AlvoDoCartao>{t.name}</AlvoDoCartao>
                     </TournamentName>
                     <StatusBadge $status={t.status}>
                       {STATUS_LABELS[t.status] ?? t.status}

@@ -1,10 +1,11 @@
-import type { ReactNode } from 'react'
+import { useId, type ReactNode } from 'react'
 import { MapPin } from 'lucide-react'
 import { getSportMeta } from '../../hooks/useSports'
 import SportIcon from '../SportIcon'
 import { diaDaSemanaEMes, hora } from '../../utils/datas'
 import { valorPorPessoa } from '../../utils/formatCurrency'
 import { contagem } from '../../utils/plural'
+import { AlvoDoCartao } from '../../styles/cartaoClicavel'
 import type { CourtType, Partida } from '../../types/api'
 import {
   Barra, Cartao, Cabecalho, Esporte, Extra, IconeDoEsporte, Local, LinkDoMapa, NomeDoEsporte, Preco, Quando,
@@ -60,10 +61,12 @@ export default function CartaoDePartida({ partida, aoAbrir, selos, extra, rodape
   const lotada = vagas === 0
   const progresso = partida.maxPlayers > 0 ? Math.min((confirmados / partida.maxPlayers) * 100, 100) : 0
   const bairro = [partida.court?.place?.neighborhood, partida.court?.place?.city].filter(Boolean).join(', ')
+  const idDoQuando = useId()
 
   return (
     // Clicável como os cartões que substituiu, e sem `role="link"`: o cartão tem
     // botão e link dentro, e elemento interativo dentro de link é ARIA inválido.
+    // O teclado chega pelo nome do esporte, que é um botão (web#493).
     <Cartao onClick={aoAbrir}>
       <Cabecalho>
         <Esporte>
@@ -71,8 +74,10 @@ export default function CartaoDePartida({ partida, aoAbrir, selos, extra, rodape
             <SportIcon icon={esporte.icon} fallback={esporte.iconFallback} />
           </IconeDoEsporte>
           <div>
-            <NomeDoEsporte>{esporte.label}</NomeDoEsporte>
-            <Quando>
+            <NomeDoEsporte>
+              <AlvoDoCartao aria-describedby={idDoQuando}>{esporte.label}</AlvoDoCartao>
+            </NomeDoEsporte>
+            <Quando id={idDoQuando}>
               {diaDaSemanaEMes(partida.date)} · <strong>{hora(partida.date)}</strong>
             </Quando>
           </div>

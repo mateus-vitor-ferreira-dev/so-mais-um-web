@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { hoverDeCartao } from '../../styles/cartaoClicavel'
 
 export const Container = styled.div`
   padding: ${({ theme }) => theme.spacing[6]};
@@ -149,6 +150,7 @@ export const PartidaCard = styled.li`
   background: ${({ theme }) => theme.colors.bgCard};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
+  ${hoverDeCartao}
 
   a {
     display: flex;

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { hoverDeCartao } from '../../styles/cartaoClicavel'
 
 export const Container = styled.div`
   padding: ${({ theme }) => theme.spacing[6]};
@@ -65,9 +66,7 @@ export const TeamCard = styled.li`
   background: ${({ theme }) => theme.colors.bgCard};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.xl};
-  transition: border-color 0.2s, transform 0.2s;
-
-  &:hover { border-color: ${({ theme }) => theme.colors.primary}; }
+  ${hoverDeCartao}
 
   /* O cartão inteiro é o link. Um <a> em volta do conteúdo dá alvo grande no
      dedo e uma parada só no Tab — em vez de o teclado percorrer nome, cidade e

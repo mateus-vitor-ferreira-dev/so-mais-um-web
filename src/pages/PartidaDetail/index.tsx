@@ -27,7 +27,7 @@ import {
   ParticipantsSection, SectionTitle,
   ParticipantList, ParticipantItem, Avatar, ParticipantLink, ParticipantName, ParticipantNickname,
   ParticipantsCount,
-  MapLink, LoadingBox,
+  MapLink,
   LinkInvalidoBox, LinkInvalidoTitulo, LinkInvalidoTexto,
   LeaveBtn, Modal, ModalOverlay, ModalBox, ModalTitle,
   ReasonInput, ReasonCounter, ModalActions, ModalCancelBtn, ModalConfirmBtn,
@@ -35,6 +35,7 @@ import {
 import { valorPorPessoa } from '../../utils/formatCurrency'
 import { rotuloDoStatus } from '../../constants/statusDaPartida'
 import { dataCompletaPorExtenso, hora } from '../../utils/datas'
+import { Skeleton } from '../../components/Skeleton'
 
 /**
  * Os três jeitos de um link de convite parar de valer (#229).
@@ -161,7 +162,29 @@ export default function PartidaDetail() {
     return () => { cancelado = true }
   }, [event, isAuthenticated, convite])
 
-  if (loading) return <><LoadingBox>Carregando...</LoadingBox></>
+  // A forma do cartão, e não um "Carregando..." no meio da tela (web#493).
+  if (loading) {
+    return (
+      <Container aria-busy="true" aria-label="Carregando partida">
+        <Skeleton width={64} height={16} style={{ marginBottom: 20 }} />
+        <Card>
+          <CardHeader>
+            <Skeleton width={48} height={48} radius={12} />
+            <div style={{ flex: 1 }}>
+              <Skeleton width="55%" height={22} style={{ marginBottom: 8 }} />
+              <Skeleton width="35%" height={14} />
+            </div>
+          </CardHeader>
+          <Body>
+            <Skeleton width="70%" height={14} style={{ marginBottom: 12 }} />
+            <Skeleton width="50%" height={14} style={{ marginBottom: 24 }} />
+            <Skeleton height={8} radius={4} style={{ marginBottom: 24 }} />
+            <Skeleton height={44} radius={10} />
+          </Body>
+        </Card>
+      </Container>
+    )
+  }
 
   /*
    * O link falhou — e a tela diz qual dos três motivos foi.

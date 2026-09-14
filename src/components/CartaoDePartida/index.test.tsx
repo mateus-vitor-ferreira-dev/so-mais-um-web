@@ -56,4 +56,18 @@ describe('CartaoDePartida (web#492)', () => {
     await user.click(screen.getByText('Arena Sul'))
     expect(aoAbrir).toHaveBeenCalledTimes(1)
   })
+
+  // O cartão abria só com o mouse: quem navega por Tab passava direto (web#493).
+  it('o teclado chega pelo nome do esporte, e o Enter abre uma vez só', async () => {
+    const aoAbrir = vi.fn()
+    const { user } = renderWithProviders(<CartaoDePartida partida={PARTIDA} aoAbrir={aoAbrir} />)
+
+    await user.tab()
+    const alvo = screen.getByRole('button', { name: 'Beach Tennis' })
+    expect(alvo).toHaveFocus()
+    expect(alvo).toHaveAccessibleDescription(new RegExp(hora(PARTIDA.date)))
+
+    await user.keyboard('{Enter}')
+    expect(aoAbrir).toHaveBeenCalledTimes(1)
+  })
 })
