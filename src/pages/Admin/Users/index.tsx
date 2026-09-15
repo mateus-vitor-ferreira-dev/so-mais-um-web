@@ -5,12 +5,13 @@ import { useState, useEffect, useCallback } from 'react'
 import { toast } from 'sonner'
 import { Mail } from 'lucide-react'
 import StatCard from '../../../components/StatCard'
+import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
 import RoleBadge from '../../../components/RoleBadge'
 import * as adminService from '../../../services/admin'
 import type { AdminUser, InviteResult } from '../../../services/admin'
 import { mensagemDeErro } from '../../../utils/apiError'
 import {
-  StatsRow, FilterBar, SearchInput, RoleFilters, RoleBtn, Table, Th, Tr, Td,
+  FilterBar, SearchInput, RoleFilters, RoleBtn, Table, Th, Tr, Td,
   AvatarCell, UserMeta, UserEmail, ActionBtn, ErrorMsg, ModalWrap,
   ModalOverlay, ModalBox, ModalTitle, ModalText, ModalInput, ModalActions,
   ModalCancelBtn, ModalConfirmBtn,
@@ -108,12 +109,12 @@ export default function AdminUsers() {
 
   return (
     <>
-      <StatsRow>
+      <GradeDeNumeros>
         <StatCard label="Total de Usuários" value={counts.total}   accent="#3b82f6" />
         <StatCard label="Owners"            value={counts.owners}  accent="#22c55e" />
         <StatCard label="Admins"            value={counts.admins}  accent="#f59e0b" />
         <StatCard label="Usuários Comuns"   value={counts.regular} accent="#6b7280" />
-      </StatsRow>
+      </GradeDeNumeros>
 
       <FilterBar>
         <SearchInput

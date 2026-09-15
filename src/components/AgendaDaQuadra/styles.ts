@@ -4,10 +4,15 @@ export const Bloco = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  /* Item de grade no painel do dono: sem isto, o \`min-width: auto\` o faz
+     crescer até a largura da faixa do tempo (702px numa tela de 390), e a
+     faixa passa da borda em vez de rolar por dentro (web#511). */
+  min-width: 0;
   padding: 12px 14px;
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.bgPage};
+  --fundo-da-rolagem: ${({ theme }) => theme.colors.bgPage};
 `
 
 export const Titulo = styled.p`

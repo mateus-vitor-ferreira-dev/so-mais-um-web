@@ -1,12 +1,5 @@
 import styled from 'styled-components'
 
-export const StatsRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-`
-
 export const Tabs = styled.div`
   display: flex;
   gap: 8px;

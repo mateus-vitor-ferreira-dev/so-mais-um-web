@@ -7,6 +7,7 @@ import * as yup from 'yup'
 import { toast } from 'sonner'
 import { toastErroDeApi } from '../../../utils/toastErro'
 import StatCard from '../../../components/StatCard'
+import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
 import SubscriptionGate from '../../../components/SubscriptionGate'
 import { useAuth } from '../../../contexts/AuthContext'
 import { useSubscription } from '../../../hooks/useSubscription'
@@ -14,7 +15,7 @@ import * as placesService from '../../../services/places'
 import type { PlaceInput } from '../../../services/places'
 import type { Place } from '../../../types/api'
 import {
-  StatsRow, PlaceGrid, PlaceCard, PlaceCardHeader, PlaceInfo, PlaceName,
+  PlaceGrid, PlaceCard, PlaceCardHeader, PlaceInfo, PlaceName,
   PlaceMeta, StatusBadge, PlaceDesc, PlaceActions, ActionBtn, ErrorMsg,
   Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle, Form, FormGroup,
   Label, Input, FieldError, ModalActions, CancelBtn, SubmitBtn,
@@ -133,12 +134,12 @@ export default function OwnerPlaces() {
   return (
     <>
       <SubscriptionGate isActive={isActive} loading={subLoading} sub={sub}>
-      <StatsRow>
+      <GradeDeNumeros>
         <StatCard label="Estabelecimentos" value={places.length} accent="#f59e0b" />
         <StatCard label="Quadras"          value={totalCourts}   accent="#22c55e" />
         <StatCard label="Partidas Ativas"  value={totalEvents}   accent="#3b82f6" />
         <StatCard label="Avaliação Média"  value={avgRating ? `${avgRating} ⭐` : '—'} accent="#f59e0b" />
-      </StatsRow>
+      </GradeDeNumeros>
 
       {error && <ErrorMsg>{error}</ErrorMsg>}
 

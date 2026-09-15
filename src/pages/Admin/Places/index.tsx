@@ -2,12 +2,13 @@ import { useState, useEffect, useCallback } from 'react'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import { toast } from 'sonner'
 import StatCard from '../../../components/StatCard'
+import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
 import * as placesService from '../../../services/places'
 import * as adminService from '../../../services/admin'
 import type { Place } from '../../../types/api'
 import type { AdminUser } from '../../../services/admin'
 import {
-  StatsRow, Table, Th, Tr, Td, OwnerCell, NoOwner, StatusBadge, ActionGroup,
+  Table, Th, Tr, Td, OwnerCell, NoOwner, StatusBadge, ActionGroup,
   ActionBtn, ErrorMsg, Modal, ModalOverlay, ModalBox, ModalTitle,
   ModalActions, CancelBtn, ConfirmBtn, Select, OwnerOption, PromoteLink,
   PromoteBox, PromoteBtn,
@@ -134,12 +135,12 @@ export default function AdminPlaces() {
 
   return (
     <>
-      <StatsRow>
+      <GradeDeNumeros>
         <StatCard label="Total"           value={counts.total}   accent="#3b82f6" />
         <StatCard label="Abertos"         value={counts.open}    accent="#22c55e" />
         <StatCard label="Fechados"        value={counts.closed}  accent="#6b7280" />
         <StatCard label="Sem Proprietário" value={counts.noOwner} accent="#f59e0b" />
-      </StatsRow>
+      </GradeDeNumeros>
 
       {error && <ErrorMsg>{error}</ErrorMsg>}
 

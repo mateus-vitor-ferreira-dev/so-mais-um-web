@@ -717,7 +717,7 @@ function LinhaDaAssinatura({ assinatura, aoRenovar, aoEncerrar }: PropsDaLinha) 
 
   return (
     <tr>
-      <td className="dono">
+      <td className="principal">
         <Nome>{assinatura.owner.name}</Nome>
         <Detalhe title={assinatura.owner.email}>{assinatura.owner.email}</Detalhe>
       </td>
@@ -827,7 +827,7 @@ interface PropsDoConvite {
 function LinhaDoConvite({ convite, aoCopiar }: PropsDoConvite) {
   return (
     <tr>
-      <td className="dono">
+      <td className="principal">
         <Nome>{convite.email}</Nome>
         <Detalhe>sem conta ainda</Detalhe>
       </td>

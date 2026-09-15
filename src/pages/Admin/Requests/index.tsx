@@ -2,11 +2,12 @@ import { useState, useEffect, useCallback } from 'react'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import { toast } from 'sonner'
 import StatCard from '../../../components/StatCard'
+import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
 import * as placeRequestsService from '../../../services/placeRequests'
 import { useInvalidarSolicitacoesPendentes } from '../../../hooks/useSolicitacoesPendentes'
 import type { PlaceRequest, PlaceRequestStatus } from '../../../types/api'
 import {
-  StatsRow, Tabs, Tab, RequestList, RequestCard, RequestAccent,
+  Tabs, Tab, RequestList, RequestCard, RequestAccent,
   RequestHeader, RequestTitle, RequestMeta, RequestFooter, RequestSentAt,
   StatusBadge, ActionGroup, ApproveBtn, RejectBtn, ErrorMsg, RejectModal,
   ModalOverlay, ModalBox, ModalTitle, ReasonInput, ModalActions, CancelBtn,
@@ -94,12 +95,12 @@ export default function AdminRequests() {
 
   return (
     <>
-      <StatsRow>
+      <GradeDeNumeros>
         <StatCard label="Total"      value={counts.total}    accent="#3b82f6" />
         <StatCard label="Pendentes"  value={counts.pending}  accent="#f59e0b" />
         <StatCard label="Aprovadas"  value={counts.approved} accent="#22c55e" />
         <StatCard label="Rejeitadas" value={counts.rejected} accent="#ef4444" />
-      </StatsRow>
+      </GradeDeNumeros>
 
       <Tabs>
         {STATUS_TABS.map(({ key, label }) => (
