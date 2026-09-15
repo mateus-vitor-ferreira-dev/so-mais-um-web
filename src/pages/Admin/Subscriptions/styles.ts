@@ -15,10 +15,9 @@ const TONS = {
   cortesia: css`background: ${({ theme }) => theme.colors.accentLight}; color: ${({ theme }) => theme.colors.accent};`,
 }
 
-export const Topo = styled.div`
-  display: flex; justify-content: space-between; align-items: start; gap: 16px; margin-bottom: 16px;
-  @media (max-width: 640px) { flex-direction: column; align-items: stretch; }
-`
+/** A largura em que a tabela vira cartão. */
+const CELULAR = '760px'
+
 /**
  * O de conceder cortesia, ao lado do de registrar (web#456).
  *
@@ -34,10 +33,6 @@ export const BotaoConceder = styled.button`
   font-weight: ${({ theme }) => theme.fontWeights.bold}; font-size: ${({ theme }) => theme.fontSizes.sm};
   &:hover { background: ${({ theme }) => theme.colors.accentLight}; }
 `
-export const BotoesDoTopo = styled.div`
-  display: flex; gap: 8px; flex-shrink: 0;
-  @media (max-width: 640px) { flex-direction: column; }
-`
 export const BotaoRegistrar = styled.button`
   display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
   border: 0; border-radius: ${({ theme }) => theme.radii.md}; padding: 10px 16px; cursor: pointer;
@@ -46,55 +41,131 @@ export const BotaoRegistrar = styled.button`
   &:hover { background: ${({ theme }) => theme.colors.primaryHover}; }
 `
 export const Aviso = styled.p`
-  margin: 0; padding: 12px 14px; border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.infoLight}; color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
-`
-export const Atencao = styled.div`
-  margin: 16px 0; padding: 12px 14px; border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.warningLight};
-  border: 1px solid ${({ theme }) => theme.colors.warningBorder};
-  color: ${({ theme }) => theme.colors.warningText}; font-size: ${({ theme }) => theme.fontSizes.sm};
-  display: flex; gap: 10px; align-items: start; line-height: 1.5;
-`
-export const Lista = styled.ul`list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 10px;`
-export const Linha = styled.li`
-  background: ${({ theme }) => theme.colors.bgCard};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.lg}; padding: 16px;
-  display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  @media (max-width: 760px) { flex-direction: column; align-items: stretch; }
-`
-export const Dados = styled.div`min-width: 0;`
-export const Nome = styled.strong`display: block; color: ${({ theme }) => theme.colors.textPrimary};`
-export const Detalhe = styled.span`
-  display: block; margin-top: 3px; font-size: ${({ theme }) => theme.fontSizes.sm};
+  margin: 0 0 16px; font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
   color: ${({ theme }) => theme.colors.textSecondary};
 `
-export const Selos = styled.div`display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;`
+
+/** Os quatro números do topo: dois por linha no celular, quatro no computador. */
+export const Numeros = styled.div`
+  display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 20px;
+  @media (max-width: 900px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+`
+
+/** No celular, os filtros rolam de lado em vez de empilhar três linhas acima da lista. */
+export const Filtros = styled.div`
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+  @media (max-width: ${CELULAR}) {
+    flex-wrap: nowrap; overflow-x: auto; margin-inline: -16px; padding-inline: 16px; scrollbar-width: none;
+    & > button { flex-shrink: 0; }
+  }
+`
+export const Filtro = styled.button<{ $ativo: boolean }>`
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: ${({ theme }) => theme.radii.full}; padding: 7px 14px; cursor: pointer;
+  font-size: ${({ theme }) => theme.fontSizes.sm}; font-weight: ${({ theme }) => theme.fontWeights.semibold};
+  border: 1px solid ${({ $ativo, theme }) => ($ativo ? theme.colors.primary : theme.colors.border)};
+  background: ${({ $ativo, theme }) => ($ativo ? theme.colors.primaryLight : theme.colors.bgCard)};
+  color: ${({ $ativo, theme }) => ($ativo ? theme.colors.primary : theme.colors.textSecondary)};
+`
+export const Contagem = styled.span<{ $alerta?: boolean }>`
+  min-width: 20px; padding: 0 6px; border-radius: ${({ theme }) => theme.radii.full};
+  font-size: ${({ theme }) => theme.fontSizes.xs}; line-height: 20px; text-align: center;
+  background: ${({ $alerta, theme }) => ($alerta ? theme.colors.warningLight : theme.colors.borderLight)};
+  color: ${({ $alerta, theme }) => ($alerta ? theme.colors.warningText : theme.colors.textMuted)};
+`
+
+/** A explicação de um filtro, dita uma vez em cima da lista. */
+export const NotaDoFiltro = styled.p<{ $tom?: 'alerta' }>`
+  margin: 0 0 12px; padding: 10px 14px; border-radius: ${({ theme }) => theme.radii.md};
+  font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
+  ${({ $tom, theme }) =>
+    $tom === 'alerta'
+      ? css`background: ${theme.colors.warningLight}; color: ${theme.colors.warningText}; border: 1px solid ${theme.colors.warningBorder};`
+      : css`background: ${theme.colors.infoLight}; color: ${theme.colors.textSecondary};`}
+`
+
+/**
+ * A tabela, que no celular vira uma pilha de cartões.
+ *
+ * Uma marcação só, e não duas árvores escondidas por CSS: duas fariam o leitor
+ * de tela e os testes acharem cada assinatura duas vezes. No celular o
+ * cabeçalho some e cada célula leva o próprio rótulo, pelo `data-rotulo`.
+ */
+export const Tabela = styled.table`
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: ${({ theme }) => theme.colors.bgCard};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.lg}; overflow: hidden;
+
+  th {
+    text-align: left; padding: 10px; white-space: nowrap;
+    font-size: ${({ theme }) => theme.fontSizes.xs}; font-weight: ${({ theme }) => theme.fontWeights.semibold};
+    text-transform: uppercase; letter-spacing: .04em; color: ${({ theme }) => theme.colors.textMuted};
+    background: ${({ theme }) => theme.colors.bgPage};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  }
+  td {
+    padding: 12px 10px; vertical-align: top; font-size: ${({ theme }) => theme.fontSizes.sm};
+    color: ${({ theme }) => theme.colors.textSecondary};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  th:first-child, td:first-child { padding-left: 16px; }
+  th:last-child, td:last-child { padding-right: 16px; }
+  /* O e-mail numa linha só: com o \`anywhere\` do detalhe, a coluna do dono
+     encolhia até quebrar o endereço no meio num notebook de 1280px. O limite
+     e as reticências são para o e-mail muito comprido não empurrar a tabela
+     para fora da tela — o endereço inteiro fica no \`title\`. */
+  td.dono span {
+    max-width: 180px; overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  @media (max-width: ${CELULAR}) {
+    background: transparent; border: 0; border-radius: 0;
+    thead { display: none; }
+    tbody { display: grid; gap: 10px; }
+    tr {
+      display: grid; gap: 8px; padding: 14px;
+      background: ${({ theme }) => theme.colors.bgCard};
+      border: 1px solid ${({ theme }) => theme.colors.border};
+      border-radius: ${({ theme }) => theme.radii.lg};
+    }
+    td, td:first-child, td:last-child { display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 8px; padding: 0; border: 0; }
+    td[data-rotulo]::before {
+      content: attr(data-rotulo); color: ${({ theme }) => theme.colors.textMuted};
+      font-size: ${({ theme }) => theme.fontSizes.xs}; text-transform: uppercase; letter-spacing: .04em;
+      padding-top: 2px;
+    }
+    td.dono { display: block; }
+    td.dono span { max-width: none; overflow-wrap: anywhere; white-space: normal; }
+    td.acoes { display: block; }
+  }
+`
+export const Nome = styled.strong`display: block; color: ${({ theme }) => theme.colors.textPrimary};`
+export const Detalhe = styled.span`
+  display: block; margin-top: 2px; font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.textMuted}; overflow-wrap: anywhere;
+`
+/**
+ * O valor e a data numa linha só. Num notebook de 1280px a tabela aperta, e
+ * "R$ 189,90/" numa linha com "mês" na outra se lê como dois números.
+ */
+export const SemQuebra = styled.span`white-space: nowrap;`
 export const Selo = styled.span<{ $tom: TomDeSelo }>`
-  padding: 3px 10px; border-radius: ${({ theme }) => theme.radii.full};
+  display: inline-block; padding: 3px 10px; border-radius: ${({ theme }) => theme.radii.full}; white-space: nowrap;
   font-size: ${({ theme }) => theme.fontSizes.xs}; font-weight: ${({ theme }) => theme.fontWeights.bold};
   ${({ $tom }) => TONS[$tom]}
 `
-export const Acoes = styled.div`display: flex; gap: 8px; align-items: center; flex-shrink: 0;`
+export const Acoes = styled.div`
+  display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;
+  @media (max-width: ${CELULAR}) { justify-content: flex-start; margin-top: 4px; }
+`
 export const Botao = styled.button<{ $perigo?: boolean }>`
-  border-radius: ${({ theme }) => theme.radii.sm}; padding: 8px 14px; cursor: pointer; background: transparent;
+  border-radius: ${({ theme }) => theme.radii.sm}; padding: 6px 12px; cursor: pointer; background: transparent;
   font-weight: ${({ theme }) => theme.fontWeights.bold}; font-size: ${({ theme }) => theme.fontSizes.sm};
   border: 1px solid ${({ $perigo, theme }) => ($perigo ? theme.colors.error : theme.colors.primary)};
   color: ${({ $perigo, theme }) => ($perigo ? theme.colors.error : theme.colors.primary)};
   &:disabled { opacity: .55; cursor: wait; }
-`
-/**
- * O motivo de a assinatura da Stripe não ter botão.
- *
- * Texto, e não um botão desabilitado: desabilitado sem explicação faz quem
- * opera achar que a tela está quebrada e ir procurar o defeito.
- */
-export const Travado = styled.p`
-  margin: 0; max-width: 320px; text-align: right;
-  font-size: ${({ theme }) => theme.fontSizes.xs}; color: ${({ theme }) => theme.colors.textMuted};
-  @media (max-width: 760px) { text-align: left; }
 `
 export const Estado = styled.p`color: ${({ theme }) => theme.colors.textSecondary}; margin: 20px 0 0;`
 
@@ -103,7 +174,7 @@ export const ModalFundo = styled.div`
   padding: 16px; background: ${({ theme }) => theme.colors.bgOverlay};
 `
 export const ModalCaixa = styled.div`
-  width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto;
+  box-sizing: border-box; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto;
   background: ${({ theme }) => theme.colors.bgCard}; color: ${({ theme }) => theme.colors.textPrimary};
   border-radius: ${({ theme }) => theme.radii.lg}; padding: 22px;
   box-shadow: ${({ theme }) => theme.shadows.lg};
@@ -113,19 +184,65 @@ export const ModalTexto = styled.p`
   margin: 0 0 16px; line-height: 1.5;
   font-size: ${({ theme }) => theme.fontSizes.sm}; color: ${({ theme }) => theme.colors.textSecondary};
 `
-export const Grupo = styled.div`margin-bottom: 14px;`
+export const Grupo = styled.div`margin-bottom: 14px; min-width: 0;`
 export const Campo = styled.label`
-  display: grid; gap: 5px;
+  display: grid; gap: 5px; min-width: 0;
   font-size: ${({ theme }) => theme.fontSizes.sm}; font-weight: ${({ theme }) => theme.fontWeights.bold};
 `
+/** O rótulo de um campo que não é `<label>`: a busca de dono se rotula sozinha. */
+export const RotuloDeCampo = styled.span`
+  display: block; margin-bottom: 5px;
+  font-size: ${({ theme }) => theme.fontSizes.sm}; font-weight: ${({ theme }) => theme.fontWeights.bold};
+`
+/**
+ * Todo campo na largura da caixa (web#502).
+ *
+ * Sem o `width` e o `box-sizing`, o `<select>` tomava a largura da opção mais
+ * longa — "Nome — e-mail" do dono mais comprido — e passava da borda do modal.
+ */
 const campo = css`
+  box-sizing: border-box; width: 100%; min-width: 0;
   border: 1px solid ${({ theme }) => theme.colors.border}; border-radius: ${({ theme }) => theme.radii.sm};
   padding: 10px; font-size: ${({ theme }) => theme.fontSizes.sm};
   background: ${({ theme }) => theme.colors.bgInput}; color: ${({ theme }) => theme.colors.textPrimary};
-  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  font-weight: ${({ theme }) => theme.fontWeights.regular}; font-family: inherit;
 `
 export const Selecao = styled.select`${campo}`
 export const Data = styled.input`${campo}`
+export const Busca = styled.input`${campo}`
+
+export const Opcoes = styled.ul`
+  list-style: none; margin: 4px 0 0; padding: 4px; max-height: 240px; overflow-y: auto;
+  border: 1px solid ${({ theme }) => theme.colors.border}; border-radius: ${({ theme }) => theme.radii.sm};
+  background: ${({ theme }) => theme.colors.bgCard};
+`
+export const Opcao = styled.li<{ $destaque: boolean }>`
+  padding: 8px 10px; border-radius: ${({ theme }) => theme.radii.sm}; cursor: pointer;
+  font-size: ${({ theme }) => theme.fontSizes.sm}; color: ${({ theme }) => theme.colors.textPrimary};
+  background: ${({ $destaque, theme }) => ($destaque ? theme.colors.primaryLight : 'transparent')};
+`
+export const OpcaoEmail = styled.span`
+  display: block; font-size: ${({ theme }) => theme.fontSizes.xs}; color: ${({ theme }) => theme.colors.textMuted};
+  overflow-wrap: anywhere;
+`
+export const SemOpcao = styled.p<{ $erro?: boolean }>`
+  margin: 6px 4px; font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ $erro, theme }) => ($erro ? theme.colors.error : theme.colors.textMuted)};
+`
+export const Escolhido = styled.div`
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0;
+  padding: 8px 10px; border-radius: ${({ theme }) => theme.radii.sm};
+  border: 1px solid ${({ theme }) => theme.colors.primary}; background: ${({ theme }) => theme.colors.primarySubtle};
+`
+export const EscolhidoTexto = styled.div`
+  min-width: 0; font-size: ${({ theme }) => theme.fontSizes.sm}; color: ${({ theme }) => theme.colors.textPrimary};
+  span { display: block; font-size: ${({ theme }) => theme.fontSizes.xs}; color: ${({ theme }) => theme.colors.textMuted}; overflow-wrap: anywhere; }
+`
+export const Trocar = styled.button`
+  flex-shrink: 0; border: 0; background: transparent; cursor: pointer; padding: 4px 6px;
+  color: ${({ theme }) => theme.colors.primary}; font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+`
 /**
  * Ajuda de campo. Fora do `<label>` de propósito: dentro dele o parágrafo
  * entraria no nome acessível do campo, e o leitor de tela anunciaria a

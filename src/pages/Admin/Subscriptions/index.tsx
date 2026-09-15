@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
-import type { FormEvent } from 'react'
+import type { FormEvent, ReactNode } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useTheme } from 'styled-components'
 import { toast } from 'sonner'
-import { AlertTriangle, Gift, Plus } from 'lucide-react'
-import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
+import { Gift, Plus } from 'lucide-react'
+import { PageActions, usePageHeader } from '../../../components/DashboardLayout/pageHeader'
+import StatCard from '../../../components/StatCard'
 import { assinaturasDoAdmin } from '../../../services/assinaturasDoAdmin'
 import { plansService } from '../../../services/plansService'
 import * as adminService from '../../../services/admin'
@@ -11,25 +13,17 @@ import { chaves } from '../../../lib/queryClient'
 import { ehCortesiaJaConcedida, mensagemDeErro } from '../../../utils/apiError'
 import type { AssinaturaDoAdmin } from '../../../types/api'
 import {
-  Acoes, Ajuda, Atencao, Aviso, Botao, BotaoConceder, BotaoRegistrar, BotoesDoTopo, Campo,
-  Cancelar, Confirmar, Dados, Data, Detalhe, Estado, Grupo, Linha, Lista, ModalAcoes, ModalCaixa,
-  ModalFundo, ModalTexto, ModalTitulo, Nome, Selecao, Selo, Selos, Topo, Travado,
+  Acoes, Ajuda, Aviso, Botao, BotaoConceder, BotaoRegistrar, Campo, Cancelar, Confirmar, Contagem,
+  Data, Detalhe, Estado, Filtro, Filtros, Grupo, ModalAcoes, ModalCaixa, ModalFundo, ModalTexto,
+  ModalTitulo, Nome, NotaDoFiltro, Numeros, RotuloDeCampo, Selecao, Selo, SemQuebra, Tabela,
 } from './styles'
+import BuscaDeDono from './BuscaDeDono'
+import { FILTROS, numeros, situacao, venceuPorData } from './situacao'
+import type { Filtro as IdDoFiltro } from './situacao'
 import { formatarPrecoCentavos } from '../../../utils/formatCurrency'
-import type { TomDeSelo } from './styles'
 import { dataCurta } from '../../../utils/datas'
 
 const DIA_MS = 24 * 60 * 60 * 1000
-
-/**
- * A janela em que uma assinatura manual já conta como problema.
- *
- * Espelha o `ASSINATURA_EXPIRANDO_DIAS` do `admin.service` da api, que é o que
- * alimenta o "Vencendo" da Visão Geral. Se um mudar, o outro tem que mudar
- * junto — dois números diferentes fariam o painel contar quatro e esta tela
- * apontar três.
- */
-const DIAS_DE_ALERTA = 7
 
 /** Um mês, que é o combinado do Pix. Só o padrão do campo: dá para trocar. */
 const VALIDADE_PADRAO_DIAS = 30
@@ -65,71 +59,11 @@ const proximaValidade = (validadeAtual: string | null) => {
   return paraCampoDeData(new Date(Math.max(fim, Date.now()) + VALIDADE_PADRAO_DIAS * DIA_MS))
 }
 
-const diasAte = (iso: string) => Math.ceil((new Date(iso).getTime() - Date.now()) / DIA_MS)
-
-/** Os status que vêm da Stripe, em português. */
-const STATUS_DA_STRIPE: Record<string, string> = {
-  active: 'Ativa',
-  trialing: 'Em teste',
-  past_due: 'Pagamento atrasado',
-  canceled: 'Cancelada',
-  inactive: 'Inativa',
-}
-
-/**
- * O selo de situação de uma assinatura.
- *
- * Quem decide se ela vale é a api, no campo `emDia` — a regra depende da origem
- * e vive no `subscriptions/vigencia.ts`. Aqui só se escolhe a palavra e a cor;
- * recalcular a regra deixaria duas cópias dela para discordarem no primeiro
- * ajuste.
- */
-/**
- * As origens em que quem manda é a data escrita à mão — espelha o
- * `VENCEM_POR_DATA` do `vigencia.ts` da api (#551).
- */
-const venceuPorData = (a: AssinaturaDoAdmin) => a.origem === 'MANUAL' || a.origem === 'CORTESIA'
-
-function situacao(assinatura: AssinaturaDoAdmin): { tom: TomDeSelo; rotulo: string } {
-  if (!venceuPorData(assinatura)) {
-    return {
-      tom: assinatura.emDia ? 'ok' : 'erro',
-      rotulo: STATUS_DA_STRIPE[assinatura.status] ?? assinatura.status,
-    }
-  }
-
-  if (assinatura.status === 'canceled') return { tom: 'neutro', rotulo: 'Encerrada' }
-  if (!assinatura.emDia) {
-    // "Teste acabado" e não "Vencida": ninguém deixou de pagar nada, o mês
-    // simplesmente terminou — e é o fim esperado de toda cortesia.
-    return { tom: 'erro', rotulo: assinatura.origem === 'CORTESIA' ? 'Teste acabado' : 'Vencida' }
-  }
-
-  const dias = assinatura.currentPeriodEnd ? diasAte(assinatura.currentPeriodEnd) : null
-  if (dias !== null && dias <= DIAS_DE_ALERTA) {
-    return { tom: 'alerta', rotulo: `Vence em ${dias} ${dias === 1 ? 'dia' : 'dias'}` }
-  }
-
-  return { tom: 'ok', rotulo: 'Em dia' }
-}
-
-/**
- * Precisa de alguém agora.
- *
- * A da Stripe fica de fora: ela tem webhook, e um cartão recusado lá vira
- * `past_due` sozinho e volta sozinho. A manual não tem ninguém — se a data
- * passar, o dono perde acesso e o primeiro a saber é ele.
- *
- * **A cortesia entra junto, e é a que mais precisa** (web#456): o fim do teste
- * é o único momento com data marcada em que a conversa de venda tem que
- * acontecer, e ele passa sozinho se ninguém abrir esta tela.
- *
- * Encerrada fica de fora de propósito: alguém já decidiu que aquela acabou.
- */
-const precisaDeAtencao = (a: AssinaturaDoAdmin) =>
-  venceuPorData(a) &&
-  a.status !== 'canceled' &&
-  (!a.emDia || (a.currentPeriodEnd !== null && diasAte(a.currentPeriodEnd) <= DIAS_DE_ALERTA))
+const ORIGEM = {
+  MANUAL: { tom: 'manual', rotulo: 'Manual (Pix)' },
+  STRIPE: { tom: 'stripe', rotulo: 'Stripe' },
+  CORTESIA: { tom: 'cortesia', rotulo: 'Cortesia' },
+} as const
 
 /**
  * As assinaturas do Só+1, e o registro do Pix que chegou por fora (web#445, api#537).
@@ -146,16 +80,26 @@ const precisaDeAtencao = (a: AssinaturaDoAdmin) =>
  *
  * Origem Stripe é espelho do que acontece lá. Editar daqui criaria divergência
  * que o próximo webhook desfaz sem avisar — e sem avisar é o problema, não a
- * divergência. Em vez de botão desabilitado, a linha diz o motivo por escrito:
+ * divergência. Em vez de botão desabilitado, a tela diz o motivo por escrito:
  * desabilitado mudo faz quem opera procurar defeito onde há decisão.
+ *
+ * ## Uma tabela com filtros (web#502)
+ *
+ * Era uma lista longa de cartões, com o que pede atenção misturado ao que está
+ * em dia e o motivo da Stripe repetido em cada linha. Agora os números ficam no
+ * topo, a lista abre no filtro do que precisa de atenção quando há alguma, e o
+ * motivo da Stripe é dito uma vez, em cima da lista.
  */
 export default function AdminSubscriptions() {
   const queryClient = useQueryClient()
+  const theme = useTheme()
   const [registrando, setRegistrando] = useState(false)
   const [concedendo, setConcedendo] = useState(false)
   const [renovando, setRenovando] = useState<AssinaturaDoAdmin | null>(null)
   const [encerrando, setEncerrando] = useState<AssinaturaDoAdmin | null>(null)
+  const [filtroEscolhido, setFiltroEscolhido] = useState<IdDoFiltro | null>(null)
   const [donoId, setDonoId] = useState('')
+  const [erroDoDono, setErroDoDono] = useState('')
   const [planoId, setPlanoId] = useState('')
   const [validoAte, setValidoAte] = useState(() => daquiADias(VALIDADE_PADRAO_DIAS))
 
@@ -195,6 +139,7 @@ export default function AdminSubscriptions() {
     setRegistrando(false)
     setConcedendo(false)
     setDonoId('')
+    setErroDoDono('')
     setPlanoId('')
     setValidoAte(daquiADias(VALIDADE_PADRAO_DIAS))
   }
@@ -253,10 +198,22 @@ export default function AdminSubscriptions() {
     onError: aoFalhar('Não foi possível encerrar a assinatura.'),
   })
 
-  const atencao = useMemo(
-    () => (assinaturas.data ?? []).filter(precisaDeAtencao),
-    [assinaturas.data],
+  const lista = useMemo(() => assinaturas.data ?? [], [assinaturas.data])
+  const total = useMemo(() => numeros(lista), [lista])
+
+  /**
+   * O filtro aberto: o que a pessoa escolheu, ou o de atenção quando há alguma.
+   *
+   * Derivado, e não um `useState` com valor inicial: a lista chega depois da
+   * primeira renderização, e um estado inicial decidido antes dela abriria
+   * sempre em "Todas".
+   */
+  const filtro = filtroEscolhido ?? (total.atencao > 0 ? 'atencao' : 'todas')
+  const visiveis = useMemo(
+    () => lista.filter(FILTROS.find((f) => f.id === filtro)!.aplica),
+    [lista, filtro],
   )
+  const temStripe = visiveis.some((a) => a.origem === 'STRIPE')
 
   /**
    * Os donos que ainda cabem numa assinatura nova.
@@ -267,23 +224,35 @@ export default function AdminSubscriptions() {
    * descobri-lo depois de preencher três campos não.
    */
   const donosDisponiveis = useMemo(() => {
-    const jaAssinam = new Set((assinaturas.data ?? []).map((a) => a.owner.email))
+    const jaAssinam = new Set(lista.map((a) => a.owner.email))
     return (donos.data ?? []).filter((dono) => !jaAssinam.has(dono.email))
-  }, [donos.data, assinaturas.data])
+  }, [donos.data, lista])
 
   const abrirRenovacao = (assinatura: AssinaturaDoAdmin) => {
     setValidoAte(proximaValidade(assinatura.currentPeriodEnd))
     setRenovando(assinatura)
   }
 
+  const escolherDono = (id: string) => {
+    setDonoId(id)
+    setErroDoDono('')
+  }
+
+  /** O dono não é campo nativo, então o `required` do navegador não o cobre. */
+  const donoFaltando = () => {
+    if (donoId) return false
+    setErroDoDono('Escolha um dono da lista.')
+    return true
+  }
+
   const enviarRegistro = (evento: FormEvent) => {
     evento.preventDefault()
-    registrar.mutate()
+    if (!donoFaltando()) registrar.mutate()
   }
 
   const enviarConcessao = (evento: FormEvent) => {
     evento.preventDefault()
-    conceder.mutate()
+    if (!donoFaltando()) conceder.mutate()
   }
 
   const enviarRenovacao = (evento: FormEvent) => {
@@ -291,153 +260,130 @@ export default function AdminSubscriptions() {
     if (renovando) renovar.mutate(renovando.id)
   }
 
+  const campoDoDono = (ajuda: ReactNode) => (
+    <Grupo>
+      <RotuloDeCampo aria-hidden>Dono</RotuloDeCampo>
+      <BuscaDeDono
+        donos={donosDisponiveis}
+        carregando={donos.isPending}
+        donoId={donoId}
+        aoEscolher={escolherDono}
+        erro={erroDoDono}
+      />
+      <Ajuda>{ajuda}</Ajuda>
+    </Grupo>
+  )
+
   return (
     <div>
-      <Topo>
-        <Aviso>
-          O Só+1 <strong>não cobra por aqui</strong>. Enquanto não há gateway, o pagamento é um
-          Pix combinado por fora; esta tela registra que ele chegou, e quem registrou. Ela não
-          gera cobrança, QR nem link.
-        </Aviso>
-        {/*
-          Dois botões, e não um formulário com seletor de origem: registrar
-          afirma que entrou dinheiro, conceder afirma o contrário, e um
-          `<select>` entre as duas coisas é como se erra por um clique.
-        */}
-        <BotoesDoTopo>
-          <BotaoConceder type="button" onClick={() => setConcedendo(true)}>
-            <Gift size={16} aria-hidden />
-            Conceder cortesia
-          </BotaoConceder>
-          <BotaoRegistrar type="button" onClick={() => setRegistrando(true)}>
-            <Plus size={16} aria-hidden />
-            Registrar assinatura
-          </BotaoRegistrar>
-        </BotoesDoTopo>
-      </Topo>
+      {/*
+        Dois botões, e não um formulário com seletor de origem: registrar
+        afirma que entrou dinheiro, conceder afirma o contrário, e um
+        `<select>` entre as duas coisas é como se erra por um clique.
+      */}
+      <PageActions>
+        <BotaoConceder type="button" onClick={() => setConcedendo(true)}>
+          <Gift size={16} aria-hidden />
+          Conceder cortesia
+        </BotaoConceder>
+        <BotaoRegistrar type="button" onClick={() => setRegistrando(true)}>
+          <Plus size={16} aria-hidden />
+          Registrar assinatura
+        </BotaoRegistrar>
+      </PageActions>
 
-      {atencao.length > 0 && (
-        <Atencao role="status">
-          <AlertTriangle size={18} aria-hidden />
-          <span>
-            <strong>
-              {atencao.length === 1
-                ? '1 assinatura precisa de atenção'
-                : `${atencao.length} assinaturas precisam de atenção`}
-            </strong>
-            {': '}
-            {atencao.map((a) => a.owner.name).join(', ')}. Nem a manual nem a cortesia se
-            renovam sozinhas — vencida, o dono perde o acesso sem ninguém ser avisado, e no
-            fim de uma cortesia é a conversa de venda que passa junto.
-          </span>
-        </Atencao>
-      )}
+      <Aviso>
+        O Só+1 <strong>não cobra por aqui</strong>: o pagamento é um Pix combinado por fora, e esta
+        tela registra que ele chegou. Ela não gera cobrança, QR nem link.
+      </Aviso>
 
       {assinaturas.isPending ? (
         <Estado>Carregando assinaturas…</Estado>
       ) : assinaturas.isError ? (
         <Estado role="alert">Não foi possível carregar as assinaturas.</Estado>
-      ) : assinaturas.data.length === 0 ? (
+      ) : lista.length === 0 ? (
         <Estado>
           Nenhuma assinatura ainda. Quando o primeiro Pix chegar, registre-o aqui.
         </Estado>
       ) : (
-        <Lista>
-          {assinaturas.data.map((assinatura) => {
-            const { tom, rotulo } = situacao(assinatura)
-            const manual = assinatura.origem === 'MANUAL'
-            const cortesia = assinatura.origem === 'CORTESIA'
-            return (
-              <Linha key={assinatura.id}>
-                <Dados>
-                  <Nome>{assinatura.owner.name}</Nome>
-                  <Detalhe>
-                    {assinatura.place?.name ?? 'Sem estabelecimento cadastrado'} ·{' '}
-                    {assinatura.owner.email}
-                  </Detalhe>
-                  <Detalhe>
-                    {assinatura.planName} ·{' '}
-                    {/*
-                      Três origens, três afirmações diferentes sobre dinheiro.
+        <>
+          <Numeros>
+            <StatCard label="Ativas" value={total.ativas} accent={theme.colors.primary} />
+            <StatCard label="Precisam de atenção" value={total.atencao} accent={theme.colors.warning} />
+            <StatCard label="Cortesias em curso" value={total.cortesias} accent={theme.colors.accent} />
+            <StatCard
+              label="Receita manual do mês"
+              value={formatarPrecoCentavos(total.receitaManualCentavos)}
+              accent={theme.colors.info}
+            />
+          </Numeros>
 
-                      Na cortesia o número não descreve dinheiro que entrou, e
-                      mostrá-lo do mesmo jeito faria a linha afirmar um
-                      recebimento que não houve. O plano continua dito porque é
-                      ele que decide o que o dono abre.
+          <Filtros role="tablist" aria-label="Filtrar assinaturas">
+            {FILTROS.map(({ id, rotulo, aplica }) => {
+              const quantas = lista.filter(aplica).length
+              return (
+                <Filtro
+                  key={id}
+                  type="button"
+                  role="tab"
+                  aria-selected={filtro === id}
+                  $ativo={filtro === id}
+                  onClick={() => setFiltroEscolhido(id)}
+                >
+                  {rotulo}
+                  <Contagem $alerta={id === 'atencao' && quantas > 0}>{quantas}</Contagem>
+                </Filtro>
+              )
+            })}
+          </Filtros>
 
-                      Nas outras duas o número é sempre o LÍQUIDO — o que a
-                      plataforma recebe —, e desde a api#539 ele deixou de ser o
-                      único preço: o cartão cobra o bruto, para o líquido chegar
-                      inteiro depois da taxa. Na manual não há ambiguidade, o Pix
-                      cai inteiro e os dois números são o mesmo. Na Stripe, este
-                      painel diria R$ 189,90 enquanto a fatura do dono diz
-                      R$ 199,90 — dois números do mesmo produto, sem explicação, e
-                      quem opera não teria como saber se está vendo arredondamento,
-                      plano antigo ou desconto.
+          <div role="tabpanel">
+            {filtro === 'atencao' && visiveis.length > 0 && (
+              <NotaDoFiltro $tom="alerta" role="status">
+                Nem a manual nem a cortesia se renovam sozinhas: vencida, o dono perde o acesso sem
+                ninguém ser avisado, e no fim de uma cortesia é a conversa de venda que passa junto.
+              </NotaDoFiltro>
+            )}
+            {temStripe && (
+              <NotaDoFiltro>
+                As da Stripe não têm ações: o que vale é o que está lá. Mexer aqui criaria uma
+                divergência que o próximo webhook desfaz sem avisar.
+              </NotaDoFiltro>
+            )}
 
-                      Rotular, não trocar: receita é o que entra, e é isso que se
-                      olha aqui. O bruto não aparece porque a taxa mora na api
-                      (`plans/precoNoCartao.ts`) — refazer a conta aqui é como os
-                      dois lados passam a discordar (#449).
-                    */}
-                    {cortesia
-                      ? 'cortesia, sem cobrança'
-                      : `R$ ${assinatura.monthlyValue}/mês${manual ? '' : ' recebidos (o cartão cobra mais, com a taxa)'}`}{' '}
-                    ·{' '}
-                    {assinatura.currentPeriodEnd
-                      ? `${cortesia ? 'teste até' : 'vale até'} ${dia(assinatura.currentPeriodEnd)}`
-                      : venceuPorData(assinatura)
-                        /* Nunca vazio nas que vencem por data: sem data não valem
-                           acesso nenhum, e um traço no lugar esconderia justamente o
-                           registro que ficou pela metade. */
-                        ? 'sem validade registrada — assim ela não vale acesso'
-                        : 'a Stripe não informou vencimento'}
-                  </Detalhe>
-                  {assinatura.registradaPor && (
-                    <Detalhe>
-                      {/* O mesmo campo, e a origem é que diz qual afirmação foi
-                          feita: na manual alguém afirma ter recebido, na cortesia
-                          alguém afirma ter concedido. */}
-                      {cortesia ? 'Concedida por' : 'Registrada por'} {assinatura.registradaPor}
-                      {assinatura.registradaEm && ` em ${dia(assinatura.registradaEm)}`}
-                    </Detalhe>
-                  )}
-                  <Selos>
-                    <Selo $tom={cortesia ? 'cortesia' : manual ? 'manual' : 'stripe'}>
-                      {cortesia ? 'Cortesia' : manual ? 'Manual (Pix)' : 'Stripe'}
-                    </Selo>
-                    <Selo $tom={tom}>{rotulo}</Selo>
-                  </Selos>
-                </Dados>
-
-                <Acoes>
-                  {manual && (
-                    <Botao type="button" onClick={() => abrirRenovacao(assinatura)}>
-                      Renovar
-                    </Botao>
-                  )}
-                  {/*
-                    Cortesia não tem Renovar, e a api recusa: renovar um mês
-                    concedido é conceder mais tempo grátis, e cortesia é uma por
-                    dono. Encerrar ela tem — teste concedido por engano precisa
-                    ter volta.
-                  */}
-                  {venceuPorData(assinatura) && assinatura.status !== 'canceled' && (
-                    <Botao type="button" $perigo onClick={() => setEncerrando(assinatura)}>
-                      Encerrar
-                    </Botao>
-                  )}
-                  {!venceuPorData(assinatura) && (
-                    <Travado>
-                      Cobrada pela Stripe: o que vale é o que está lá. Mexer aqui criaria uma
-                      divergência que o próximo webhook desfaz sem avisar.
-                    </Travado>
-                  )}
-                </Acoes>
-              </Linha>
-            )
-          })}
-        </Lista>
+            {visiveis.length === 0 ? (
+              <Estado>
+                {filtro === 'atencao'
+                  ? 'Nada precisa de atenção agora.'
+                  : 'Nenhuma assinatura neste filtro.'}
+              </Estado>
+            ) : (
+              <Tabela>
+                <thead>
+                  <tr>
+                    <th scope="col">Dono</th>
+                    <th scope="col">Estabelecimento</th>
+                    <th scope="col">Plano</th>
+                    <th scope="col">Origem</th>
+                    <th scope="col">Situação</th>
+                    <th scope="col">Validade</th>
+                    <th scope="col" aria-label="Ações" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {visiveis.map((assinatura) => (
+                    <LinhaDaAssinatura
+                      key={assinatura.id}
+                      assinatura={assinatura}
+                      aoRenovar={abrirRenovacao}
+                      aoEncerrar={setEncerrando}
+                    />
+                  ))}
+                </tbody>
+              </Tabela>
+            )}
+          </div>
+        </>
       )}
 
       {registrando && (
@@ -449,28 +395,7 @@ export default function AdminSubscriptions() {
               chegou, e o seu nome fica no registro.
             </ModalTexto>
             <form onSubmit={enviarRegistro}>
-              <Grupo>
-                <Campo>
-                  Dono
-                  <Selecao
-                    required
-                    value={donoId}
-                    onChange={(evento) => setDonoId(evento.target.value)}
-                  >
-                    <option value="">
-                      {donos.isPending ? 'Carregando donos…' : 'Escolha o dono'}
-                    </option>
-                    {donosDisponiveis.map((dono) => (
-                      <option key={dono.id} value={dono.id}>
-                        {dono.name} — {dono.email}
-                      </option>
-                    ))}
-                  </Selecao>
-                </Campo>
-                <Ajuda>
-                  Só aparecem donos sem assinatura. Para estender a de quem já tem, use Renovar.
-                </Ajuda>
-              </Grupo>
+              {campoDoDono('Só aparecem donos sem assinatura. Para estender a de quem já tem, use Renovar.')}
 
               <Grupo>
                 <Campo>
@@ -534,29 +459,12 @@ export default function AdminSubscriptions() {
               quem concedeu.
             </ModalTexto>
             <form onSubmit={enviarConcessao}>
-              <Grupo>
-                <Campo>
-                  Dono
-                  <Selecao
-                    required
-                    value={donoId}
-                    onChange={(evento) => setDonoId(evento.target.value)}
-                  >
-                    <option value="">
-                      {donos.isPending ? 'Carregando donos…' : 'Escolha o dono'}
-                    </option>
-                    {donosDisponiveis.map((dono) => (
-                      <option key={dono.id} value={dono.id}>
-                        {dono.name} — {dono.email}
-                      </option>
-                    ))}
-                  </Selecao>
-                </Campo>
-                <Ajuda>
-                  Cortesia é <strong>uma por dono</strong>. Quem já teve é recusado, com a data
-                  da primeira — e a lista só mostra quem ainda não tem assinatura nenhuma.
-                </Ajuda>
-              </Grupo>
+              {campoDoDono(
+                <>
+                  Cortesia é <strong>uma por dono</strong>. Quem já teve é recusado, com a data da
+                  primeira — e a busca só mostra quem ainda não tem assinatura nenhuma.
+                </>,
+              )}
 
               <Grupo>
                 <Campo>
@@ -670,5 +578,114 @@ export default function AdminSubscriptions() {
         </ModalFundo>
       )}
     </div>
+  )
+}
+
+interface PropsDaLinha {
+  assinatura: AssinaturaDoAdmin
+  aoRenovar: (assinatura: AssinaturaDoAdmin) => void
+  aoEncerrar: (assinatura: AssinaturaDoAdmin) => void
+}
+
+/** Uma assinatura: linha da tabela no computador, cartão no celular. */
+function LinhaDaAssinatura({ assinatura, aoRenovar, aoEncerrar }: PropsDaLinha) {
+  const { tom, rotulo } = situacao(assinatura)
+  const manual = assinatura.origem === 'MANUAL'
+  const cortesia = assinatura.origem === 'CORTESIA'
+  const origem = ORIGEM[assinatura.origem]
+
+  return (
+    <tr>
+      <td className="dono">
+        <Nome>{assinatura.owner.name}</Nome>
+        <Detalhe title={assinatura.owner.email}>{assinatura.owner.email}</Detalhe>
+      </td>
+      <td data-rotulo="Estabelecimento">
+        {assinatura.place?.name ?? 'Sem estabelecimento cadastrado'}
+      </td>
+      <td data-rotulo="Plano">
+        <span>
+          {assinatura.planName}
+          {/*
+            Três origens, três afirmações diferentes sobre dinheiro.
+
+            Na cortesia o número não descreve dinheiro que entrou, e mostrá-lo
+            do mesmo jeito faria a linha afirmar um recebimento que não houve. O
+            plano continua dito porque é ele que decide o que o dono abre.
+
+            Nas outras duas o número é sempre o LÍQUIDO — o que a plataforma
+            recebe —, e desde a api#539 ele deixou de ser o único preço: o
+            cartão cobra o bruto, para o líquido chegar inteiro depois da taxa.
+            Na manual não há ambiguidade, o Pix cai inteiro e os dois números
+            são o mesmo. Na Stripe, este painel diria R$ 189,90 enquanto a
+            fatura do dono diz R$ 199,90 — dois números do mesmo produto, sem
+            explicação.
+
+            Rotular, não trocar: receita é o que entra, e é isso que se olha
+            aqui. O bruto não aparece porque a taxa mora na api
+            (`plans/precoNoCartao.ts`) — refazer a conta aqui é como os dois
+            lados passam a discordar (#449).
+          */}
+          <Detalhe>
+            {cortesia ? (
+              'cortesia, sem cobrança'
+            ) : (
+              <>
+                <SemQuebra>R$ {assinatura.monthlyValue}/mês</SemQuebra>
+                {!manual && ' recebidos (o cartão cobra mais, com a taxa)'}
+              </>
+            )}
+          </Detalhe>
+        </span>
+      </td>
+      <td data-rotulo="Origem">
+        <span><Selo $tom={origem.tom}>{origem.rotulo}</Selo></span>
+      </td>
+      <td data-rotulo="Situação">
+        <span><Selo $tom={tom}>{rotulo}</Selo></span>
+      </td>
+      <td data-rotulo="Validade">
+        <span>
+          {assinatura.currentPeriodEnd
+            ? <SemQuebra>{cortesia ? 'teste até' : 'vale até'} {dia(assinatura.currentPeriodEnd)}</SemQuebra>
+            : venceuPorData(assinatura)
+              /* Nunca vazio nas que vencem por data: sem data não valem acesso
+                 nenhum, e um traço no lugar esconderia justamente o registro
+                 que ficou pela metade. */
+              ? 'sem validade registrada — assim ela não vale acesso'
+              : 'a Stripe não informou vencimento'}
+          {assinatura.registradaPor && (
+            <Detalhe>
+              {/* O mesmo campo, e a origem é que diz qual afirmação foi feita:
+                  na manual alguém afirma ter recebido, na cortesia alguém
+                  afirma ter concedido. */}
+              {cortesia ? 'Concedida por' : 'Registrada por'} {assinatura.registradaPor}
+              {assinatura.registradaEm && ` em ${dia(assinatura.registradaEm)}`}
+            </Detalhe>
+          )}
+        </span>
+      </td>
+      <td className="acoes">
+        {(manual || (cortesia && assinatura.status !== 'canceled')) && (
+          <Acoes>
+            {manual && (
+              <Botao type="button" onClick={() => aoRenovar(assinatura)}>
+                Renovar
+              </Botao>
+            )}
+            {/*
+              Cortesia não tem Renovar, e a api recusa: renovar um mês concedido
+              é conceder mais tempo grátis, e cortesia é uma por dono. Encerrar
+              ela tem — teste concedido por engano precisa ter volta.
+            */}
+            {assinatura.status !== 'canceled' && (
+              <Botao type="button" $perigo onClick={() => aoEncerrar(assinatura)}>
+                Encerrar
+              </Botao>
+            )}
+          </Acoes>
+        )}
+      </td>
+    </tr>
   )
 }
