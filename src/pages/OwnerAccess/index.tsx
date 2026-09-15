@@ -45,6 +45,7 @@ export default function OwnerAccess() {
 
   const [status, setStatus]         = useState('loading') // 'loading' | 'invalid' | 'ready'
   const [inviteEmail, setInviteEmail] = useState('')
+  const [cortesia, setCortesia]     = useState<authService.InviteInfo['cortesia']>(null)
   const [tab, setTab]               = useState('register')
 
   const loginForm = useForm({ resolver: yupResolver(loginSchema) })
@@ -58,6 +59,7 @@ export default function OwnerAccess() {
     authService.verifyInvite(inviteToken)
       .then((res) => {
         setInviteEmail(res.data.email)
+        setCortesia(res.data.cortesia ?? null)
         setStatus('ready')
       })
       .catch(() => setStatus('invalid'))
@@ -133,7 +135,12 @@ export default function OwnerAccess() {
               </CardHead>
 
               <LockBadge>
-                Convite válido — bem-vindo ao portal de parceiros
+                {/* O convite da cortesia por e-mail (web#503): a conta nasce com
+                    ela, e é a primeira coisa que quem chegou pelo e-mail quer ver
+                    confirmada. */}
+                {cortesia
+                  ? `Convite válido — a conta já nasce com ${cortesia.dias} ${cortesia.dias === 1 ? 'dia' : 'dias'} de cortesia no plano ${cortesia.planoNome}, contados a partir do cadastro`
+                  : 'Convite válido — bem-vindo ao portal de parceiros'}
               </LockBadge>
 
               <Tabs>

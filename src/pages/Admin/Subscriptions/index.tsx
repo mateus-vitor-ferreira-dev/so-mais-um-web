@@ -3,21 +3,23 @@ import type { FormEvent, ReactNode } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTheme } from 'styled-components'
 import { toast } from 'sonner'
-import { Gift, Plus } from 'lucide-react'
+import { Copy, Gift, Plus } from 'lucide-react'
 import { PageActions, usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import StatCard from '../../../components/StatCard'
 import { assinaturasDoAdmin } from '../../../services/assinaturasDoAdmin'
 import { plansService } from '../../../services/plansService'
 import * as adminService from '../../../services/admin'
 import { chaves } from '../../../lib/queryClient'
-import { ehCortesiaJaConcedida, mensagemDeErro } from '../../../utils/apiError'
-import type { AssinaturaDoAdmin } from '../../../types/api'
+import { codigoDeErro, mensagemDeErro } from '../../../utils/apiError'
+import type { AssinaturaDoAdmin, ConviteDeCortesia } from '../../../types/api'
 import {
   Acoes, Ajuda, Aviso, Botao, BotaoConceder, BotaoRegistrar, Campo, Cancelar, Confirmar, Contagem,
   Data, Detalhe, Estado, Filtro, Filtros, Grupo, ModalAcoes, ModalCaixa, ModalFundo, ModalTexto,
   ModalTitulo, Nome, NotaDoFiltro, Numeros, RotuloDeCampo, Selecao, Selo, SemQuebra, Tabela,
 } from './styles'
 import BuscaDeDono from './BuscaDeDono'
+import EmailDoDono from './EmailDoDono'
+import { oQueAcontece } from './previsaoDaCortesia'
 import { FILTROS, numeros, situacao, venceuPorData } from './situacao'
 import type { Filtro as IdDoFiltro } from './situacao'
 import { formatarPrecoCentavos } from '../../../utils/formatCurrency'
@@ -43,6 +45,34 @@ const paraCampoDeData = (data: Date) =>
 const daquiADias = (dias: number) => paraCampoDeData(new Date(Date.now() + dias * DIA_MS))
 
 const dia = (iso: string) => dataCurta(iso)
+
+/**
+ * Quantos dias de cortesia a data do campo dá, contando de hoje.
+ *
+ * É a mesma conta da api (#597): no convite, a data vira duração, e a duração
+ * recomeça no dia do cadastro. Fora do componente pelo `Date.now()`.
+ */
+const diasAteACampo = (campo: string) => {
+  const [ano, mes, diaDoMes] = campo.split('-').map(Number)
+  if (!ano || !mes || !diaDoMes) return 0
+  const hoje = new Date(Date.now())
+  const inicio = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()).getTime()
+  return Math.round((new Date(ano, mes - 1, diaDoMes).getTime() - inicio) / DIA_MS)
+}
+
+/**
+ * As recusas da cortesia que são resposta, e não falha (web#456, web#503).
+ *
+ * Todas pedem a mesma coisa de quem leu: trocar o e-mail ou o dono. Por isso
+ * saem dentro do modal, com o formulário aberto, e a mensagem é a da api, que
+ * sabe a data da primeira cortesia e até quando o convite pendente vale.
+ */
+const RECUSAS_DA_CORTESIA = [
+  'CORTESIA_JA_CONCEDIDA',
+  'USER_IS_NOT_OWNER',
+  'CONVITE_DE_CORTESIA_PENDENTE',
+  'SUBSCRIPTION_ALREADY_EXISTS',
+]
 
 /**
  * A validade que a renovação sugere: um mês a partir do que ainda vale.
@@ -99,6 +129,8 @@ export default function AdminSubscriptions() {
   const [encerrando, setEncerrando] = useState<AssinaturaDoAdmin | null>(null)
   const [filtroEscolhido, setFiltroEscolhido] = useState<IdDoFiltro | null>(null)
   const [donoId, setDonoId] = useState('')
+  const [emailDoDono, setEmailDoDono] = useState('')
+  const [recusaDaCortesia, setRecusaDaCortesia] = useState('')
   const [erroDoDono, setErroDoDono] = useState('')
   const [planoId, setPlanoId] = useState('')
   const [validoAte, setValidoAte] = useState(() => daquiADias(VALIDADE_PADRAO_DIAS))
@@ -110,12 +142,33 @@ export default function AdminSubscriptions() {
     queryFn: assinaturasDoAdmin.listar,
   })
 
+  const convites = useQuery({
+    queryKey: chaves.convitesDeCortesia(),
+    queryFn: assinaturasDoAdmin.convitesPendentes,
+  })
+
+  /**
+   * A api já concede por e-mail? (web#503)
+   *
+   * Detectado pelo que ela devolve, e não por versão: a rota dos convites só
+   * existe desde a api#597. Sem ela, a cortesia continua pela busca de dono —
+   * e a web pode ir para a produção antes da api.
+   */
+  const porEmail = Array.isArray(convites.data)
+  const pendentes = useMemo(() => convites.data ?? [], [convites.data])
+
   // Só quando o formulário abre: quem entrou para conferir vencimento não
   // precisa da base de usuários inteira.
   const donos = useQuery({
     queryKey: chaves.usuariosDoAdmin('OWNER'),
     queryFn: () => adminService.listUsers('OWNER').then((r) => r.data.data),
-    enabled: registrando || concedendo,
+    enabled: registrando || (concedendo && !porEmail),
+  })
+  // Todos os papéis: é o que diz se o e-mail é de um jogador ou de ninguém.
+  const contas = useQuery({
+    queryKey: chaves.usuariosDoAdmin('TODOS'),
+    queryFn: () => adminService.listUsers().then((r) => r.data.data),
+    enabled: concedendo && porEmail,
   })
   const planos = useQuery({
     queryKey: chaves.planos(),
@@ -139,6 +192,8 @@ export default function AdminSubscriptions() {
     setRegistrando(false)
     setConcedendo(false)
     setDonoId('')
+    setEmailDoDono('')
+    setRecusaDaCortesia('')
     setErroDoDono('')
     setPlanoId('')
     setValidoAte(daquiADias(VALIDADE_PADRAO_DIAS))
@@ -155,23 +210,32 @@ export default function AdminSubscriptions() {
   })
 
   const conceder = useMutation({
-    mutationFn: () => assinaturasDoAdmin.conceder({ userId: donoId, planId: planoId, validoAte }),
-    onSuccess: () => {
-      toast.success('Cortesia concedida.')
+    mutationFn: () =>
+      assinaturasDoAdmin.conceder({
+        ...(porEmail ? { email: emailDoDono.trim() } : { userId: donoId }),
+        planId: planoId,
+        validoAte,
+      }),
+    onSuccess: (resultado) => {
+      toast.success(
+        resultado?.resultado === 'CONVITE_ENVIADO'
+          ? `Convite enviado para ${resultado.convite.email}. A cortesia começa quando a conta for criada.`
+          : 'Cortesia concedida.',
+      )
       fecharFormulario()
       void invalidar()
     },
     /**
-     * O 409 de cortesia já concedida **não é falha** — é resposta, e a api já
-     * manda a data da primeira dentro da mensagem.
+     * A recusa **não é falha** — é resposta, e a api já manda o motivo dentro
+     * da mensagem (a data da primeira cortesia, até quando vale o convite).
      *
-     * Por isso ele sai como aviso e não como erro, e o formulário **fica
-     * aberto**: a ação seguinte de quem leu isso é escolher outro dono, e
-     * fechar o modal a obrigaria a começar de novo.
+     * Por isso ela sai como aviso dentro do modal, e o formulário **fica
+     * aberto**: a ação seguinte de quem leu é trocar o e-mail, e fechar o modal
+     * a obrigaria a começar de novo.
      */
     onError: (erro: unknown) => {
-      if (ehCortesiaJaConcedida(erro)) {
-        toast.warning(mensagemDeErro(erro, 'Este dono já teve um mês de cortesia.'))
+      if (RECUSAS_DA_CORTESIA.includes(codigoDeErro(erro) ?? '')) {
+        setRecusaDaCortesia(mensagemDeErro(erro, 'A cortesia não pôde ser concedida a este dono.'))
         return
       }
       toast.error(mensagemDeErro(erro, 'Não foi possível conceder a cortesia.'))
@@ -213,6 +277,9 @@ export default function AdminSubscriptions() {
     () => lista.filter(FILTROS.find((f) => f.id === filtro)!.aplica),
     [lista, filtro],
   )
+  /** O convite pendente é cortesia aguardando cadastro: entra onde a cortesia entra. */
+  const mostraConvites = (id: IdDoFiltro) => id === 'todas' || id === 'cortesias'
+  const convitesVisiveis = mostraConvites(filtro) ? pendentes : []
   const temStripe = visiveis.some((a) => a.origem === 'STRIPE')
 
   /**
@@ -223,10 +290,19 @@ export default function AdminSubscriptions() {
    * a api recusa com 409 `SUBSCRIPTION_ALREADY_EXISTS`: o erro está certo, mas
    * descobri-lo depois de preencher três campos não.
    */
-  const donosDisponiveis = useMemo(() => {
-    const jaAssinam = new Set(lista.map((a) => a.owner.email))
-    return (donos.data ?? []).filter((dono) => !jaAssinam.has(dono.email))
-  }, [donos.data, lista])
+  const jaAssinam = useMemo(() => new Set(lista.map((a) => a.owner.email.toLowerCase())), [lista])
+  const donosDisponiveis = useMemo(
+    () => (donos.data ?? []).filter((dono) => !jaAssinam.has(dono.email.toLowerCase())),
+    [donos.data, jaAssinam],
+  )
+  const emailsPendentes = useMemo(() => new Set(pendentes.map((c) => c.email.toLowerCase())), [pendentes])
+  const diasDeCortesia = diasAteACampo(validoAte)
+  const previsao = oQueAcontece(emailDoDono, {
+    contas: contas.data ?? [],
+    assinam: jaAssinam,
+    pendentes: emailsPendentes,
+    dias: diasDeCortesia,
+  })
 
   const abrirRenovacao = (assinatura: AssinaturaDoAdmin) => {
     setValidoAte(proximaValidade(assinatura.currentPeriodEnd))
@@ -252,7 +328,18 @@ export default function AdminSubscriptions() {
 
   const enviarConcessao = (evento: FormEvent) => {
     evento.preventDefault()
-    if (!donoFaltando()) conceder.mutate()
+    setRecusaDaCortesia('')
+    // Por e-mail, o campo é nativo e o `required` do navegador o cobre.
+    if (porEmail || !donoFaltando()) conceder.mutate()
+  }
+
+  const copiarConvite = async (convite: ConviteDeCortesia) => {
+    try {
+      await navigator.clipboard.writeText(convite.inviteUrl)
+      toast.success('Link do convite copiado.')
+    } catch {
+      toast.error('Não foi possível copiar. O link foi mandado por e-mail para ' + convite.email + '.')
+    }
   }
 
   const enviarRenovacao = (evento: FormEvent) => {
@@ -301,7 +388,7 @@ export default function AdminSubscriptions() {
         <Estado>Carregando assinaturas…</Estado>
       ) : assinaturas.isError ? (
         <Estado role="alert">Não foi possível carregar as assinaturas.</Estado>
-      ) : lista.length === 0 ? (
+      ) : lista.length === 0 && pendentes.length === 0 ? (
         <Estado>
           Nenhuma assinatura ainda. Quando o primeiro Pix chegar, registre-o aqui.
         </Estado>
@@ -320,7 +407,7 @@ export default function AdminSubscriptions() {
 
           <Filtros role="tablist" aria-label="Filtrar assinaturas">
             {FILTROS.map(({ id, rotulo, aplica }) => {
-              const quantas = lista.filter(aplica).length
+              const quantas = lista.filter(aplica).length + (mostraConvites(id) ? pendentes.length : 0)
               return (
                 <Filtro
                   key={id}
@@ -351,7 +438,7 @@ export default function AdminSubscriptions() {
               </NotaDoFiltro>
             )}
 
-            {visiveis.length === 0 ? (
+            {visiveis.length === 0 && convitesVisiveis.length === 0 ? (
               <Estado>
                 {filtro === 'atencao'
                   ? 'Nada precisa de atenção agora.'
@@ -378,6 +465,9 @@ export default function AdminSubscriptions() {
                       aoRenovar={abrirRenovacao}
                       aoEncerrar={setEncerrando}
                     />
+                  ))}
+                  {convitesVisiveis.map((convite) => (
+                    <LinhaDoConvite key={convite.id} convite={convite} aoCopiar={copiarConvite} />
                   ))}
                 </tbody>
               </Tabela>
@@ -459,11 +549,33 @@ export default function AdminSubscriptions() {
               quem concedeu.
             </ModalTexto>
             <form onSubmit={enviarConcessao}>
-              {campoDoDono(
-                <>
-                  Cortesia é <strong>uma por dono</strong>. Quem já teve é recusado, com a data da
-                  primeira — e a busca só mostra quem ainda não tem assinatura nenhuma.
-                </>,
+              {porEmail ? (
+                <Grupo>
+                  <RotuloDeCampo aria-hidden>E-mail do dono</RotuloDeCampo>
+                  <EmailDoDono
+                    contas={contas.data ?? []}
+                    carregando={contas.isPending}
+                    assinam={jaAssinam}
+                    pendentes={emailsPendentes}
+                    email={emailDoDono}
+                    aoMudar={(email) => {
+                      setEmailDoDono(email)
+                      setRecusaDaCortesia('')
+                    }}
+                    dias={diasDeCortesia}
+                  />
+                  <Ajuda>
+                    Cortesia é <strong>uma por dono</strong>. Quem ainda não tem conta recebe um
+                    convite de dono, e a cortesia vem junto no cadastro.
+                  </Ajuda>
+                </Grupo>
+              ) : (
+                campoDoDono(
+                  <>
+                    Cortesia é <strong>uma por dono</strong>. Quem já teve é recusado, com a data da
+                    primeira — e a busca só mostra quem ainda não tem assinatura nenhuma.
+                  </>,
+                )
               )}
 
               <Grupo>
@@ -502,17 +614,26 @@ export default function AdminSubscriptions() {
                   />
                 </Campo>
                 <Ajuda>
-                  Um mês por padrão, e dá para trocar. Depois desta data o dono perde o acesso —
-                  vale a pena falar com ele antes.
+                  {previsao?.tipo === 'convite'
+                    ? 'No convite, a data vira a duração: os dias contam a partir do cadastro, e ninguém perde dias esperando o e-mail.'
+                    : 'Um mês por padrão, e dá para trocar. Depois desta data o dono perde o acesso — vale a pena falar com ele antes.'}
                 </Ajuda>
               </Grupo>
+
+              {recusaDaCortesia && (
+                <NotaDoFiltro $tom="alerta" role="alert">
+                  {recusaDaCortesia}
+                </NotaDoFiltro>
+              )}
 
               <ModalAcoes>
                 <Cancelar type="button" onClick={fecharFormulario}>
                   Cancelar
                 </Cancelar>
                 <Confirmar type="submit" disabled={conceder.isPending}>
-                  {conceder.isPending ? 'Concedendo…' : 'Conceder'}
+                  {porEmail && previsao?.tipo === 'convite'
+                    ? conceder.isPending ? 'Enviando…' : 'Enviar convite'
+                    : conceder.isPending ? 'Concedendo…' : 'Conceder'}
                 </Confirmar>
               </ModalAcoes>
             </form>
@@ -685,6 +806,59 @@ function LinhaDaAssinatura({ assinatura, aoRenovar, aoEncerrar }: PropsDaLinha) 
             )}
           </Acoes>
         )}
+      </td>
+    </tr>
+  )
+}
+
+interface PropsDoConvite {
+  convite: ConviteDeCortesia
+  aoCopiar: (convite: ConviteDeCortesia) => void
+}
+
+/**
+ * A cortesia mandada por e-mail a quem ainda não tem conta (web#503).
+ *
+ * Na mesma tabela, como cortesia aguardando cadastro, e não numa lista à parte:
+ * para quem opera é a mesma venda, só que num passo anterior. As colunas dizem
+ * o que ainda não existe — dono, estabelecimento — em vez de ficarem vazias.
+ * Não tem Renovar nem Encerrar, porque ainda não há assinatura.
+ */
+function LinhaDoConvite({ convite, aoCopiar }: PropsDoConvite) {
+  return (
+    <tr>
+      <td className="dono">
+        <Nome>{convite.email}</Nome>
+        <Detalhe>sem conta ainda</Detalhe>
+      </td>
+      <td data-rotulo="Estabelecimento">Criado depois do cadastro</td>
+      <td data-rotulo="Plano">
+        <span>
+          {convite.planoNome}
+          <Detalhe>cortesia, sem cobrança</Detalhe>
+        </span>
+      </td>
+      <td data-rotulo="Origem">
+        <span><Selo $tom="cortesia">Cortesia</Selo></span>
+      </td>
+      <td data-rotulo="Situação">
+        <span><Selo $tom="neutro">Aguardando cadastro</Selo></span>
+      </td>
+      <td data-rotulo="Validade">
+        <span>
+          <SemQuebra>{convite.dias} {convite.dias === 1 ? 'dia' : 'dias'}</SemQuebra> a partir do cadastro
+          <Detalhe>
+            Convidado por {convite.convidadoPor} em {dia(convite.convidadoEm)}. O link vale até{' '}
+            {dia(convite.expiresAt)}.
+          </Detalhe>
+        </span>
+      </td>
+      <td className="acoes">
+        <Acoes>
+          <Botao type="button" onClick={() => aoCopiar(convite)}>
+            <Copy size={14} aria-hidden /> Copiar link
+          </Botao>
+        </Acoes>
       </td>
     </tr>
   )

@@ -75,7 +75,7 @@ const dono = (id: string, name: string, email: string) => ({
   _count: { placesOwned: 1, matchesCreated: 0, participations: 0 },
 })
 
-const donosDaBase = (...lista: ReturnType<typeof dono>[]) =>
+const donosDaBase = (...lista: (Omit<ReturnType<typeof dono>, 'role'> & { role: 'PLAYER' | 'OWNER' | 'ADMIN' })[]) =>
   ({ data: { data: lista } }) as Awaited<ReturnType<typeof adminService.listUsers>>
 
 const monta = () => renderWithProviders(<AdminSubscriptions />, { route: '/admin/subscriptions' })
@@ -436,7 +436,7 @@ describe('cortesia', () => {
   }
 
   it('concede por um caminho próprio, e não por um seletor de origem', async () => {
-    servico.conceder.mockResolvedValue({})
+    servico.conceder.mockResolvedValue({ resultado: 'CONCEDIDA' })
     const { user, modal } = await concedeParaMarina()
 
     // Nenhum seletor de origem: a rota é que decide, e é o ponto de as duas
@@ -518,5 +518,177 @@ describe('cortesia', () => {
 
     await waitFor(() => expect(servico.conceder).toHaveBeenCalled())
     expect(await screen.findByRole('dialog', { name: /Conceder cortesia/i })).toBeInTheDocument()
+  })
+})
+
+/**
+ * A cortesia por e-mail (web#503, api#597).
+ *
+ * O que estes casos prendem: o mesmo campo concede e convida, a tela diz qual
+ * dos dois vai acontecer **antes** de confirmar, as recusas da api ficam no
+ * modal aberto, e sem a rota nova a tela continua como era.
+ */
+describe('cortesia por e-mail', () => {
+  const conta = (id: string, name: string, email: string, role: 'PLAYER' | 'OWNER' | 'ADMIN') => ({
+    ...dono(id, name, email),
+    role,
+  })
+
+  const convite = {
+    id: 'c1',
+    email: 'nova@arena.com',
+    planId: 'p-pro',
+    planoNome: 'Pro',
+    dias: 30,
+    expiresAt: emDias(6),
+    inviteUrl: 'https://app.so-mais-um.com/seja-parceiro?convite=abc',
+    convidadoPor: 'Mateus',
+    convidadoEm: emDias(-1),
+  }
+
+  beforeEach(() => {
+    servico.convitesPendentes.mockResolvedValue([])
+    servico.conceder.mockResolvedValue({ resultado: 'CONCEDIDA' })
+    admin.listUsers.mockImplementation((papel) =>
+      Promise.resolve(
+        donosDaBase(
+          ...(papel === 'OWNER'
+            ? [dono('u2', 'Carla Dias', 'carla@nova.com')]
+            : [
+                conta('u1', 'Joana Ribeiro', 'joana@arena.com', 'OWNER'),
+                conta('u2', 'Carla Dias', 'carla@nova.com', 'OWNER'),
+                conta('u5', 'Davi Jogador', 'davi@gmail.com', 'PLAYER'),
+              ]),
+        ),
+      ),
+    )
+  })
+
+  const abreCortesia = async () => {
+    const montado = monta()
+    await montado.user.click(await screen.findByRole('button', { name: /Conceder cortesia/i }))
+    const modal = within(await screen.findByRole('dialog', { name: /Conceder cortesia/i }))
+    // As contas carregam depois de o modal abrir; a previsão só sai com elas.
+    await waitFor(() => expect(admin.listUsers).toHaveBeenCalledWith())
+    return { ...montado, modal }
+  }
+
+  it('com e-mail de dono sem assinatura, diz que vale na hora e concede pelo e-mail', async () => {
+    const { user, modal } = await abreCortesia()
+
+    await user.type(modal.getByRole('combobox', { name: 'E-mail do dono' }), 'Carla@Nova.com')
+    expect(await modal.findByText(/Carla Dias já é dono: a cortesia vale na hora/)).toBeInTheDocument()
+    await user.selectOptions(modal.getByLabelText('Plano'), 'p-pro')
+    await user.click(modal.getByRole('button', { name: 'Conceder' }))
+
+    await waitFor(() =>
+      expect(servico.conceder).toHaveBeenCalledWith(expect.objectContaining({ email: 'Carla@Nova.com', planId: 'p-pro' })),
+    )
+    expect(servico.conceder).toHaveBeenCalledWith(expect.not.objectContaining({ userId: expect.anything() }))
+  })
+
+  it('com e-mail sem conta, avisa que vai mandar um convite antes de confirmar', async () => {
+    servico.conceder.mockResolvedValue({ resultado: 'CONVITE_ENVIADO', convite })
+    const { user, modal } = await abreCortesia()
+
+    fireEvent.change(modal.getByLabelText('Teste até'), {
+      target: { value: new Date(Date.now() + 10 * DIA_MS).toLocaleDateString('sv-SE') },
+    })
+    await user.type(modal.getByRole('combobox', { name: 'E-mail do dono' }), 'nova@arena.com')
+
+    expect(await modal.findByText(/Ninguém tem conta com este e-mail\. Vamos mandar um convite de dono, e os 10 dias/))
+      .toBeInTheDocument()
+    await user.selectOptions(modal.getByLabelText('Plano'), 'p-pro')
+    await user.click(modal.getByRole('button', { name: 'Enviar convite' }))
+
+    await waitFor(() => expect(servico.conceder).toHaveBeenCalledTimes(1))
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+  })
+
+  it('avisa que o e-mail é de um jogador antes de a api recusar', async () => {
+    const { user, modal } = await abreCortesia()
+
+    await user.type(modal.getByRole('combobox', { name: 'E-mail do dono' }), 'davi@gmail.com')
+    expect(await modal.findByText(/Davi Jogador é jogador/)).toBeInTheDocument()
+  })
+
+  it('a recusa da api fica no modal, com o formulário aberto', async () => {
+    servico.conceder.mockRejectedValue(
+      erroDaApi('Este e-mail já tem um convite com cortesia esperando o cadastro, válido até 21/09/2026.', 409, 'CONVITE_DE_CORTESIA_PENDENTE'),
+    )
+    const { user, modal } = await abreCortesia()
+
+    await user.type(modal.getByRole('combobox', { name: 'E-mail do dono' }), 'outra@arena.com')
+    await user.selectOptions(modal.getByLabelText('Plano'), 'p-pro')
+    await user.click(modal.getByRole('button', { name: 'Enviar convite' }))
+
+    expect(await modal.findByRole('alert')).toHaveTextContent('válido até 21/09/2026')
+    expect(screen.getByRole('dialog', { name: /Conceder cortesia/i })).toBeInTheDocument()
+
+    // Trocar o e-mail tira o aviso velho.
+    await user.type(modal.getByRole('combobox', { name: 'E-mail do dono' }), 'x')
+    expect(modal.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('sugere os donos sem assinatura enquanto se digita', async () => {
+    const { user, modal } = await abreCortesia()
+
+    await user.type(modal.getByRole('combobox', { name: 'E-mail do dono' }), 'dias')
+    await user.click(await modal.findByRole('option', { name: /Carla Dias/ }))
+
+    expect(modal.getByRole('combobox', { name: 'E-mail do dono' })).toHaveValue('carla@nova.com')
+    // Quem já assina e quem é jogador não viram sugestão.
+    await user.clear(modal.getByRole('combobox', { name: 'E-mail do dono' }))
+    await user.type(modal.getByRole('combobox', { name: 'E-mail do dono' }), 'a')
+    expect(modal.queryByRole('option', { name: /Joana Ribeiro/ })).not.toBeInTheDocument()
+    expect(modal.queryByRole('option', { name: /Davi/ })).not.toBeInTheDocument()
+  })
+
+  it('mostra o convite pendente na lista, como cortesia aguardando cadastro', async () => {
+    servico.convitesPendentes.mockResolvedValue([convite])
+    const { user } = monta()
+
+    await screen.findByText('nova@arena.com')
+    const linha = within(linhaDe('nova@arena.com'))
+    expect(linha.getByText('Aguardando cadastro')).toBeInTheDocument()
+    expect(linha.getByText('Cortesia')).toBeInTheDocument()
+    expect(linha.getByText(/a partir do cadastro/)).toBeInTheDocument()
+    expect(linha.queryByRole('button', { name: /Renovar|Encerrar/ })).not.toBeInTheDocument()
+    expect(filtro(/Cortesias/)).toHaveTextContent('1')
+
+    // No filtro das manuais ele não entra.
+    await user.click(filtro(/Manuais/))
+    expect(screen.queryByText('nova@arena.com')).not.toBeInTheDocument()
+  })
+
+  it('copia o link do convite', async () => {
+    servico.convitesPendentes.mockResolvedValue([convite])
+    const { user } = monta()
+
+    await screen.findByText('nova@arena.com')
+    const escrever = vi.spyOn(navigator.clipboard, 'writeText')
+    await user.click(within(linhaDe('nova@arena.com')).getByRole('button', { name: /Copiar link/ }))
+
+    expect(escrever).toHaveBeenCalledWith(convite.inviteUrl)
+  })
+
+  it('sem nenhuma assinatura, o convite pendente ainda aparece', async () => {
+    servico.listar.mockResolvedValue([])
+    servico.convitesPendentes.mockResolvedValue([convite])
+    monta()
+
+    expect(await screen.findByText('nova@arena.com')).toBeInTheDocument()
+    expect(screen.queryByText(/Nenhuma assinatura ainda/)).not.toBeInTheDocument()
+  })
+
+  it('com a api antiga, sem a rota dos convites, concede pela busca de dono como antes', async () => {
+    servico.convitesPendentes.mockResolvedValue(null)
+    const { user } = monta()
+
+    await user.click(await screen.findByRole('button', { name: /Conceder cortesia/i }))
+    const modal = within(await screen.findByRole('dialog', { name: /Conceder cortesia/i }))
+
+    expect(modal.queryByRole('combobox', { name: 'E-mail do dono' })).not.toBeInTheDocument()
+    expect(modal.getByRole('combobox', { name: 'Dono' })).toBeInTheDocument()
   })
 })
