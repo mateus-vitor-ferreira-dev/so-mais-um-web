@@ -8,6 +8,7 @@ import type { NavItemDef } from '../components/DashboardLayout'
 import { adminNavItems, ownerNavItems } from '../constants/navItems'
 import { useSubscription } from '../hooks/useSubscription'
 import { useSolicitacoesPendentes } from '../hooks/useSolicitacoesPendentes'
+import { useConversasDeSuporteNaoLidas } from '../hooks/useConversasDeSuporteNaoLidas'
 import FalhaAoVerificarSessao from '../components/FalhaAoVerificarSessao'
 
 
@@ -97,7 +98,8 @@ export function OwnerRoute({ children }: { children: ReactNode }) {
 }
 
 /**
- * Põe o contador de pendentes no item de solicitações do menu.
+ * Põe um contador num item do menu: as solicitações pendentes, ou os donos
+ * esperando resposta no suporte (web#508).
  *
  * O item é achado pela rota, e não pela posição: o menu do owner muda de forma
  * conforme o papel e o plano, e um índice fixo passaria a decorar o item
@@ -107,7 +109,7 @@ export function OwnerRoute({ children }: { children: ReactNode }) {
  * mas deixá-lo fora daqui também evita recriar o item à toa — é o caso comum,
  * já que a fila vazia é o estado normal de um painel em dia.
  */
-function comContadorDeSolicitacoes(itens: NavItemDef[], rota: string, pendentes: number): NavItemDef[] {
+function comContador(itens: NavItemDef[], rota: string, pendentes: number): NavItemDef[] {
   if (pendentes <= 0) return itens
   return itens.map((item) => (item.to === rota ? { ...item, badge: pendentes } : item))
 }
@@ -116,15 +118,20 @@ function comContadorDeSolicitacoes(itens: NavItemDef[], rota: string, pendentes:
  * Layout do painel do admin.
  *
  * Existe como componente — em vez de o `DashboardLayout` ser montado direto na
- * árvore de rotas — porque o contador de solicitações precisa de um hook, e a
+ * árvore de rotas — porque os contadores do menu (solicitações e suporte) precisam de hooks, e a
  * árvore é JSX estático. É o mesmo motivo do `OwnerPanelLayout`.
  */
 export function AdminPanelLayout() {
   const pendentes = useSolicitacoesPendentes('todas')
+  const suporteNaoLido = useConversasDeSuporteNaoLidas()
 
   const navItems = useMemo(
-    () => comContadorDeSolicitacoes(adminNavItems, '/admin/requests', pendentes),
-    [pendentes],
+    () => comContador(
+      comContador(adminNavItems, '/admin/requests', pendentes),
+      '/admin/suporte',
+      suporteNaoLido,
+    ),
+    [pendentes, suporteNaoLido],
   )
   return <DashboardLayout navItems={navItems} tagline="Painel Admin" accent="#16a34a" />
 }
@@ -142,7 +149,7 @@ export function OwnerPanelLayout() {
   // e tirá-lo meio segundo depois é pior do que mostrar o menu inteiro por um
   // instante, e quem clicar antes da hora encontra o portão da própria página.
   const navItems = useMemo(
-    () => comContadorDeSolicitacoes(
+    () => comContador(
       ownerNavItems(user?.role, loading ? undefined : temFuncionalidade),
       '/owner/requests',
       pendentes,

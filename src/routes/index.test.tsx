@@ -57,7 +57,7 @@ vi.mock('./paginas', () => {
 vi.mock('../components/MainLayout', () => ({ default: () => <div>MainLayout</div> }))
 vi.mock('../components/DashboardLayout', () => ({ default: () => <div>DashboardLayout</div> }))
 /*
- * Os dois painéis buscam o contador de solicitações do menu (#356), e a busca
+ * Os dois painéis buscam os contadores do menu (#356, web#508), e a busca
  * passa pelo cache de estado de servidor. Este arquivo renderiza com o `render`
  * puro — de propósito, porque o alvo é a decisão de rota —, então não há
  * `QueryClientProvider` em volta. Stubar o hook mantém o teste na pergunta dele.
@@ -66,6 +66,8 @@ vi.mock('../hooks/useSolicitacoesPendentes', () => ({
   useSolicitacoesPendentes: () => 0,
   useInvalidarSolicitacoesPendentes: () => async () => {},
 }))
+// O do suporte (web#508) também busca pela cache, e pelo mesmo motivo é stubado.
+vi.mock('../hooks/useConversasDeSuporteNaoLidas', () => ({ useConversasDeSuporteNaoLidas: () => 0 }))
 
 import AppRoutes from './index'
 

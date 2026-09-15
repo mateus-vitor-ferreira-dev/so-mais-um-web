@@ -17,6 +17,8 @@ import { Routes, Route } from 'react-router-dom'
 
 vi.mock('../services/placeRequests')
 import * as placeRequestsService from '../services/placeRequests'
+// O menu do admin também conta o suporte (web#508); aqui a caixa vem vazia.
+vi.mock('../services/suporte', () => ({ suporteDaEquipe: { caixa: () => Promise.resolve([]) } }))
 
 const auth = vi.hoisted(() => ({ estado: { user: { id: 'eu', name: 'Admin', role: 'ADMIN' }, loading: false } }))
 vi.mock('../contexts/AuthContext', async (original) => ({
