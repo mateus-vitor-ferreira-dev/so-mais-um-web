@@ -75,8 +75,9 @@ export const Contagem = styled.span<{ $alerta?: boolean }>`
 `
 
 /** A explicação de um filtro, dita uma vez em cima da lista. */
-export const NotaDoFiltro = styled.p<{ $tom?: 'alerta' }>`
-  margin: 0 0 12px; padding: 10px 14px; border-radius: ${({ theme }) => theme.radii.md};
+export const NotaDoFiltro = styled.p<{ $tom?: 'alerta'; $noCampo?: boolean }>`
+  margin: ${({ $noCampo }) => ($noCampo ? '6px 0 0' : '0 0 12px')};
+  padding: 10px 14px; border-radius: ${({ theme }) => theme.radii.md};
   font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
   ${({ $tom, theme }) =>
     $tom === 'alerta'
@@ -161,6 +162,7 @@ export const Acoes = styled.div`
   @media (max-width: ${CELULAR}) { justify-content: flex-start; margin-top: 4px; }
 `
 export const Botao = styled.button<{ $perigo?: boolean }>`
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
   border-radius: ${({ theme }) => theme.radii.sm}; padding: 6px 12px; cursor: pointer; background: transparent;
   font-weight: ${({ theme }) => theme.fontWeights.bold}; font-size: ${({ theme }) => theme.fontSizes.sm};
   border: 1px solid ${({ $perigo, theme }) => ($perigo ? theme.colors.error : theme.colors.primary)};

@@ -204,6 +204,11 @@ export const chaves = {
    */
   assinaturasDoAdmin: () => ['admin', 'assinaturas'] as const,
   /**
+   * As cortesias por e-mail esperando o cadastro (web#503, api#597). Debaixo de
+   * `assinaturas` para a mesma invalidação refazer as duas listas.
+   */
+  convitesDeCortesia: () => ['admin', 'assinaturas', 'convites'] as const,
+  /**
    * Os donos e os planos que o formulário de assinatura manual oferece (api#537).
    *
    * Separados da lista de assinaturas porque são carregados só quando o modal

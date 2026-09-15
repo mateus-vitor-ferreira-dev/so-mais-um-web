@@ -1,5 +1,6 @@
+import { AxiosError } from 'axios'
 import api from './api'
-import type { ApiEnvelope, AssinaturaDoAdmin } from '../types/api'
+import type { ApiEnvelope, AssinaturaDoAdmin, ConviteDeCortesia, ResultadoDaCortesia } from '../types/api'
 
 /**
  * As assinaturas, do ponto de vista do admin (api#537).
@@ -48,8 +49,27 @@ export const assinaturasDoAdmin = {
    * a mensagem da api já traz a data da primeira — é ela que a tela mostra, em
    * vez de inventar um texto que não saberia a data.
    */
-  conceder: (dados: { userId: string; planId: string; validoAte: string }) =>
-    api.post('/admin/subscriptions/cortesia', dados).then((r) => r.data.data),
+  conceder: (
+    dados: ({ userId: string } | { email: string }) & { planId: string; validoAte: string },
+  ): Promise<ResultadoDaCortesia> =>
+    api.post<ApiEnvelope<ResultadoDaCortesia>>('/admin/subscriptions/cortesia', dados).then(desembrulhar),
+
+  /**
+   * As cortesias por e-mail esperando o cadastro (api#597).
+   *
+   * **`null` quando a api ainda não tem a rota.** É a detecção que deixa a web
+   * ir para a produção antes da api: com `null`, a tela continua concedendo pela
+   * busca de dono, como antes. Só o 404 conta como "api antiga" — outro erro é
+   * erro, e a tela diz que não carregou.
+   */
+  convitesPendentes: (): Promise<ConviteDeCortesia[] | null> =>
+    api
+      .get<ApiEnvelope<ConviteDeCortesia[]>>('/admin/subscriptions/cortesia/convites')
+      .then(desembrulhar)
+      .catch((erro: unknown) => {
+        if (erro instanceof AxiosError && erro.response?.status === 404) return null
+        throw erro
+      }),
 
   /** Estende a validade. O plano não muda: trocar de degrau é outra decisão. */
   renovar: (id: string, validoAte: string) =>
