@@ -4,6 +4,9 @@
  * O que ela precisa provar não é que renderiza uma tabela: é que **não cobra**,
  * que a assinatura da Stripe aparece sem se deixar tocar, e que uma manual
  * vencida salta aos olhos de quem não abre esta tela todo dia.
+ *
+ * Desde a web#502 a lista é uma tabela com filtros e números no topo, e o dono
+ * se escolhe por busca, e não por um `<select>` com a base inteira.
  */
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { fireEvent, renderWithProviders, screen, waitFor, within } from '../../../test/render'
@@ -67,58 +70,19 @@ const cortesia = (patch: Partial<AssinaturaDoAdmin> = {}): AssinaturaDoAdmin =>
     ...patch,
   })
 
-const monta = () => renderWithProviders(<AdminSubscriptions />, { route: '/admin/subscriptions' })
-
-// ── Qual dos dois preços a linha mostra (#449) ────────────────────────────────
-
-describe('o valor da linha', () => {
-  /**
-   * O número é o líquido nas duas origens. Na manual isso não é ambíguo — o Pix
-   * cai inteiro —, então a linha não ganha explicação nenhuma: rótulo onde não
-   * há dois números só faria ruído.
-   */
-  it('não explica nada na manual, onde os dois números são o mesmo', async () => {
-    servico.listar.mockResolvedValue([manual()])
-    monta()
-
-    await screen.findByText('Joana Ribeiro')
-    const linha = linhaDe('Joana Ribeiro')
-    expect(linha).toHaveTextContent('Pro · R$ 79,90/mês')
-    expect(linha).not.toHaveTextContent(/recebidos/)
-    expect(linha).not.toHaveTextContent(/o cartão cobra/)
-  })
-
-  /**
-   * Na Stripe o painel diz o líquido e a fatura do dono diz o bruto. Sem rótulo,
-   * quem confere o primeiro pagamento real vê dois números do mesmo produto e
-   * nenhuma explicação — informação errada com a mesma confiança da certa.
-   */
-  it('diz que o valor é o recebido quando a origem é Stripe', async () => {
-    servico.listar.mockResolvedValue([daStripe()])
-    monta()
-
-    await screen.findByText('Pedro Alves')
-    const linha = linhaDe('Pedro Alves')
-    expect(linha).toHaveTextContent('Pro · R$ 79,90/mês recebidos (o cartão cobra mais, com a taxa)')
-  })
-
-  /**
-   * O bruto não é reconstruído aqui de propósito: a taxa mora na api
-   * (`plans/precoNoCartao.ts`), e refazer a conta no front é como os dois lados
-   * passam a discordar — foi a decisão da api#539.
-   */
-  it('não inventa o valor do cartão — nenhuma aritmética de taxa no front', async () => {
-    servico.listar.mockResolvedValue([daStripe()])
-    monta()
-
-    await screen.findByText('Pedro Alves')
-    const linha = linhaDe('Pedro Alves')
-    // 79,90 ÷ 0,95 = 84,11. Se esse número aparecer, a conta foi refeita aqui.
-    expect(linha).not.toHaveTextContent(/84,11/)
-  })
+const dono = (id: string, name: string, email: string) => ({
+  id, name, email, role: 'OWNER' as const, badge: null, createdAt: emDias(-90),
+  _count: { placesOwned: 1, matchesCreated: 0, participations: 0 },
 })
 
-const linhaDe = (nome: string) => screen.getByText(nome).closest('li') as HTMLElement
+const donosDaBase = (...lista: ReturnType<typeof dono>[]) =>
+  ({ data: { data: lista } }) as Awaited<ReturnType<typeof adminService.listUsers>>
+
+const monta = () => renderWithProviders(<AdminSubscriptions />, { route: '/admin/subscriptions' })
+
+const linhaDe = (nome: string) => screen.getByText(nome).closest('tr') as HTMLElement
+
+const filtro = (nome: RegExp) => screen.getByRole('tab', { name: nome })
 
 beforeEach(() => {
   vi.clearAllMocks()
@@ -133,25 +97,69 @@ beforeEach(() => {
     // não devolve mais.
     { id: 'p-pro', nome: 'Pro', precoCentavos: 7990, precoNoCartaoCentavos: 8411, funcionalidades: [] },
   ])
-  const dono = (id: string, name: string, email: string) => ({
-    id, name, email, role: 'OWNER' as const, badge: null, createdAt: emDias(-90),
-    _count: { placesOwned: 1, matchesCreated: 0, participations: 0 },
+  admin.listUsers.mockResolvedValue(
+    donosDaBase(dono('u1', 'Joana Ribeiro', 'joana@arena.com'), dono('u2', 'Carla Dias', 'carla@nova.com')),
+  )
+})
+
+// ── Qual dos dois preços a linha mostra (#449) ────────────────────────────────
+
+describe('o valor da linha', () => {
+  /**
+   * O número é o líquido nas duas origens. Na manual isso não é ambíguo — o Pix
+   * cai inteiro —, então a linha não ganha explicação nenhuma: rótulo onde não
+   * há dois números só faria ruído.
+   */
+  it('não explica nada na manual, onde os dois números são o mesmo', async () => {
+    monta()
+
+    await screen.findByText('Joana Ribeiro')
+    const linha = linhaDe('Joana Ribeiro')
+    expect(linha).toHaveTextContent('R$ 79,90/mês')
+    expect(linha).not.toHaveTextContent(/recebidos/)
+    expect(linha).not.toHaveTextContent(/o cartão cobra/)
   })
-  admin.listUsers.mockResolvedValue({
-    data: { data: [dono('u1', 'Joana Ribeiro', 'joana@arena.com'), dono('u2', 'Carla Dias', 'carla@nova.com')] },
-  } as Awaited<ReturnType<typeof adminService.listUsers>>)
+
+  /**
+   * Na Stripe o painel diz o líquido e a fatura do dono diz o bruto. Sem rótulo,
+   * quem confere o primeiro pagamento real vê dois números do mesmo produto e
+   * nenhuma explicação — informação errada com a mesma confiança da certa.
+   */
+  it('diz que o valor é o recebido quando a origem é Stripe', async () => {
+    servico.listar.mockResolvedValue([daStripe()])
+    monta()
+
+    await screen.findByText('Pedro Alves')
+    expect(linhaDe('Pedro Alves')).toHaveTextContent('R$ 79,90/mês recebidos (o cartão cobra mais, com a taxa)')
+  })
+
+  /**
+   * O bruto não é reconstruído aqui de propósito: a taxa mora na api
+   * (`plans/precoNoCartao.ts`), e refazer a conta no front é como os dois lados
+   * passam a discordar — foi a decisão da api#539.
+   */
+  it('não inventa o valor do cartão — nenhuma aritmética de taxa no front', async () => {
+    servico.listar.mockResolvedValue([daStripe()])
+    monta()
+
+    await screen.findByText('Pedro Alves')
+    // 79,90 ÷ 0,95 = 84,11. Se esse número aparecer, a conta foi refeita aqui.
+    expect(linhaDe('Pedro Alves')).not.toHaveTextContent(/84,11/)
+  })
 })
 
 describe('a lista', () => {
-  it('diz quem, plano, origem, situação e até quando vale', async () => {
+  it('diz quem, estabelecimento, plano, origem, situação e até quando vale', async () => {
     monta()
 
     await screen.findByText('Joana Ribeiro')
     const linha = within(linhaDe('Joana Ribeiro'))
-    expect(linha.getByText(/Arena Lavras · joana@arena\.com/)).toBeInTheDocument()
-    expect(linha.getByText(/Pro · R\$ 79,90\/mês · vale até/)).toBeInTheDocument()
+    expect(linha.getByText('joana@arena.com')).toBeInTheDocument()
+    expect(linha.getByText('Arena Lavras')).toBeInTheDocument()
+    expect(linha.getByText('Pro')).toBeInTheDocument()
     expect(linha.getByText('Manual (Pix)')).toBeInTheDocument()
     expect(linha.getByText('Em dia')).toBeInTheDocument()
+    expect(linha.getByText(/vale até/)).toBeInTheDocument()
   })
 
   it('mostra quem registrou o Pix — é a única memória desse dinheiro', async () => {
@@ -169,14 +177,60 @@ describe('a lista', () => {
   })
 })
 
-describe('o que precisa de atenção salta aos olhos', () => {
-  it('avisa no topo quando uma manual está vencendo, com o nome de quem é', async () => {
-    servico.listar.mockResolvedValue([manual({ currentPeriodEnd: emDias(3) })])
+describe('os números do topo (web#502)', () => {
+  it('conta ativas, atenção, cortesias em curso e a receita manual', async () => {
+    servico.listar.mockResolvedValue([
+      manual(),
+      manual({ id: 'a4', owner: { name: 'Rui', email: 'rui@x.com' }, monthlyValue: '100,00', currentPeriodEnd: emDias(3) }),
+      daStripe(),
+      cortesia(),
+      manual({ id: 'a5', owner: { name: 'Lia', email: 'lia@x.com' }, emDia: false, currentPeriodEnd: emDias(-3) }),
+    ])
     monta()
 
-    expect(await screen.findByText(/1 assinatura precisa de atenção/)).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveTextContent('Joana Ribeiro')
-    expect(screen.getByText('Vence em 3 dias')).toBeInTheDocument()
+    const numero = async (rotulo: string) =>
+      (await screen.findByText(rotulo, { selector: 'p' })).parentElement as HTMLElement
+
+    // A da Stripe é ativa e não entra na receita manual; a cortesia é ativa e
+    // não é dinheiro; a vencida não é ativa e não soma.
+    expect(await numero('Ativas')).toHaveTextContent('4')
+    expect(await numero('Cortesias em curso')).toHaveTextContent('1')
+    expect(await numero('Receita manual do mês')).toHaveTextContent('R$ 179,90')
+    expect(await numero('Precisam de atenção')).toHaveTextContent('2')
+  })
+})
+
+describe('o que precisa de atenção salta aos olhos', () => {
+  it('abre no filtro de atenção quando há alguma, só com ela na lista', async () => {
+    servico.listar.mockResolvedValue([manual({ currentPeriodEnd: emDias(3) }), daStripe()])
+    monta()
+
+    expect(await screen.findByText('Vence em 3 dias')).toBeInTheDocument()
+    expect(filtro(/Precisam de atenção/)).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByText('Joana Ribeiro')).toBeInTheDocument()
+    expect(screen.queryByText('Pedro Alves')).not.toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent(/Nem a manual nem a cortesia se renovam sozinhas/)
+  })
+
+  it('sem nada pedindo atenção, abre em Todas — e não num filtro vazio', async () => {
+    servico.listar.mockResolvedValue([manual(), daStripe()])
+    monta()
+
+    await screen.findByText('Joana Ribeiro')
+    expect(filtro(/Todas/)).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByText('Pedro Alves')).toBeInTheDocument()
+  })
+
+  it('o filtro escolhido troca a lista', async () => {
+    servico.listar.mockResolvedValue([manual(), daStripe(), cortesia()])
+    const { user } = monta()
+
+    await screen.findByText('Joana Ribeiro')
+    await user.click(filtro(/Cortesias/))
+
+    expect(screen.getByText('Marina Costa')).toBeInTheDocument()
+    expect(screen.queryByText('Joana Ribeiro')).not.toBeInTheDocument()
+    expect(screen.queryByText('Pedro Alves')).not.toBeInTheDocument()
   })
 
   it('vencida é vencida, mesmo com o status ainda dizendo active', async () => {
@@ -185,7 +239,7 @@ describe('o que precisa de atenção salta aos olhos', () => {
     monta()
 
     expect(await screen.findByText('Vencida')).toBeInTheDocument()
-    expect(screen.getByText(/precisa de atenção/)).toBeInTheDocument()
+    expect(filtro(/Precisam de atenção/)).toHaveAttribute('aria-selected', 'true')
   })
 
   it('não alarma pela da Stripe: aquela tem webhook', async () => {
@@ -193,7 +247,8 @@ describe('o que precisa de atenção salta aos olhos', () => {
     monta()
 
     expect(await screen.findByText('Pagamento atrasado')).toBeInTheDocument()
-    expect(screen.queryByText(/precisa de atenção/)).not.toBeInTheDocument()
+    expect(filtro(/Precisam de atenção/)).toHaveTextContent('0')
+    expect(filtro(/Todas/)).toHaveAttribute('aria-selected', 'true')
   })
 
   it('encerrada não pede atenção — alguém já decidiu que aquela acabou', async () => {
@@ -203,19 +258,91 @@ describe('o que precisa de atenção salta aos olhos', () => {
     monta()
 
     expect(await screen.findByText('Encerrada')).toBeInTheDocument()
-    expect(screen.queryByText(/precisa de atenção/)).not.toBeInTheDocument()
+    expect(filtro(/Precisam de atenção/)).toHaveTextContent('0')
   })
 })
 
 describe('a assinatura da Stripe não se toca', () => {
-  it('não oferece ação, e diz por quê', async () => {
-    servico.listar.mockResolvedValue([daStripe()])
+  it('não oferece ação, e diz por quê uma vez só, e não em cada linha', async () => {
+    servico.listar.mockResolvedValue([
+      daStripe(),
+      daStripe({ id: 'a6', owner: { name: 'Beto Lima', email: 'beto@quadra.com' } }),
+    ])
     monta()
 
     await screen.findByText('Pedro Alves')
-    const linha = within(linhaDe('Pedro Alves'))
-    expect(linha.queryByRole('button', { name: /renovar|encerrar/i })).not.toBeInTheDocument()
-    expect(linha.getByText(/o próximo webhook desfaz sem avisar/i)).toBeInTheDocument()
+    for (const nome of ['Pedro Alves', 'Beto Lima']) {
+      expect(within(linhaDe(nome)).queryByRole('button', { name: /renovar|encerrar/i })).not.toBeInTheDocument()
+    }
+    expect(screen.getAllByText(/o próximo webhook desfaz sem avisar/i)).toHaveLength(1)
+  })
+
+  it('o motivo some quando o filtro não mostra nenhuma da Stripe', async () => {
+    servico.listar.mockResolvedValue([manual(), daStripe()])
+    const { user } = monta()
+
+    await screen.findByText('Pedro Alves')
+    await user.click(filtro(/Manuais/))
+    expect(screen.queryByText(/o próximo webhook desfaz sem avisar/i)).not.toBeInTheDocument()
+  })
+})
+
+describe('a busca de dono (web#502)', () => {
+  const abreRegistro = async () => {
+    const montado = monta()
+    await montado.user.click(await screen.findByRole('button', { name: /registrar assinatura/i }))
+    return montado
+  }
+
+  it('acha por e-mail e por nome sem acento, e escolhe', async () => {
+    admin.listUsers.mockResolvedValue(
+      donosDaBase(dono('u2', 'Carla Dias', 'carla@nova.com'), dono('u3', 'Tânia Brás', 'tania@beach.com')),
+    )
+    const { user } = await abreRegistro()
+
+    const busca = await screen.findByRole('combobox', { name: 'Dono' })
+    await user.type(busca, 'nova.com')
+    expect(screen.getByRole('option', { name: /Carla Dias/ })).toBeInTheDocument()
+    expect(screen.queryByRole('option', { name: /Tânia/ })).not.toBeInTheDocument()
+
+    await user.clear(busca)
+    await user.type(busca, 'tania bras')
+    await user.click(screen.getByRole('option', { name: /Tânia Brás/ }))
+
+    // Escolhido, o campo vira o nome, com o jeito de trocar.
+    expect(screen.queryByRole('combobox', { name: 'Dono' })).not.toBeInTheDocument()
+    expect(screen.getByText('tania@beach.com')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Trocar' }))
+    expect(screen.getByRole('combobox', { name: 'Dono' })).toBeInTheDocument()
+  })
+
+  it('não oferece dono que já assina — a api recusaria com 409', async () => {
+    const { user } = await abreRegistro()
+
+    await user.click(await screen.findByRole('combobox', { name: 'Dono' }))
+    expect(await screen.findByRole('option', { name: /Carla Dias/ })).toBeInTheDocument()
+    expect(screen.queryByRole('option', { name: /Joana Ribeiro/ })).not.toBeInTheDocument()
+  })
+
+  it('setas e Enter escolhem sem enviar o formulário', async () => {
+    const { user } = await abreRegistro()
+
+    await user.click(await screen.findByRole('combobox', { name: 'Dono' }))
+    await screen.findByRole('option', { name: /Carla Dias/ })
+    await user.keyboard('{Enter}')
+
+    expect(screen.getByText('carla@nova.com')).toBeInTheDocument()
+    expect(servico.registrar).not.toHaveBeenCalled()
+  })
+
+  it('sem dono escolhido, diz o que falta e não chama a api', async () => {
+    const { user } = await abreRegistro()
+
+    await user.selectOptions(await screen.findByLabelText('Plano'), 'p-pro')
+    await user.click(screen.getByRole('button', { name: 'Registrar' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Escolha um dono da lista.')
+    expect(servico.registrar).not.toHaveBeenCalled()
   })
 })
 
@@ -224,7 +351,8 @@ describe('registrar', () => {
     const { user } = monta()
 
     await user.click(await screen.findByRole('button', { name: /registrar assinatura/i }))
-    await user.selectOptions(await screen.findByLabelText('Dono'), 'u2')
+    await user.type(await screen.findByRole('combobox', { name: 'Dono' }), 'Carla')
+    await user.click(await screen.findByRole('option', { name: /Carla Dias/ }))
     await user.selectOptions(await screen.findByLabelText('Plano'), 'p-pro')
     // `fireEvent`, e não `user.type`: campo de data é digitado por segmentos, e
     // o que o teclado produz depende da locale do navegador.
@@ -235,16 +363,6 @@ describe('registrar', () => {
     await waitFor(() => expect(servico.registrar).toHaveBeenCalledWith({
       userId: 'u2', planId: 'p-pro', validoAte: '2027-01-31',
     }))
-  })
-
-  it('não oferece dono que já assina — a api recusaria com 409', async () => {
-    const { user } = monta()
-
-    await user.click(await screen.findByRole('button', { name: /registrar assinatura/i }))
-    const dono = await screen.findByLabelText('Dono')
-
-    await waitFor(() => expect(within(dono).getByRole('option', { name: /Carla Dias/ })).toBeInTheDocument())
-    expect(within(dono).queryByRole('option', { name: /Joana Ribeiro/ })).not.toBeInTheDocument()
   })
 
   it('a validade não aceita data passada', async () => {
@@ -302,24 +420,30 @@ describe('a tela nunca cobra', () => {
  * uma decisão — o valor, o selo, as ações e a fila do que precisa de atenção.
  */
 describe('cortesia', () => {
-  it('concede por um caminho próprio, e não por um seletor de origem', async () => {
+  const concedeParaMarina = async () => {
     servico.listar.mockResolvedValue([])
-    servico.conceder.mockResolvedValue({})
-    admin.listUsers.mockResolvedValue({
-      data: { data: [{ id: 'u9', name: 'Marina Costa', email: 'marina@arena.com', role: 'OWNER' }] },
-    } as never)
+    admin.listUsers.mockResolvedValue(donosDaBase(dono('u9', 'Marina Costa', 'marina@arena.com')))
 
-    const { user } = monta()
+    const montado = monta()
+    const { user } = montado
     await user.click(await screen.findByRole('button', { name: /Conceder cortesia/i }))
 
     const modal = within(await screen.findByRole('dialog', { name: /Conceder cortesia/i }))
+    await user.type(modal.getByRole('combobox', { name: 'Dono' }), 'marina')
+    await user.click(await modal.findByRole('option', { name: /Marina Costa/ }))
+    await user.selectOptions(modal.getByLabelText(/Plano/i), 'p-pro')
+    return { ...montado, modal }
+  }
+
+  it('concede por um caminho próprio, e não por um seletor de origem', async () => {
+    servico.conceder.mockResolvedValue({})
+    const { user, modal } = await concedeParaMarina()
+
     // Nenhum seletor de origem: a rota é que decide, e é o ponto de as duas
     // ações serem separadas.
     expect(modal.queryByText(/origem/i)).not.toBeInTheDocument()
     expect(modal.getByText(/não entra na Receita Mensal/i)).toBeInTheDocument()
 
-    await user.selectOptions(modal.getByLabelText(/Dono/i), 'u9')
-    await user.selectOptions(modal.getByLabelText(/Plano/i), 'p-pro')
     await user.click(modal.getByRole('button', { name: 'Conceder' }))
 
     await waitFor(() => expect(servico.conceder).toHaveBeenCalledTimes(1))
@@ -355,8 +479,6 @@ describe('cortesia', () => {
     const linha = within(linhaDe('Marina Costa'))
     expect(await linha.findByRole('button', { name: 'Encerrar' })).toBeInTheDocument()
     expect(linha.queryByRole('button', { name: 'Renovar' })).not.toBeInTheDocument()
-    // E não é a mensagem da Stripe: cortesia se toca, só não se renova.
-    expect(linha.queryByText(/Cobrada pela Stripe/)).not.toBeInTheDocument()
   })
 
   it('cortesia vencendo entra na fila do que precisa de atenção', async () => {
@@ -365,8 +487,9 @@ describe('cortesia', () => {
     servico.listar.mockResolvedValue([cortesia({ currentPeriodEnd: emDias(2) })])
     monta()
 
-    expect(await screen.findByText(/1 assinatura precisa de atenção/)).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveTextContent('Marina Costa')
+    expect(await screen.findByText('Vence em 2 dias')).toBeInTheDocument()
+    expect(filtro(/Precisam de atenção/)).toHaveAttribute('aria-selected', 'true')
+    expect(within(screen.getByRole('tabpanel')).getByText('Marina Costa')).toBeInTheDocument()
   })
 
   it('teste acabado não se chama "vencida" — ninguém deixou de pagar', async () => {
@@ -382,7 +505,6 @@ describe('cortesia', () => {
   it('já concedida vira frase com a data, e o formulário fica aberto', async () => {
     // Não é falha do sistema: é resposta, e a ação seguinte de quem leu é
     // escolher outro dono — fechar o modal a obrigaria a começar de novo.
-    servico.listar.mockResolvedValue([])
     servico.conceder.mockRejectedValue(
       erroDaApi(
         'Este dono já teve um mês de cortesia em 12/03/2026. Cortesia é uma por dono.',
@@ -390,16 +512,8 @@ describe('cortesia', () => {
         'CORTESIA_JA_CONCEDIDA',
       ),
     )
-    admin.listUsers.mockResolvedValue({
-      data: { data: [{ id: 'u9', name: 'Marina Costa', email: 'marina@arena.com', role: 'OWNER' }] },
-    } as never)
+    const { user, modal } = await concedeParaMarina()
 
-    const { user } = monta()
-    await user.click(await screen.findByRole('button', { name: /Conceder cortesia/i }))
-
-    const modal = within(await screen.findByRole('dialog', { name: /Conceder cortesia/i }))
-    await user.selectOptions(modal.getByLabelText(/Dono/i), 'u9')
-    await user.selectOptions(modal.getByLabelText(/Plano/i), 'p-pro')
     await user.click(modal.getByRole('button', { name: 'Conceder' }))
 
     await waitFor(() => expect(servico.conceder).toHaveBeenCalled())

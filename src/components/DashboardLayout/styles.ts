@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
+/** A largura máxima do conteúdo e da linha da topbar. */
+const LARGURA_DO_CONTEUDO = '1440px'
+
 export const Shell = styled.div`
   display: flex;
   height: 100vh;
@@ -377,6 +380,10 @@ export const TopbarRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* A mesma largura e o mesmo centro do conteúdo: o título começa onde a
+     página começa, e o sino termina onde ela termina (web#502). */
+  max-width: ${LARGURA_DO_CONTEUDO};
+  margin-inline: auto;
 
   @media (max-width: 768px) {
     justify-content: flex-start;
@@ -405,7 +412,12 @@ export const Content = styled.main`
  * Até a #493 cada página do jogador escolhia a sua (1100, 1200, 780 centrado,
  * 680 à esquerda), e o painel do dono ocupava a tela toda. Numa tela larga, o
  * título da topbar ficava num lugar e o conteúdo começava em outro.
+ *
+ * **Centrada desde a web#502.** Com 1200px colados à esquerda, um monitor largo
+ * deixava o lado direito vazio e as tabelas do admin espremidas. A largura
+ * subiu para 1440px e o bloco foi para o centro, junto com a linha da topbar.
  */
 export const LarguraDoConteudo = styled.div`
-  max-width: 1200px;
+  max-width: ${LARGURA_DO_CONTEUDO};
+  margin-inline: auto;
 `
