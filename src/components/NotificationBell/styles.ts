@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { alvoDeToque } from '../../styles/telas'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -18,6 +19,7 @@ export const BellBtn = styled.button`
   cursor: pointer;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
   flex-shrink: 0;
+  ${alvoDeToque}
 
   &:hover {
     background: ${({ theme }) => theme.colors.primarySubtle};

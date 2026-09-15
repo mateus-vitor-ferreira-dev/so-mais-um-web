@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import { alvoDeToque, ate } from '../../styles/telas'
 
 /** A largura máxima do conteúdo e da linha da topbar. */
 const LARGURA_DO_CONTEUDO = '1440px'
@@ -26,7 +27,7 @@ export const Sidebar = styled.aside<{ $open?: boolean }>`
   top: 0;
   z-index: 80;
 
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     position: fixed;
     left: 0;
     transform: translateX(${({ $open }) => $open ? '0' : '-100%'});
@@ -38,7 +39,7 @@ export const Sidebar = styled.aside<{ $open?: boolean }>`
 export const MobileOverlay = styled.button`
   display: none;
 
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     display: block;
     position: fixed;
     inset: 0;
@@ -301,7 +302,7 @@ export const Topbar = styled.header`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   padding: 16px 32px;
 
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     padding: 12px 16px;
   }
 `
@@ -318,8 +319,9 @@ export const MobileMenuBtn = styled.button`
   color: ${({ theme }) => theme.colors.textPrimary};
   background: ${({ theme }) => theme.colors.bgCard};
   cursor: pointer;
+  ${alvoDeToque}
 
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     display: flex;
   }
 `
@@ -332,7 +334,7 @@ export const TopbarTitle = styled.h1`
 
   /* No celular o título divide a linha com o menu, o sino e a ação da página:
      uma linha só, cortada, em vez de empurrar a barra para duas (web#493). */
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     font-size: ${({ theme }) => theme.fontSizes.lg};
     white-space: nowrap;
     overflow: hidden;
@@ -345,7 +347,7 @@ export const TopbarSub = styled.p`
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 0;
 
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -360,7 +362,7 @@ export const TopbarActions = styled.div`
   /* No celular, a ação da página que tem ícone fica só com o ícone (web#493).
      Com o rótulo inteiro, "Criar Partida" deixava para o título "Minhas ...".
      O texto continua no botão, só sem tamanho: é ele que dá o nome acessível. */
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     .acoes-da-pagina > button:has(svg) {
       font-size: 0;
       gap: 0;
@@ -385,7 +387,7 @@ export const TopbarRow = styled.div`
   max-width: ${LARGURA_DO_CONTEUDO};
   margin-inline: auto;
 
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     justify-content: flex-start;
     gap: 12px;
 
@@ -401,7 +403,7 @@ export const Content = styled.main`
   overflow-y: auto;
   padding: 28px 32px;
 
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     padding: 20px 16px;
   }
 `

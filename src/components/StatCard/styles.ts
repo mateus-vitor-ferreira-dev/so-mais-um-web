@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ate } from '../../styles/telas'
 
 export const Card = styled.div`
   background: ${({ theme }) => theme.colors.bgCard};
@@ -8,6 +9,10 @@ export const Card = styled.div`
   position: relative;
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  ${ate.tablet} {
+    padding: 14px 14px 14px 18px;
+  }
 `
 
 export const Accent = styled.div`
@@ -26,6 +31,14 @@ export const Label = styled.p`
   margin: 0 0 6px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+
+  /* Na grade de duas colunas o rótulo quebra linha em vez de ser cortado pelo
+     overflow do cartão ("USUÁRIOS COMUNS" saía "USUÁRIC", web#511). */
+  ${ate.tablet} {
+    letter-spacing: 0.02em;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
 `
 
 export const Value = styled.p`
@@ -34,4 +47,9 @@ export const Value = styled.p`
   color: ${({ theme }) => theme.colors.textPrimary};
   margin: 0;
   line-height: 1;
+
+  ${ate.tablet} {
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+    overflow-wrap: anywhere;
+  }
 `
