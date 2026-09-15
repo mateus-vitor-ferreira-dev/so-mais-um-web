@@ -1,0 +1,2190 @@
+[
+ {
+  "perfil": "visitante",
+  "rota": "/login",
+  "largura": 360,
+  "urlFinal": "/login",
+  "arquivo": "visitante_login-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 5,
+  "fonteMenorQue12": 2
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/login",
+  "largura": 390,
+  "urlFinal": "/login",
+  "arquivo": "visitante_login-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 5,
+  "fonteMenorQue12": 2
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/login",
+  "largura": 768,
+  "urlFinal": "/login",
+  "arquivo": "visitante_login-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 5,
+  "fonteMenorQue12": 2
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/register",
+  "largura": 360,
+  "urlFinal": "/register",
+  "arquivo": "visitante_register-360.png",
+  "vw": 360,
+  "docVaza": 25,
+  "vazam": [
+   {
+    "el": "div \"Entrar Cadastrar Crie sua conta É rápido, grátis e\"",
+    "direita": 385,
+    "largura": 385
+   }
+  ],
+  "totalVazando": 1,
+  "alvosPequenos": 6,
+  "fonteMenorQue12": 4
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/register",
+  "largura": 390,
+  "urlFinal": "/register",
+  "arquivo": "visitante_register-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 6,
+  "fonteMenorQue12": 4
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/register",
+  "largura": 768,
+  "urlFinal": "/register",
+  "arquivo": "visitante_register-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 6,
+  "fonteMenorQue12": 4
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/esqueci-senha",
+  "largura": 360,
+  "urlFinal": "/esqueci-senha",
+  "arquivo": "visitante_esqueci-senha-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/esqueci-senha",
+  "largura": 390,
+  "urlFinal": "/esqueci-senha",
+  "arquivo": "visitante_esqueci-senha-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/esqueci-senha",
+  "largura": 768,
+  "urlFinal": "/esqueci-senha",
+  "arquivo": "visitante_esqueci-senha-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/seja-parceiro",
+  "largura": 360,
+  "urlFinal": "/seja-parceiro",
+  "arquivo": "visitante_seja-parceiro-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/seja-parceiro",
+  "largura": 390,
+  "urlFinal": "/seja-parceiro",
+  "arquivo": "visitante_seja-parceiro-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "visitante",
+  "rota": "/seja-parceiro",
+  "largura": 768,
+  "urlFinal": "/seja-parceiro",
+  "arquivo": "visitante_seja-parceiro-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/home",
+  "largura": 360,
+  "urlFinal": "/home",
+  "arquivo": "jogador_home-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 4,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/home",
+  "largura": 390,
+  "urlFinal": "/home",
+  "arquivo": "jogador_home-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 4,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/home",
+  "largura": 768,
+  "urlFinal": "/home",
+  "arquivo": "jogador_home-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 4,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/quero-jogar",
+  "largura": 360,
+  "urlFinal": "/quero-jogar",
+  "arquivo": "jogador_quero-jogar-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 41,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/quero-jogar",
+  "largura": 390,
+  "urlFinal": "/quero-jogar",
+  "arquivo": "jogador_quero-jogar-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 41,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/quero-jogar",
+  "largura": 768,
+  "urlFinal": "/quero-jogar",
+  "arquivo": "jogador_quero-jogar-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 41,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/day-uses",
+  "largura": 360,
+  "urlFinal": "/day-uses",
+  "arquivo": "jogador_day-uses-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 3,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/day-uses",
+  "largura": 390,
+  "urlFinal": "/day-uses",
+  "arquivo": "jogador_day-uses-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 3,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/day-uses",
+  "largura": 768,
+  "urlFinal": "/day-uses",
+  "arquivo": "jogador_day-uses-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 3,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/criar-partida",
+  "largura": 360,
+  "urlFinal": "/criar-partida",
+  "arquivo": "jogador_criar-partida-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/criar-partida",
+  "largura": 390,
+  "urlFinal": "/criar-partida",
+  "arquivo": "jogador_criar-partida-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/criar-partida",
+  "largura": 768,
+  "urlFinal": "/criar-partida",
+  "arquivo": "jogador_criar-partida-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/minhas-partidas",
+  "largura": 360,
+  "urlFinal": "/minhas-partidas",
+  "arquivo": "jogador_minhas-partidas-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 18,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/minhas-partidas",
+  "largura": 390,
+  "urlFinal": "/minhas-partidas",
+  "arquivo": "jogador_minhas-partidas-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 18,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/minhas-partidas",
+  "largura": 768,
+  "urlFinal": "/minhas-partidas",
+  "arquivo": "jogador_minhas-partidas-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 18,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/historico",
+  "largura": 360,
+  "urlFinal": "/historico",
+  "arquivo": "jogador_historico-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/historico",
+  "largura": 390,
+  "urlFinal": "/historico",
+  "arquivo": "jogador_historico-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/historico",
+  "largura": 768,
+  "urlFinal": "/historico",
+  "arquivo": "jogador_historico-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 7,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/avaliacoes",
+  "largura": 360,
+  "urlFinal": "/avaliacoes",
+  "arquivo": "jogador_avaliacoes-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/avaliacoes",
+  "largura": 390,
+  "urlFinal": "/avaliacoes",
+  "arquivo": "jogador_avaliacoes-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/avaliacoes",
+  "largura": 768,
+  "urlFinal": "/avaliacoes",
+  "arquivo": "jogador_avaliacoes-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/torneios",
+  "largura": 360,
+  "urlFinal": "/torneios",
+  "arquivo": "jogador_torneios-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/torneios",
+  "largura": 390,
+  "urlFinal": "/torneios",
+  "arquivo": "jogador_torneios-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/torneios",
+  "largura": 768,
+  "urlFinal": "/torneios",
+  "arquivo": "jogador_torneios-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/torneios/cmu2qp3rf00yhpk1xeshhrwou",
+  "largura": 360,
+  "urlFinal": "/torneios/cmu2qp3rf00yhpk1xeshhrwou",
+  "arquivo": "jogador_torneios_id-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/torneios/cmu2qp3rf00yhpk1xeshhrwou",
+  "largura": 390,
+  "urlFinal": "/torneios/cmu2qp3rf00yhpk1xeshhrwou",
+  "arquivo": "jogador_torneios_id-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/torneios/cmu2qp3rf00yhpk1xeshhrwou",
+  "largura": 768,
+  "urlFinal": "/torneios/cmu2qp3rf00yhpk1xeshhrwou",
+  "arquivo": "jogador_torneios_id-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/times",
+  "largura": 360,
+  "urlFinal": "/times",
+  "arquivo": "jogador_times-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/times",
+  "largura": 390,
+  "urlFinal": "/times",
+  "arquivo": "jogador_times-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/times",
+  "largura": 768,
+  "urlFinal": "/times",
+  "arquivo": "jogador_times-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/times/cmu2qp3hr00empk1xvqamw5oh",
+  "largura": 360,
+  "urlFinal": "/times/cmu2qp3hr00empk1xvqamw5oh",
+  "arquivo": "jogador_times_id-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/times/cmu2qp3hr00empk1xvqamw5oh",
+  "largura": 390,
+  "urlFinal": "/times/cmu2qp3hr00empk1xvqamw5oh",
+  "arquivo": "jogador_times_id-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/times/cmu2qp3hr00empk1xvqamw5oh",
+  "largura": 768,
+  "urlFinal": "/times/cmu2qp3hr00empk1xvqamw5oh",
+  "arquivo": "jogador_times_id-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/amigos",
+  "largura": 360,
+  "urlFinal": "/amigos",
+  "arquivo": "jogador_amigos-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/amigos",
+  "largura": 390,
+  "urlFinal": "/amigos",
+  "arquivo": "jogador_amigos-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 3,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/amigos",
+  "largura": 768,
+  "urlFinal": "/amigos",
+  "arquivo": "jogador_amigos-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 4,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/perfil",
+  "largura": 360,
+  "urlFinal": "/perfil",
+  "arquivo": "jogador_perfil-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "div \"Telefone 🇧🇷 +55 ▼\"",
+    "direita": 372,
+    "largura": 287
+   },
+   {
+    "el": "label \"Telefone\"",
+    "direita": 372,
+    "largura": 287
+   },
+   {
+    "el": "div \"🇧🇷 +55 ▼\"",
+    "direita": 372,
+    "largura": 287
+   },
+   {
+    "el": "input \"(11) 99999-9999\"",
+    "direita": 371,
+    "largura": 205
+   },
+   {
+    "el": "label \"Quero receber novidades, dicas e comunicações de m\"",
+    "direita": 372,
+    "largura": 356
+   }
+  ],
+  "totalVazando": 5,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 2
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/perfil",
+  "largura": 390,
+  "urlFinal": "/perfil",
+  "arquivo": "jogador_perfil-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 2
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/perfil",
+  "largura": 768,
+  "urlFinal": "/perfil",
+  "arquivo": "jogador_perfil-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 2
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/jogador/cmu2qp2wb0016pk1xnlxhi3fz",
+  "largura": 360,
+  "urlFinal": "/jogador/cmu2qp2wb0016pk1xnlxhi3fz",
+  "arquivo": "jogador_jogador_id-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 4,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/jogador/cmu2qp2wb0016pk1xnlxhi3fz",
+  "largura": 390,
+  "urlFinal": "/jogador/cmu2qp2wb0016pk1xnlxhi3fz",
+  "arquivo": "jogador_jogador_id-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 4,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/jogador/cmu2qp2wb0016pk1xnlxhi3fz",
+  "largura": 768,
+  "urlFinal": "/jogador/cmu2qp2wb0016pk1xnlxhi3fz",
+  "arquivo": "jogador_jogador_id-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 5,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/partida/cmu2qp3dp0092pk1xb8ig5gex",
+  "largura": 360,
+  "urlFinal": "/partida/cmu2qp3dp0092pk1xb8ig5gex",
+  "arquivo": "jogador_partida_id-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 5,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/partida/cmu2qp3dp0092pk1xb8ig5gex",
+  "largura": 390,
+  "urlFinal": "/partida/cmu2qp3dp0092pk1xb8ig5gex",
+  "arquivo": "jogador_partida_id-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 5,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "jogador",
+  "rota": "/partida/cmu2qp3dp0092pk1xb8ig5gex",
+  "largura": 768,
+  "urlFinal": "/partida/cmu2qp3dp0092pk1xb8ig5gex",
+  "arquivo": "jogador_partida_id-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 6,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/dashboard",
+  "largura": 360,
+  "urlFinal": "/owner/dashboard",
+  "arquivo": "dono_owner_dashboard-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "div \"BEACH TENNIS 11h ⛅ 24° 10% 12h ⛅ 25° 10% 13h ⛅ 26°\"",
+    "direita": 743,
+    "largura": 702
+   },
+   {
+    "el": "p \"BEACH TENNIS\"",
+    "direita": 728,
+    "largura": 672
+   },
+   {
+    "el": "ul \"Previsão do tempo por hora\"",
+    "direita": 728,
+    "largura": 672
+   },
+   {
+    "el": "li \"16h: 27°, 40% de chuva, risco de chuva e vento for\"",
+    "direita": 364,
+    "largura": 48
+   },
+   {
+    "el": "p \"Nada marcado neste dia. A quadra está livre.\"",
+    "direita": 728,
+    "largura": 672
+   },
+   {
+    "el": "div \"FUTEVÔLEI 1 11h ⛅ 24° 10% 12h ⛅ 25° 10% 13h ⛅ 26° \"",
+    "direita": 743,
+    "largura": 702
+   },
+   {
+    "el": "p \"FUTEVÔLEI 1\"",
+    "direita": 728,
+    "largura": 672
+   },
+   {
+    "el": "ul \"das 14:00 às 18:00 day use de Futevôlei\"",
+    "direita": 728,
+    "largura": 672
+   }
+  ],
+  "totalVazando": 15,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/dashboard",
+  "largura": 390,
+  "urlFinal": "/owner/dashboard",
+  "arquivo": "dono_owner_dashboard-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "div \"BEACH TENNIS 11h ⛅ 24° 10% 12h ⛅ 25° 10% 13h ⛅ 26°\"",
+    "direita": 743,
+    "largura": 702
+   },
+   {
+    "el": "p \"BEACH TENNIS\"",
+    "direita": 728,
+    "largura": 672
+   },
+   {
+    "el": "ul \"Previsão do tempo por hora\"",
+    "direita": 728,
+    "largura": 672
+   },
+   {
+    "el": "li \"17h: 26°, 40% de chuva, risco de chuva e vento for\"",
+    "direita": 416,
+    "largura": 48
+   },
+   {
+    "el": "span \"17h\"",
+    "direita": 403,
+    "largura": 23
+   },
+   {
+    "el": "span \"🌧️\"",
+    "direita": 402,
+    "largura": 20
+   },
+   {
+    "el": "span \"26°\"",
+    "direita": 404,
+    "largura": 25
+   },
+   {
+    "el": "span \"40%\"",
+    "direita": 406,
+    "largura": 27
+   }
+  ],
+  "totalVazando": 19,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/dashboard",
+  "largura": 768,
+  "urlFinal": "/owner/dashboard",
+  "arquivo": "dono_owner_dashboard-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/plans",
+  "largura": 360,
+  "urlFinal": "/owner/plans",
+  "arquivo": "dono_owner_plans-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/plans",
+  "largura": 390,
+  "urlFinal": "/owner/plans",
+  "arquivo": "dono_owner_plans-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/plans",
+  "largura": 768,
+  "urlFinal": "/owner/plans",
+  "arquivo": "dono_owner_plans-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 1
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/places",
+  "largura": 360,
+  "urlFinal": "/owner/places",
+  "arquivo": "dono_owner_places-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/places",
+  "largura": 390,
+  "urlFinal": "/owner/places",
+  "arquivo": "dono_owner_places-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/places",
+  "largura": 768,
+  "urlFinal": "/owner/places",
+  "arquivo": "dono_owner_places-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/places/cmu2qp3bk004vpk1xajo58ucp/courts",
+  "largura": 360,
+  "urlFinal": "/owner/places/cmu2qp3bk004vpk1xajo58ucp/courts",
+  "arquivo": "dono_owner_places_id_courts-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/places/cmu2qp3bk004vpk1xajo58ucp/courts",
+  "largura": 390,
+  "urlFinal": "/owner/places/cmu2qp3bk004vpk1xajo58ucp/courts",
+  "arquivo": "dono_owner_places_id_courts-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/places/cmu2qp3bk004vpk1xajo58ucp/courts",
+  "largura": 768,
+  "urlFinal": "/owner/places/cmu2qp3bk004vpk1xajo58ucp/courts",
+  "arquivo": "dono_owner_places_id_courts-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/professores",
+  "largura": 360,
+  "urlFinal": "/owner/professores",
+  "arquivo": "dono_owner_professores-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/professores",
+  "largura": 390,
+  "urlFinal": "/owner/professores",
+  "arquivo": "dono_owner_professores-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/professores",
+  "largura": 768,
+  "urlFinal": "/owner/professores",
+  "arquivo": "dono_owner_professores-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas",
+  "largura": 360,
+  "urlFinal": "/owner/turmas",
+  "arquivo": "dono_owner_turmas-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "li \"TERÇA 19:00 – 20:00 Beach Tennis · Beach Tennis Pr\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "h3 \"TERÇA\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "ul \"19:00 – 20:00 Beach Tennis · Beach Tennis Prof. Bi\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "li \"19:00 – 20:00 Beach Tennis · Beach Tennis Prof. Bi\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "div \"19:00 – 20:00 Beach Tennis · Beach Tennis Prof. Bi\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "div \"7 / 8 R$ 180,00/mês Alunos Chamada Mensalidades Ti\"",
+    "direita": 523,
+    "largura": 469
+   },
+   {
+    "el": "div \"Alunos Chamada Mensalidades Tirar professor Desati\"",
+    "direita": 523,
+    "largura": 469
+   },
+   {
+    "el": "button \"Tirar professor\"",
+    "direita": 430,
+    "largura": 84
+   }
+  ],
+  "totalVazando": 8,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas",
+  "largura": 390,
+  "urlFinal": "/owner/turmas",
+  "arquivo": "dono_owner_turmas-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "li \"TERÇA 19:00 – 20:00 Beach Tennis · Beach Tennis Pr\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "h3 \"TERÇA\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "ul \"19:00 – 20:00 Beach Tennis · Beach Tennis Prof. Bi\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "li \"19:00 – 20:00 Beach Tennis · Beach Tennis Prof. Bi\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "div \"19:00 – 20:00 Beach Tennis · Beach Tennis Prof. Bi\"",
+    "direita": 540,
+    "largura": 503
+   },
+   {
+    "el": "div \"7 / 8 R$ 180,00/mês Alunos Chamada Mensalidades Ti\"",
+    "direita": 523,
+    "largura": 469
+   },
+   {
+    "el": "div \"Alunos Chamada Mensalidades Tirar professor Desati\"",
+    "direita": 523,
+    "largura": 469
+   },
+   {
+    "el": "button \"Tirar professor\"",
+    "direita": 430,
+    "largura": 84
+   }
+  ],
+  "totalVazando": 8,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas",
+  "largura": 768,
+  "urlFinal": "/owner/turmas",
+  "arquivo": "dono_owner_turmas-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/alunos",
+  "largura": 360,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/alunos",
+  "arquivo": "dono_owner_turmas_id_alunos-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/alunos",
+  "largura": 390,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/alunos",
+  "arquivo": "dono_owner_turmas_id_alunos-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/alunos",
+  "largura": 768,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/alunos",
+  "arquivo": "dono_owner_turmas_id_alunos-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/chamada",
+  "largura": 360,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/chamada",
+  "arquivo": "dono_owner_turmas_id_chamada-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/chamada",
+  "largura": 390,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/chamada",
+  "arquivo": "dono_owner_turmas_id_chamada-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/chamada",
+  "largura": 768,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/chamada",
+  "arquivo": "dono_owner_turmas_id_chamada-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/mensalidades",
+  "largura": 360,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/mensalidades",
+  "arquivo": "dono_owner_turmas_id_mensalidades-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/mensalidades",
+  "largura": 390,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/mensalidades",
+  "arquivo": "dono_owner_turmas_id_mensalidades-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/mensalidades",
+  "largura": 768,
+  "urlFinal": "/owner/turmas/cmu2qp3l400ldpk1xhlhzjvzw/mensalidades",
+  "arquivo": "dono_owner_turmas_id_mensalidades-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/day-uses",
+  "largura": 360,
+  "urlFinal": "/owner/day-uses",
+  "arquivo": "dono_owner_day-uses-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/day-uses",
+  "largura": 390,
+  "urlFinal": "/owner/day-uses",
+  "arquivo": "dono_owner_day-uses-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/day-uses",
+  "largura": 768,
+  "urlFinal": "/owner/day-uses",
+  "arquivo": "dono_owner_day-uses-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/day-uses/cmu2qp3r500y1pk1xz4cd3jc2/entradas",
+  "largura": 360,
+  "urlFinal": "/owner/day-uses/cmu2qp3r500y1pk1xz4cd3jc2/entradas",
+  "arquivo": "dono_owner_day-uses_id_entradas-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/day-uses/cmu2qp3r500y1pk1xz4cd3jc2/entradas",
+  "largura": 390,
+  "urlFinal": "/owner/day-uses/cmu2qp3r500y1pk1xz4cd3jc2/entradas",
+  "arquivo": "dono_owner_day-uses_id_entradas-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/day-uses/cmu2qp3r500y1pk1xz4cd3jc2/entradas",
+  "largura": 768,
+  "urlFinal": "/owner/day-uses/cmu2qp3r500y1pk1xz4cd3jc2/entradas",
+  "arquivo": "dono_owner_day-uses_id_entradas-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/inventory",
+  "largura": 360,
+  "urlFinal": "/owner/inventory",
+  "arquivo": "dono_owner_inventory-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 7
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/inventory",
+  "largura": 390,
+  "urlFinal": "/owner/inventory",
+  "arquivo": "dono_owner_inventory-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 7
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/inventory",
+  "largura": 768,
+  "urlFinal": "/owner/inventory",
+  "arquivo": "dono_owner_inventory-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 7
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/equipment",
+  "largura": 360,
+  "urlFinal": "/owner/equipment",
+  "arquivo": "dono_owner_equipment-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 4
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/equipment",
+  "largura": 390,
+  "urlFinal": "/owner/equipment",
+  "arquivo": "dono_owner_equipment-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 4
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/equipment",
+  "largura": 768,
+  "urlFinal": "/owner/equipment",
+  "arquivo": "dono_owner_equipment-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 4
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/requests",
+  "largura": 360,
+  "urlFinal": "/owner/requests",
+  "arquivo": "dono_owner_requests-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/requests",
+  "largura": 390,
+  "urlFinal": "/owner/requests",
+  "arquivo": "dono_owner_requests-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/requests",
+  "largura": 768,
+  "urlFinal": "/owner/requests",
+  "arquivo": "dono_owner_requests-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/suporte",
+  "largura": 360,
+  "urlFinal": "/owner/suporte",
+  "arquivo": "dono_owner_suporte-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/suporte",
+  "largura": 390,
+  "urlFinal": "/owner/suporte",
+  "arquivo": "dono_owner_suporte-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "dono",
+  "rota": "/owner/suporte",
+  "largura": 768,
+  "urlFinal": "/owner/suporte",
+  "arquivo": "dono_owner_suporte-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/dashboard",
+  "largura": 360,
+  "urlFinal": "/admin/dashboard",
+  "arquivo": "admin_admin_dashboard-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "table \"ARENA PROPRIETÁRIO PLANO VALOR MENSAL STATUS AÇÕES\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "thead \"ARENA PROPRIETÁRIO PLANO VALOR MENSAL STATUS AÇÕES\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "tr \"ARENA PROPRIETÁRIO PLANO VALOR MENSAL STATUS AÇÕES\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "th \"PLANO\"",
+    "direita": 372,
+    "largura": 90
+   },
+   {
+    "el": "tbody \"Arena ZFC Arena ZFC Perdões Só+1 Pro R$ 189,90 Ati\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "tr \"Arena ZFC Arena ZFC Perdões Só+1 Pro R$ 189,90 Ati\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "td \"Só+1 Pro\"",
+    "direita": 372,
+    "largura": 90
+   },
+   {
+    "el": "tr \"Campestre Clube Celso Baptista Dias Campestre Club\"",
+    "direita": 681,
+    "largura": 641
+   }
+  ],
+  "totalVazando": 26,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/dashboard",
+  "largura": 390,
+  "urlFinal": "/admin/dashboard",
+  "arquivo": "admin_admin_dashboard-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "table \"ARENA PROPRIETÁRIO PLANO VALOR MENSAL STATUS AÇÕES\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "thead \"ARENA PROPRIETÁRIO PLANO VALOR MENSAL STATUS AÇÕES\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "tr \"ARENA PROPRIETÁRIO PLANO VALOR MENSAL STATUS AÇÕES\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "th \"VALOR MENSAL\"",
+    "direita": 455,
+    "largura": 83
+   },
+   {
+    "el": "tbody \"Arena ZFC Arena ZFC Perdões Só+1 Pro R$ 189,90 Ati\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "tr \"Arena ZFC Arena ZFC Perdões Só+1 Pro R$ 189,90 Ati\"",
+    "direita": 681,
+    "largura": 641
+   },
+   {
+    "el": "td \"R$ 189,90\"",
+    "direita": 455,
+    "largura": 83
+   },
+   {
+    "el": "tr \"Campestre Clube Celso Baptista Dias Campestre Club\"",
+    "direita": 681,
+    "largura": 641
+   }
+  ],
+  "totalVazando": 20,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/dashboard",
+  "largura": 768,
+  "urlFinal": "/admin/dashboard",
+  "arquivo": "admin_admin_dashboard-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/users",
+  "largura": 360,
+  "urlFinal": "/admin/users",
+  "arquivo": "admin_admin_users-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "div \"Todos PLAYER OWNER ADMIN\"",
+    "direita": 553,
+    "largura": 301
+   },
+   {
+    "el": "button \"PLAYER\"",
+    "direita": 397,
+    "largura": 76
+   },
+   {
+    "el": "table \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES LV Lor\"",
+    "direita": 886,
+    "largura": 870
+   },
+   {
+    "el": "thead \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "tr \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "th \"ROLE\"",
+    "direita": 424,
+    "largura": 97
+   },
+   {
+    "el": "tbody \"LV Lorena Vasconcelos fig36@player.com Usuário 0 0\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "tr \"LV Lorena Vasconcelos fig36@player.com Usuário 0 0\"",
+    "direita": 885,
+    "largura": 869
+   }
+  ],
+  "totalVazando": 109,
+  "alvosPequenos": 96,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/users",
+  "largura": 390,
+  "urlFinal": "/admin/users",
+  "arquivo": "admin_admin_users-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "div \"Todos PLAYER OWNER ADMIN\"",
+    "direita": 553,
+    "largura": 301
+   },
+   {
+    "el": "button \"PLAYER\"",
+    "direita": 397,
+    "largura": 76
+   },
+   {
+    "el": "table \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES LV Lor\"",
+    "direita": 886,
+    "largura": 870
+   },
+   {
+    "el": "thead \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "tr \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "th \"ROLE\"",
+    "direita": 424,
+    "largura": 97
+   },
+   {
+    "el": "tbody \"LV Lorena Vasconcelos fig36@player.com Usuário 0 0\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "tr \"LV Lorena Vasconcelos fig36@player.com Usuário 0 0\"",
+    "direita": 885,
+    "largura": 869
+   }
+  ],
+  "totalVazando": 109,
+  "alvosPequenos": 96,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/users",
+  "largura": 768,
+  "urlFinal": "/admin/users",
+  "arquivo": "admin_admin_users-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "table \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES LV Lor\"",
+    "direita": 886,
+    "largura": 870
+   },
+   {
+    "el": "thead \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "tr \"USUÁRIO ROLE PARTIDAS LOCAIS CADASTRO AÇÕES\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "th \"AÇÕES\"",
+    "direita": 885,
+    "largura": 179
+   },
+   {
+    "el": "tbody \"LV Lorena Vasconcelos fig36@player.com Usuário 0 0\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "tr \"LV Lorena Vasconcelos fig36@player.com Usuário 0 0\"",
+    "direita": 885,
+    "largura": 869
+   },
+   {
+    "el": "td \"Promover → OWNER\"",
+    "direita": 885,
+    "largura": 179
+   },
+   {
+    "el": "button \"Promover → OWNER\"",
+    "direita": 869,
+    "largura": 147
+   }
+  ],
+  "totalVazando": 106,
+  "alvosPequenos": 96,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/requests",
+  "largura": 360,
+  "urlFinal": "/admin/requests",
+  "arquivo": "admin_admin_requests-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "button \"Rejeitadas\"",
+    "direita": 429,
+    "largura": 104
+   }
+  ],
+  "totalVazando": 1,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/requests",
+  "largura": 390,
+  "urlFinal": "/admin/requests",
+  "arquivo": "admin_admin_requests-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "button \"Rejeitadas\"",
+    "direita": 429,
+    "largura": 104
+   }
+  ],
+  "totalVazando": 1,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/requests",
+  "largura": 768,
+  "urlFinal": "/admin/requests",
+  "arquivo": "admin_admin_requests-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/places",
+  "largura": 360,
+  "urlFinal": "/admin/places",
+  "arquivo": "admin_admin_places-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "table \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES AABB\"",
+    "direita": 791,
+    "largura": 775
+   },
+   {
+    "el": "thead \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "th \"PROPRIETÁRIO\"",
+    "direita": 391,
+    "largura": 125
+   },
+   {
+    "el": "tbody \"AABB Lavras Lavras, MG AABB Lavras 5 Aberto Fechar\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"AABB Lavras Lavras, MG AABB Lavras 5 Aberto Fechar\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "td \"AABB Lavras\"",
+    "direita": 391,
+    "largura": 125
+   },
+   {
+    "el": "span \"AABB Lavras\"",
+    "direita": 368,
+    "largura": 86
+   }
+  ],
+  "totalVazando": 87,
+  "alvosPequenos": 74,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/places",
+  "largura": 390,
+  "urlFinal": "/admin/places",
+  "arquivo": "admin_admin_places-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "table \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES AABB\"",
+    "direita": 791,
+    "largura": 775
+   },
+   {
+    "el": "thead \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tbody \"AABB Lavras Lavras, MG AABB Lavras 5 Aberto Fechar\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"AABB Lavras Lavras, MG AABB Lavras 5 Aberto Fechar\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"Anexo Olímpica — Quadras do Bosque Lavras, MG Asso\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"Arena Beach Lavras Lavras, MG Arena Beach Lavras 3\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"Arena Club Lavras, MG Arena Club Lavras 2 Aberto F\"",
+    "direita": 790,
+    "largura": 774
+   }
+  ],
+  "totalVazando": 41,
+  "alvosPequenos": 74,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/places",
+  "largura": 768,
+  "urlFinal": "/admin/places",
+  "arquivo": "admin_admin_places-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "table \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES AABB\"",
+    "direita": 791,
+    "largura": 775
+   },
+   {
+    "el": "thead \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"NOME CIDADE PROPRIETÁRIO QUADRAS STATUS AÇÕES\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "th \"AÇÕES\"",
+    "direita": 790,
+    "largura": 209
+   },
+   {
+    "el": "tbody \"AABB Lavras Lavras, MG AABB Lavras 5 Aberto Fechar\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "tr \"AABB Lavras Lavras, MG AABB Lavras 5 Aberto Fechar\"",
+    "direita": 790,
+    "largura": 774
+   },
+   {
+    "el": "td \"Fechar Trocar Owner\"",
+    "direita": 790,
+    "largura": 209
+   },
+   {
+    "el": "div \"Fechar Trocar Owner\"",
+    "direita": 774,
+    "largura": 177
+   }
+  ],
+  "totalVazando": 45,
+  "alvosPequenos": 74,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/subscriptions",
+  "largura": 360,
+  "urlFinal": "/admin/subscriptions",
+  "arquivo": "admin_admin_subscriptions-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "button \"Manuais (Pix) 2\"",
+    "direita": 470,
+    "largura": 146
+   }
+  ],
+  "totalVazando": 1,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/subscriptions",
+  "largura": 390,
+  "urlFinal": "/admin/subscriptions",
+  "arquivo": "admin_admin_subscriptions-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "button \"Manuais (Pix) 2\"",
+    "direita": 470,
+    "largura": 146
+   }
+  ],
+  "totalVazando": 1,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/subscriptions",
+  "largura": 768,
+  "urlFinal": "/admin/subscriptions",
+  "arquivo": "admin_admin_subscriptions-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [
+   {
+    "el": "table \"DONO ESTABELECIMENTO PLANO ORIGEM SITUAÇÃO VALIDAD\"",
+    "direita": 927,
+    "largura": 911
+   },
+   {
+    "el": "thead \"DONO ESTABELECIMENTO PLANO ORIGEM SITUAÇÃO VALIDAD\"",
+    "direita": 926,
+    "largura": 909
+   },
+   {
+    "el": "tr \"DONO ESTABELECIMENTO PLANO ORIGEM SITUAÇÃO VALIDAD\"",
+    "direita": 926,
+    "largura": 909
+   },
+   {
+    "el": "th \"VALIDADE\"",
+    "direita": 816,
+    "largura": 149
+   },
+   {
+    "el": "tbody \"Campestre Clube campestre@campestrelavras.com.br C\"",
+    "direita": 926,
+    "largura": 909
+   },
+   {
+    "el": "tr \"Campestre Clube campestre@campestrelavras.com.br C\"",
+    "direita": 926,
+    "largura": 909
+   },
+   {
+    "el": "td \"vale até 11/09/2026 Registrada por Mateus Vitor em\"",
+    "direita": 816,
+    "largura": 149
+   },
+   {
+    "el": "span \"vale até 11/09/2026 Registrada por Mateus Vitor em\"",
+    "direita": 806,
+    "largura": 129
+   }
+  ],
+  "totalVazando": 10,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/suporte",
+  "largura": 360,
+  "urlFinal": "/admin/suporte",
+  "arquivo": "admin_admin_suporte-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/suporte",
+  "largura": 390,
+  "urlFinal": "/admin/suporte",
+  "arquivo": "admin_admin_suporte-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/suporte",
+  "largura": 768,
+  "urlFinal": "/admin/suporte",
+  "arquivo": "admin_admin_suporte-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 0,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/suporte/cmu2qp3jk00i4pk1xjhfdlo9q",
+  "largura": 360,
+  "urlFinal": "/admin/suporte/cmu2qp3jk00i4pk1xjhfdlo9q",
+  "arquivo": "admin_admin_suporte_id-360.png",
+  "vw": 360,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/suporte/cmu2qp3jk00i4pk1xjhfdlo9q",
+  "largura": 390,
+  "urlFinal": "/admin/suporte/cmu2qp3jk00i4pk1xjhfdlo9q",
+  "arquivo": "admin_admin_suporte_id-390.png",
+  "vw": 390,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 2,
+  "fonteMenorQue12": 0
+ },
+ {
+  "perfil": "admin",
+  "rota": "/admin/suporte/cmu2qp3jk00i4pk1xjhfdlo9q",
+  "largura": 768,
+  "urlFinal": "/admin/suporte/cmu2qp3jk00i4pk1xjhfdlo9q",
+  "arquivo": "admin_admin_suporte_id-768.png",
+  "vw": 768,
+  "docVaza": 0,
+  "vazam": [],
+  "totalVazando": 0,
+  "alvosPequenos": 1,
+  "fonteMenorQue12": 0
+ }
+]
