@@ -1908,6 +1908,31 @@ export interface AssinaturaDoAdmin {
 }
 
 /**
+ * A cortesia mandada por e-mail a quem ainda não tem conta (api#597).
+ *
+ * Não é assinatura: não tem dono, validade nem ações de renovar ou encerrar. A
+ * cortesia nasce no cadastro, e vale `dias` a partir dele.
+ */
+export interface ConviteDeCortesia {
+    id: string;
+    email: string;
+    planId: string;
+    planoNome: string;
+    /** A duração da cortesia, contada do dia em que a conta for criada. */
+    dias: number;
+    /** Até quando o **link** de cadastro vale. Não é o fim da cortesia. */
+    expiresAt: IsoDate;
+    inviteUrl: string;
+    convidadoPor: string;
+    convidadoEm: IsoDate;
+}
+
+/** O que `POST /admin/subscriptions/cortesia` devolve desde a api#597. */
+export type ResultadoDaCortesia =
+    | ({ resultado: 'CONCEDIDA' } & Partial<AssinaturaDoAdmin>)
+    | { resultado: 'CONVITE_ENVIADO'; convite: Omit<ConviteDeCortesia, 'convidadoPor' | 'convidadoEm'> };
+
+/**
  * Uma mensagem da conversa de suporte, como o dono a vê (api#571).
  *
  * **Sem o autor.** Para o dono, quem responde é a "Equipe Só+1": a api nem

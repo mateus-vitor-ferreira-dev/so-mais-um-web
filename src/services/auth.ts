@@ -36,6 +36,11 @@ export interface RegisterOwnerInput {
 export interface InviteInfo {
   email: string
   expiresAt: string
+  /**
+   * A cortesia que o convite leva (api#597). Ausente na api antiga, e nula no
+   * convite comum. Os dias contam do cadastro.
+   */
+  cortesia?: { planoNome: string; dias: number } | null
 }
 
 export interface MensagemResult {
