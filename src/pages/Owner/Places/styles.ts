@@ -1,16 +1,13 @@
-import styled from 'styled-components'
-
-export const StatsRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-`
+import styled, { css } from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
 
 export const PlaceGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  /* \`min(340px, 100%)\`: a 360 sobram 328px, e a coluna de 340 passava da borda. */
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
   gap: 20px;
+
+  ${ate.celular} { gap: 12px; }
 `
 
 export const PlaceCard = styled.div`
@@ -22,6 +19,8 @@ export const PlaceCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  ${ate.celular} { padding: 16px; }
 `
 
 export const PlaceCardHeader = styled.div`
@@ -46,6 +45,13 @@ export const PlaceName = styled.h3`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  /* No celular o nome inteiro, quebrando linha: com as reticências, as duas
+     unidades do mesmo dono viravam "Na Praia FTV — Unidade J…". */
+  ${ate.tablet} {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 `
 
 export const PlaceMeta = styled.p`
@@ -54,15 +60,16 @@ export const PlaceMeta = styled.p`
   margin: 0;
 `
 
-export const StatusBadge = styled.span<{ bg?: string; }>`
+/** Aberto em verde, fechado em cinza, pelos tokens: as cores fixas eram só as do tema claro. */
+export const StatusBadge = styled.span<{ $aberto: boolean }>`
   display: inline-flex;
   align-items: center;
   padding: 4px 12px;
   border-radius: ${({ theme }) => theme.radii.full};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  background: ${({ bg }) => bg};
-  color: ${({ color }) => color};
+  background: ${({ $aberto, theme }) => ($aberto ? theme.colors.successLight : theme.colors.borderLight)};
+  color: ${({ $aberto, theme }) => ($aberto ? theme.colors.success : theme.colors.textMuted)};
   white-space: nowrap;
   flex-shrink: 0;
 `
@@ -79,15 +86,41 @@ export const PlaceActions = styled.div`
   flex-wrap: wrap;
   gap: 8px;
   margin-top: auto;
+
+  /* Duas colunas no celular, em pares: Estoque e Equipamentos, Quadras e
+     Professores, Editar e Fechar. Com o \`flex\`, ficavam 2, 3 e 1 por linha. */
+  ${ate.celular} {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 `
 
 type VariantKey = keyof typeof VARIANT_STYLES
 
+/**
+ * Pelos tokens do tema: os hexadecimais de antes eram do tema claro, e no escuro
+ * os botões viravam blocos cinza-claro e rosa-claro no cartão escuro.
+ */
 const VARIANT_STYLES = {
-  secondary: { bg: '#f3f4f6', border: '#e5e7eb', color: '#374151', hoverBg: '#e5e7eb' },
-  success:   { bg: '#dcfce7', border: '#22c55e', color: '#15803d', hoverBg: '#22c55e' },
-  danger:    { bg: '#fee2e2', border: '#ef4444', color: '#b91c1c', hoverBg: '#ef4444' },
-} as const
+  secondary: css`
+    background: ${({ theme }) => theme.colors.bgApp};
+    border-color: ${({ theme }) => theme.colors.border};
+    color: ${({ theme }) => theme.colors.textSecondary};
+    &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.borderLight}; color: ${({ theme }) => theme.colors.textPrimary}; }
+  `,
+  success: css`
+    background: ${({ theme }) => theme.colors.successLight};
+    border-color: ${({ theme }) => theme.colors.success};
+    color: ${({ theme }) => theme.colors.success};
+    &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.success}; color: ${({ theme }) => theme.colors.textOnPrimary}; }
+  `,
+  danger: css`
+    background: ${({ theme }) => theme.colors.errorLight};
+    border-color: ${({ theme }) => theme.colors.error};
+    color: ${({ theme }) => theme.colors.error};
+    &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.error}; color: ${({ theme }) => theme.colors.textOnPrimary}; }
+  `,
+}
 
 export const ActionBtn = styled.button<{ variant?: VariantKey }>`
   flex: 1 1 90px;
@@ -98,19 +131,14 @@ export const ActionBtn = styled.button<{ variant?: VariantKey }>`
   cursor: pointer;
   text-align: center;
   text-decoration: none;
-  border: 1px solid ${({ variant = 'secondary' }) => VARIANT_STYLES[variant].border};
-  background: ${({ variant = 'secondary' }) => VARIANT_STYLES[variant].bg};
-  color: ${({ variant = 'secondary' }) => VARIANT_STYLES[variant].color};
+  border: 1px solid;
+  ${({ variant = 'secondary' }) => VARIANT_STYLES[variant]}
   transition: all 0.15s;
 
-  &:hover:not(:disabled) {
-    background: ${({ variant = 'secondary' }) => VARIANT_STYLES[variant].hoverBg};
-    color: ${({ variant }) => variant === 'secondary' ? '#111827' : '#fff'};
-  }
-
   &:disabled { opacity: 0.5; cursor: not-allowed; }
-`
 
+  ${alvoDeToque}
+`
 
 export const ErrorMsg = styled.p`
   color: ${({ theme }) => theme.colors.error};
@@ -130,6 +158,8 @@ export const Modal = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  /* A margem do modal no celular: sem ela a caixa encosta nas bordas da tela. */
+  padding: 16px;
 `
 
 export const ModalOverlay = styled.div`
@@ -146,6 +176,11 @@ export const ModalBox = styled.div`
   width: 100%;
   max-width: 480px;
   box-shadow: ${({ theme }) => theme.shadows.lg};
+  /* Seis campos não cabem em 800px de tela com o teclado aberto: a caixa rola. */
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+
+  ${ate.celular} { padding: 22px 20px; }
 `
 
 export const ModalHeader = styled.div`
@@ -190,6 +225,12 @@ export const Input = styled.input`
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `
 
 export const FieldError = styled.span`
@@ -202,6 +243,11 @@ export const ModalActions = styled.div`
   justify-content: flex-end;
   gap: 10px;
   margin-top: 4px;
+
+  ${ate.celular} {
+    flex-wrap: wrap;
+    & > button { flex: 1 1 auto; white-space: nowrap; min-height: ${ALVO_DE_TOQUE}; }
+  }
 `
 
 export const CancelBtn = styled.button`

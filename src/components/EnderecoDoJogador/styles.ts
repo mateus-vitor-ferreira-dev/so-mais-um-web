@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 export const Secao = styled.section`
   margin-top: ${({ theme }) => theme.spacing[6]};
@@ -17,8 +18,8 @@ export const Grade = styled.div`
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) 90px;
   gap: ${({ theme }) => theme.spacing[3]};
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
+  ${ate.tablet} {
+    grid-template-columns: minmax(0, 1fr);
   }
 `
 
@@ -43,6 +44,12 @@ export const Entrada = styled.input<{ $erro?: boolean }>`
   background: ${({ theme }) => theme.colors.bgInput};
   color: ${({ theme }) => theme.colors.textPrimary};
   font-size: ${({ theme }) => theme.fontSizes.sm};
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 
   &:disabled {
     background: ${({ theme }) => theme.colors.bgPage};
@@ -85,6 +92,8 @@ export const Salvar = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 export const Apagar = styled.button`
@@ -108,6 +117,8 @@ export const Apagar = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 export const Aviso = styled.p<{ $erro?: boolean }>`

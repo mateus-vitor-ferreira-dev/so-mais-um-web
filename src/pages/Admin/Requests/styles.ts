@@ -1,16 +1,33 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import type { PlaceRequestStatus } from '../../../types/api'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
 
-export const StatsRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-`
+/**
+ * As cores de cada status, pelos tokens do tema. Os hexadecimais de antes eram
+ * só os do tema claro: no escuro, o selo e a faixa do cartão ficavam claros demais.
+ */
+const TOM: Record<PlaceRequestStatus, ReturnType<typeof css>> = {
+  PENDING:  css`background: ${({ theme }) => theme.colors.warningLight}; color: ${({ theme }) => theme.colors.warningText};`,
+  APPROVED: css`background: ${({ theme }) => theme.colors.successLight}; color: ${({ theme }) => theme.colors.success};`,
+  REJECTED: css`background: ${({ theme }) => theme.colors.errorLight};   color: ${({ theme }) => theme.colors.error};`,
+}
+const FAIXA: Record<PlaceRequestStatus, ReturnType<typeof css>> = {
+  PENDING:  css`background: ${({ theme }) => theme.colors.warning};`,
+  APPROVED: css`background: ${({ theme }) => theme.colors.success};`,
+  REJECTED: css`background: ${({ theme }) => theme.colors.error};`,
+}
 
 export const Tabs = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 20px;
+
+  /* Duas abas por linha no celular. Numa linha só, "Rejeitadas" saía da tela. */
+  ${ate.celular} {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 `
 
 export const Tab = styled.button<{ active?: boolean; }>`
@@ -28,6 +45,8 @@ export const Tab = styled.button<{ active?: boolean; }>`
     border-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme, active }) => active ? theme.colors.textOnPrimary : theme.colors.primary};
   }
+
+  ${alvoDeToque}
 `
 
 export const RequestList = styled.div`
@@ -44,15 +63,19 @@ export const RequestCard = styled.div`
   position: relative;
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  ${ate.celular} {
+    padding: 16px 16px 16px 20px;
+  }
 `
 
-export const RequestAccent = styled.div`
+export const RequestAccent = styled.div<{ $status: PlaceRequestStatus }>`
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
   width: 4px;
-  background: ${({ color }) => color};
+  ${({ $status }) => FAIXA[$status]}
 `
 
 export const RequestHeader = styled.div`
@@ -61,6 +84,9 @@ export const RequestHeader = styled.div`
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 8px;
+
+  /* O nome e o e-mail encolhem e quebram; o selo fica inteiro ao lado. */
+  & > div { min-width: 0; }
 `
 
 export const RequestTitle = styled.h3`
@@ -74,6 +100,7 @@ export const RequestMeta = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 0;
+  overflow-wrap: anywhere;
 
   strong {
     color: ${({ theme }) => theme.colors.textSecondary};
@@ -91,6 +118,7 @@ export const RequestFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 12px;
 `
@@ -100,15 +128,14 @@ export const RequestSentAt = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
 `
 
-export const StatusBadge = styled.span<{ bg?: string; }>`
+export const StatusBadge = styled.span<{ $status: PlaceRequestStatus }>`
   display: inline-flex;
   align-items: center;
   padding: 4px 12px;
   border-radius: ${({ theme }) => theme.radii.full};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  background: ${({ bg }) => bg};
-  color: ${({ color }) => color};
+  ${({ $status }) => TOM[$status]}
   white-space: nowrap;
   flex-shrink: 0;
 `
@@ -116,6 +143,12 @@ export const StatusBadge = styled.span<{ bg?: string; }>`
 export const ActionGroup = styled.div`
   display: flex;
   gap: 8px;
+
+  /* No celular, Aprovar e Rejeitar dividem a largura do cartão. */
+  ${ate.celular} {
+    flex-basis: 100%;
+    & > button { flex: 1 1 0; }
+  }
 `
 
 export const ApproveBtn = styled.button`
@@ -126,15 +159,17 @@ export const ApproveBtn = styled.button`
   cursor: pointer;
   border: 1px solid ${({ theme }) => theme.colors.success};
   background: ${({ theme }) => theme.colors.successLight};
-  color: #15803d;
+  color: ${({ theme }) => theme.colors.success};
   transition: all 0.15s;
 
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.success};
-    color: #fff;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
   }
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 export const RejectBtn = styled.button`
@@ -145,15 +180,17 @@ export const RejectBtn = styled.button`
   cursor: pointer;
   border: 1px solid ${({ theme }) => theme.colors.error};
   background: ${({ theme }) => theme.colors.errorLight};
-  color: #b91c1c;
+  color: ${({ theme }) => theme.colors.error};
   transition: all 0.15s;
 
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.error};
-    color: #fff;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
   }
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 
@@ -175,6 +212,8 @@ export const RejectModal = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  /* A margem do modal no celular: sem ela a caixa encosta nas bordas da tela. */
+  padding: 16px;
 `
 
 export const ModalOverlay = styled.div`
@@ -197,6 +236,10 @@ export const ModalBox = styled.div`
     color: ${({ theme }) => theme.colors.textSecondary};
     margin: 0 0 12px;
   }
+
+  ${ate.celular} {
+    padding: 22px 20px;
+  }
 `
 
 export const ModalTitle = styled.h3`
@@ -217,8 +260,14 @@ export const ReasonInput = styled.textarea`
   outline: none;
   font-family: inherit;
   box-sizing: border-box;
+  background: ${({ theme }) => theme.colors.bgInput};
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `
 
 export const ModalActions = styled.div`
@@ -226,6 +275,13 @@ export const ModalActions = styled.div`
   justify-content: flex-end;
   gap: 10px;
   margin-top: 16px;
+
+  /* No celular os botões crescem até a largura e, se não couberem lado a lado,
+     empilham: dividido ao meio, "Confirmar Rejeição" quebrava em duas linhas. */
+  ${ate.celular} {
+    flex-wrap: wrap;
+    & > button { flex: 1 1 auto; white-space: nowrap; min-height: ${ALVO_DE_TOQUE}; }
+  }
 `
 
 export const CancelBtn = styled.button`
@@ -250,7 +306,8 @@ export const ConfirmBtn = styled.button`
   cursor: pointer;
   border: none;
   background: ${({ theme }) => theme.colors.error};
-  color: #fff;
+  /* O par do tema: no escuro o vermelho é claro, e texto branco nele não se lê. */
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   transition: opacity 0.15s;
 
   &:hover:not(:disabled) { opacity: 0.88; }

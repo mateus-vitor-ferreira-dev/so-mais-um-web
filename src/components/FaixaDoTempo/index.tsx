@@ -1,5 +1,6 @@
 import type { HoraDoTempo } from '../../types/api'
 import { graus, horaCheia, iconeDaCondicao, motivosPorExtenso, porcento } from '../../utils/previsao'
+import RolagemHorizontal from '../RolagemHorizontal'
 import { Chuva, Faixa, Hora, Icone, Rotulo, Temperatura } from './styles'
 
 export interface FaixaDoTempoProps {
@@ -19,25 +20,30 @@ export interface FaixaDoTempoProps {
  *
  * A faixa rola na horizontal em vez de quebrar linha: um dia inteiro são 24
  * células, e em duas linhas a hora das 13h deixaria de ficar ao lado da das 12h.
+ * A rolagem é da `RolagemHorizontal` (web#511), que esmaece a borda enquanto há
+ * mais horas daquele lado — no celular, a faixa passava da borda do cartão.
  */
 export default function FaixaDoTempo({ horas }: FaixaDoTempoProps) {
   if (horas.length === 0) return null
 
   return (
-    <Faixa aria-label="Previsão do tempo por hora">
-      {horas.map((h) => {
-        const motivo = h.risco === 'NENHUM' ? '' : `, risco de ${motivosPorExtenso(h.motivos)}`
-        const descricao =
-          `${horaCheia(h.inicio)}: ${graus(h.temperatura)}, ${porcento(h.chanceDeChuva)} de chuva${motivo}`
-        return (
-          <Hora key={h.inicio} $risco={h.risco} title={descricao} aria-label={descricao}>
-            <Rotulo>{horaCheia(h.inicio)}</Rotulo>
-            <Icone aria-hidden="true">{iconeDaCondicao(h.condicao)}</Icone>
-            <Temperatura>{graus(h.temperatura)}</Temperatura>
-            <Chuva>{porcento(h.chanceDeChuva)}</Chuva>
-          </Hora>
-        )
-      })}
-    </Faixa>
+    <RolagemHorizontal rotulo="Previsão do tempo por hora">
+      {/* O nome acessível é o da região que rola; repetir na lista faria o leitor de tela anunciar duas vezes. */}
+      <Faixa>
+        {horas.map((h) => {
+          const motivo = h.risco === 'NENHUM' ? '' : `, risco de ${motivosPorExtenso(h.motivos)}`
+          const descricao =
+            `${horaCheia(h.inicio)}: ${graus(h.temperatura)}, ${porcento(h.chanceDeChuva)} de chuva${motivo}`
+          return (
+            <Hora key={h.inicio} $risco={h.risco} title={descricao} aria-label={descricao}>
+              <Rotulo>{horaCheia(h.inicio)}</Rotulo>
+              <Icone aria-hidden="true">{iconeDaCondicao(h.condicao)}</Icone>
+              <Temperatura>{graus(h.temperatura)}</Temperatura>
+              <Chuva>{porcento(h.chanceDeChuva)}</Chuva>
+            </Hora>
+          )
+        })}
+      </Faixa>
+    </RolagemHorizontal>
   )
 }

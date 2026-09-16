@@ -7,7 +7,7 @@ export const Faixa = styled.ul`
   margin: 0;
   padding: 0 0 4px;
   list-style: none;
-  overflow-x: auto;
+  width: max-content;
 `
 
 /**

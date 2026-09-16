@@ -1,4 +1,12 @@
 import styled from 'styled-components'
+import { alvoDeToque, ate } from '../../../styles/telas'
+
+/** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+const campoNoCelular = `
+  ${ate.tablet} {
+    font-size: 1rem;
+  }
+`
 
 /**
  * O seletor de espaço, no topo — mesmo lugar em que o Estoque e os Equipamentos
@@ -22,6 +30,9 @@ export const SeletorDeEspaco = styled.select`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 1px;
   }
+
+  ${campoNoCelular}
+  ${ate.celular} { width: 100%; }
 `
 
 export const Caixa = styled.section`
@@ -30,6 +41,8 @@ export const Caixa = styled.section`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
+
+  ${ate.celular} { padding: 16px; }
 `
 
 export const TituloDaCaixa = styled.h2`
@@ -50,7 +63,7 @@ export const Form = styled.form`
   gap: 10px;
   align-items: flex-start;
 
-  @media (max-width: 560px) {
+  ${ate.celular} {
     flex-direction: column;
   }
 `
@@ -75,6 +88,8 @@ export const Input = styled.input<{ $erro?: boolean }>`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 1px;
   }
+
+  ${campoNoCelular}
 `
 
 export const ErroDoCampo = styled.p`
@@ -93,7 +108,8 @@ export const Convidar = styled.button`
   border: 1px solid ${({ theme }) => theme.colors.primary};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  /* O par do tema: no escuro o primary é verde-claro, e branco nele dá 2,00:1. */
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
@@ -108,7 +124,7 @@ export const Convidar = styled.button`
     cursor: not-allowed;
   }
 
-  @media (max-width: 560px) {
+  ${ate.celular} {
     width: 100%;
   }
 `
@@ -266,6 +282,8 @@ export const Copiar = styled.button`
     border-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  ${alvoDeToque}
 `
 /* ─── O link ao portador (api#509, web#410) ────────────────────────────────── */
 
@@ -285,7 +303,7 @@ export const Gerar = styled.button`
   border: 0;
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
@@ -294,6 +312,9 @@ export const Gerar = styled.button`
     opacity: 0.6;
     cursor: progress;
   }
+
+  ${alvoDeToque}
+  ${ate.celular} { width: 100%; justify-content: center; }
 `
 
 /**
@@ -345,6 +366,8 @@ export const Revogar = styled.button`
     opacity: 0.6;
     cursor: progress;
   }
+
+  ${alvoDeToque}
 `
 
 /**

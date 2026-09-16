@@ -62,7 +62,7 @@ export default function OwnerSuporte() {
         }
         rotuloDaLista="Conversa com a equipe do Só+1"
         rotuloDoCampo="Mensagem para a equipe"
-        placeholder="Escreva sua mensagem. Enter envia; Shift+Enter quebra a linha."
+        placeholder="Escreva sua mensagem."
       />
     </Pagina>
   )

@@ -1,45 +1,25 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, telaDeToque } from '../../../styles/telas'
 
-export const StatsRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
-`
-
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  background: ${({ theme }) => theme.colors.bgCard};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  overflow: hidden;
+/**
+ * A tabela de estabelecimentos: a \`TabelaResponsiva\` do app (web#511). No
+ * celular cada estabelecimento vira um cartão, com abrir/fechar e o dono no pé;
+ * antes a tabela tinha 775px, e as ações ficavam fora de uma tela de 390.
+ */
+export const Table = styled(TabelaResponsiva)`
   box-shadow: ${({ theme }) => theme.shadows.sm};
-`
 
-export const Th = styled.th<{ center?: boolean; }>`
-  text-align: ${({ center }) => center ? 'center' : 'left'};
-  padding: 12px 16px;
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  color: ${({ theme }) => theme.colors.textMuted};
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: ${({ theme }) => theme.colors.bgApp};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`
+  td { vertical-align: middle; color: ${({ theme }) => theme.colors.textPrimary}; }
+  th.centro, td.centro { text-align: center; }
+  tbody tr:hover td { background: ${({ theme }) => theme.colors.primarySubtle}; }
 
-export const Tr = styled.tr`
-  &:not(:last-child) { border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight}; }
-  &:hover { background: ${({ theme }) => theme.colors.primarySubtle}; }
-`
-
-export const Td = styled.td<{ center?: boolean; }>`
-  padding: 14px 16px;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  text-align: ${({ center }) => center ? 'center' : 'left'};
-  vertical-align: middle;
+  ${ate.tablet} {
+    box-shadow: none;
+    tbody tr:hover td { background: transparent; }
+    th.centro, td.centro { text-align: left; }
+    td[data-rotulo] > * { justify-self: start; }
+  }
 `
 
 export const OwnerCell = styled.span`
@@ -49,34 +29,58 @@ export const OwnerCell = styled.span`
 
 export const NoOwner = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.warning};
+  /* \`warningText\`, e não \`warning\`: o amarelo puro no cartão fica abaixo de 4,5:1. */
+  color: ${({ theme }) => theme.colors.warningText};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
 `
 
-export const StatusBadge = styled.span<{ bg?: string; }>`
+/** Aberto em verde, fechado em cinza, pelos tokens: as cores fixas eram só as do tema claro. */
+export const StatusBadge = styled.span<{ $aberto: boolean }>`
   display: inline-flex;
   align-items: center;
   padding: 4px 12px;
   border-radius: ${({ theme }) => theme.radii.full};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  background: ${({ bg }) => bg};
-  color: ${({ color }) => color};
+  background: ${({ $aberto, theme }) => ($aberto ? theme.colors.successLight : theme.colors.borderLight)};
+  color: ${({ $aberto, theme }) => ($aberto ? theme.colors.success : theme.colors.textMuted)};
   white-space: nowrap;
 `
 
 export const ActionGroup = styled.div`
   display: flex;
   gap: 8px;
+
+  /* No pé do cartão, os dois botões dividem a linha. */
+  ${ate.tablet} {
+    flex-wrap: wrap;
+    & > button { flex: 1 1 0; }
+  }
 `
 
 type VariantKey = keyof typeof VARIANT
 
+/**
+ * Pelos tokens do tema: os hexadecimais de antes eram do tema claro, e no escuro
+ * o "Fechar" virava um bloco rosa-claro com texto vermelho.
+ */
 const VARIANT = {
-  secondary: { bg: '#f3f4f6', border: '#e5e7eb', color: '#374151' },
-  success:   { bg: '#dcfce7', border: '#22c55e', color: '#15803d' },
-  danger:    { bg: '#fee2e2', border: '#ef4444', color: '#b91c1c' },
-} as const
+  secondary: css`
+    background: ${({ theme }) => theme.colors.bgApp};
+    border-color: ${({ theme }) => theme.colors.border};
+    color: ${({ theme }) => theme.colors.textSecondary};
+  `,
+  success: css`
+    background: ${({ theme }) => theme.colors.successLight};
+    border-color: ${({ theme }) => theme.colors.success};
+    color: ${({ theme }) => theme.colors.success};
+  `,
+  danger: css`
+    background: ${({ theme }) => theme.colors.errorLight};
+    border-color: ${({ theme }) => theme.colors.error};
+    color: ${({ theme }) => theme.colors.error};
+  `,
+}
 
 export const ActionBtn = styled.button<{ variant?: VariantKey }>`
   padding: 6px 12px;
@@ -85,13 +89,14 @@ export const ActionBtn = styled.button<{ variant?: VariantKey }>`
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
   white-space: nowrap;
-  border: 1px solid ${({ variant = 'secondary' }) => VARIANT[variant].border};
-  background: ${({ variant = 'secondary' }) => VARIANT[variant].bg};
-  color: ${({ variant = 'secondary' }) => VARIANT[variant].color};
+  border: 1px solid;
+  ${({ variant = 'secondary' }) => VARIANT[variant]}
   transition: all 0.15s;
 
   &:hover:not(:disabled) { opacity: 0.8; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 
@@ -113,6 +118,8 @@ export const Modal = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  /* A margem do modal no celular: sem ela a caixa encosta nas bordas da tela. */
+  padding: 16px;
 `
 
 export const ModalOverlay = styled.div`
@@ -135,6 +142,10 @@ export const ModalBox = styled.div`
     color: ${({ theme }) => theme.colors.textSecondary};
     margin: 0 0 16px;
   }
+
+  ${ate.celular} {
+    padding: 22px 20px;
+  }
 `
 
 export const ModalTitle = styled.h3`
@@ -156,6 +167,12 @@ export const Select = styled.select`
   cursor: pointer;
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `
 
 export const OwnerOption = styled.option``
@@ -189,6 +206,11 @@ export const PromoteLink = styled.button`
   text-align: left;
 
   &:hover { opacity: 0.75; }
+
+  ${telaDeToque} {
+    min-height: ${ALVO_DE_TOQUE};
+    padding-top: 0;
+  }
 `
 
 export const PromoteBox = styled.div`
@@ -216,14 +238,17 @@ export const PromoteBtn = styled.button`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
-  border: 1px solid #f59e0b;
-  background: #fef3c7;
-  color: #92400e;
+  border: 1px solid ${({ theme }) => theme.colors.warning};
+  background: ${({ theme }) => theme.colors.warningLight};
+  color: ${({ theme }) => theme.colors.warningText};
   transition: opacity 0.15s;
   align-self: flex-end;
 
   &:hover:not(:disabled) { opacity: 0.8; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
+  ${ate.celular} { align-self: stretch; }
 `
 
 export const ModalActions = styled.div`
@@ -231,6 +256,11 @@ export const ModalActions = styled.div`
   justify-content: flex-end;
   gap: 10px;
   margin-top: 20px;
+
+  /* No celular os dois botões dividem a linha, com alvo de toque inteiro. */
+  ${ate.celular} {
+    & > button { flex: 1 1 0; min-height: ${ALVO_DE_TOQUE}; }
+  }
 `
 
 export const CancelBtn = styled.button`

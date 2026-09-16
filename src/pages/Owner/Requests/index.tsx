@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { toastErroDeApi } from '../../../utils/toastErro'
 import { mensagemDeErro } from '../../../utils/apiError'
 import StatCard from '../../../components/StatCard'
+import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
 import SubscriptionGate from '../../../components/SubscriptionGate'
 import { useSubscription } from '../../../hooks/useSubscription'
 import * as placeRequestsService from '../../../services/placeRequests'
@@ -13,7 +14,7 @@ import { useInvalidarSolicitacoesPendentes } from '../../../hooks/useSolicitacoe
 import type { PlaceRequest } from '../../../types/api'
 import type { PlaceRequestInput } from '../../../services/placeRequests'
 import {
-  StatsRow, RequestList, RequestCard, RequestAccent, RequestHeader,
+  RequestList, RequestCard, RequestAccent, RequestHeader,
   RequestTitle, RequestMeta, RequestFooter, RequestSentAt, StatusBadge,
   ErrorMsg, NewBtn, Modal, ModalOverlay, ModalBox, ModalHeader, ModalTitle,
   Form, FormGroup, FormRow, Label, Input, ModalActions, CancelBtn, SubmitBtn,
@@ -159,12 +160,12 @@ export default function OwnerRequests() {
         <NewBtn onClick={() => setShowModal(true)} disabled={!podeAlterar}>+ Nova Solicitação</NewBtn>
       </PageActions>
       <SubscriptionGate isActive={isActive} loading={subLoading} sub={sub}>
-      <StatsRow>
+      <GradeDeNumeros>
         <StatCard label="Total Enviadas" value={counts.total}    accent="#3b82f6" />
         <StatCard label="Aprovadas"      value={counts.approved} accent="#22c55e" />
         <StatCard label="Pendentes"      value={counts.pending}  accent="#f59e0b" />
         <StatCard label="Rejeitadas"     value={counts.rejected} accent="#ef4444" />
-      </StatsRow>
+      </GradeDeNumeros>
 
       {error && <ErrorMsg>{error}</ErrorMsg>}
 

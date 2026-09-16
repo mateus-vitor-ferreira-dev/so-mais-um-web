@@ -1,4 +1,17 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
+
+/**
+ * No celular a grade cresce com a página, em vez de rolar numa caixa de 340px
+ * dentro dela: rolagem dentro de rolagem, com menos de três opções à vista.
+ */
+const semRolagemPropriaNoCelular = `
+  ${ate.tablet} {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+`
 
 export const Container = styled.div`
   max-width: 680px;
@@ -9,6 +22,8 @@ export const StepIndicator = styled.div`
   align-items: center;
   gap: 8px;
   margin-bottom: 28px;
+
+  ${ate.celular} { margin-bottom: 20px; }
 `
 
 export const Step = styled.div<{ $active?: boolean; $done?: boolean; }>`
@@ -21,6 +36,13 @@ export const Step = styled.div<{ $active?: boolean; $done?: boolean; }>`
     $done ? theme.colors.success :
     $active ? theme.colors.primary :
     theme.colors.textMuted};
+
+  /* No celular só a etapa atual mostra o nome: os três lado a lado quebravam em
+     duas linhas cada. O texto das outras fica sem tamanho, e o leitor de tela
+     continua lendo as três. */
+  ${ate.celular} {
+    ${({ $active }) => ($active ? '' : 'font-size: 0; gap: 0;')}
+  }
 `
 
 export const StepDot = styled.div<{ $active?: boolean; $done?: boolean; }>`
@@ -30,14 +52,15 @@ export const StepDot = styled.div<{ $active?: boolean; $done?: boolean; }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
+  flex-shrink: 0;
   background: ${({ $active, $done, theme }) =>
     $done ? theme.colors.success :
     $active ? theme.colors.primary :
     theme.colors.borderLight};
   color: ${({ $active, $done, theme }) =>
-    $done || $active ? '#fff' : theme.colors.textMuted};
+    $done || $active ? theme.colors.textOnPrimary : theme.colors.textMuted};
 `
 
 export const StepLine = styled.div<{ $done?: boolean; }>`
@@ -54,6 +77,8 @@ export const Card = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
   padding: 28px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  ${ate.celular} { padding: 16px; }
 `
 
 export const SectionTitle = styled.h3`
@@ -65,12 +90,13 @@ export const SectionTitle = styled.h3`
 
 export const CourtsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
   gap: 12px;
   margin-bottom: 20px;
   max-height: 340px;
   overflow-y: auto;
   padding-right: 4px;
+  ${semRolagemPropriaNoCelular}
 `
 
 export const CourtCard = styled.div<{ $selected?: boolean; }>`
@@ -119,8 +145,10 @@ export const Form = styled.form`
 
 export const Row = styled.div<{ $cols?: number; }>`
   display: grid;
-  grid-template-columns: ${({ $cols }) => $cols === 2 ? '1fr 1fr' : '1fr'};
+  grid-template-columns: ${({ $cols }) => $cols === 2 ? 'repeat(2, minmax(0, 1fr))' : 'minmax(0, 1fr)'};
   gap: 16px;
+
+  ${ate.celular} { grid-template-columns: minmax(0, 1fr); }
 `
 
 export const Field = styled.div`
@@ -152,6 +180,12 @@ export const Input = styled.input<{ $error?: boolean; }>`
   &::placeholder {
     color: ${({ theme }) => theme.colors.textMuted};
   }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `
 
 export const ErrorMsg = styled.span`
@@ -168,6 +202,7 @@ export const Actions = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding-top: 4px;
 `
 
@@ -185,6 +220,8 @@ export const BackButton = styled.button`
   &:hover {
     border-color: ${({ theme }) => theme.colors.textSecondary};
   }
+
+  ${alvoDeToque}
 `
 
 export const NextButton = styled.button`
@@ -192,7 +229,8 @@ export const NextButton = styled.button`
   border-radius: ${({ theme }) => theme.radii.md};
   border: none;
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  /* O par do tema: no escuro o primary é verde-claro, e branco nele não se lê. */
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
@@ -206,6 +244,8 @@ export const NextButton = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 
@@ -243,6 +283,7 @@ export const SuccessBox = styled.div`
 export const SuccessActions = styled.div`
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 12px;
 `
 
@@ -251,7 +292,7 @@ export const PrimaryBtn = styled.button`
   border-radius: ${({ theme }) => theme.radii.md};
   border: none;
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
@@ -259,6 +300,8 @@ export const PrimaryBtn = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.primaryHover};
   }
+
+  ${alvoDeToque}
 `
 
 export const SecondaryBtn = styled.button`
@@ -275,6 +318,8 @@ export const SecondaryBtn = styled.button`
     border-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  ${alvoDeToque}
 `
 
 export const SportChipsGrid = styled.div`
@@ -284,6 +329,9 @@ export const SportChipsGrid = styled.div`
   margin-bottom: 20px;
   max-height: 340px;
   overflow-y: auto;
+  ${semRolagemPropriaNoCelular}
+  /* Duas modalidades por linha no celular: com 130px de mínimo, a 360 cabia uma. */
+  ${ate.celular} { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 `
 
 export const SportChip = styled.button`
@@ -293,6 +341,11 @@ export const SportChip = styled.button`
   gap: 8px;
   padding: 20px 12px;
   border-radius: ${({ theme }) => theme.radii.lg};
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: center;
+
+  ${ate.celular} { padding: 14px 8px; }
   border: 2px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.bgCard};
   color: ${({ theme }) => theme.colors.textPrimary};
@@ -315,12 +368,13 @@ export const SportChip = styled.button`
 
 export const PlacesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
   gap: 12px;
   margin-bottom: 20px;
   max-height: 360px;
   overflow-y: auto;
   padding-right: 4px;
+  ${semRolagemPropriaNoCelular}
 `
 
 export const PlaceCard = styled.div`
@@ -381,6 +435,8 @@ export const BreadcrumbTag = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.primaryLight};
   }
+
+  ${alvoDeToque}
 `
 
 export const BreadcrumbSep = styled.span`

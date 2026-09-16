@@ -1,4 +1,18 @@
 import styled, { css } from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, telaDeToque } from '../../styles/telas'
+
+/**
+ * Os atalhos em texto ("outros dias", "Adicionar faixa") tinham 14px de altura:
+ * no dedo, errava-se o dia. Em tela de toque ganham a altura do alvo, sem
+ * mudar o desenho com mouse.
+ */
+const linkDeToque = css`
+  ${telaDeToque} {
+    display: inline-flex;
+    align-items: center;
+    min-height: ${ALVO_DE_TOQUE};
+  }
+`
 
 export const Dias = styled.div`
   display: flex;
@@ -14,6 +28,8 @@ export const Dia = styled.section`
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.bgPage};
+
+  ${ate.celular} { padding: 10px 8px; }
 `
 
 export const Cabecalho = styled.div`
@@ -51,6 +67,9 @@ export const Atalho = styled.button`
   cursor: pointer;
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${linkDeToque}
+  ${telaDeToque} { padding: 0 4px; }
 `
 
 export const SemFaixa = styled.p`
@@ -89,7 +108,24 @@ export const Campo = styled.input`
   font-variant-numeric: tabular-nums;
 
   &[type='number'] { width: 90px; }
+  ${ate.celular} { padding: 6px; }
   &:focus { outline: none; border-color: ${({ theme }) => theme.colors.primary}; }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
+`
+
+/**
+ * "das 08:00 às 23:00" junto, numa linha só. Solto no \`flex-wrap\` da linha, o
+ * "às" ficava numa linha e o horário do fim na seguinte, no celular.
+ */
+export const Horario = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 `
 
 export const Valor = styled.span`
@@ -113,6 +149,8 @@ export const Remover = styled.button`
 
   &:hover:not(:disabled) { color: ${({ theme }) => theme.colors.error}; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 export const Nota = styled.p<{ $aviso?: boolean }>`
@@ -135,4 +173,6 @@ export const Adicionar = styled.button`
   cursor: pointer;
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${linkDeToque}
 `

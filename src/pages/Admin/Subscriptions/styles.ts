@@ -1,4 +1,7 @@
 import styled, { css } from 'styled-components'
+import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
+import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
+import { ate } from '../../../styles/telas'
 
 /** Os tons de selo. `manual`, `stripe` e `cortesia` marcam origem; o resto, situação. */
 export type TomDeSelo = 'ok' | 'alerta' | 'erro' | 'neutro' | 'manual' | 'stripe' | 'cortesia'
@@ -14,9 +17,6 @@ const TONS = {
   // coisa que o Pix", que é o engano que a origem nova existe para desfazer.
   cortesia: css`background: ${({ theme }) => theme.colors.accentLight}; color: ${({ theme }) => theme.colors.accent};`,
 }
-
-/** A largura em que a tabela vira cartão. */
-const CELULAR = '760px'
 
 /**
  * O de conceder cortesia, ao lado do de registrar (web#456).
@@ -45,16 +45,13 @@ export const Aviso = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
 `
 
-/** Os quatro números do topo: dois por linha no celular, quatro no computador. */
-export const Numeros = styled.div`
-  display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 20px;
-  @media (max-width: 900px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-`
+/** Os quatro números do topo: a grade comum do app (web#511). */
+export const Numeros = GradeDeNumeros
 
 /** No celular, os filtros rolam de lado em vez de empilhar três linhas acima da lista. */
 export const Filtros = styled.div`
   display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
-  @media (max-width: ${CELULAR}) {
+  ${ate.tablet} {
     flex-wrap: nowrap; overflow-x: auto; margin-inline: -16px; padding-inline: 16px; scrollbar-width: none;
     & > button { flex-shrink: 0; }
   }
@@ -86,60 +83,20 @@ export const NotaDoFiltro = styled.p<{ $tom?: 'alerta'; $noCampo?: boolean }>`
 `
 
 /**
- * A tabela, que no celular vira uma pilha de cartões.
+ * A tabela das assinaturas: a `TabelaResponsiva` do app, com o que só esta tela tem.
  *
- * Uma marcação só, e não duas árvores escondidas por CSS: duas fariam o leitor
- * de tela e os testes acharem cada assinatura duas vezes. No celular o
- * cabeçalho some e cada célula leva o próprio rótulo, pelo `data-rotulo`.
+ * O e-mail do dono fica numa linha só no computador: com o `anywhere` do
+ * detalhe, a coluna encolhia até quebrar o endereço no meio num notebook de
+ * 1280px. O limite e as reticências impedem o e-mail muito comprido de empurrar
+ * a tabela para fora da tela; o endereço inteiro fica no `title`.
  */
-export const Tabela = styled.table`
-  width: 100%; border-collapse: separate; border-spacing: 0;
-  background: ${({ theme }) => theme.colors.bgCard};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.lg}; overflow: hidden;
-
-  th {
-    text-align: left; padding: 10px; white-space: nowrap;
-    font-size: ${({ theme }) => theme.fontSizes.xs}; font-weight: ${({ theme }) => theme.fontWeights.semibold};
-    text-transform: uppercase; letter-spacing: .04em; color: ${({ theme }) => theme.colors.textMuted};
-    background: ${({ theme }) => theme.colors.bgPage};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  }
-  td {
-    padding: 12px 10px; vertical-align: top; font-size: ${({ theme }) => theme.fontSizes.sm};
-    color: ${({ theme }) => theme.colors.textSecondary};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
-  }
-  tbody tr:last-child td { border-bottom: 0; }
-  th:first-child, td:first-child { padding-left: 16px; }
-  th:last-child, td:last-child { padding-right: 16px; }
-  /* O e-mail numa linha só: com o \`anywhere\` do detalhe, a coluna do dono
-     encolhia até quebrar o endereço no meio num notebook de 1280px. O limite
-     e as reticências são para o e-mail muito comprido não empurrar a tabela
-     para fora da tela — o endereço inteiro fica no \`title\`. */
-  td.dono span {
+export const Tabela = styled(TabelaResponsiva)`
+  td.principal span {
     max-width: 180px; overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 
-  @media (max-width: ${CELULAR}) {
-    background: transparent; border: 0; border-radius: 0;
-    thead { display: none; }
-    tbody { display: grid; gap: 10px; }
-    tr {
-      display: grid; gap: 8px; padding: 14px;
-      background: ${({ theme }) => theme.colors.bgCard};
-      border: 1px solid ${({ theme }) => theme.colors.border};
-      border-radius: ${({ theme }) => theme.radii.lg};
-    }
-    td, td:first-child, td:last-child { display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 8px; padding: 0; border: 0; }
-    td[data-rotulo]::before {
-      content: attr(data-rotulo); color: ${({ theme }) => theme.colors.textMuted};
-      font-size: ${({ theme }) => theme.fontSizes.xs}; text-transform: uppercase; letter-spacing: .04em;
-      padding-top: 2px;
-    }
-    td.dono { display: block; }
-    td.dono span { max-width: none; overflow-wrap: anywhere; white-space: normal; }
-    td.acoes { display: block; }
+  ${ate.tablet} {
+    td.principal span { max-width: none; overflow-wrap: anywhere; white-space: normal; }
   }
 `
 export const Nome = styled.strong`display: block; color: ${({ theme }) => theme.colors.textPrimary};`
@@ -159,7 +116,7 @@ export const Selo = styled.span<{ $tom: TomDeSelo }>`
 `
 export const Acoes = styled.div`
   display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;
-  @media (max-width: ${CELULAR}) { justify-content: flex-start; margin-top: 4px; }
+  ${ate.tablet} { justify-content: flex-start; margin-top: 4px; }
 `
 export const Botao = styled.button<{ $perigo?: boolean }>`
   display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;

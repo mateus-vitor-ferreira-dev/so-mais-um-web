@@ -1,4 +1,9 @@
+import { LARGURAS } from './telas'
+
 const base = {
+  /** As larguras de corte (web#511). As media queries saem de `styles/telas.ts`. */
+  breakpoints: LARGURAS,
+
   fonts: {
     sans: "'Inter', 'Segoe UI', sans-serif",
   },

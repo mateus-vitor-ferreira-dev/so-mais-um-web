@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, ate, telaDeToque } from '../../styles/telas'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -23,6 +24,13 @@ export const StyledInput = styled.input<{ $error?: boolean; }>`
     border-color: ${({ $error, theme }) => $error ? theme.colors.error : theme.colors.primary};
   }
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
+  ${telaDeToque} { padding-right: ${ALVO_DE_TOQUE}; }
 `
 
 export const ToggleBtn = styled.button`
@@ -40,4 +48,11 @@ export const ToggleBtn = styled.button`
 
   &:hover:not(:disabled) { color: ${({ theme }) => theme.colors.textSecondary}; }
   &:disabled { opacity: 0.35; cursor: default; }
+
+  /* O olho de mostrar a senha tinha 16px: em tela de toque, ele ocupa a ponta do campo inteira. */
+  ${telaDeToque} {
+    right: 0;
+    width: ${ALVO_DE_TOQUE};
+    height: ${ALVO_DE_TOQUE};
+  }
 `

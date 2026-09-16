@@ -8,6 +8,7 @@ import MarcaDoTime from '../../components/MarcaDoTime'
 import PrevisaoDoTempo from '../../components/PrevisaoDoTempo'
 import PrevisaoDosDias from '../../components/PrevisaoDosDias'
 import RoleBadge from '../../components/RoleBadge'
+import RolagemHorizontal from '../../components/RolagemHorizontal'
 import SeletorDeCorDoTime from '../../components/SeletorDeCorDoTime'
 import SeloDoTempo from '../../components/SeloDoTempo'
 import { Skeleton, SkeletonCard } from '../../components/Skeleton'
@@ -293,6 +294,35 @@ export const PECAS: Peca[] = [
     estados: [
       { rotulo: 'sem risco', render: () => <FaixaDoTempo horas={HORAS_DE_EXEMPLO.slice(0, 2)} /> },
       { rotulo: 'com atenção e risco alto', render: () => <FaixaDoTempo horas={HORAS_DE_EXEMPLO} /> },
+    ],
+  },
+  {
+    nome: 'RolagemHorizontal',
+    onde: 'components/RolagemHorizontal',
+    porque:
+      'Conteúdo mais largo que a tela de propósito (a faixa do tempo, uma fileira de filtros) rola ' +
+      'dentro de si, e não arrasta a página inteira de lado. A borda esmaece enquanto há mais para ' +
+      'ver daquele lado, que é o que diz ao dedo que dá para arrastar (web#511).',
+    estados: [
+      {
+        rotulo: 'cabe inteira',
+        render: () => (
+          <RolagemHorizontal rotulo="Exemplo curto">
+            <Fileira>
+              <BotaoDeExemplo type="button">Todas</BotaoDeExemplo>
+              <BotaoDeExemplo type="button">Manuais</BotaoDeExemplo>
+            </Fileira>
+          </RolagemHorizontal>
+        ),
+      },
+      {
+        rotulo: 'mais larga que o espaço',
+        render: () => (
+          <div style={{ maxWidth: 260 }}>
+            <FaixaDoTempo horas={Array.from({ length: 12 }, (_, i) => horaDeExemplo(8 + i, {}))} />
+          </div>
+        ),
+      },
     ],
   },
   {

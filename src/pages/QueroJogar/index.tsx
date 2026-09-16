@@ -22,7 +22,7 @@ import type { CourtType, Partida } from '../../types/api'
 import type { SportOption } from '../../hooks/useSports'
 import { formatarNumero } from '../../utils/numeros'
 import {
-  Container, BackBtn, FiltersArea, SearchInput, ChipsContainer, Chip, ResultsCount, SportBtnsRow, SportAllBtn, SportSelectWrapper, Grid, ActionButton, AdvancedFilters, FilterRow, FilterGroup, FilterLabel, FilterSelect, FilterToggle, FiltersBtn, ActiveFilterBadge, ClearBtn, PriceSliderWrapper, RaioLinha, RaioChip, RaioExplicacao, DistanciaBadge, MapaCarregando,
+  Container, BackBtn, FiltersArea, SearchInput, ChipsContainer, Chip, ResultsCount, SportBtnsRow, SportAllBtn, SportSelectWrapper, Grid, ActionButton, AdvancedFilters, FilterRow, FilterGroup, FilterLabel, FilterSelect, FilterToggle, FiltersBtn, ActiveFilterBadge, ClearBtn, PriceSliderWrapper, RaioLinha, RaioChip, RaioExplicacao, DistanciaBadge, MapaCarregando, CarregarMais,
 } from './styles'
 import { usePageHeader } from '../../components/DashboardLayout/pageHeader'
 
@@ -229,7 +229,9 @@ export default function QueroJogar() {
             <SearchInput style={{ flex: 1 }}>
               <Search size={20} />
               <input
-                placeholder="Pesquisar por local ou bairro..."
+                // "Pesquisar por local ou bairro..." saía cortado a 360; o nome inteiro fica no rótulo.
+                aria-label="Pesquisar por local ou bairro"
+                placeholder="Local ou bairro"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -510,23 +512,9 @@ export default function QueroJogar() {
 
         {hasMore && (
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 32 }}>
-            <button
-              onClick={() => fetchNextPage()}
-              disabled={loadingMore}
-              style={{
-                padding: '12px 32px',
-                background: '#22c55e',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 10,
-                fontWeight: 600,
-                fontSize: 15,
-                cursor: loadingMore ? 'not-allowed' : 'pointer',
-                opacity: loadingMore ? 0.7 : 1,
-              }}
-            >
+            <CarregarMais onClick={() => fetchNextPage()} disabled={loadingMore}>
               {loadingMore ? 'Carregando...' : 'Carregar mais partidas'}
-            </button>
+            </CarregarMais>
           </div>
         )}
       </Container>

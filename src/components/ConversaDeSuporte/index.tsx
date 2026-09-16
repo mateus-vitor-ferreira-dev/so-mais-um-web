@@ -45,7 +45,16 @@ export interface ConversaDeSuporteProps<P extends PaginaDaConversa> {
   vazio: ReactNode
   rotuloDaLista: string
   rotuloDoCampo: string
+  /** O convite a escrever. A dica de teclado ("Enter envia…") o componente acrescenta, e só onde há teclado. */
   placeholder: string
+}
+
+/**
+ * Tela de toque: no celular não há Shift, e o Enter do teclado virtual é o único
+ * jeito de quebrar a linha. Lá o Enter quebra, e quem envia é o botão (web#511).
+ */
+function emTelaDeToque() {
+  return typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches === true
 }
 
 interface Pendente {
@@ -226,6 +235,8 @@ export default function ConversaDeSuporte<P extends PaginaDaConversa>(props: Con
   function aoTeclar(evento: KeyboardEvent<HTMLTextAreaElement>) {
     // Enter envia; Shift+Enter quebra a linha. `isComposing` protege quem digita
     // acento por composição, em que o Enter confirma a letra, e não a mensagem.
+    // Em tela de toque o Enter é a quebra de linha, e o envio fica com o botão.
+    if (emTelaDeToque()) return
     if (evento.key === 'Enter' && !evento.shiftKey && !evento.nativeEvent.isComposing) {
       evento.preventDefault()
       enviar()
@@ -333,7 +344,7 @@ export default function ConversaDeSuporte<P extends PaginaDaConversa>(props: Con
           onKeyDown={aoTeclar}
           maxLength={TEXTO_MAX}
           rows={3}
-          placeholder={props.placeholder}
+          placeholder={emTelaDeToque() ? props.placeholder : `${props.placeholder} Enter envia; Shift+Enter quebra a linha.`}
         />
         <Acoes>
           {restantes <= CONTADOR_A_PARTIR_DE ? (

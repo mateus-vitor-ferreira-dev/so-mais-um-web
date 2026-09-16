@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, ate } from '../../styles/telas'
 
 export const Secao = styled.section`
   display: flex;
@@ -10,6 +11,12 @@ export const Secao = styled.section`
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
   border-radius: 12px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  /* A faixa do tempo de cada quadra já é um cartão dentro deste: com 24px aqui,
+     sobravam cinco horas à vista numa tela de 360. */
+  ${ate.celular} {
+    padding: 16px;
+  }
 `
 
 export const Topo = styled.div`
@@ -36,11 +43,22 @@ export const Controles = styled.div`
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  max-width: 100%;
+
+  /* No celular, espaço e dia um por linha, na largura inteira. Com os 16px dos
+     campos, o seletor do espaço ficava mais largo que a tela de 360. */
+  ${ate.celular} {
+    width: 100%;
+    & > label { flex: 1 1 100%; }
+    select, input { width: 100%; }
+  }
 `
 
 export const Campo = styled.label`
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
   gap: 4px;
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
@@ -56,6 +74,15 @@ export const Campo = styled.label`
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: ${({ theme }) => theme.fontSizes.sm};
     max-width: 100%;
+  }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    select,
+    input {
+      min-height: ${ALVO_DE_TOQUE};
+      font-size: ${({ theme }) => theme.fontSizes.md};
+    }
   }
 `
 
@@ -73,7 +100,7 @@ export const Quadras = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 12px;
 
-  @media (max-width: 400px) {
-    grid-template-columns: 1fr;
+  ${ate.celular} {
+    grid-template-columns: minmax(0, 1fr);
   }
 `

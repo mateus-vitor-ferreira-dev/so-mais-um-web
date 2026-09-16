@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { alvoDeToque, ate } from '../../../styles/telas'
 
 export const Container = styled.div`
   max-width: 1200px;
@@ -70,16 +71,22 @@ export const UsageCard = styled.div`
     font-size: 16px;
     margin: 0 0 16px;
   }
+
+  ${ate.celular} {
+    padding: 16px;
+    margin-bottom: 20px;
+    h2 { margin-bottom: 12px; }
+  }
 `
 
 export const UsageGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
 
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
+  /* Os dois números lado a lado também no celular: um por linha, o uso tomava
+     meia tela antes do primeiro plano, que é o assunto da página. */
+  ${ate.celular} { gap: 12px; }
 `
 
 export const UsageItem = styled.div`
@@ -115,11 +122,11 @@ export const UsageBarFill = styled.div<{ $pct: number; $exceeded?: boolean; }>`
 
 export const PlansGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  ${ate.tablet} {
+    grid-template-columns: minmax(0, 1fr);
   }
 `
 
@@ -133,6 +140,8 @@ export const PlanCard = styled.div<{ $current?: boolean; }>`
   flex-direction: column;
   gap: 16px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  ${ate.celular} { padding: 22px 18px 18px; }
 `
 
 /**
@@ -147,7 +156,8 @@ export const CurrentBadge = styled.span<{ $cortesia?: boolean }>`
   left: 24px;
   background: ${({ $cortesia, theme }) => ($cortesia ? theme.colors.accent : theme.colors.primary)};
   color: ${({ theme }) => theme.colors.textOnPrimary};
-  font-size: 11px;
+  /* 12px, o menor texto do app. */
+  font-size: 12px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   padding: 4px 12px;
   border-radius: 999px;
@@ -233,6 +243,8 @@ export const PixLink = styled.a<{ $destaque?: boolean }>`
   &:hover {
     background: ${({ $destaque, theme }) => ($destaque ? theme.colors.primaryDark : theme.colors.primarySubtle)};
   }
+
+  ${alvoDeToque}
 `
 
 export const PlanFeatures = styled.ul`
@@ -279,6 +291,8 @@ export const PlanButton = styled.button<{ $variant?: 'primary' | 'secondary' | '
     opacity: ${({ $variant }) => $variant === 'current' ? 1 : 0.6};
     cursor: ${({ $variant }) => $variant === 'current' ? 'default' : 'not-allowed'};
   }
+
+  ${alvoDeToque}
 `
 
 // ── Modal de troca de plano ─────────────────────────────────────────────────
@@ -308,7 +322,7 @@ export const ModalBox = styled.div`
   max-width: 480px;
   box-shadow: ${({ theme }) => theme.shadows.lg};
 
-  @media (max-width: 480px) {
+  ${ate.celular} {
     padding: 22px 18px;
     max-height: calc(100dvh - 32px);
     overflow-y: auto;
@@ -333,7 +347,7 @@ export const EffectRow = styled.div`
   .label { color: ${({ theme }) => theme.colors.textSecondary}; }
   .value { color: ${({ theme }) => theme.colors.textPrimary}; font-weight: ${({ theme }) => theme.fontWeights.semibold}; }
 
-  @media (max-width: 480px) {
+  ${ate.celular} {
     align-items: flex-start;
     flex-direction: column;
     gap: 4px;
@@ -360,7 +374,7 @@ export const ModalActions = styled.div`
   gap: 10px;
   margin-top: 20px;
 
-  @media (max-width: 480px) {
+  ${ate.celular} {
     flex-direction: column-reverse;
 
     button { width: 100%; }
@@ -376,6 +390,8 @@ export const CancelBtn = styled.button`
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.bgApp};
   color: ${({ theme }) => theme.colors.textSecondary};
+
+  ${alvoDeToque}
 `
 
 export const ConfirmBtn = styled.button`
@@ -392,6 +408,8 @@ export const ConfirmBtn = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 export const CenteredSpinner = styled.div`
@@ -426,7 +444,7 @@ export const ScheduledBox = styled.div`
 
   p { margin: 0; opacity: 0.9; }
 
-  @media (max-width: 640px) {
+  ${ate.tablet} {
     flex-wrap: wrap;
   }
 `
@@ -446,4 +464,6 @@ export const CancelScheduleBtn = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `

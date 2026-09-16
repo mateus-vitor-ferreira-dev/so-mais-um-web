@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { alvoDeToque } from '../../styles/telas'
 
 /**
  * Estilos do sorteio de times.
@@ -275,7 +276,9 @@ export const SortearBtn = styled.button`
   width: 100%;
   margin-top: ${({ theme }) => theme.spacing[3]};
   padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
-  background: ${({ theme }) => theme.colors.infoLight};
+  /* Fundo do cartão, e não \`infoLight\`: o azul sobre o azul-claro dava 4,24:1, e o
+     branco do hover sobre o azul-claro do tema escuro não se lia. */
+  background: ${({ theme }) => theme.colors.bgCard};
   color: ${({ theme }) => theme.colors.info};
   border: 1px solid ${({ theme }) => theme.colors.info};
   border-radius: ${({ theme }) => theme.radii.md};
@@ -288,9 +291,10 @@ export const SortearBtn = styled.button`
   gap: 6px;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.info};
-    color: white;
+    background: ${({ theme }) => theme.colors.infoLight};
   }
+
+  ${alvoDeToque}
 `
 
 /**
