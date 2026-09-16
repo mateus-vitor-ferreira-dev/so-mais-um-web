@@ -11,7 +11,7 @@ import EditorDeFaixasDePreco from '../../../components/EditorDeFaixasDePreco'
 import {
   faixasApontadasPelaApi, precoNaLista, semanaDaApi, semanaParaApi, semanaVazia, type SemanaDeFaixas,
 } from '../../../utils/faixasDePreco'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Plus } from 'lucide-react'
 import { useSubscription } from '../../../hooks/useSubscription'
 import SubscriptionGate from '../../../components/SubscriptionGate'
 import { getSportMeta } from '../../../hooks/useSports'
@@ -45,8 +45,6 @@ const COURT_TYPES = [
 ]
 
 const STATUS_LABEL = { OPEN: 'Aberta', CLOSED: 'Fechada' }
-const STATUS_COLOR = { OPEN: '#16a34a', CLOSED: '#6b7280' }
-const STATUS_BG    = { OPEN: '#dcfce7', CLOSED: '#f3f4f6' }
 
 /**
  * Se a quadra tem teto, como o formulário guarda (api#581, web#477).
@@ -315,7 +313,10 @@ export default function OwnerCourts() {
       {/* Ficava clicável com a assinatura vencida, porque mora fora do
           portão: o conteúdo abaixo era apagado e este botão não. */}
       <PageActions>
-        <NewBtn onClick={openCreate} disabled={!podeAlterar}>+ Nova Quadra</NewBtn>
+        <NewBtn onClick={openCreate} disabled={!podeAlterar}>
+          <Plus size={16} aria-hidden />
+          Nova Quadra
+        </NewBtn>
       </PageActions>
       <SubscriptionGate isActive={isActive} loading={subLoading} sub={sub}>
         <BackBtn onClick={() => navigate('/owner/places')}>
@@ -347,7 +348,7 @@ export default function OwnerCourts() {
           <EmptyState>
             Nenhuma quadra cadastrada ainda.
             <br />
-            Clique em <strong>+ Nova Quadra</strong> para começar.
+            Clique em <strong>Nova Quadra</strong> para começar.
           </EmptyState>
         )}
 
@@ -359,7 +360,7 @@ export default function OwnerCourts() {
                 <CourtCardHeader>
                   <CourtIconBox><SportIcon icon={sport.icon} fallback={sport.iconFallback} /></CourtIconBox>
                   <CourtInfo>
-                    <CourtName>
+                    <CourtName title={court.name}>
                       {court.name}
                       {court.coberta === true && <SeloCoberta>coberta</SeloCoberta>}
                     </CourtName>
@@ -368,7 +369,7 @@ export default function OwnerCourts() {
                       {precoNaLista(court) && ` · ${precoNaLista(court)}`}
                     </CourtMeta>
                   </CourtInfo>
-                  <StatusBadge bg={STATUS_BG[court.status]} color={STATUS_COLOR[court.status]}>
+                  <StatusBadge $aberta={court.status === 'OPEN'}>
                     {STATUS_LABEL[court.status] ?? court.status}
                   </StatusBadge>
                 </CourtCardHeader>
