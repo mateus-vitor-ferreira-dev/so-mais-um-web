@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { alvoDeToque, ate } from '../../../styles/telas'
 
 export const Container = styled.div`
   max-width: 1200px;
@@ -19,8 +20,9 @@ export const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  ${ate.tablet} {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
 `
 export const Card = styled.div`
@@ -35,6 +37,11 @@ export const Card = styled.div`
     border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
     padding-bottom: 12px;
   }
+  /* 24px de cada lado, dentro dos 16px do layout, deixavam 264px de conteúdo a 360. */
+  ${ate.celular} {
+    padding: 16px;
+    h2 { margin-bottom: 16px; }
+  }
 `
 export const PlanHighlight = styled.div`
   background: ${({ theme }) => theme.colors.primaryLight};
@@ -46,6 +53,8 @@ export const PlanHighlight = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-bottom: 12px;
   }
   h3 {
@@ -57,6 +66,10 @@ export const PlanHighlight = styled.div`
     font-weight: bold;
     color: ${({ theme }) => theme.colors.primaryDark};
   }
+  ${ate.celular} {
+    padding: 16px;
+    .price { font-size: 24px; }
+  }
 `
 export const RowList = styled.div`
   display: flex;
@@ -66,6 +79,7 @@ export const RowList = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     padding-bottom: 12px;
     border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
   }
@@ -77,26 +91,50 @@ export const RowList = styled.div`
     color: ${({ theme }) => theme.colors.textPrimary};
     font-weight: bold;
     font-size: 14px;
+    text-align: right;
+  }
+  .value.vencida { color: ${({ theme }) => theme.colors.error}; }
+
+  /* A lista do que o plano abre: o ✓ junto do texto. Com o \`space-between\` das
+     linhas de valor, o ✓ ficava numa ponta e o item na outra, alinhado à direita. */
+  .row.item {
+    justify-content: flex-start;
+    align-items: flex-start;
+    .value { text-align: left; }
+  }
+  .check {
+    color: ${({ theme }) => theme.colors.success};
+    font-weight: 600;
+    flex-shrink: 0;
   }
 `
 export const PrimaryButton = styled.button`
   width: 100%;
   padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   background: ${({ theme }) => theme.colors.primary};
-  color: white;
+  /* O par do tema: no escuro o primary é verde-claro, e branco nele não se lê. */
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   border: none;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   margin-top: 16px;
+  &:hover { background: ${({ theme }) => theme.colors.primaryHover}; }
+  ${alvoDeToque}
 `
 export const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 24px;
-  @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
-  @media (max-width: 480px) { grid-template-columns: 1fr; }
+  ${ate.notebook} { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Dois por linha também no celular: um por linha, os quatro números ocupavam
+     a primeira tela inteira, e a agenda do dia só aparecia rolando. */
+  ${ate.celular} { gap: 12px; margin-bottom: 16px; }
 `
 
 export const StatCard = styled.div`
@@ -108,6 +146,14 @@ export const StatCard = styled.div`
   align-items: center;
   gap: 16px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  /* Meia tela por cartão: o ícone vai para cima do número, e o rótulo ganha a largura. */
+  ${ate.celular} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+  }
 `
 
 export const StatIcon = styled.div<{ $color?: string; }>`
@@ -120,6 +166,11 @@ export const StatIcon = styled.div<{ $color?: string; }>`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  ${ate.celular} {
+    width: 36px;
+    height: 36px;
+  }
 `
 
 export const StatInfo = styled.div`
@@ -148,10 +199,11 @@ export const Badge = styled.span<{ $status?: string; }>`
     $status === 'active' || $status === 'trialing'
       ? theme.colors.successLight
       : theme.colors.warningLight};
+  white-space: nowrap;
   color: ${({ $status, theme }) =>
     $status === 'active' || $status === 'trialing'
       ? theme.colors.success
-      : theme.colors.warning};
+      : theme.colors.warningText};
 `
 
 /**
@@ -171,6 +223,8 @@ export const ConviteEstatisticas = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
   border: 1px dashed ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.bgCard};
+
+  ${ate.celular} { padding: 16px; }
 
   > svg { color: ${({ theme }) => theme.colors.primary}; flex-shrink: 0; }
 
@@ -227,6 +281,7 @@ export const PassosList = styled.ol`
     cursor: pointer;
     font: inherit;
     transition: background 0.15s, border-color 0.15s;
+    ${alvoDeToque}
   }
 
   button:hover,
@@ -255,7 +310,7 @@ export const PassosList = styled.ol`
   li[data-feito='true'] .marcador {
     border-color: ${({ theme }) => theme.colors.primary};
     background: ${({ theme }) => theme.colors.primary};
-    color: #fff;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
   }
 
   li[data-feito='true'] .marcador::before { content: '✓'; }

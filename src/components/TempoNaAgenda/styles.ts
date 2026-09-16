@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, ate } from '../../styles/telas'
 
 export const Secao = styled.section`
   display: flex;
@@ -10,6 +11,12 @@ export const Secao = styled.section`
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
   border-radius: 12px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  /* A faixa do tempo de cada quadra já é um cartão dentro deste: com 24px aqui,
+     sobravam cinco horas à vista numa tela de 360. */
+  ${ate.celular} {
+    padding: 16px;
+  }
 `
 
 export const Topo = styled.div`
@@ -57,6 +64,15 @@ export const Campo = styled.label`
     font-size: ${({ theme }) => theme.fontSizes.sm};
     max-width: 100%;
   }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    select,
+    input {
+      min-height: ${ALVO_DE_TOQUE};
+      font-size: ${({ theme }) => theme.fontSizes.md};
+    }
+  }
 `
 
 export const Aviso = styled.p`
@@ -73,7 +89,7 @@ export const Quadras = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 12px;
 
-  @media (max-width: 400px) {
-    grid-template-columns: 1fr;
+  ${ate.celular} {
+    grid-template-columns: minmax(0, 1fr);
   }
 `
