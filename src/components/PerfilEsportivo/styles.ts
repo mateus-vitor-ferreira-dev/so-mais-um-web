@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, telaDeToque } from '../../styles/telas'
 
 export const Bloco = styled.div`
   display: flex;
@@ -57,6 +58,8 @@ export const Item = styled.li`
     display: flex;
     gap: ${({ theme }) => theme.spacing[1]};
     flex-shrink: 0;
+
+    ${telaDeToque} { gap: ${({ theme }) => theme.spacing[2]}; }
   }
 `
 
@@ -67,6 +70,12 @@ export const BotaoDeItem = styled.button<{ $perigo?: boolean; }>`
   width: 34px;
   height: 34px;
   border-radius: ${({ theme }) => theme.radii.sm};
+
+  /* Editar e remover eram ícones de 34px, lado a lado com 4px entre eles: no dedo, errava-se o botão. */
+  ${telaDeToque} {
+    width: ${ALVO_DE_TOQUE};
+    height: ${ALVO_DE_TOQUE};
+  }
   border: 1px solid ${({ theme, $perigo }) => ($perigo ? theme.colors.errorLight : theme.colors.border)};
   background: ${({ theme, $perigo }) => ($perigo ? theme.colors.errorLight : theme.colors.bgCard)};
   color: ${({ theme, $perigo }) => ($perigo ? theme.colors.error : theme.colors.textSecondary)};
@@ -98,6 +107,13 @@ export const InformarNivel = styled.button`
   &:hover {
     text-decoration: underline;
   }
+
+  ${telaDeToque} {
+    display: inline-flex;
+    align-items: center;
+    min-height: ${ALVO_DE_TOQUE};
+    margin-top: 0;
+  }
 `
 
 export const Vazio = styled.div`
@@ -128,8 +144,8 @@ export const Campos = styled.div`
   /* No celular os dois selects lado a lado cortam o rótulo da modalidade, que é
      o texto mais longo dos dois. É onde a partida é organizada, então é o
      tamanho que manda. */
-  @media (max-width: 520px) {
-    grid-template-columns: 1fr;
+  ${ate.celular} {
+    grid-template-columns: minmax(0, 1fr);
   }
 `
 
@@ -154,6 +170,12 @@ export const Campo = styled.div`
     background: ${({ theme }) => theme.colors.bgInput};
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: ${({ theme }) => theme.fontSizes.sm};
+
+    /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+    ${ate.tablet} {
+      min-height: ${ALVO_DE_TOQUE};
+      font-size: ${({ theme }) => theme.fontSizes.md};
+    }
 
     &:focus-visible {
       outline: 2px solid ${({ theme }) => theme.colors.primary};
@@ -189,6 +211,12 @@ export const AcoesDoFormulario = styled.div`
       opacity: 0.6;
       cursor: not-allowed;
     }
+
+    ${alvoDeToque}
+  }
+
+  ${ate.celular} {
+    & > button { flex: 1 1 0; }
   }
 
   .cancelar {
@@ -226,6 +254,8 @@ export const AdicionarBtn = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 export const Erro = styled.p`

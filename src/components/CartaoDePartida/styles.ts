@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { cartaoClicavel } from '../../styles/cartaoClicavel'
+import { ALVO_DE_TOQUE, ate, telaDeToque } from '../../styles/telas'
 
 export const Cartao = styled.article`
   display: flex;
@@ -12,6 +13,8 @@ export const Cartao = styled.article`
   box-shadow: ${({ theme }) => theme.shadows.sm};
   min-width: 0;
   ${cartaoClicavel}
+
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const Cabecalho = styled.div`
@@ -107,6 +110,16 @@ export const LinkDoMapa = styled.a`
   text-decoration: none;
 
   &:hover { text-decoration: underline; }
+
+  /* Um link de 17px de altura, dentro de um cartão que também é clicável:
+     errar por pouco abria a partida em vez do mapa. */
+  ${telaDeToque} {
+    display: inline-flex;
+    align-items: center;
+    min-height: ${ALVO_DE_TOQUE};
+    margin-top: -8px;
+    margin-bottom: -8px;
+  }
 `
 
 export const Extra = styled.div`

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { alvoDeToque } from '../../styles/telas'
 
 /**
  * `$seguindo` inverte o peso do botão, e não só a palavra.
@@ -19,6 +20,7 @@ export const Botao = styled.button<{ $seguindo: boolean }>`
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
+  ${alvoDeToque}
 
   ${({ theme, $seguindo }) =>
     $seguindo
