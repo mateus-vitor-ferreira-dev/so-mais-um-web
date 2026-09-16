@@ -110,7 +110,9 @@ export const Rodape = styled.div`
   gap: ${({ theme }) => theme.spacing[2]};
   margin-top: ${({ theme }) => theme.spacing[1]};
   font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.textMuted};
+  /* \`textSecondary\`, e não \`textMuted\`: sobre o verde-claro do balão do dono,
+     o horário dava 4,40:1, abaixo dos 4,5:1. */
+  color: ${({ theme }) => theme.colors.textSecondary};
 
   [role='alert'] {
     color: ${({ theme }) => theme.colors.error};
