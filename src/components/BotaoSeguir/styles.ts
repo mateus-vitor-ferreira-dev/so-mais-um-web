@@ -37,7 +37,7 @@ export const Botao = styled.button<{ $seguindo: boolean }>`
       : css`
           border: 1px solid ${theme.colors.primary};
           background: ${theme.colors.primary};
-          color: #fff;
+          color: ${theme.colors.textOnPrimary};
 
           &:hover:not(:disabled) {
             background: ${theme.colors.primaryHover};
