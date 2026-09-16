@@ -1,4 +1,13 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+
+/** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+const campoNoCelular = css`
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
+`
 
 export const Toolbar = styled.div`
   display: flex;
@@ -7,7 +16,7 @@ export const Toolbar = styled.div`
   justify-content: space-between;
   margin-bottom: 20px;
 
-  @media (max-width: 640px) { align-items: stretch; flex-direction: column; }
+  ${ate.tablet} { align-items: stretch; flex-direction: column; }
 `
 
 export const Select = styled.select`
@@ -18,12 +27,17 @@ export const Select = styled.select`
   color: ${({ theme }) => theme.colors.textPrimary};
   padding: 9px 12px;
   font-size: ${({ theme }) => theme.fontSizes.sm};
+  ${campoNoCelular}
 `
 
+/**
+ * Atualizar e Novo equipamento dividem a linha no celular. Empilhados, os dois
+ * botões e o seletor ocupavam 150px antes do primeiro número.
+ */
 export const ToolbarActions = styled.div`
   display: flex;
   gap: 8px;
-  @media (max-width: 480px) { flex-direction: column; }
+  ${ate.celular} { & > button { flex: 1 1 auto; white-space: nowrap; padding-inline: 12px; } }
 `
 
 export const PrimaryButton = styled.button`
@@ -40,6 +54,7 @@ export const PrimaryButton = styled.button`
   justify-content: center;
   gap: 7px;
   &:disabled { opacity: .5; cursor: not-allowed; }
+  ${alvoDeToque}
 `
 
 export const SecondaryButton = styled(PrimaryButton)`
@@ -50,17 +65,20 @@ export const SecondaryButton = styled(PrimaryButton)`
 
 export const SummaryGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 24px;
-  @media (max-width: 640px) { grid-template-columns: 1fr; }
+  /* Os três lado a lado também no celular: um por linha, ocupavam a primeira
+     tela, e as pendências só apareciam rolando. */
+  ${ate.celular} { gap: 8px; margin-bottom: 16px; }
 `
 
 export const SummaryCard = styled.div<{ $warning?: boolean }>`
   padding: 16px;
-  border: 1px solid ${({ $warning, theme }) => $warning ? '#f59e0b' : theme.colors.border};
+  border: 1px solid ${({ $warning, theme }) => $warning ? theme.colors.warning : theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
+  ${ate.celular} { padding: 12px 10px; }
 `
 
 export const SummaryLabel = styled.span`
@@ -79,7 +97,8 @@ export const SectionHeader = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 4px 12px;
   margin: 24px 0 12px;
 `
 
@@ -96,17 +115,17 @@ export const SectionHint = styled.span`
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   gap: 14px;
-  @media (max-width: 480px) { grid-template-columns: 1fr; }
 `
 
 export const Card = styled.article<{ $attention?: boolean }>`
   padding: 17px;
-  border: 1px solid ${({ $attention, theme }) => $attention ? '#f59e0b' : theme.colors.border};
+  border: 1px solid ${({ $attention, theme }) => $attention ? theme.colors.warning : theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
   box-shadow: ${({ theme }) => theme.shadows.sm};
+  ${ate.celular} { padding: 16px; }
 `
 
 export const CardTop = styled.div`
@@ -120,6 +139,7 @@ export const CardTitle = styled.h3`
   margin: 0;
   color: ${({ theme }) => theme.colors.textPrimary};
   font-size: ${({ theme }) => theme.fontSizes.md};
+  overflow-wrap: anywhere;
 `
 
 export const Meta = styled.p`
@@ -133,10 +153,13 @@ export const Badge = styled.span<{ $tone?: 'green' | 'orange' | 'gray' | 'red' }
   flex-shrink: 0;
   padding: 4px 9px;
   border-radius: 999px;
-  font-size: 11px;
+  /* 12px, o menor texto do app, e as cores pelos tokens: os hexadecimais eram
+     só os do tema claro, e no escuro o selo virava uma mancha clara. */
+  font-size: 12px;
   font-weight: 700;
-  color: ${({ $tone }) => $tone === 'red' ? '#b91c1c' : $tone === 'orange' ? '#b45309' : $tone === 'gray' ? '#4b5563' : '#15803d'};
-  background: ${({ $tone }) => $tone === 'red' ? '#fee2e2' : $tone === 'orange' ? '#fef3c7' : $tone === 'gray' ? '#f3f4f6' : '#dcfce7'};
+  white-space: nowrap;
+  color: ${({ $tone, theme }) => $tone === 'red' ? theme.colors.error : $tone === 'orange' ? theme.colors.warningText : $tone === 'gray' ? theme.colors.textSecondary : theme.colors.success};
+  background: ${({ $tone, theme }) => $tone === 'red' ? theme.colors.errorLight : $tone === 'orange' ? theme.colors.warningLight : $tone === 'gray' ? theme.colors.borderLight : theme.colors.successLight};
 `
 
 export const Quantity = styled.div`
@@ -152,6 +175,7 @@ export const CardActions = styled.div`
   display: flex;
   gap: 8px;
   button { flex: 1; min-height: 40px; }
+  ${ate.tablet} { button { min-height: ${ALVO_DE_TOQUE}; } }
 `
 
 export const LoanInfo = styled.div`
@@ -214,13 +238,13 @@ export const Overlay = styled.button`
 export const ModalBox = styled.div`
   position: relative;
   width: min(520px, 100%);
-  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
   overflow-y: auto;
   background: ${({ theme }) => theme.colors.bgCard};
   border-radius: ${({ theme }) => theme.radii.xl};
   padding: 24px;
   box-shadow: ${({ theme }) => theme.shadows.lg};
-  @media (max-width: 480px) { padding: 20px 16px; }
+  ${ate.celular} { padding: 20px 16px; }
 `
 
 export const ModalTitle = styled.h2`
@@ -255,6 +279,7 @@ export const Input = styled.input`
   color: ${({ theme }) => theme.colors.textPrimary};
   padding: 9px 12px;
   font-size: ${({ theme }) => theme.fontSizes.sm};
+  ${campoNoCelular}
 `
 
 export const Textarea = styled.textarea`
@@ -266,6 +291,7 @@ export const Textarea = styled.textarea`
   color: ${({ theme }) => theme.colors.textPrimary};
   padding: 9px 12px;
   font: inherit;
+  ${ate.tablet} { font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
 
 export const ModalActions = styled.div`
@@ -274,7 +300,8 @@ export const ModalActions = styled.div`
   justify-content: flex-end;
   margin-top: 6px;
   button { min-height: 43px; }
-  @media (max-width: 480px) { button { flex: 1; } }
+  ${ate.tablet} { button { min-height: ${ALVO_DE_TOQUE}; } }
+  ${ate.celular} { flex-wrap: wrap; button { flex: 1 1 auto; white-space: nowrap; } }
 `
 
 export const Help = styled.small`
