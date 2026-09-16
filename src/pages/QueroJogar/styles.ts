@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, telaDeToque } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -24,6 +25,8 @@ export const BackBtn = styled.button`
   transition: color 0.15s;
 
   &:hover { color: ${({ theme }) => theme.colors.textPrimary}; }
+
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; margin-bottom: ${({ theme }) => theme.spacing[2]}; }
 `
 
 export const FiltersArea = styled.div`
@@ -57,6 +60,9 @@ export const SearchInput = styled.div`
     outline: none;
     font-family: ${({ theme }) => theme.fonts.sans};
     font-size: ${({ theme }) => theme.fontSizes.md};
+    /* Sem fundo próprio: no escuro o campo aparecia como um bloco de outra cor dentro da caixa. */
+    background: transparent;
+    color: ${({ theme }) => theme.colors.textPrimary};
   }
 `
 
@@ -93,6 +99,8 @@ export const Chip = styled.button<{ $active?: boolean; }>`
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
   }
+
+  ${alvoDeToque}
 `
 
 export const ViewToggle = styled.div`
@@ -284,8 +292,8 @@ export const FiltersBtn = styled.button<{ $active?: boolean; }>`
 
 export const ActiveFilterBadge = styled.span`
   background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  font-size: 11px;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
+  font-size: 12px;
   font-weight: 700;
   border-radius: 999px;
   min-width: 18px;
@@ -336,7 +344,10 @@ export const FilterSelect = styled.select`
   color: ${({ theme }) => theme.colors.textPrimary};
   font-family: ${({ theme }) => theme.fonts.sans};
   cursor: pointer;
-  min-width: 180px;
+  min-width: min(180px, 100%);
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 
   &:focus {
     outline: none;
@@ -356,6 +367,7 @@ export const FilterToggle = styled.button<{ $active?: boolean; }>`
   font-family: ${({ theme }) => theme.fonts.sans};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   padding: ${({ theme }) => theme.spacing[2]} 0;
+  ${alvoDeToque}
 
   .toggle-track {
     width: 36px;
@@ -384,7 +396,7 @@ export const PriceSliderWrapper = styled.div<{ $pct?: number; }>`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 220px;
+  min-width: min(220px, 100%);
 
   span {
     font-size: ${({ theme }) => theme.fontSizes.xs};
@@ -423,6 +435,18 @@ export const PriceSliderWrapper = styled.div<{ $pct?: number; }>`
       border: 2px solid ${({ theme }) => theme.colors.bgCard};
       box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     }
+
+    /* Em tela de toque a trilha continua fina, mas a área de toque tem 44px, e a
+       bolinha de 18px vira 26px: arrastar o preço com o dedo errava o controle. */
+    ${telaDeToque} {
+      box-sizing: border-box;
+      height: ${ALVO_DE_TOQUE};
+      padding: 20px 0;
+      background-clip: content-box;
+
+      &::-webkit-slider-thumb { width: 26px; height: 26px; }
+      &::-moz-range-thumb { width: 26px; height: 26px; }
+    }
   }
 `
 
@@ -441,6 +465,8 @@ export const ClearBtn = styled.button`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
 
   &:hover { text-decoration: underline; }
+
+  ${alvoDeToque}
 `
 
 export const ActionButton = styled.button<{ $isJoined?: boolean; }>`
@@ -478,6 +504,28 @@ export const ActionButton = styled.button<{ $isJoined?: boolean; }>`
     background: ${({ theme, $isJoined }) =>
       $isJoined ? theme.colors.primaryLight : theme.colors.primaryHover};
   }
+
+  ${alvoDeToque}
+`
+
+/**
+ * "Carregar mais partidas". Saiu do estilo inline: era branco sobre #22c55e,
+ * que dá 2,3:1, e no escuro não seguia o tema.
+ */
+export const CarregarMais = styled.button`
+  padding: 12px 32px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textOnPrimary};
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+
+  &:disabled { cursor: not-allowed; opacity: 0.7; }
+
+  ${alvoDeToque}
+  ${ate.celular} { width: 100%; }
 `
 
 /* Os dois botões não cabem lado a lado num celular de 390px: quebram para a
@@ -497,7 +545,9 @@ export const SportAllBtn = styled.button<{ $active?: boolean; }>`
   border-radius: ${({ theme }) => theme.radii.full};
   border: 1px solid ${({ $active, theme }) => $active ? theme.colors.primary : theme.colors.border};
   background: ${({ $active, theme }) => $active ? theme.colors.primary : theme.colors.bgCard};
-  color: ${({ $active, theme }) => $active ? '#fff' : theme.colors.textSecondary};
+  color: ${({ $active, theme }) => $active ? theme.colors.textOnPrimary : theme.colors.textSecondary};
+
+  ${ate.tablet} { height: ${ALVO_DE_TOQUE}; }
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   cursor: pointer;
@@ -529,6 +579,8 @@ export const SportSelectWrapper = styled.div<{ $active?: boolean; }>`
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
+
+    ${ate.tablet} { height: ${ALVO_DE_TOQUE}; }
   }
 
   select {
@@ -556,6 +608,7 @@ export const RaioLinha = styled.div`
 `
 
 export const RaioChip = styled.button<{ $ativo: boolean }>`
+  ${alvoDeToque}
   padding: 6px ${({ theme }) => theme.spacing[3]};
   border-radius: ${({ theme }) => theme.radii.full};
   border: 1px solid ${({ $ativo, theme }) => ($ativo ? theme.colors.primary : theme.colors.border)};
@@ -587,6 +640,8 @@ export const RaioExplicacao = styled.p`
     font-weight: ${({ theme }) => theme.fontWeights.semibold};
     cursor: pointer;
     text-decoration: underline;
+
+    ${telaDeToque} { display: inline-flex; align-items: center; min-height: ${ALVO_DE_TOQUE}; }
   }
 `
 
@@ -617,7 +672,7 @@ export const MapaCarregando = styled.div`
   background: ${({ theme }) => theme.colors.bgCard};
   margin-bottom: ${({ theme }) => theme.spacing[4]};
 
-  @media (max-width: 640px) {
+  ${ate.tablet} {
     height: 240px;
   }
 `

@@ -235,7 +235,7 @@ describe('QueroJogar — filtros aplicados sobre o que já veio', () => {
     const { user } = renderWithProviders(<QueroJogar />)
     await esperaResultados()
 
-    await user.type(screen.getByPlaceholderText(/pesquisar por local ou bairro/i), 'jardim')
+    await user.type(screen.getByRole('textbox', { name: /pesquisar por local ou bairro/i }), 'jardim')
 
     await waitFor(() => {
       expect(cardDaArena('Arena Manhã')).not.toBeInTheDocument()

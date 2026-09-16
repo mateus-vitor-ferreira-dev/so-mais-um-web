@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, telaDeToque } from '../../styles/telas'
 
 export const Caixa = styled.div`
   position: relative;
@@ -49,6 +50,8 @@ export const BotaoPrimario = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 export const BotaoSecundario = styled.button`
@@ -67,6 +70,8 @@ export const BotaoSecundario = styled.button`
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
   }
+
+  ${alvoDeToque}
 `
 
 /**
@@ -75,7 +80,7 @@ export const BotaoSecundario = styled.button`
  * Botão de recusa do mesmo tamanho e peso dos de aceite transforma o convite
  * numa pergunta de três respostas, e a resposta mais fácil de dar passa a ser a
  * que não resolve nada. Aqui ele é alcançável — foco, `aria-label`, área de
- * toque de 32px — e discreto.
+ * toque de 32px (44px em tela de toque) — e discreto.
  */
 export const Dispensar = styled.button`
   position: absolute;
@@ -95,5 +100,12 @@ export const Dispensar = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.borderLight};
     color: ${({ theme }) => theme.colors.textPrimary};
+  }
+
+  ${telaDeToque} {
+    top: 0;
+    right: 0;
+    width: ${ALVO_DE_TOQUE};
+    height: ${ALVO_DE_TOQUE};
   }
 `
