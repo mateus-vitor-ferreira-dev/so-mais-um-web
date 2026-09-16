@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { alvoDeToque, ate } from '../../styles/telas'
 
 /** Tons semânticos aceitos pelo Badge desta página. */
 export type BadgeTone = 'info' | 'warning' | 'success' | 'error' | 'default'
@@ -20,6 +21,7 @@ export const BackBtn = styled.button`
   margin-bottom: 20px;
   transition: color 0.15s;
   &:hover { color: ${({ theme }) => theme.colors.textPrimary}; }
+  ${alvoDeToque}
 `
 
 export const Header = styled.div`
@@ -32,6 +34,8 @@ export const Header = styled.div`
   padding: 20px;
   margin-bottom: 16px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const SportIcon = styled.div`
@@ -131,7 +135,7 @@ export const InfoGrid = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 
-  @media (max-width: 480px) {
+  ${ate.celular} {
     grid-template-columns: 1fr;
   }
 `
@@ -188,10 +192,24 @@ export const SectionTitle = styled.div`
   color: ${({ theme }) => theme.colors.textPrimary};
 `
 
+export const BracketToggle = styled.button`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: ${({ theme }) => theme.spacing[2]};
+  padding: ${({ theme }) => theme.spacing[2]};
+  border: 0;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  ${alvoDeToque}
+`
+
 export const BracketSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
 `
-
-
