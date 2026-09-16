@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { hoverDeCartao } from '../../styles/cartaoClicavel'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -23,6 +24,8 @@ export const BackLink = styled.a`
     outline-offset: 2px;
     border-radius: 4px;
   }
+
+  ${alvoDeToque}
 `
 
 export const Hero = styled.header`
@@ -45,6 +48,7 @@ export const Hero = styled.header`
     font-size: ${({ theme }) => theme.fontSizes['2xl']};
     color: ${({ theme }) => theme.colors.textPrimary};
     margin-bottom: 0;
+    overflow-wrap: anywhere;
   }
 
   .meta {
@@ -72,9 +76,11 @@ export const CaptainActions = styled.div`
 
   /* Empilha no celular: dois botões lado a lado numa tela estreita viram dois
      alvos pequenos e grudados, e o de apagar é o pior lugar para errar o dedo. */
-  @media (max-width: 640px) {
+  ${ate.celular} {
     flex-direction: column;
   }
+
+  button { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Section = styled.section`
@@ -102,6 +108,7 @@ export const MemberCard = styled.li`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   padding: ${({ theme }) => theme.spacing[3]};
+  min-width: 0;
 
   .avatar {
     width: 40px;
@@ -127,6 +134,7 @@ export const MemberCard = styled.li`
     font-weight: 600;
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: ${({ theme }) => theme.fontSizes.sm};
+    overflow-wrap: anywhere;
   }
 
   .papel {
@@ -204,5 +212,4 @@ export const StatusChip = styled.span<{ $tom: 'aberta' | 'cheia' | 'fim' | 'canc
     : $tom === 'cancelada' ? theme.colors.error
     : theme.colors.textSecondary};
 `
-
 
