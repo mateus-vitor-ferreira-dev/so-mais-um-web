@@ -1,0 +1,18 @@
+// uso: EMAIL= SENHA= node clica.mjs <rota> <arquivo> <largura> <tema> <texto do botão>
+import { createRequire } from 'module'
+const require = createRequire('/home/gedai/.npm/_npx/705bc6b22212b352/node_modules/')
+const { chromium } = require('playwright')
+const [rota, arquivo, largura, tema, texto] = process.argv.slice(2)
+const b = await chromium.launch()
+const c = await b.newContext({ viewport: { width: +largura, height: 800 }, colorScheme: tema, hasTouch: true, isMobile: true })
+const p = await c.newPage()
+await p.goto('http://localhost:5173/login')
+await p.fill('input[type=email]', process.env.EMAIL); await p.fill('input[type=password]', process.env.SENHA)
+await p.keyboard.press('Enter'); await p.waitForURL(u => !u.pathname.startsWith('/login'))
+if (tema === 'dark') await p.evaluate(() => localStorage.setItem('só+1:theme', 'dark'))
+await p.goto('http://localhost:5173' + rota); await p.waitForTimeout(2500)
+await p.getByRole('button', { name: new RegExp(texto) }).first().click(); await p.waitForTimeout(800)
+const r = await p.evaluate(() => [...document.querySelectorAll('body *')].filter(e => { const x = e.getBoundingClientRect(); return x.width && (x.right > innerWidth + 1) && !e.closest('aside') }).length)
+console.log('vazando depois do clique:', r); console.log((await p.evaluate(() => [...document.querySelectorAll('button, a, input, select, label:has(input[type=checkbox])')].filter(e => !e.closest('aside')).map(e => { const x = e.getBoundingClientRect(); return x.width && (x.height < 44) ? e.tagName + ' ' + Math.round(x.width) + 'x' + Math.round(x.height) + ' ' + (e.textContent || e.type).trim().slice(0, 18) : null }).filter(Boolean))).join('\n'))
+await p.screenshot({ path: '' + (process.env.SAIDA ?? '.') + '/shots/' + arquivo })
+await b.close()
