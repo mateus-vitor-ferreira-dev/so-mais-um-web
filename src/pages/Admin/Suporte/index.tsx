@@ -156,7 +156,7 @@ function ConversaAberta({ conversaId, aoLer }: { conversaId: string; aoLer: () =
         vazio={<Escolha>Esta conversa ainda não tem mensagens.</Escolha>}
         rotuloDaLista="Conversa com o dono"
         rotuloDoCampo="Resposta para o dono"
-        placeholder="Escreva a resposta. Enter envia; Shift+Enter quebra a linha."
+        placeholder="Escreva a resposta."
       />
     </>
   )

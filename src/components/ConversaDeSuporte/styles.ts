@@ -1,10 +1,16 @@
 import styled, { css } from 'styled-components'
+import { alvoDeToque, ate } from '../../styles/telas'
 
 export const Conversa = styled.section`
   display: flex;
   flex-direction: column;
   height: calc(100dvh - 240px);
   min-height: 420px;
+
+  /* No celular a barra do topo é mais baixa, e os 240px deixavam 90px vazios embaixo. */
+  ${ate.tablet} {
+    height: calc(100dvh - 180px);
+  }
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
@@ -146,6 +152,11 @@ export const Composer = styled.form`
     font: inherit;
     font-size: ${({ theme }) => theme.fontSizes.sm};
 
+    /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+    ${ate.tablet} {
+      font-size: ${({ theme }) => theme.fontSizes.md};
+    }
+
     &:focus {
       outline: 2px solid ${({ theme }) => theme.colors.primary};
       outline-offset: 1px;
@@ -185,4 +196,6 @@ export const BotaoEnviar = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
