@@ -1,4 +1,13 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, telaDeToque } from '../../styles/telas'
+
+/** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+const campoNoCelular = `
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: 1rem;
+  }
+`
 
 export const Secao = styled.fieldset`
   border: 0;
@@ -117,6 +126,8 @@ export const BotaoRemover = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 export const CorpoDaRegra = styled.div`
@@ -134,6 +145,7 @@ export const CorpoDaRegra = styled.div`
     background: ${({ theme }) => theme.colors.bgInput};
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: ${({ theme }) => theme.fontSizes.sm};
+    ${campoNoCelular}
   }
 `
 
@@ -170,6 +182,9 @@ export const Selo = styled.label<{ $ativo: boolean }>`
   input {
     accent-color: ${({ theme }) => theme.colors.primary};
   }
+
+  /* O selo inteiro é o alvo da caixa de seleção. */
+  ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Adicionar = styled.div`
@@ -179,13 +194,14 @@ export const Adicionar = styled.div`
 
   select {
     flex: 1;
-    min-width: 160px;
+    min-width: min(160px, 100%);
     padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[3]};
     border-radius: ${({ theme }) => theme.radii.sm};
     border: 1px solid ${({ theme }) => theme.colors.border};
     background: ${({ theme }) => theme.colors.bgInput};
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: ${({ theme }) => theme.fontSizes.sm};
+    ${campoNoCelular}
   }
 `
 
