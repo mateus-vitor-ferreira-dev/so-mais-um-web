@@ -1,10 +1,14 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, telaDeToque } from '../../styles/telas'
 
 export const Container = styled.div`
   max-width: 680px;
   margin: 0 auto;
   padding: ${({ theme }) => theme.spacing[6]};
+
+  /* No celular o \`Content\` do layout já dá a margem: somadas, eram 40px de cada lado. */
+  ${ate.tablet} { padding: 0; }
 `
 
 export const BackBtn = styled.button`
@@ -21,6 +25,8 @@ export const BackBtn = styled.button`
   margin-bottom: ${({ theme }) => theme.spacing[5]};
   transition: color 0.15s;
   &:hover { color: ${({ theme }) => theme.colors.textPrimary}; }
+
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; margin-bottom: ${({ theme }) => theme.spacing[2]}; }
 `
 
 export const Card = styled.div`
@@ -37,12 +43,24 @@ export const CardHeader = styled.div`
   display: flex;
   align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[4]};
+
+  /* No celular o selo vai para baixo do nome. Na mesma linha, ele tomava 110px,
+     e "Na Praia FTV Lavras" saía uma palavra por linha. */
+  ${ate.celular} {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: ${({ theme }) => theme.spacing[3]};
+    row-gap: ${({ theme }) => theme.spacing[2]};
+    padding: ${({ theme }) => theme.spacing[4]};
+  }
 `
 
 export const SportIcon = styled.div`
   font-size: 2.5rem;
   line-height: 1;
   flex-shrink: 0;
+
+  ${ate.celular} { font-size: 2rem; }
 `
 
 export const HeaderInfo = styled.div`
@@ -56,6 +74,8 @@ export const CourtName = styled.h1`
   color: ${({ theme }) => theme.colors.textPrimary};
   margin: 0 0 ${({ theme }) => theme.spacing[1]};
   line-height: 1.25;
+
+  ${ate.celular} { font-size: ${({ theme }) => theme.fontSizes.xl}; }
 `
 
 export const PlaceName = styled.p`
@@ -73,6 +93,9 @@ export const StatusBadge = styled.span<{ $status?: string; }>`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   flex-shrink: 0;
+
+  ${ate.celular} { grid-column: 2; justify-self: start; }
+
   background: ${({ $status, theme }) =>
     $status === 'WAITING'   ? theme.colors.successLight  :
     $status === 'FULL'      ? theme.colors.warningLight  :
@@ -90,13 +113,15 @@ export const Body = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[5]};
+
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const InfoGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: ${({ theme }) => theme.spacing[3]};
-  @media (max-width: 480px) { grid-template-columns: 1fr; }
+  ${ate.celular} { grid-template-columns: minmax(0, 1fr); }
 `
 
 export const InfoItem = styled.div`
@@ -206,7 +231,8 @@ export const CopyBtn = styled.button`
   align-items: center;
   gap: 4px;
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  /* O par do tema: no escuro o primary é verde-claro, e branco nele não se lê. */
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   border: none;
   border-radius: ${({ theme }) => theme.radii.sm};
   padding: 6px 12px;
@@ -216,6 +242,8 @@ export const CopyBtn = styled.button`
   flex-shrink: 0;
   transition: background 0.15s;
   &:hover { background: ${({ theme }) => theme.colors.primaryHover}; }
+
+  ${alvoDeToque}
 `
 
 /**
@@ -244,7 +272,7 @@ export const JoinBtn = styled.button<{ $full?: boolean; $joined?: boolean; $bloq
     $full || $bloqueado  ? theme.colors.borderLight  : theme.colors.primary};
   color: ${({ $joined, $full, $bloqueado, theme }) =>
     $joined              ? theme.colors.primaryDark  :
-    $full || $bloqueado  ? theme.colors.textMuted    : '#fff'};
+    $full || $bloqueado  ? theme.colors.textMuted    : theme.colors.textOnPrimary};
   opacity: ${({ disabled }) => disabled ? 0.75 : 1};
   &:hover:not(:disabled) { background: ${({ $joined, theme }) => $joined ? theme.colors.successLight : theme.colors.primaryHover}; }
 `
@@ -271,6 +299,8 @@ export const ActionBtn = styled.button<{ $variant?: string; }>`
   transition: opacity 0.15s;
   &:hover { opacity: 0.8; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 export const OrganizerTag = styled.div`
@@ -361,6 +391,9 @@ export const ParticipantLink = styled(Link)`
   min-width: 0;
   text-decoration: none;
 
+  /* O nome é o link, com 17px de altura: em tela de toque ele ganha a altura do alvo. */
+  ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; align-items: center; align-content: center; }
+
   &:hover span:first-child {
     color: ${({ theme }) => theme.colors.primaryHover};
   }
@@ -393,6 +426,8 @@ export const MapLink = styled.a`
   text-decoration: none;
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   &:hover { text-decoration: underline; }
+
+  ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 /* ── Sair da partida ─────────────────────────────────────────────────────── */
@@ -421,6 +456,8 @@ export const LeaveBtn = styled.button`
     border-color: ${({ theme }) => theme.colors.error};
   }
   &:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 export const Modal = styled.div`
@@ -446,6 +483,8 @@ export const ModalBox = styled.div`
   width: calc(100% - 32px);
   max-width: 440px;
   box-shadow: ${({ theme }) => theme.shadows.lg};
+
+  ${ate.celular} { padding: 22px 18px; }
 
   p {
     font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -475,6 +514,9 @@ export const ReasonInput = styled.textarea`
   box-sizing: border-box;
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} { font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
 
 export const ReasonCounter = styled.span`
@@ -490,6 +532,8 @@ export const ModalActions = styled.div`
   justify-content: flex-end;
   gap: 10px;
   margin-top: 16px;
+
+  ${ate.celular} { flex-wrap: wrap; & > button { flex: 1 1 auto; white-space: nowrap; } }
 `
 
 export const ModalCancelBtn = styled.button`
@@ -504,6 +548,8 @@ export const ModalCancelBtn = styled.button`
   transition: background 0.15s;
 
   &:hover { background: ${({ theme }) => theme.colors.borderLight}; }
+
+  ${alvoDeToque}
 `
 
 export const ModalConfirmBtn = styled.button`
@@ -514,11 +560,14 @@ export const ModalConfirmBtn = styled.button`
   cursor: pointer;
   border: none;
   background: ${({ theme }) => theme.colors.error};
-  color: #fff;
+  /* O par do tema: no escuro o vermelho é claro, e branco nele não se lê. */
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   transition: opacity 0.15s;
 
   &:hover:not(:disabled) { opacity: 0.88; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 /** O motivo de o botão de entrar estar desabilitado (#230). */
