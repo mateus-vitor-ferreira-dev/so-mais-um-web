@@ -11,7 +11,7 @@ import * as adminService from '../../../services/admin'
 import type { AdminUser, InviteResult } from '../../../services/admin'
 import { mensagemDeErro } from '../../../utils/apiError'
 import {
-  FilterBar, SearchInput, RoleFilters, RoleBtn, Table, Th, Tr, Td,
+  FilterBar, SearchInput, RoleFilters, RoleBtn, BotaoConvidar, Tabela, Usuario,
   AvatarCell, UserMeta, UserEmail, ActionBtn, ErrorMsg, ModalWrap,
   ModalOverlay, ModalBox, ModalTitle, ModalText, ModalInput, ModalActions,
   ModalCancelBtn, ModalConfirmBtn,
@@ -129,13 +129,10 @@ export default function AdminUsers() {
             </RoleBtn>
           ))}
         </RoleFilters>
-        <button
-          onClick={() => setShowInvite(true)}
-          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 8, border: 'none', background: '#22c55e', color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap' }}
-        >
+        <BotaoConvidar onClick={() => setShowInvite(true)}>
           <Mail size={14} />
           Convidar Owner
-        </button>
+        </BotaoConvidar>
       </FilterBar>
 
       {error && <ErrorMsg>{error}</ErrorMsg>}
@@ -145,49 +142,49 @@ export default function AdminUsers() {
       )}
 
       {!error && filtered.length > 0 && (
-        <Table>
+        <Tabela>
           <thead>
             <tr>
-              <Th>Usuário</Th>
-              <Th>Role</Th>
-              <Th center>Partidas</Th>
-              <Th center>Locais</Th>
-              <Th>Cadastro</Th>
-              <Th>Ações</Th>
+              <th>Usuário</th>
+              <th>Role</th>
+              <th className="centro">Partidas</th>
+              <th className="centro">Locais</th>
+              <th>Cadastro</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((u: AdminUser) => (
-              <Tr key={u.id}>
-                <Td>
-                  <AvatarCell color={ROLE_COLORS[u.role] ?? '#6b7280'}>
-                    {getInitials(u.name)}
-                  </AvatarCell>
-                  <UserMeta>
-                    <strong>{u.name}</strong>
-                    <UserEmail>{u.email}</UserEmail>
-                  </UserMeta>
-                </Td>
-                <Td><RoleBadge role={u.role} /></Td>
-                <Td center>{u._count?.matchesCreated ?? 0}</Td>
-                <Td center>{u._count?.placesOwned ?? 0}</Td>
-                <Td>{dataCurta(u.createdAt)}</Td>
-                <Td>
-                  {u.role !== 'ADMIN' && (
-                    <ActionBtn
-                      onClick={() => setConfirmTarget(u)}
-                      disabled={updatingId === u.id}
-                    >
-                      {updatingId === u.id
-                        ? 'Salvando...'
-                        : u.role === 'OWNER' ? 'Rebaixar → Jogador' : 'Promover → OWNER'}
-                    </ActionBtn>
-                  )}
-                </Td>
-              </Tr>
+              <tr key={u.id}>
+                <td className="principal">
+                  <Usuario>
+                    <AvatarCell color={ROLE_COLORS[u.role] ?? '#6b7280'}>
+                      {getInitials(u.name)}
+                    </AvatarCell>
+                    <UserMeta>
+                      <strong>{u.name}</strong>
+                      <UserEmail>{u.email}</UserEmail>
+                    </UserMeta>
+                  </Usuario>
+                </td>
+                <td data-rotulo="Role"><RoleBadge role={u.role} /></td>
+                <td data-rotulo="Partidas" className="centro">{u._count?.matchesCreated ?? 0}</td>
+                <td data-rotulo="Locais" className="centro">{u._count?.placesOwned ?? 0}</td>
+                <td data-rotulo="Cadastro">{dataCurta(u.createdAt)}</td>
+                <td className="acoes">{u.role !== 'ADMIN' && (
+                  <ActionBtn
+                    onClick={() => setConfirmTarget(u)}
+                    disabled={updatingId === u.id}
+                  >
+                    {updatingId === u.id
+                      ? 'Salvando...'
+                      : u.role === 'OWNER' ? 'Rebaixar → Jogador' : 'Promover → OWNER'}
+                  </ActionBtn>
+                )}</td>
+              </tr>
             ))}
           </tbody>
-        </Table>
+        </Tabela>
       )}
       {showInvite && (
         <ModalWrap>

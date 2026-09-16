@@ -8,7 +8,7 @@ import * as adminService from '../../../services/admin'
 import type { Place } from '../../../types/api'
 import type { AdminUser } from '../../../services/admin'
 import {
-  Table, Th, Tr, Td, OwnerCell, NoOwner, StatusBadge, ActionGroup,
+  Table, OwnerCell, NoOwner, StatusBadge, ActionGroup,
   ActionBtn, ErrorMsg, Modal, ModalOverlay, ModalBox, ModalTitle,
   ModalActions, CancelBtn, ConfirmBtn, Select, OwnerOption, PromoteLink,
   PromoteBox, PromoteBtn,
@@ -16,8 +16,6 @@ import {
 import EmptyState from '../../../components/EmptyState'
 
 const STATUS_LABEL = { OPEN: 'Aberto', CLOSED: 'Fechado' }
-const STATUS_COLOR = { OPEN: '#16a34a', CLOSED: '#6b7280' }
-const STATUS_BG    = { OPEN: '#dcfce7', CLOSED: '#f3f4f6' }
 
 export default function AdminPlaces() {
   const [places, setPlaces]     = useState<Place[]>([])
@@ -152,32 +150,32 @@ export default function AdminPlaces() {
         <Table>
           <thead>
             <tr>
-              <Th>Nome</Th>
-              <Th>Cidade</Th>
-              <Th>Proprietário</Th>
-              <Th center>Quadras</Th>
-              <Th>Status</Th>
-              <Th>Ações</Th>
+              <th>Nome</th>
+              <th>Cidade</th>
+              <th>Proprietário</th>
+              <th className="centro">Quadras</th>
+              <th>Status</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             {places.map((place: Place) => (
-              <Tr key={place.id}>
-                <Td><strong>{place.name}</strong></Td>
-                <Td>{place.city}, {place.state}</Td>
-                <Td>
+              <tr key={place.id}>
+                <td className="principal"><strong>{place.name}</strong></td>
+                <td data-rotulo="Cidade">{place.city}, {place.state}</td>
+                <td data-rotulo="Proprietário">
                   {place.owner
                     ? <OwnerCell>{place.owner.name}</OwnerCell>
                     : <NoOwner>Sem proprietário</NoOwner>
                   }
-                </Td>
-                <Td center>{place._count?.courts ?? 0}</Td>
-                <Td>
-                  <StatusBadge bg={STATUS_BG[place.status]} color={STATUS_COLOR[place.status]}>
+                </td>
+                <td data-rotulo="Quadras" className="centro">{place._count?.courts ?? 0}</td>
+                <td data-rotulo="Status">
+                  <StatusBadge $aberto={place.status === 'OPEN'}>
                     {STATUS_LABEL[place.status]}
                   </StatusBadge>
-                </Td>
-                <Td>
+                </td>
+                <td className="acoes">
                   <ActionGroup>
                     <ActionBtn
                       variant={place.status === 'OPEN' ? 'danger' : 'success'}
@@ -192,8 +190,8 @@ export default function AdminPlaces() {
                       {place.ownerId ? 'Trocar Owner' : 'Atribuir Owner'}
                     </ActionBtn>
                   </ActionGroup>
-                </Td>
-              </Tr>
+                </td>
+              </tr>
             ))}
           </tbody>
         </Table>
