@@ -148,6 +148,34 @@ describe('Suporte — enviar', () => {
     expect(envia).not.toHaveBeenCalled()
   })
 
+  it('em tela de toque, o Enter quebra a linha e só o botão envia (web#511)', async () => {
+    // No celular não há Shift: com o Enter enviando, não havia como quebrar a linha.
+    const matchMediaOriginal = window.matchMedia
+    window.matchMedia = ((query: string) => ({ ...matchMediaOriginal(query), matches: query === '(pointer: coarse)' })) as typeof window.matchMedia
+    try {
+      envia.mockResolvedValue(mensagem({ id: 'm9', texto: 'linha 1\nlinha 2' }))
+      const { user } = abre()
+      await screen.findByText('Fale com a equipe do Só+1')
+
+      expect(campo()).toHaveAttribute('placeholder', 'Escreva sua mensagem.')
+      await user.type(campo(), 'linha 1{Enter}linha 2')
+      expect(campo()).toHaveValue('linha 1\nlinha 2')
+      expect(envia).not.toHaveBeenCalled()
+
+      await user.click(screen.getByRole('button', { name: 'Enviar' }))
+      await waitFor(() => expect(envia).toHaveBeenCalledTimes(1))
+    } finally {
+      window.matchMedia = matchMediaOriginal
+    }
+  })
+
+  it('com teclado, a dica de Enter e Shift+Enter aparece no campo', async () => {
+    abre()
+    await screen.findByText('Fale com a equipe do Só+1')
+
+    expect(campo()).toHaveAttribute('placeholder', 'Escreva sua mensagem. Enter envia; Shift+Enter quebra a linha.')
+  })
+
   it('mensagem só de espaços não sai', async () => {
     const { user } = abre()
     await screen.findByText('Fale com a equipe do Só+1')

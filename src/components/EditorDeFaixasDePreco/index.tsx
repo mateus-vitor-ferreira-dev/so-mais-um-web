@@ -6,7 +6,7 @@ import {
   type FaixaEditavel, type SemanaDeFaixas,
 } from '../../utils/faixasDePreco'
 import {
-  Adicionar, Atalho, Atalhos, Campo, Cabecalho, Dia, Dias, Linha, NomeDoDia, Nota, Remover, SemFaixa, Valor,
+  Adicionar, Atalho, Atalhos, Campo, Cabecalho, Dia, Dias, Linha, NomeDoDia, Nota, Remover, SemFaixa, Horario, Valor,
 } from './styles'
 
 export interface EditorDeFaixasDePrecoProps {
@@ -81,6 +81,7 @@ export default function EditorDeFaixasDePreco({
               return (
                 <div key={faixa.chave}>
                   <Linha $destacada={destacada} data-destacada={destacada || undefined}>
+                    <Horario>
                     das
                     <Campo
                       type="time"
@@ -97,6 +98,7 @@ export default function EditorDeFaixasDePreco({
                       disabled={desabilitado}
                       onChange={(e) => mudarFaixa(dia, faixa.chave, 'fim', e.target.value)}
                     />
+                    </Horario>
                     <Valor>
                       R$
                       <Campo

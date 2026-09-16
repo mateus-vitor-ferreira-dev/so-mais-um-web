@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
 
 export const Voltar = styled.button`
   display: inline-flex;
@@ -17,6 +18,12 @@ export const Voltar = styled.button`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+
+  /* Um link de texto com 16px de altura: em tela de toque, a linha inteira vira alvo. */
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    margin-bottom: 8px;
+  }
 `
 
 export const Caixa = styled.section`
@@ -25,6 +32,8 @@ export const Caixa = styled.section`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
+
+  ${ate.celular} { padding: 16px; }
 `
 
 export const Topo = styled.div`
@@ -33,8 +42,9 @@ export const Topo = styled.div`
   align-items: flex-start;
   justify-content: space-between;
 
-  @media (max-width: 560px) {
+  ${ate.celular} {
     flex-direction: column;
+    gap: 4px;
   }
 `
 
@@ -59,6 +69,9 @@ export const Ocupacao = styled.span<{ $lotada: boolean }>`
   white-space: nowrap;
   background: ${({ theme, $lotada }) => ($lotada ? theme.colors.warningLight : theme.colors.primaryLight)};
   color: ${({ theme, $lotada }) => ($lotada ? theme.colors.warningText : theme.colors.primaryDark)};
+
+  /* Empilhada no celular, ela encostava no rótulo do primeiro campo. */
+  ${ate.celular} { margin-bottom: 14px; }
 `
 
 export const Form = styled.form`
@@ -67,8 +80,8 @@ export const Form = styled.form`
   grid-template-columns: 1fr 1fr auto;
   align-items: start;
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
+  ${ate.tablet} {
+    grid-template-columns: minmax(0, 1fr);
   }
 `
 
@@ -92,6 +105,10 @@ export const Input = styled.input<{ $erro?: boolean }>`
   border-radius: 10px;
   font-size: 0.875rem;
   border: 1px solid ${({ theme, $erro }) => ($erro ? theme.colors.error : theme.colors.border)};
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} { font-size: 1rem; }
+
   background: ${({ theme }) => theme.colors.bgInput};
   color: ${({ theme }) => theme.colors.textPrimary};
 
@@ -153,6 +170,8 @@ export const BotaoLeve = styled.button`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+
+  ${alvoDeToque}
 `
 
 export const Lotada = styled.p`
@@ -173,10 +192,14 @@ export const Alternador = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.textSecondary};
   cursor: pointer;
+
+  /* O rótulo inteiro é o alvo da caixa de 13px. */
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Lista = styled.ul`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
   margin: 0;
   padding: 0;
@@ -193,9 +216,9 @@ export const Item = styled.li<{ $saiu?: boolean }>`
   border-radius: ${({ theme }) => theme.radii.md};
   opacity: ${({ $saiu }) => ($saiu ? 0.55 : 1)};
 
-  @media (max-width: 560px) {
+  ${ate.celular} {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
 `
 
@@ -213,6 +236,7 @@ export const Nome = styled.strong`
 
 export const Contato = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm};
+  overflow-wrap: anywhere;
   color: ${({ theme }) => theme.colors.textSecondary};
 `
 
@@ -240,6 +264,11 @@ export const Acoes = styled.div`
   display: flex;
   gap: 8px;
   flex-shrink: 0;
+
+  /* No celular, as ações do aluno dividem a largura do cartão. */
+  ${ate.celular} {
+    & > button { flex: 1 1 0; justify-content: center; }
+  }
 `
 
 export const Vazio = styled.p`

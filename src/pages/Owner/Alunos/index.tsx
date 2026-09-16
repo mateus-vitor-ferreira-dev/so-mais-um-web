@@ -188,7 +188,7 @@ export default function OwnerAlunos() {
               <Rotulo htmlFor="contato">Contato</Rotulo>
               <Input
                 id="contato"
-                placeholder="35 99999-1234, um e-mail, ou o que você tiver"
+                placeholder="Telefone, e-mail ou o que tiver"
                 $erro={Boolean(errors.contato)}
                 {...register('contato')}
               />
