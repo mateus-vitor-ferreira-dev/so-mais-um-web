@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
 
 export const Toolbar = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ export const Toolbar = styled.div`
 
   > div:first-child { min-width: min(360px, 100%); }
 
-  @media (max-width: 700px) {
+  ${ate.tablet} {
     align-items: stretch;
     flex-direction: column;
   }
@@ -21,7 +22,7 @@ export const HeaderActions = styled.div`
   justify-content: flex-end;
   gap: 12px;
 
-  @media (max-width: 520px) {
+  ${ate.celular} {
     align-items: stretch;
     flex-direction: column;
   }
@@ -35,6 +36,9 @@ export const FilterToggle = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
+
+  /* O rótulo inteiro é o alvo da caixa de 17px. */
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
 
   input {
     width: 17px;
@@ -57,6 +61,12 @@ const field = `
   padding: 11px 12px;
   border-radius: 8px;
   font: inherit;
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: 1rem;
+  }
 `
 
 export const Input = styled.input`
@@ -99,6 +109,8 @@ export const PrimaryButton = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 export const SecondaryButton = styled.button`
@@ -118,6 +130,8 @@ export const SecondaryButton = styled.button`
     opacity: 0.45;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 export const DangerButton = styled(SecondaryButton)`
@@ -128,11 +142,13 @@ export const DangerButton = styled(SecondaryButton)`
 
 export const StockSummary = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 20px;
 
-  @media (max-width: 650px) { grid-template-columns: 1fr; }
+  /* Os três lado a lado também no celular, com o ícone acima do número: um por
+     linha, eles ocupavam a primeira tela, e o primeiro produto só vinha rolando. */
+  ${ate.celular} { gap: 8px; margin-bottom: 16px; }
 `
 
 export const SummaryCard = styled.div<{ $warning?: boolean }>`
@@ -148,6 +164,14 @@ export const SummaryCard = styled.div<{ $warning?: boolean }>`
   div { display: flex; flex-direction: column; }
   strong { color: ${({ theme }) => theme.colors.textPrimary}; font-size: 22px; }
   span { color: ${({ theme }) => theme.colors.textSecondary}; font-size: 12px; }
+
+  ${ate.celular} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 12px 10px;
+    strong { font-size: 20px; }
+  }
 `
 
 export const PageGrid = styled.div`
@@ -156,12 +180,12 @@ export const PageGrid = styled.div`
   align-items: start;
   gap: 20px;
 
-  @media (max-width: 900px) { grid-template-columns: 1fr; }
+  ${ate.notebook} { grid-template-columns: minmax(0, 1fr); }
 `
 
 export const ProductGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr));
   gap: 14px;
 `
 
@@ -171,6 +195,8 @@ export const ProductCard = styled.article<{ $low: boolean }>`
   border-radius: 12px;
   background: ${({ theme }) => theme.colors.bgCard};
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  ${ate.celular} { padding: 16px; }
 `
 
 export const ProductHeader = styled.div`
@@ -182,6 +208,7 @@ export const ProductHeader = styled.div`
     margin: 0 0 4px;
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: 17px;
+    overflow-wrap: anywhere;
   }
 `
 
@@ -199,7 +226,8 @@ export const AlertBadge = styled.span`
   border-radius: 999px;
   background: ${({ theme }) => theme.colors.warningLight};
   color: ${({ theme }) => theme.colors.warningText};
-  font-size: 10px;
+  /* 12px, o menor texto do app: com 10px, o aviso mais importante do cartão era o menor. */
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
 `
@@ -256,6 +284,7 @@ export const HistoryHeader = styled.div`
   }
 
   select { padding: 8px 10px; font-size: 13px; }
+  ${ate.tablet} { select { font-size: 1rem; } }
 `
 
 export const HistoryList = styled.div`
@@ -276,7 +305,7 @@ export const HistoryItem = styled.div<{ $entry: boolean }>`
 
   .movement { display: flex; flex-direction: column; min-width: 0; }
   strong { color: ${({ $entry, theme }) => ($entry ? theme.colors.success : theme.colors.error)}; font-size: 13px; }
-  span, time { color: ${({ theme }) => theme.colors.textMuted}; font-size: 11px; }
+  span, time { color: ${({ theme }) => theme.colors.textMuted}; font-size: 12px; }
   time { white-space: nowrap; }
 `
 
@@ -314,6 +343,8 @@ export const ModalBox = styled.div`
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: 19px;
   }
+
+  ${ate.celular} { padding: 20px 16px; }
 `
 
 export const FormGrid = styled.div`
@@ -323,8 +354,8 @@ export const FormGrid = styled.div`
 
   .wide { grid-column: 1 / -1; }
 
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
+  ${ate.celular} {
+    grid-template-columns: minmax(0, 1fr);
     .wide { grid-column: auto; }
   }
 `
@@ -335,9 +366,9 @@ export const ModalActions = styled.div`
   gap: 9px;
   margin-top: 20px;
 
-  @media (max-width: 560px) {
+  ${ate.celular} {
     flex-wrap: wrap;
-    button { flex: 1; }
+    button { flex: 1 1 auto; white-space: nowrap; }
   }
 `
 
