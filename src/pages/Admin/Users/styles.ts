@@ -1,8 +1,11 @@
 import styled from 'styled-components'
+import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
 
 export const FilterBar = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   background: ${({ theme }) => theme.colors.bgCard};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -10,10 +13,17 @@ export const FilterBar = styled.div`
   padding: 12px 16px;
   margin-bottom: 16px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  /* No celular, uma coisa por linha: a busca, os papéis e o convite. Lado a
+     lado, os quatro papéis e o botão empurravam o "ADMIN" para fora da tela. */
+  ${ate.tablet} {
+    padding: 12px;
+  }
 `
 
 export const SearchInput = styled.input`
-  flex: 1;
+  flex: 1 1 220px;
+  min-width: 0;
   max-width: 320px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.sm};
@@ -30,11 +40,29 @@ export const SearchInput = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.colors.textMuted};
   }
+
+  ${alvoDeToque}
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} {
+    flex-basis: 100%;
+    max-width: none;
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `
 
 export const RoleFilters = styled.div`
   display: flex;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  /* Os quatro papéis numa linha só, em partes iguais: com quebra, o "ADMIN"
+     descia sozinho para a linha de baixo. */
+  ${ate.tablet} {
+    flex-basis: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 `
 
 export const RoleBtn = styled.button<{ active?: boolean; }>`
@@ -52,54 +80,69 @@ export const RoleBtn = styled.button<{ active?: boolean; }>`
     border-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme, active }) => active ? theme.colors.textOnPrimary : theme.colors.primary};
   }
+
+  ${alvoDeToque}
+
+  ${ate.tablet} {
+    padding: 6px 4px;
+  }
 `
 
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  background: ${({ theme }) => theme.colors.bgCard};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  overflow: hidden;
+export const BotaoConvidar = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  border: none;
+  /* A cor primária do tema, e não o #22c55e fixo: branco sobre aquele verde dava
+     2,3:1, abaixo dos 4,5:1 do texto normal. O tema escuro troca o par sozinho. */
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textOnPrimary};
+
+  &:hover { background: ${({ theme }) => theme.colors.primaryHover}; }
+
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  ${alvoDeToque}
+
+  ${ate.tablet} {
+    flex-basis: 100%;
+  }
+`
+
+/**
+ * A tabela de usuários: a `TabelaResponsiva` do app (web#511). No celular cada
+ * usuário vira um cartão, com a troca de papel no pé; antes a tabela tinha
+ * 870px, e as ações ficavam fora de uma tela de 390.
+ */
+export const Tabela = styled(TabelaResponsiva)`
   box-shadow: ${({ theme }) => theme.shadows.sm};
-`
 
-export const Thead = styled.thead``
+  td { vertical-align: middle; }
+  th.centro, td.centro { text-align: center; }
+  tbody tr:hover td { background: ${({ theme }) => theme.colors.primarySubtle}; }
 
-export const Th = styled.th<{ center?: boolean; }>`
-  text-align: ${({ center }) => center ? 'center' : 'left'};
-  padding: 12px 16px;
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  color: ${({ theme }) => theme.colors.textMuted};
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: ${({ theme }) => theme.colors.bgApp};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-`
-
-export const Tr = styled.tr`
-  &:not(:last-child) {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
-  }
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primarySubtle};
+  ${ate.tablet} {
+    box-shadow: none;
+    tbody tr:hover td { background: transparent; }
+    th.centro, td.centro { text-align: left; }
+    /* O selo do papel na largura do texto, e não esticado na célula do cartão. */
+    td[data-rotulo] > * { justify-self: start; }
+    /* O admin não tem troca de papel: sem isso o cartão dele ganha um pé vazio. */
+    td.acoes:empty { display: none; }
   }
 `
 
-export const Td = styled.td<{ center?: boolean; }>`
-  padding: 14px 16px;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.textPrimary};
-  text-align: ${({ center }) => center ? 'center' : 'left'};
-  vertical-align: middle;
-
-  &:first-child {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+export const Usuario = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 `
 
 export const AvatarCell = styled.div`
@@ -119,6 +162,7 @@ export const AvatarCell = styled.div`
 export const UserMeta = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 0;
 
   strong {
     font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -153,6 +197,8 @@ export const ActionBtn = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  ${alvoDeToque}
 `
 
 /* ── Modal compartilhado (convite + confirmação de role) ─────────────────────── */
@@ -163,6 +209,8 @@ export const ModalWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  /* A margem do modal no celular: sem ela a caixa encosta nas bordas da tela. */
+  padding: 16px;
 `
 
 export const ModalOverlay = styled.div`
@@ -180,6 +228,10 @@ export const ModalBox = styled.div`
   width: 100%;
   max-width: 420px;
   box-shadow: ${({ theme }) => theme.shadows.lg};
+
+  ${ate.celular} {
+    padding: 22px 20px;
+  }
 `
 
 export const ModalTitle = styled.h3`
@@ -212,12 +264,23 @@ export const ModalInput = styled.input`
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+
+  ${ate.tablet} {
+    height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `
 
 export const ModalActions = styled.div`
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 10px;
+
+  /* No celular os dois botões dividem a linha, com alvo de toque inteiro. */
+  ${ate.celular} {
+    & > button { flex: 1 1 0; min-height: ${ALVO_DE_TOQUE}; }
+  }
 `
 
 export const ModalCancelBtn = styled.button`
