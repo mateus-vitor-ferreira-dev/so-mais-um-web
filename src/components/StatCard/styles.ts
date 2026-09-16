@@ -13,6 +13,12 @@ export const Card = styled.div`
   ${ate.tablet} {
     padding: 14px 14px 14px 18px;
   }
+  /* Meia tela de 360 deixava 126px para o rótulo, e "ESTABELECIMENTOS" quebrava
+     no meio da palavra. 10px à direita devolvem o que faltava. */
+  ${ate.celular} {
+    padding-right: 10px;
+    padding-left: 16px;
+  }
 `
 
 export const Accent = styled.div`
@@ -38,6 +44,9 @@ export const Label = styled.p`
     letter-spacing: 0.02em;
     overflow-wrap: anywhere;
     hyphens: auto;
+  }
+  ${ate.celular} {
+    letter-spacing: 0;
   }
 `
 

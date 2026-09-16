@@ -33,8 +33,6 @@ const editSchema = yup.object({
 })
 
 const STATUS_LABEL = { OPEN: 'Aberto', CLOSED: 'Fechado' }
-const STATUS_COLOR = { OPEN: '#16a34a', CLOSED: '#6b7280' }
-const STATUS_BG    = { OPEN: '#dcfce7', CLOSED: '#f3f4f6' }
 
 export default function OwnerPlaces() {
   const { user } = useAuth()
@@ -156,13 +154,13 @@ export default function OwnerPlaces() {
           <PlaceCard key={place.id}>
             <PlaceCardHeader>
               <PlaceInfo>
-                <PlaceName>{place.name}</PlaceName>
+                <PlaceName title={place.name}>{place.name}</PlaceName>
                 <PlaceMeta>
                   {place.city && `${place.city}`}
                   {place._count?.courts != null && ` · ${place._count.courts} quadra(s)`}
                 </PlaceMeta>
               </PlaceInfo>
-              <StatusBadge bg={STATUS_BG[place.status]} color={STATUS_COLOR[place.status]}>
+              <StatusBadge $aberto={place.status === 'OPEN'}>
                 {STATUS_LABEL[place.status] ?? place.status}
               </StatusBadge>
             </PlaceCardHeader>
