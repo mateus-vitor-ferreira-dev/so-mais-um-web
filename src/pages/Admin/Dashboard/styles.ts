@@ -136,11 +136,14 @@ export const SeloDeStatus = styled.span<{ $status: string }>`
       : $status === 'trialing' ? theme.colors.infoLight
         : $status === 'past_due' ? theme.colors.errorLight
           : theme.colors.borderLight};
+  /* Trial e neutro com texto de leitura, e não o tom do selo: no claro, \`info\`
+     sobre \`infoLight\` dá 4,24:1 e \`textMuted\` sobre \`borderLight\`, 4,33:1,
+     os dois abaixo dos 4,5:1. O fundo continua dizendo qual é o status. */
   color: ${({ $status, theme }) =>
     $status === 'active' ? theme.colors.success
-      : $status === 'trialing' ? theme.colors.info
+      : $status === 'trialing' ? theme.colors.textPrimary
         : $status === 'past_due' ? theme.colors.error
-          : theme.colors.textMuted};
+          : theme.colors.textSecondary};
 `
 
 export const DetailModal = styled.div`
