@@ -12,7 +12,7 @@ import type { Participation, Partida, ReviewTag, UserStats } from '../../types/a
 import {
   Container, StatsCard, HistoryList, HistoryCard,
   EvalModalOverlay, EvalModalContent, ParticipantRow,
-  ProgressInfo, ProgressBarWrap, CommentTextarea,
+  ProgressInfo, ProgressBarWrap, CommentTextarea, AcoesDaAvaliacao
 } from './styles'
 import { formatarNota } from '../../utils/numeros'
 import { dataCurta, hora } from '../../utils/datas'
@@ -245,26 +245,14 @@ export default function Historico() {
                 </ParticipantRow>
               ))}
 
-              <div style={{ display: 'flex', gap: 16, marginTop: 24 }}>
-                <button
-                  onClick={() => setEvalEvent(null)}
-                  style={{ flex: 1, padding: 12, borderRadius: 8, border: 'none', cursor: 'pointer' }}
-                >
+              <AcoesDaAvaliacao>
+                <button type="button" className="cancelar" onClick={() => setEvalEvent(null)}>
                   Cancelar
                 </button>
-                <button
-                  onClick={submitEvaluations}
-                  disabled={submitting}
-                  style={{
-                    flex: 1, padding: 12, borderRadius: 8, border: 'none',
-                    background: '#22c55e', color: 'white', fontWeight: 'bold',
-                    cursor: submitting ? 'not-allowed' : 'pointer',
-                    opacity: submitting ? 0.7 : 1,
-                  }}
-                >
+                <button type="button" className="salvar" onClick={submitEvaluations} disabled={submitting}>
                   {submitting ? 'Enviando...' : 'Salvar Avaliações'}
                 </button>
-              </div>
+              </AcoesDaAvaliacao>
             </EvalModalContent>
           </EvalModalOverlay>
         )}
