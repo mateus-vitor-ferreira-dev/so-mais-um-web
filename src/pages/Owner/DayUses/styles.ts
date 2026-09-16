@@ -1,4 +1,12 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+
+/** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+const campoNoCelular = `
+  ${ate.tablet} {
+    font-size: 1rem;
+  }
+`
 
 /**
  * Os estilos da tela de day use.
@@ -31,6 +39,9 @@ export const SeletorDeEspaco = styled.select`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 1px;
   }
+
+  ${campoNoCelular}
+  ${ate.celular} { width: 100%; }
 `
 
 export const Caixa = styled.section`
@@ -39,6 +50,8 @@ export const Caixa = styled.section`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
+
+  ${ate.celular} { padding: 16px; }
 `
 
 export const Topo = styled.div`
@@ -48,7 +61,7 @@ export const Topo = styled.div`
   justify-content: space-between;
   margin-bottom: 4px;
 
-  @media (max-width: 560px) {
+  ${ate.celular} {
     flex-direction: column;
   }
 `
@@ -93,6 +106,7 @@ export const BotaoLeve = styled.button`
   display: inline-flex;
   gap: 6px;
   align-items: center;
+  justify-content: center;
   min-height: 36px;
   padding: 0 12px;
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -111,12 +125,19 @@ export const BotaoLeve = styled.button`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+
+  ${alvoDeToque}
+`
+
+/** O "← Day uses" da tela de entradas. Sem margem, ele encostava no resumo logo abaixo. */
+export const Voltar = styled(BotaoLeve)`
+  margin-bottom: 16px;
 `
 
 export const Form = styled.form`
   display: grid;
   gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
   align-items: start;
 `
 
@@ -139,6 +160,7 @@ const campo = `
   border-radius: 10px;
   font-size: 0.875rem;
   width: 100%;
+  ${campoNoCelular}
 `
 
 export const Input = styled.input<{ $erro?: boolean }>`
@@ -198,6 +220,9 @@ export const Aviso = styled.p`
 
 export const Lista = styled.ul`
   display: grid;
+  /* \`minmax(0, 1fr)\`: sem ele a coluna cresce até a largura das ações numa
+     linha só, como acontecia com o cartão de Turmas. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   margin: 0;
   padding: 0;
@@ -222,8 +247,11 @@ export const Cartao = styled.div<{ $cancelado?: boolean }>`
   background: ${({ theme }) => theme.colors.bgCard};
   opacity: ${({ $cancelado }) => ($cancelado ? 0.55 : 1)};
 
-  @media (max-width: 640px) {
+  ${ate.tablet} {
     flex-direction: column;
+  }
+  ${ate.celular} {
+    padding: 14px;
   }
 `
 
@@ -250,14 +278,24 @@ export const Lado = styled.div`
   gap: 8px;
   align-items: flex-end;
 
-  @media (max-width: 640px) {
+  ${ate.tablet} {
     align-items: flex-start;
+    width: 100%;
   }
 `
 
 export const Acoes = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
+
+  /* No celular as ações dividem a largura do cartão, e a que sobra sozinha ocupa a linha. */
+  ${ate.celular} {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    & > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  }
 `
 
 /**
@@ -318,7 +356,8 @@ export const Erro = styled.p`
  * dentro de um cartão de lista — o do formulário ocupa a largura do campo.
  */
 export const SelectDoCartao = styled.select`
-  max-width: 220px;
+  max-width: 100%;
+  width: 220px;
   padding: 4px 8px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.sm};
@@ -330,6 +369,11 @@ export const SelectDoCartao = styled.select`
   &:disabled {
     opacity: 0.6;
     cursor: progress;
+  }
+
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: 1rem;
   }
 `
 
@@ -405,5 +449,5 @@ export const LinhaDaPessoa = styled.li<{ $pago: boolean }>`
     color: ${({ theme }) => theme.colors.textSecondary};
   }
 
-  .dinheiro { display: flex; align-items: center; gap: 10px; }
+  .dinheiro { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 `

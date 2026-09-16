@@ -14,7 +14,7 @@ import { Skeleton } from '../../../components/Skeleton'
 import type { EntradaNoDayUse, FaixaDoDayUse } from '../../../types/api'
 import {
   AcoesDoForm, Botao, BotaoLeve, Caixa, Campo, Erro, ErroDoCampo, Explicacao, Faixa, Form,
-  Input, LinhaDaPessoa, Lista, Resumo, Rotulo, Select, TituloDaCaixa, Topo, Vazio,
+  Input, LinhaDaPessoa, Lista, Resumo, Rotulo, Select, TituloDaCaixa, Topo, Vazio, Voltar,
 } from '../DayUses/styles'
 import { formatarReais } from '../../../utils/formatCurrency'
 
@@ -132,9 +132,9 @@ export default function OwnerEntradasDoDayUse() {
 
   return (
     <>
-      <BotaoLeve type="button" onClick={() => navigate(`/owner/day-uses?placeId=${placeId}`)}>
+      <Voltar type="button" onClick={() => navigate(`/owner/day-uses?placeId=${placeId}`)}>
         <ArrowLeft size={15} /> Day uses
-      </BotaoLeve>
+      </Voltar>
 
       {/* Os números vêm da api: somar `Decimal` de dinheiro no cliente é onde o
           centavo se perde. */}
