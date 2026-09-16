@@ -2,7 +2,7 @@
  * Assinatura inativa na tela de Quadras.
  *
  * Além de ser uma das quatro que escondiam tudo, esta tinha um detalhe próprio:
- * o **"+ Nova Quadra" mora fora do portão**. Com a assinatura vencida, o
+ * o **"Nova Quadra" mora fora do portão**. Com a assinatura vencida, o
  * conteúdo abaixo era apagado e o botão continuava clicável — abrindo um modal
  * dentro da parte apagada.
  *
@@ -78,13 +78,13 @@ describe('OwnerCourts — assinatura inativa', () => {
     expect(screen.getByRole('button', { name: 'Excluir' })).toBeDisabled()
   })
 
-  it('desabilita o "+ Nova Quadra", que fica fora do portão', async () => {
+  it('desabilita o "Nova Quadra", que fica fora do portão', async () => {
     assinatura.isActive = false
 
     renderiza()
 
     await screen.findByText('Quadra Coberta')
-    expect(screen.getByRole('button', { name: '+ Nova Quadra' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Nova Quadra' })).toBeDisabled()
   })
 
   it('com assinatura em dia, nada é avisado nem desabilitado', async () => {
@@ -92,7 +92,7 @@ describe('OwnerCourts — assinatura inativa', () => {
 
     expect(await screen.findByText('Quadra Coberta')).toBeInTheDocument()
     expect(screen.queryByText(/pode consultar, mas precisa/i)).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '+ Nova Quadra' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Nova Quadra' })).toBeEnabled()
     expect(screen.getByRole('button', { name: 'Excluir' })).toBeEnabled()
   })
 
@@ -103,7 +103,7 @@ describe('OwnerCourts — assinatura inativa', () => {
     renderiza()
 
     expect(await screen.findByText('Verificando assinatura…')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '+ Nova Quadra' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Nova Quadra' })).toBeDisabled()
   })
 })
 
@@ -120,7 +120,7 @@ describe('OwnerCourts — quadra coberta', () => {
     const { user } = renderiza()
     await screen.findByText('Quadra Coberta')
 
-    await user.click(screen.getByRole('button', { name: '+ Nova Quadra' }))
+    await user.click(screen.getByRole('button', { name: 'Nova Quadra' }))
     await user.type(screen.getByPlaceholderText('Ex.: Quadra 1'), 'Areia 2')
     await user.click(screen.getByRole('button', { name: 'Criar Quadra' }))
 
@@ -195,7 +195,7 @@ describe('OwnerCourts — quadra coberta', () => {
     const { user } = renderiza()
     await screen.findByText('Quadra Coberta')
 
-    await user.click(screen.getByRole('button', { name: '+ Nova Quadra' }))
+    await user.click(screen.getByRole('button', { name: 'Nova Quadra' }))
     expect(screen.getByLabelText('Coberta')).toBeInTheDocument()
 
     await user.selectOptions(screen.getByRole('combobox'), 'POKER')
@@ -360,7 +360,7 @@ describe('OwnerCourts — preço por horário', () => {
     const { user } = renderiza()
     await screen.findByText('Quadra Coberta')
 
-    await user.click(screen.getByRole('button', { name: '+ Nova Quadra' }))
+    await user.click(screen.getByRole('button', { name: 'Nova Quadra' }))
     await user.type(screen.getByPlaceholderText('Ex.: Quadra 1'), 'Beach 3')
     await user.click(screen.getByLabelText('Descoberta'))
     await user.click(screen.getByLabelText('Valores diferentes por horário'))

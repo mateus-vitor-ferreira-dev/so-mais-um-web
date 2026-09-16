@@ -24,8 +24,6 @@ const STATUS_TABS: Array<{ key: PlaceRequestStatus | undefined; label: string }>
 ]
 
 const STATUS_LABEL = { PENDING: 'Pendente', APPROVED: 'Aprovada', REJECTED: 'Rejeitada' }
-const STATUS_COLOR = { PENDING: '#d97706', APPROVED: '#16a34a', REJECTED: '#dc2626' }
-const STATUS_BG    = { PENDING: '#fef3c7', APPROVED: '#dcfce7', REJECTED: '#fee2e2' }
 
 export default function AdminRequests() {
   const [requests, setRequests]   = useState<PlaceRequest[]>([])
@@ -104,7 +102,7 @@ export default function AdminRequests() {
 
       <Tabs>
         {STATUS_TABS.map(({ key, label }) => (
-          <Tab key={String(key)} active={tab === key} onClick={() => setTab(key)}>
+          <Tab key={String(key)} active={tab === key} aria-pressed={tab === key} onClick={() => setTab(key)}>
             {label}
           </Tab>
         ))}
@@ -119,7 +117,7 @@ export default function AdminRequests() {
       <RequestList>
         {requests.map((req) => (
           <RequestCard key={req.id}>
-            <RequestAccent color={STATUS_COLOR[req.status]} />
+            <RequestAccent $status={req.status} />
 
             <RequestHeader>
               <div>
@@ -135,7 +133,7 @@ export default function AdminRequests() {
                   {req.owner?.email ?? '—'}
                 </RequestMeta>
               </div>
-              <StatusBadge bg={STATUS_BG[req.status]} color={STATUS_COLOR[req.status]}>
+              <StatusBadge $status={req.status}>
                 {STATUS_LABEL[req.status]}
               </StatusBadge>
             </RequestHeader>

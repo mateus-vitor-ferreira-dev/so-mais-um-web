@@ -1,4 +1,13 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+
+/** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+const campoNoCelular = css`
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
+`
 
 export const BackBtn = styled.button`
   display: inline-flex;
@@ -16,13 +25,17 @@ export const BackBtn = styled.button`
   transition: background 0.15s;
 
   &:hover { background: ${({ theme }) => theme.colors.borderLight}; }
+
+  ${alvoDeToque}
 `
 
 export const CourtsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   gap: 18px;
   margin-top: 8px;
+
+  ${ate.celular} { gap: 12px; }
 `
 
 export const CourtCard = styled.div`
@@ -34,6 +47,8 @@ export const CourtCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  ${ate.celular} { padding: 16px; }
 `
 
 export const CourtCardHeader = styled.div`
@@ -62,6 +77,12 @@ export const CourtName = styled.h3`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  /* No celular o nome inteiro, quebrando linha, e não cortado com reticências. */
+  ${ate.tablet} {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 `
 
 export const CourtMeta = styled.p`
@@ -70,15 +91,16 @@ export const CourtMeta = styled.p`
   margin: 0;
 `
 
-export const StatusBadge = styled.span<{ bg?: string; }>`
+/** Aberta em verde, fechada em cinza, pelos tokens: as cores fixas eram só as do tema claro. */
+export const StatusBadge = styled.span<{ $aberta: boolean }>`
   display: inline-flex;
   align-items: center;
   padding: 4px 12px;
   border-radius: ${({ theme }) => theme.radii.full};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  background: ${({ bg }) => bg};
-  color: ${({ color }) => color};
+  background: ${({ $aberta, theme }) => ($aberta ? theme.colors.successLight : theme.colors.borderLight)};
+  color: ${({ $aberta, theme }) => ($aberta ? theme.colors.success : theme.colors.textMuted)};
   white-space: nowrap;
   flex-shrink: 0;
 `
@@ -91,12 +113,36 @@ export const CourtActions = styled.div`
 
 type VariantKey = keyof typeof VARIANT_STYLES
 
+/**
+ * Pelos tokens do tema: os hexadecimais de antes eram do tema claro, e no escuro
+ * os botões viravam blocos cinza-claro e rosa-claro no cartão escuro.
+ */
 const VARIANT_STYLES = {
-  secondary: { bg: '#f3f4f6', border: '#e5e7eb', color: '#374151', hoverBg: '#e5e7eb' },
-  success:   { bg: '#dcfce7', border: '#22c55e', color: '#15803d', hoverBg: '#22c55e' },
-  danger:    { bg: '#fee2e2', border: '#ef4444', color: '#b91c1c', hoverBg: '#ef4444' },
-  primary:   { bg: '#3baa34', border: '#3baa34', color: '#fff',    hoverBg: '#2d8a28' },
-} as const
+  secondary: css`
+    background: ${({ theme }) => theme.colors.bgApp};
+    border-color: ${({ theme }) => theme.colors.border};
+    color: ${({ theme }) => theme.colors.textSecondary};
+    &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.borderLight}; color: ${({ theme }) => theme.colors.textPrimary}; }
+  `,
+  success: css`
+    background: ${({ theme }) => theme.colors.successLight};
+    border-color: ${({ theme }) => theme.colors.success};
+    color: ${({ theme }) => theme.colors.success};
+    &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.success}; color: ${({ theme }) => theme.colors.textOnPrimary}; }
+  `,
+  danger: css`
+    background: ${({ theme }) => theme.colors.errorLight};
+    border-color: ${({ theme }) => theme.colors.error};
+    color: ${({ theme }) => theme.colors.error};
+    &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.error}; color: ${({ theme }) => theme.colors.textOnPrimary}; }
+  `,
+  primary: css`
+    background: ${({ theme }) => theme.colors.primary};
+    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.textOnPrimary};
+    &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.primaryHover}; }
+  `,
+}
 
 export const ActionBtn = styled.button<{ variant?: VariantKey }>`
   flex: 1;
@@ -106,19 +152,14 @@ export const ActionBtn = styled.button<{ variant?: VariantKey }>`
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
   text-align: center;
-  border: 1px solid ${({ variant = 'secondary' }) => VARIANT_STYLES[variant].border};
-  background: ${({ variant = 'secondary' }) => VARIANT_STYLES[variant].bg};
-  color: ${({ variant = 'secondary' }) => VARIANT_STYLES[variant].color};
+  border: 1px solid;
+  ${({ variant = 'secondary' }) => VARIANT_STYLES[variant]}
   transition: all 0.15s;
 
-  &:hover:not(:disabled) {
-    background: ${({ variant = 'secondary' }) => VARIANT_STYLES[variant].hoverBg};
-    color: ${({ variant }) => variant === 'secondary' ? '#111827' : '#fff'};
-  }
-
   &:disabled { opacity: 0.5; cursor: not-allowed; }
-`
 
+  ${alvoDeToque}
+`
 
 export const ErrorMsg = styled.p`
   color: ${({ theme }) => theme.colors.error};
@@ -129,7 +170,15 @@ export const ErrorMsg = styled.p`
   margin-bottom: 16px;
 `
 
+/**
+ * A ação da barra do topo. Com ícone de verdade, e não um "+" escrito: é o
+ * \`svg\` que faz o layout deixá-la só com o ícone no celular (web#493). Com o
+ * rótulo inteiro, o título da página virava "Quad…".
+ */
 export const NewBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 9px 20px;
   border-radius: ${({ theme }) => theme.radii.md};
   font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -145,6 +194,8 @@ export const NewBtn = styled.button`
   /* Mesmo desabilitado do ActionBtn: sem assinatura em dia o botão precisa
      parecer desabilitado, não só deixar de responder. */
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 // ── Modal ─────────────────────────────────────────────────────────────────────
@@ -176,10 +227,13 @@ export const ModalBox = styled.div<{ $largo?: boolean }>`
   padding: 28px 32px;
   width: calc(100% - 32px);
   max-width: ${({ $largo }) => ($largo ? '640px' : '480px')};
-  max-height: calc(100vh - 32px);
+  /* \`dvh\`: no celular o \`vh\` conta a barra de endereço, e o fim do modal ficava atrás dela. */
+  max-height: calc(100dvh - 32px);
   overflow-y: auto;
   box-sizing: border-box;
   box-shadow: ${({ theme }) => theme.shadows.lg};
+
+  ${ate.celular} { padding: 22px 16px; }
 `
 
 export const ModalHeader = styled.div`
@@ -224,6 +278,8 @@ export const Input = styled.input`
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+
+  ${campoNoCelular}
 `
 
 export const Select = styled.select`
@@ -239,6 +295,8 @@ export const Select = styled.select`
   cursor: pointer;
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
+
+  ${campoNoCelular}
 `
 
 export const FieldError = styled.span`
@@ -251,6 +309,11 @@ export const ModalActions = styled.div`
   justify-content: flex-end;
   gap: 10px;
   margin-top: 4px;
+
+  ${ate.celular} {
+    flex-wrap: wrap;
+    & > button { flex: 1 1 auto; white-space: nowrap; min-height: ${ALVO_DE_TOQUE}; }
+  }
 `
 
 export const CancelBtn = styled.button`
@@ -338,6 +401,9 @@ export const Opcao = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.textPrimary};
   cursor: pointer;
+
+  /* O rótulo inteiro é o alvo do rádio: com 44px de altura, o dedo não erra. */
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Nota = styled.p`
@@ -354,6 +420,8 @@ export const OpcaoDoPreco = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.textPrimary};
   cursor: pointer;
+
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const ErroDasFaixas = styled.p`

@@ -168,7 +168,7 @@ export default function OwnerDashboard() {
                   {sub?.currentPeriodEnd && (
                     <div className="row">
                       <span className="label">Próximo Vencimento</span>
-                      <span className="value" style={{ color: isActive ? undefined : '#ef4444' }}>
+                      <span className={isActive ? 'value' : 'value vencida'}>
                         {dataCurta(sub.currentPeriodEnd)}
                       </span>
                     </div>
@@ -202,8 +202,8 @@ export default function OwnerDashboard() {
                 ...INCLUSO_EM_TODO_PLANO,
                 ...sub.plan.funcionalidades.map(f => ROTULOS_DE_FUNCIONALIDADE[f]),
               ].map(item => (
-                <div className="row" key={item}>
-                  <span style={{ color: '#3BAA34', fontWeight: 600 }}>✓</span>
+                <div className="row item" key={item}>
+                  <span className="check" aria-hidden="true">✓</span>
                   <span className="value">{item}</span>
                 </div>
               ))}

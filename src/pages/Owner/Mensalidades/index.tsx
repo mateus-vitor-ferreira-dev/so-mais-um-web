@@ -54,12 +54,12 @@ export default function OwnerMensalidades() {
       {!placeId || !turmaId ? <Estado role="alert">Falta o espaço no endereço. Volte para Turmas e abra a turma por lá.</Estado> : consulta.isPending ? <Estado>Carregando mensalidades…</Estado> : consulta.isError ? <Estado role="alert">Não foi possível carregar as mensalidades.</Estado> : consulta.data.alunos.length === 0 ? <Estado>Nenhum aluno nesta competência.</Estado> : <Lista>
         {consulta.data.alunos.map((aluno) => {
           const diverge = Number(aluno.valor) !== Number(consulta.data.valorAtualDaTurma)
-          return <Linha key={aluno.matriculaId}>
+          return <Linha key={aluno.matriculaId} $pago={aluno.pago}>
             <div><Nome>{aluno.nome}{aluno.saiuNoMes && <Selo>saiu neste mês</Selo>}</Nome>
               <Detalhe>{reais(aluno.valor)} · {aluno.pago ? 'pago' : 'em aberto'}</Detalhe>
               {diverge && <Detalhe>Registrado por {reais(aluno.valor)}; hoje a turma custa {reais(consulta.data.valorAtualDaTurma)}.</Detalhe>}
             </div>
-            <Botao type="button" disabled={marcar.isPending || desmarcar.isPending} onClick={() => aluno.pago ? desmarcar.mutate(aluno.matriculaId) : marcar.mutate(aluno.matriculaId)}>{aluno.pago ? 'Desmarcar' : 'Marcar como paga'}</Botao>
+            <Botao type="button" $desfazer={aluno.pago} disabled={marcar.isPending || desmarcar.isPending} onClick={() => aluno.pago ? desmarcar.mutate(aluno.matriculaId) : marcar.mutate(aluno.matriculaId)}>{aluno.pago ? 'Desmarcar' : 'Marcar como paga'}</Botao>
           </Linha>
         })}
       </Lista>}

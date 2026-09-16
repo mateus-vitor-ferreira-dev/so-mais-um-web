@@ -1,4 +1,12 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+
+/** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+const campoNoCelular = `
+  ${ate.tablet} {
+    font-size: 1rem;
+  }
+`
 
 /**
  * O seletor de espaço, no topo — mesmo lugar e mesma forma do Professores, do
@@ -21,6 +29,9 @@ export const SeletorDeEspaco = styled.select`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 1px;
   }
+
+  ${campoNoCelular}
+  ${ate.celular} { width: 100%; }
 `
 
 export const Caixa = styled.section`
@@ -29,6 +40,10 @@ export const Caixa = styled.section`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
+
+  ${ate.celular} {
+    padding: 16px;
+  }
 `
 
 export const Topo = styled.div`
@@ -38,7 +53,7 @@ export const Topo = styled.div`
   justify-content: space-between;
   margin-bottom: 4px;
 
-  @media (max-width: 560px) {
+  ${ate.celular} {
     flex-direction: column;
   }
 `
@@ -83,6 +98,7 @@ export const BotaoLeve = styled.button`
   display: inline-flex;
   gap: 6px;
   align-items: center;
+  justify-content: center;
   min-height: 36px;
   padding: 0 12px;
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -101,6 +117,8 @@ export const BotaoLeve = styled.button`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+
+  ${alvoDeToque}
 `
 
 export const Form = styled.form`
@@ -129,6 +147,7 @@ const campo = `
   border-radius: 10px;
   font-size: 0.875rem;
   width: 100%;
+  ${campoNoCelular}
 `
 
 export const Input = styled.input<{ $erro?: boolean }>`
@@ -165,6 +184,7 @@ export const AcoesDoForm = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
   grid-column: 1 / -1;
 `
 
@@ -188,6 +208,9 @@ export const Aviso = styled.p`
 
 export const Lista = styled.ul`
   display: grid;
+  /* \`minmax(0, 1fr)\`: sem ele a coluna crescia até a largura dos botões numa
+     linha só, e o cartão da turma passava da borda com 503px numa tela de 360. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   margin: 0;
   padding: 0;
@@ -224,8 +247,11 @@ export const Cartao = styled.div<{ $inativa?: boolean }>`
   background: ${({ theme }) => theme.colors.bgCard};
   opacity: ${({ $inativa }) => ($inativa ? 0.55 : 1)};
 
-  @media (max-width: 640px) {
+  ${ate.tablet} {
     flex-direction: column;
+  }
+  ${ate.celular} {
+    padding: 14px;
   }
 `
 
@@ -258,14 +284,30 @@ export const Lado = styled.div`
   gap: 8px;
   align-items: flex-end;
 
-  @media (max-width: 640px) {
+  ${ate.tablet} {
     align-items: flex-start;
+    width: 100%;
   }
 `
 
 export const Acoes = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 8px;
+
+  /* No cartão, as ações em duas colunas iguais: numa linha só, "Tirar
+     professor" e "Desativar" ficavam fora da tela. */
+  ${ate.tablet} {
+    justify-content: flex-start;
+  }
+  ${ate.celular} {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    /* O botão que sobra sozinho ocupa a linha, em vez de meia linha vazia. */
+    & > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  }
 `
 
 /**
@@ -345,7 +387,8 @@ export const EscolherProfessor = styled.div`
  * dentro de um cartão de lista — o do formulário ocupa a largura do campo.
  */
 export const SelectDoCartao = styled.select`
-  max-width: 220px;
+  max-width: 100%;
+  width: 220px;
   padding: 4px 8px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.sm};
@@ -357,5 +400,10 @@ export const SelectDoCartao = styled.select`
   &:disabled {
     opacity: 0.6;
     cursor: progress;
+  }
+
+  ${ate.tablet} {
+    min-height: ${ALVO_DE_TOQUE};
+    font-size: 1rem;
   }
 `
