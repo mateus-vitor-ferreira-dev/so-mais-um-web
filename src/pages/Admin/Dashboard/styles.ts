@@ -1,9 +1,18 @@
 import styled from 'styled-components'
+import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
+import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
+import { alvoDeToque, ate } from '../../../styles/telas'
 
 export const Container = styled.div`
   padding: ${({ theme }) => theme.spacing[6]};
   max-width: 1400px;
   margin: 0 auto;
+
+  /* No celular o \`Content\` do layout já dá a margem: somadas, as duas
+     deixavam 40px de cada lado numa tela de 360. */
+  ${ate.tablet} {
+    padding: 0;
+  }
 `
 
 export const Header = styled.div`
@@ -20,12 +29,11 @@ export const Header = styled.div`
   }
 `
 
-export const KpiGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: ${({ theme }) => theme.spacing[4]};
-  margin-bottom: ${({ theme }) => theme.spacing[8]};
-`
+/**
+ * Os quatro números do topo: a grade comum do app (web#511). O \`auto-fit\` de
+ * antes empilhava um por linha no celular, e só os números ocupavam a primeira tela.
+ */
+export const KpiGrid = GradeDeNumeros
 
 export const KpiCard = styled.div<{ $borderColor?: string; }>`
   background: ${({ theme }) => theme.colors.bgCard};
@@ -47,6 +55,16 @@ export const KpiCard = styled.div<{ $borderColor?: string; }>`
     color: ${({ theme }) => theme.colors.textPrimary};
     font-weight: bold;
   }
+
+  /* Meia tela por cartão: "R$ 1919,20" em 30px não cabia em 150px. */
+  ${ate.tablet} {
+    padding: ${({ theme }) => theme.spacing[4]};
+    min-width: 0;
+    p {
+      font-size: ${({ theme }) => theme.fontSizes.xl};
+      overflow-wrap: anywhere;
+    }
+  }
 `
 
 export const Section = styled.section`
@@ -58,37 +76,29 @@ export const Section = styled.section`
   }
 `
 
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  background: ${({ theme }) => theme.colors.bgCard};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  overflow: hidden;
+/**
+ * As tabelas de contratos e pagamentos: a \`TabelaResponsiva\` do app (web#511).
+ * No celular cada contrato vira um cartão; antes a tabela tinha 641px, e o
+ * valor, o status e o "Ver Detalhes" ficavam fora de uma tela de 390.
+ */
+export const Table = styled(TabelaResponsiva)`
   box-shadow: ${({ theme }) => theme.shadows.sm};
 
-  th,
-  td {
-    padding: ${({ theme }) => theme.spacing[4]};
-    text-align: left;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
-  }
-  th {
-    color: ${({ theme }) => theme.colors.textMuted};
-    font-size: ${({ theme }) => theme.fontSizes.xs};
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  td {
-    color: ${({ theme }) => theme.colors.textPrimary};
-    font-size: ${({ theme }) => theme.fontSizes.sm};
-    vertical-align: middle;
-  }
-  tbody tr:last-child td {
-    border-bottom: none;
+  td { vertical-align: middle; color: ${({ theme }) => theme.colors.textPrimary}; }
+  td.vazio { text-align: center; }
+  /* "Só+1 Premium" numa linha só, e não "Só+1" em cima de "Premium". */
+  td.plano, td.valor { white-space: nowrap; }
+
+  ${ate.tablet} {
+    box-shadow: none;
+    td[data-rotulo] > * { justify-self: start; }
+    td.vazio { text-align: left; color: ${({ theme }) => theme.colors.textSecondary}; }
   }
 `
 
 export const Badge = styled.span<{ $status?: string; }>`
+  display: inline-block;
+  white-space: nowrap;
   padding: 4px 12px;
   border-radius: ${({ theme }) => theme.radii.full};
   font-size: ${({ theme }) => theme.fontSizes.xs};
@@ -103,8 +113,34 @@ export const Badge = styled.span<{ $status?: string; }>`
     $status === 'Ativo' || $status === 'Pago'
       ? theme.colors.success
       : $status === 'Pendente'
-        ? theme.colors.warning
+        ? theme.colors.warningText
         : theme.colors.error};
+`
+
+/**
+ * O selo do status do contrato, na tabela e no detalhe, pelos tokens do tema.
+ *
+ * Um só para os dois lugares: a tabela usava o \`Badge\` com "ativo ou o resto",
+ * e "Cancelada" saía amarela, como um pendente. No detalhe, as cores fixas eram
+ * as do tema claro, e no escuro o selo virava uma mancha clara.
+ */
+export const SeloDeStatus = styled.span<{ $status: string }>`
+  display: inline-block;
+  white-space: nowrap;
+  padding: 3px 12px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  background: ${({ $status, theme }) =>
+    $status === 'active' ? theme.colors.successLight
+      : $status === 'trialing' ? theme.colors.infoLight
+        : $status === 'past_due' ? theme.colors.errorLight
+          : theme.colors.borderLight};
+  color: ${({ $status, theme }) =>
+    $status === 'active' ? theme.colors.success
+      : $status === 'trialing' ? theme.colors.info
+        : $status === 'past_due' ? theme.colors.error
+          : theme.colors.textMuted};
 `
 
 export const DetailModal = styled.div`
@@ -114,6 +150,8 @@ export const DetailModal = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  /* A margem do modal no celular: sem ela a caixa encosta nas bordas da tela. */
+  padding: 16px;
 `
 
 export const DetailOverlay = styled.div`
@@ -133,6 +171,10 @@ export const DetailBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 14px;
+
+  ${ate.celular} {
+    padding: 20px;
+  }
 `
 
 export const DetailHeader = styled.div`
@@ -156,6 +198,9 @@ export const CloseBtn = styled.button`
   cursor: pointer;
   color: ${({ theme }) => theme.colors.textMuted};
   &:hover { color: ${({ theme }) => theme.colors.textPrimary}; }
+
+  ${alvoDeToque}
+  ${ate.tablet} { margin-right: -12px; }
 `
 
 export const DetailRow = styled.div`
@@ -180,6 +225,9 @@ export const DetailValue = styled.span`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: ${({ theme }) => theme.colors.textPrimary};
   text-align: right;
+  min-width: 0;
+  /* O e-mail do dono inteiro, quebrado, e não passando da borda do modal. */
+  overflow-wrap: anywhere;
 `
 
 export const ActionButton = styled.button`
@@ -191,9 +239,12 @@ export const ActionButton = styled.button`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: bold;
   cursor: pointer;
+  white-space: nowrap;
   transition: 0.2s;
   &:hover {
     background: ${({ theme }) => theme.colors.primary};
-    color: white;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
   }
+
+  ${alvoDeToque}
 `

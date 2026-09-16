@@ -4,13 +4,11 @@ import api from '../../../services/api'
 import {
   Container, KpiGrid, KpiCard, Section, Table, Badge, ActionButton,
   DetailModal, DetailOverlay, DetailBox, DetailHeader, DetailTitle, CloseBtn,
-  DetailRow, DetailLabel, DetailValue,
+  DetailRow, DetailLabel, DetailValue, SeloDeStatus,
 } from './styles'
 import { dataCurta } from '../../../utils/datas'
 
 const STATUS_LABEL: Record<string, string> = { active: 'Ativo', trialing: 'Trial', past_due: 'Vencida', canceled: 'Cancelada', inactive: 'Inativo' }
-const STATUS_COLOR: Record<string, string> = { active: '#15803d', trialing: '#1d4ed8', past_due: '#dc2626', canceled: '#6b7280', inactive: '#6b7280' }
-const STATUS_BG: Record<string, string> = { active: '#dcfce7', trialing: '#dbeafe', past_due: '#fee2e2', canceled: '#f3f4f6', inactive: '#f3f4f6' }
 
 /** Contrato como o /admin/subscriptions o devolve (ver admin.service.listSubscriptions). */
 interface Contract {
@@ -82,7 +80,7 @@ export default function AdminDashboard() {
         <KpiGrid>
           <KpiCard $borderColor="#3b82f6"><h3>Total de Arenas</h3><p>{stats.totalArenas}</p></KpiCard>
           <KpiCard $borderColor="#22c55e"><h3>Assinaturas Ativas</h3><p>{stats.active}</p></KpiCard>
-          <KpiCard $borderColor="#f97316"><h3>Receita Mensal</h3><p>R$ {stats.revenue}</p></KpiCard>
+          <KpiCard $borderColor="#f97316"><h3>Receita Mensal</h3><p>R$&nbsp;{stats.revenue}</p></KpiCard>
           <KpiCard $borderColor="#ef4444"><h3>Vencendo</h3><p>{stats.expiring}</p></KpiCard>
         </KpiGrid>
 
@@ -102,15 +100,15 @@ export default function AdminDashboard() {
             <tbody>
               {contracts.map((contract: Contract) => (
                 <tr key={contract.id}>
-                  <td><strong>{contract.place?.name}</strong></td>
-                  <td>{contract.owner?.name}</td>
-                  <td>{contract.planName || 'Básico'}</td>
-                  <td>R$ {contract.monthlyValue}</td>
-                  <td><Badge $status={contract.status === 'active' || contract.status === 'trialing' ? 'Ativo' : 'Pendente'}>{STATUS_LABEL[contract.status] ?? contract.status}</Badge></td>
-                  <td><ActionButton onClick={() => setDetailContract(contract)}>Ver Detalhes</ActionButton></td>
+                  <td className="principal"><strong>{contract.place?.name}</strong></td>
+                  <td data-rotulo="Proprietário">{contract.owner?.name}</td>
+                  <td data-rotulo="Plano" className="plano">{contract.planName || 'Básico'}</td>
+                  <td data-rotulo="Valor mensal" className="valor">R$ {contract.monthlyValue}</td>
+                  <td data-rotulo="Status"><SeloDeStatus $status={contract.status}>{STATUS_LABEL[contract.status] ?? contract.status}</SeloDeStatus></td>
+                  <td className="acoes"><ActionButton onClick={() => setDetailContract(contract)}>Ver Detalhes</ActionButton></td>
                 </tr>
               ))}
-              {contracts.length === 0 && !loading && <tr><td colSpan={6} style={{textAlign:'center'}}>Nenhum contrato encontrado.</td></tr>}
+              {contracts.length === 0 && !loading && <tr><td colSpan={6} className="principal vazio">Nenhum contrato encontrado.</td></tr>}
             </tbody>
           </Table>
         </Section>
@@ -130,14 +128,14 @@ export default function AdminDashboard() {
             <tbody>
               {payments.map((payment: Payment) => (
                 <tr key={payment.id}>
-                  <td>{dataCurta(payment.date)}</td>
-                  <td>{payment.place?.name}</td>
-                  <td>R$ {payment.amount}</td>
-                  <td>{payment.method}</td>
-                  <td><Badge $status={payment.status}>{payment.status}</Badge></td>
+                  <td className="principal">{dataCurta(payment.date)}</td>
+                  <td data-rotulo="Arena">{payment.place?.name}</td>
+                  <td data-rotulo="Valor">R$ {payment.amount}</td>
+                  <td data-rotulo="Método">{payment.method}</td>
+                  <td data-rotulo="Status"><Badge $status={payment.status}>{payment.status}</Badge></td>
                 </tr>
               ))}
-              {payments.length === 0 && !loading && <tr><td colSpan={5} style={{textAlign:'center'}}>Nenhum pagamento registrado.</td></tr>}
+              {payments.length === 0 && !loading && <tr><td colSpan={5} className="principal vazio">Nenhum pagamento registrado.</td></tr>}
             </tbody>
           </Table>
         </Section>
@@ -149,7 +147,7 @@ export default function AdminDashboard() {
           <DetailBox>
             <DetailHeader>
               <DetailTitle>Detalhes do Contrato</DetailTitle>
-              <CloseBtn onClick={() => setDetailContract(null)}>✕</CloseBtn>
+              <CloseBtn onClick={() => setDetailContract(null)} aria-label="Fechar">✕</CloseBtn>
             </DetailHeader>
 
             <DetailRow>
@@ -175,13 +173,9 @@ export default function AdminDashboard() {
             <DetailRow>
               <DetailLabel>Status</DetailLabel>
               <DetailValue>
-                <span style={{
-                  padding: '3px 12px', borderRadius: 999, fontSize: 12, fontWeight: 700,
-                  background: STATUS_BG[detailContract.status] ?? '#f3f4f6',
-                  color: STATUS_COLOR[detailContract.status] ?? '#6b7280',
-                }}>
+                <SeloDeStatus $status={detailContract.status}>
                   {STATUS_LABEL[detailContract.status] ?? detailContract.status}
-                </span>
+                </SeloDeStatus>
               </DetailValue>
             </DetailRow>
             {detailContract.currentPeriodEnd && (
