@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, ate, telaDeToque } from '../../styles/telas'
 
 export const Container = styled.div`
   display: flex;
@@ -12,6 +13,7 @@ export const InputWrapper = styled.div<{ $error?: boolean; }>`
   align-items: center;
   width: 100%;
   height: 40px;
+  min-width: 0;
   border: 1.5px solid ${({ $error, theme }) => $error ? theme.colors.error : theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.bgInput};
@@ -20,6 +22,9 @@ export const InputWrapper = styled.div<{ $error?: boolean; }>`
   &:focus-within {
     border-color: ${({ $error, theme }) => $error ? theme.colors.error : theme.colors.primary};
   }
+
+  /* \`auto\` com o mínimo nos filhos: com \`height\` fixa, a borda de 1,5px comia a altura, e o campo ficava com 42px por dentro. */
+  ${ate.tablet} { height: auto; }
 `
 
 export const CountryButton = styled.button`
@@ -35,6 +40,8 @@ export const CountryButton = styled.button`
   user-select: none;
 
   &:disabled { cursor: default; opacity: 0.55; }
+
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
 
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
@@ -55,7 +62,7 @@ export const DialCode = styled.span`
 `
 
 export const Chevron = styled.span<{ $open?: boolean; }>`
-  font-size: 9px;
+  font-size: 10px;
   color: ${({ theme }) => theme.colors.textMuted};
   transition: transform 0.15s;
   transform: ${({ $open }) => $open ? 'rotate(180deg)' : 'rotate(0deg)'};
@@ -78,6 +85,9 @@ export const PhoneNumberInput = styled.input`
   color: ${({ theme }) => theme.colors.textPrimary};
   padding: 0 12px;
   min-width: 0;
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
   &:disabled { opacity: 0.55; }
@@ -108,6 +118,8 @@ export const SearchInput = styled.input`
   box-sizing: border-box;
 
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
 
 export const List = styled.ul`
@@ -138,6 +150,8 @@ export const ListItem = styled.li<{ $selected?: boolean; }>`
     $selected ? theme.fontWeights.semibold : theme.fontWeights.regular};
 
   &:hover { background: ${({ theme }) => theme.colors.borderLight}; }
+
+  ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const CountryName = styled.span`

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 export const PageWrapper = styled.div`
   max-width: 640px;
@@ -77,7 +78,8 @@ export const AvatarCircle = styled.div`
 export const AvatarInitials = styled.span`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  color: #fff;
+  /* O par do tema: no escuro o primary é verde-claro, e branco nele não se lê. */
+  color: ${({ theme }) => theme.colors.textOnPrimary};
 `
 
 export const AvatarHint = styled.span`
@@ -109,6 +111,10 @@ export const TabBtn = styled.button<{ $active?: boolean; }>`
   background: ${({ $active, theme }) => $active ? theme.colors.bgCard : 'transparent'};
   color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textSecondary};
   box-shadow: ${({ $active, theme }) => $active ? theme.shadows.sm : 'none'};
+  white-space: nowrap;
+
+  ${ate.tablet} { height: ${ALVO_DE_TOQUE}; }
+  ${ate.celular} { padding: 0 4px; font-size: ${({ theme }) => theme.fontSizes.xs}; }
 `
 
 // ── Password step 2 reveal ────────────────────────────────────────────────────
@@ -146,16 +152,23 @@ export const Form = styled.form`
   gap: 16px;
 `
 
+/**
+ * Uma coluna no celular. Com duas colunas fixas, a 360 o nome e a chave Pix
+ * ficavam com 54px ("Mate", "mate") e o telefone passava da borda.
+ */
 export const FormGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+
+  ${ate.celular} { grid-template-columns: minmax(0, 1fr); }
 `
 
 export const Field = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
 `
 
 export const ConsentField = styled.label`
@@ -167,8 +180,12 @@ export const ConsentField = styled.label`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   line-height: 1.45;
   cursor: pointer;
+  min-width: 0;
 
-  input { margin-top: 3px; accent-color: ${({ theme }) => theme.colors.primary}; }
+  input { margin-top: 3px; accent-color: ${({ theme }) => theme.colors.primary}; flex-shrink: 0; }
+
+  /* O rótulo inteiro é o alvo da caixa. */
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; align-items: center; input { margin-top: 0; } }
 `
 
 export const Label = styled.label`
@@ -190,6 +207,9 @@ export const Input = styled.input`
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+
+  /* 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
 
 export const FieldError = styled.span`
@@ -211,6 +231,9 @@ export const SaveBtn = styled.button`
 
   &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.primaryHover}; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
+  ${ate.celular} { align-self: stretch; }
 `
 
 export const SuccessMsg = styled.p`
@@ -245,9 +268,12 @@ export const DangerBtn = styled.button`
   border-radius: ${({ theme }) => theme.radii.md};
   padding: 9px 16px;
   background: ${({ theme }) => theme.colors.error};
-  color: #fff;
+  /* O par do tema: no escuro o vermelho é claro, e branco nele não se lê. */
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
+
+  ${alvoDeToque}
 `
 
 export const DeleteModal = styled.div`
@@ -287,8 +313,11 @@ export const DeleteActions = styled.div`
 
   button { border: 0; border-radius: ${({ theme }) => theme.radii.md}; padding: 9px 15px; font-weight: ${({ theme }) => theme.fontWeights.semibold}; cursor: pointer; }
   button:first-child { background: ${({ theme }) => theme.colors.borderLight}; color: ${({ theme }) => theme.colors.textPrimary}; }
-  button:last-child { background: ${({ theme }) => theme.colors.error}; color: #fff; }
+  button:last-child { background: ${({ theme }) => theme.colors.error}; color: ${({ theme }) => theme.colors.textOnPrimary}; }
   button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${ate.tablet} { button { min-height: ${ALVO_DE_TOQUE}; } }
+  ${ate.celular} { flex-wrap: wrap; button { flex: 1 1 auto; } }
 `
 
 // ── Logout ────────────────────────────────────────────────────────────────────
@@ -311,6 +340,8 @@ export const LogoutBtn = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.colors.error};
-    color: #fff;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
   }
+
+  ${alvoDeToque}
 `
