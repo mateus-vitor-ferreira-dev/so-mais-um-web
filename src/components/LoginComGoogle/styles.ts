@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, ate } from '../../styles/telas'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -32,4 +33,5 @@ export const Botao = styled.button`
   }
 
   &:disabled { opacity: 0.55; cursor: not-allowed; }
+  ${ate.tablet} { height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
