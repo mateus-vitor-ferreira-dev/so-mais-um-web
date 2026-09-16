@@ -43,11 +43,22 @@ export const Controles = styled.div`
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  max-width: 100%;
+
+  /* No celular, espaço e dia um por linha, na largura inteira. Com os 16px dos
+     campos, o seletor do espaço ficava mais largo que a tela de 360. */
+  ${ate.celular} {
+    width: 100%;
+    & > label { flex: 1 1 100%; }
+    select, input { width: 100%; }
+  }
 `
 
 export const Campo = styled.label`
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
   gap: 4px;
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
