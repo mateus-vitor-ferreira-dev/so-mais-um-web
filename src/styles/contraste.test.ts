@@ -51,6 +51,7 @@ const SOBRE_COR: { fg: string; bg: string; onde: string }[] = [
   { fg: 'infoText', bg: 'infoLight', onde: 'selo azul, como o "Usuário" do RoleBadge (#511)' },
   { fg: 'primaryDark', bg: 'primaryLight', onde: 'selo "Owner" do RoleBadge (#511)' },
   { fg: 'textOnError', bg: 'error', onde: 'número do sino (#511)' },
+  { fg: 'textMuted', bg: 'borderLight', onde: 'selo neutro, como a contagem dos filtros de Assinaturas (#511)' },
   { fg: 'error', bg: 'errorLight', onde: 'texto de erro na faixa' },
   { fg: 'textPrimary', bg: 'errorLight', onde: 'ErrorState' },
   { fg: 'accent', bg: 'accentLight', onde: 'selo de cortesia, no painel de assinaturas' },
