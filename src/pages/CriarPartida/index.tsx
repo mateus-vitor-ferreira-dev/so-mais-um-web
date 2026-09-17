@@ -541,14 +541,17 @@ export default function CriarPartida() {
               </Row>
 
               <Field>
-                <Label>Chave Pix *</Label>
+                <Label htmlFor="criar-partida-pix">Chave Pix *</Label>
                 <Input
-                  placeholder="CPF, e-mail, telefone ou chave aleatória"
+                  id="criar-partida-pix"
+                  placeholder="Sua chave Pix"
                   {...register('pixKey')}
                   $error={!!errors.pixKey}
                 />
                 {errors.pixKey && <ErrorMsg>{errors.pixKey.message}</ErrorMsg>}
-                <HintMsg>Os jogadores usarão essa chave para pagar a partida.</HintMsg>
+                {/* Os formatos aceitos ficam no texto de apoio, e não no exemplo do campo:
+                    a 360px o exemplo saía cortado em "…ou chave" (#511). */}
+                <HintMsg>CPF, e-mail, telefone ou chave aleatória. Os jogadores usarão essa chave para pagar a partida.</HintMsg>
               </Field>
 
               {/* Quem vê e quem entra (#228). O mesmo componente edita a partida

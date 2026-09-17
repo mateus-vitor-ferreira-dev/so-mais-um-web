@@ -125,7 +125,7 @@ function preenche(container: HTMLElement) {
     data: campoData(container),
     vagas: screen.getByPlaceholderText('Ex: 10'),
     valor: screen.getByPlaceholderText('Ex: 100.00'),
-    pix: screen.getByPlaceholderText(/CPF, e-mail, telefone/i),
+    pix: screen.getByLabelText(/Chave Pix/),
     enviar: screen.getByRole('button', { name: /criar partida/i }),
   }
 }
