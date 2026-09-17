@@ -1,5 +1,6 @@
 import type { HoraDoTempo } from '../../types/api'
-import { graus, horaCheia, iconeDaCondicao, motivosPorExtenso, porcento } from '../../utils/previsao'
+import { graus, horaCheia, motivosPorExtenso, porcento } from '../../utils/previsao'
+import IconeDoTempo from '../IconeDoTempo'
 import RolagemHorizontal from '../RolagemHorizontal'
 import { Chuva, Faixa, Hora, Icone, Rotulo, Temperatura } from './styles'
 
@@ -37,7 +38,7 @@ export default function FaixaDoTempo({ horas }: FaixaDoTempoProps) {
           return (
             <Hora key={h.inicio} $risco={h.risco} title={descricao} aria-label={descricao}>
               <Rotulo>{horaCheia(h.inicio)}</Rotulo>
-              <Icone aria-hidden="true">{iconeDaCondicao(h.condicao)}</Icone>
+              <Icone><IconeDoTempo condicao={h.condicao} /></Icone>
               <Temperatura>{graus(h.temperatura)}</Temperatura>
               <Chuva>{porcento(h.chanceDeChuva)}</Chuva>
             </Hora>

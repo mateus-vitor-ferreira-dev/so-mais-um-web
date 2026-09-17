@@ -1,5 +1,6 @@
 import type { LeituraDoTempo } from '../../types/api'
-import { graus, iconeDaCondicao, motivosPorExtenso } from '../../utils/previsao'
+import { graus, motivosPorExtenso } from '../../utils/previsao'
+import IconeDoTempo from '../IconeDoTempo'
 import { Risco, Selo } from './styles'
 
 export interface SeloDoTempoProps {
@@ -43,12 +44,12 @@ export default function SeloDoTempo({ leitura, soRisco = false }: SeloDoTempoPro
     <Selo>
       {primeiraHora && (
         <span>
-          <span aria-hidden="true">{iconeDaCondicao(primeiraHora.condicao)}</span> {graus(primeiraHora.temperatura)}
+          <IconeDoTempo condicao={primeiraHora.condicao} /> {graus(primeiraHora.temperatura)}
         </span>
       )}
       {dia && (
         <span>
-          <span aria-hidden="true">{iconeDaCondicao(dia.condicao)}</span> {graus(dia.maxima)} / {graus(dia.minima)}
+          <IconeDoTempo condicao={dia.condicao} /> {graus(dia.maxima)} / {graus(dia.minima)}
         </span>
       )}
       {risco}

@@ -1,5 +1,7 @@
 import type { LeituraDoTempo } from '../../types/api'
-import { diaEMes, fraseDoRisco, graus, iconeDaCondicao, motivosPorExtenso, porcento } from '../../utils/previsao'
+import { CloudLightning, TriangleAlert } from 'lucide-react'
+import { diaEMes, fraseDoRisco, graus, motivosPorExtenso, porcento } from '../../utils/previsao'
+import IconeDoTempo from '../IconeDoTempo'
 import AtribuicaoDoTempo from '../AtribuicaoDoTempo'
 import FaixaDoTempo from '../FaixaDoTempo'
 import { Skeleton } from '../Skeleton'
@@ -74,7 +76,9 @@ function Conteudo({ leitura }: { leitura: LeituraDoTempo }) {
         <>
           {frase && (
             <Risco $risco={leitura.risco} role="status">
-              <span aria-hidden="true">{leitura.risco === 'ALTO' ? '⛈️' : '⚠️'}</span>
+              {leitura.risco === 'ALTO'
+                ? <CloudLightning size={16} aria-hidden="true" />
+                : <TriangleAlert size={16} aria-hidden="true" />}
               {frase}
             </Risco>
           )}
@@ -89,14 +93,14 @@ function Conteudo({ leitura }: { leitura: LeituraDoTempo }) {
         <>
           {dia && (
             <Frase>
-              <span aria-hidden="true">{iconeDaCondicao(dia.condicao)}</span>
+              <IconeDoTempo condicao={dia.condicao} />
               Previsão do dia: {graus(dia.maxima)} / {graus(dia.minima)}, {porcento(dia.chanceDeChuva)} de chuva
             </Frase>
           )}
           {/* O dia nunca passa de atenção na api: "70% no sábado" não diz se chove às 19h. */}
           {leitura.risco !== 'NENHUM' && (
             <Risco $risco={leitura.risco} role="status">
-              <span aria-hidden="true">⚠️</span>
+              <TriangleAlert size={16} aria-hidden="true" />
               Atenção: {motivosPorExtenso(leitura.motivos)} no dia
             </Risco>
           )}

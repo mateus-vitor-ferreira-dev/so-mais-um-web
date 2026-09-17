@@ -7,6 +7,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import type { HoraDoTempo, OcupacaoDaQuadra } from '../types/api'
+import { Cloud, CloudLightning, CloudRain, CloudSun, Sun, Thermometer } from 'lucide-react'
 import { diaEMes, fraseDoRisco, graus, hojeLocal, iconeDaCondicao, motivosPorExtenso, porcento, riscoDaOcupacao } from './previsao'
 
 function hora(inicio: string, fim: string, extra: Partial<HoraDoTempo> = {}): HoraDoTempo {
@@ -47,13 +48,13 @@ describe('motivosPorExtenso', () => {
 
 describe('iconeDaCondicao', () => {
   it('agrupa os tipos da Google por família, com a tempestade antes da chuva', () => {
-    expect(iconeDaCondicao('THUNDERSHOWER')).toBe('⛈️')
-    expect(iconeDaCondicao('LIGHT_RAIN_SHOWERS')).toBe('🌧️')
-    expect(iconeDaCondicao('PARTLY_CLOUDY')).toBe('⛅')
-    expect(iconeDaCondicao('MOSTLY_CLOUDY')).toBe('☁️')
-    expect(iconeDaCondicao('CLEAR')).toBe('☀️')
-    expect(iconeDaCondicao('TIPO_NOVO_DA_GOOGLE')).toBe('🌡️')
-    expect(iconeDaCondicao(null)).toBe('🌡️')
+    expect(iconeDaCondicao('THUNDERSHOWER')).toBe(CloudLightning)
+    expect(iconeDaCondicao('LIGHT_RAIN_SHOWERS')).toBe(CloudRain)
+    expect(iconeDaCondicao('PARTLY_CLOUDY')).toBe(CloudSun)
+    expect(iconeDaCondicao('MOSTLY_CLOUDY')).toBe(Cloud)
+    expect(iconeDaCondicao('CLEAR')).toBe(Sun)
+    expect(iconeDaCondicao('TIPO_NOVO_DA_GOOGLE')).toBe(Thermometer)
+    expect(iconeDaCondicao(null)).toBe(Thermometer)
   })
 })
 

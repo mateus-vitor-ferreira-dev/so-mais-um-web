@@ -1,5 +1,6 @@
 import type { LeituraDoTempo } from '../../types/api'
-import { diaEMes, graus, iconeDaCondicao, motivosPorExtenso, porcento } from '../../utils/previsao'
+import { diaEMes, graus, motivosPorExtenso, porcento } from '../../utils/previsao'
+import IconeDoTempo from '../IconeDoTempo'
 import AtribuicaoDoTempo from '../AtribuicaoDoTempo'
 import { Skeleton } from '../Skeleton'
 import { Bloco, Data, Dia, Dias, Leitura, Neutro, Risco, Titulo } from './styles'
@@ -63,7 +64,7 @@ export default function PrevisaoDosDias({ dias, carregando, erro }: PrevisaoDosD
             <Data>{rotuloDoDia(data)}</Data>
             {leitura.alcance === 'DIA' && leitura.dia ? (
               <Leitura>
-                <span aria-hidden="true">{iconeDaCondicao(leitura.dia.condicao)}</span>
+                <IconeDoTempo condicao={leitura.dia.condicao} />
                 {graus(leitura.dia.maxima)} / {graus(leitura.dia.minima)}, {porcento(leitura.dia.chanceDeChuva)} de chuva
                 {leitura.risco !== 'NENHUM' && (
                   <Risco>Atenção: {motivosPorExtenso(leitura.motivos)}</Risco>
