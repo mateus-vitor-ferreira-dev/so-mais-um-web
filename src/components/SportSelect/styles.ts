@@ -39,7 +39,7 @@ export const Tag = styled.span`
   background: ${({ theme }) => theme.colors.primaryLight};
   color: ${({ theme }) => theme.colors.primaryDark};
   border-radius: ${({ theme }) => theme.radii.full};
-  font-size: 11px;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: 1.6;
 `
@@ -54,7 +54,7 @@ export const TagRemove = styled.span`
 
 export const ChevronIcon = styled.span<{ $open?: boolean; }>`
   margin-left: auto;
-  font-size: 11px;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
   flex-shrink: 0;
   transition: transform 0.15s;

@@ -17,7 +17,7 @@ export const Atalho = styled(Link)`
   text-decoration: none;
 
   span { display: grid; gap: 3px; }
-  small { color: ${({ theme }) => theme.colors.textSecondary}; font-weight: ${({ theme }) => theme.fontWeights.medium}; }
+  small { font-size: ${({ theme }) => theme.fontSizes.xs}; color: ${({ theme }) => theme.colors.textSecondary}; font-weight: ${({ theme }) => theme.fontWeights.medium}; }
 
   &:hover { background: ${({ theme }) => theme.colors.primaryLight}; }
   @media (max-width: 480px) { align-items: flex-start; flex-direction: column; gap: 8px; }
