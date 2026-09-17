@@ -98,7 +98,13 @@ export default function MainLayout() {
       navItems={navItems}
       tagline="Área do Jogador"
       accent="primary"
-      sobreOUsuario={user ? `⭐ ${user.stats?.averageStars != null ? formatarNota(user.stats.averageStars) : '—'} · ${user.badge ?? 'Jogador'}` : undefined}
+      sobreOUsuario={user ? (
+        <>
+          {/* A estrela era emoji (⭐), e cada sistema a desenhava com cor e peso próprios (#511). */}
+          <Star size={12} fill="currentColor" aria-hidden="true" style={{ verticalAlign: '-1px' }} />
+          {' '}{user.stats?.averageStars != null ? formatarNota(user.stats.averageStars) : '—'} · {user.badge ?? 'Jogador'}
+        </>
+      ) : undefined}
     />
   )
 }

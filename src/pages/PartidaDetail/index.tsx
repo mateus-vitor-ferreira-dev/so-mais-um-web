@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate, useSearchParams, useLocation, Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import { ArrowLeft, Calendar, Clock, MapPin, Users, DollarSign, Copy, CheckCircle, Crown, Flag, XCircle, ExternalLink, LogOut, Shuffle, Share2, CheckSquare } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock, MapPin, Users, DollarSign, Copy, CheckCircle, Crown, Flag, XCircle, ExternalLink, LogOut, Shuffle, Share2, CheckSquare, Link2 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { playerService, MAX_MOTIVO_SAIDA } from '../../services/playerService'
 import { getSportMeta } from '../../hooks/useSports'
@@ -205,7 +205,7 @@ export default function PartidaDetail() {
         <Card>
           <Body>
             <LinkInvalidoBox data-testid="link-invalido">
-              <span aria-hidden>🔗</span>
+              <Link2 size={40} aria-hidden="true" />
               <LinkInvalidoTitulo>{linkInvalido.titulo}</LinkInvalidoTitulo>
               <LinkInvalidoTexto>{linkInvalido.explicacao}</LinkInvalidoTexto>
             </LinkInvalidoBox>
@@ -365,7 +365,7 @@ export default function PartidaDetail() {
             </HeaderInfo>
             <MarcaDeVisibilidade visibility={event.visibility} />
             <StatusBadge $status={event.status}>
-              {status.emoji} {status.label}
+              {status.label}
             </StatusBadge>
           </CardHeader>
 

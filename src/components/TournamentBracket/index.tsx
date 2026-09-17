@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Construction } from 'lucide-react'
+import { Construction, Trophy } from 'lucide-react'
 import { Skeleton } from '../Skeleton'
 import type {
   LeituraDoTempo,
@@ -424,7 +424,7 @@ export default function TournamentBracket({
         return (
           <div key={division.id} style={{ marginBottom: '32px' }}>
             <DivisionTitle>
-              📌 {division.name}
+              {division.name}
               {division.level && (
                 <LevelBadge style={{ marginLeft: '8px' }}>
                   {LEVEL_LABELS[division.level] ?? division.level}
@@ -484,7 +484,7 @@ export default function TournamentBracket({
                     <MatchesColumn>
                       <MatchSlot>
                         <ChampionCard>
-                          <ChampionTrophy aria-hidden>🏆</ChampionTrophy>
+                          <ChampionTrophy><Trophy size={24} aria-hidden="true" /></ChampionTrophy>
                           <ChampionName>{campeao.user.name}</ChampionName>
                         </ChampionCard>
                       </MatchSlot>

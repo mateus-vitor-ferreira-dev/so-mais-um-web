@@ -138,8 +138,8 @@ export const ChampionCard = styled.div`
 `
 
 export const ChampionTrophy = styled.span`
-  font-size: 1.5rem;
-  line-height: 1;
+  display: inline-flex;
+  color: ${({ theme }) => theme.colors.warning};
 `
 
 /**

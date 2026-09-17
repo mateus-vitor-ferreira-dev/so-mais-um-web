@@ -1,3 +1,4 @@
+import { LandPlot, PartyPopper, TriangleAlert } from 'lucide-react'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -21,6 +22,7 @@ import { useCotacaoDoHorario } from '../../hooks/useCotacaoDoHorario'
 import { detalhamentoPorExtenso, reaisCurtos, seloDePrecoDaQuadra } from '../../utils/faixasDePreco'
 import {
   Container, StepIndicator, Step, StepDot, StepLine, Card, SectionTitle, CourtsGrid, CourtCard, CourtName, CourtInfo, SportBadge, Form, Row, Field, Label, Input, ErrorMsg, HintMsg, Actions, BackButton, NextButton, LoadingState, SuccessBox, SuccessActions, PrimaryBtn, SecondaryBtn, SportChipsGrid, SportChip, PlacesGrid, PlaceCard, PlaceName, PlaceAddress, PlaceCourtCount, BreadcrumbBar, BreadcrumbTag, BreadcrumbSep, CotacaoBox,
+  FaixaDeErro,
 } from './styles'
 import { valorPorPessoa } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
@@ -364,7 +366,7 @@ export default function CriarPartida() {
                 {/* Sub-etapa A: Escolher Modalidade */}
                 {!filterSport && (
                   sportOptions.length === 0 ? (
-                    <EmptyState icone="🏟️">Nenhuma quadra disponível no momento.</EmptyState>
+                    <EmptyState icone={<LandPlot size={28} />}>Nenhuma quadra disponível no momento.</EmptyState>
                   ) : (
                     <SportChipsGrid>
                       {sportOptions.map(s => (
@@ -380,7 +382,7 @@ export default function CriarPartida() {
                 {/* Sub-etapa B: Escolher Estabelecimento */}
                 {filterSport && !filterPlace && (
                   availablePlaces.length === 0 ? (
-                    <EmptyState icone="🏟️">Nenhum estabelecimento disponível para essa modalidade.</EmptyState>
+                    <EmptyState icone={<LandPlot size={28} />}>Nenhum estabelecimento disponível para essa modalidade.</EmptyState>
                   ) : (
                     <PlacesGrid>
                       {availablePlaces.map((place: Place) => {
@@ -562,9 +564,10 @@ export default function CriarPartida() {
               />
 
               {error && (
-                <ErrorMsg style={{ padding: '10px', background: '#fff5f5', borderRadius: '6px' }}>
-                  ⚠️ {error}
-                </ErrorMsg>
+                <FaixaDeErro role="alert">
+                  <TriangleAlert size={14} aria-hidden="true" />
+                  {error}
+                </FaixaDeErro>
               )}
 
               <Actions>
@@ -586,7 +589,7 @@ export default function CriarPartida() {
         {step === 2 && (
           <Card>
             <SuccessBox>
-              <span>🎉</span>
+              <PartyPopper size={48} aria-hidden="true" />
               <h3>Partida criada com sucesso!</h3>
               <p>
                 Sua partida foi aberta em <strong>{selectedCourt?.name}</strong>.
@@ -602,9 +605,10 @@ export default function CriarPartida() {
                 fechada quando ela está aberta para qualquer um.
               */}
               {error && (
-                <ErrorMsg style={{ padding: '10px', background: '#fff5f5', borderRadius: '6px' }}>
-                  ⚠️ {error}
-                </ErrorMsg>
+                <FaixaDeErro role="alert">
+                  <TriangleAlert size={14} aria-hidden="true" />
+                  {error}
+                </FaixaDeErro>
               )}
 
               <SuccessActions>

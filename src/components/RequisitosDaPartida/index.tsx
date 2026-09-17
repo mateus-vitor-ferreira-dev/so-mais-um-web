@@ -3,6 +3,7 @@ import type { EntryRequirementResult, EntryVerdict, PartidaRequirement } from '.
 import { descreveRequisito } from '../../utils/requisitos'
 import { teamsService } from '../../services/teams'
 import { chaves } from '../../lib/queryClient'
+import { Lock } from 'lucide-react'
 import { Bloco, Titulo, Lista, Item, Marca, Texto, Falta, Etiqueta, ApenasLeitor } from './styles'
 import { formatarNota } from '../../utils/numeros'
 
@@ -126,7 +127,8 @@ export function EtiquetaDeRequisitos({ requirements }: { requirements: PartidaRe
 
   return (
     <Etiqueta data-testid="etiqueta-de-requisitos">
-      🔒 {requirements.length === 1 ? '1 requisito para entrar' : `${requirements.length} requisitos para entrar`}
+      <Lock size={12} aria-hidden="true" />
+      {requirements.length === 1 ? '1 requisito para entrar' : `${requirements.length} requisitos para entrar`}
     </Etiqueta>
   )
 }

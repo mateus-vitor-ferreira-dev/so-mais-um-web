@@ -488,3 +488,18 @@ export const CatInput = styled.input`
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
   ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
+
+/** O erro da api dentro do formulário: faixa com fundo, que troca com o tema (#511). */
+export const FaixaDeErro = styled.p`
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  padding: 10px;
+  border-radius: ${({ theme }) => theme.radii.sm};
+  background: ${({ theme }) => theme.colors.errorLight};
+  color: ${({ theme }) => theme.colors.error};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+
+  svg { flex-shrink: 0; margin-top: 1px; }
+`

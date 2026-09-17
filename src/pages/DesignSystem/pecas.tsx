@@ -1,3 +1,4 @@
+import { Trophy } from 'lucide-react'
 import AtribuicaoDoTempo from '../../components/AtribuicaoDoTempo'
 import CaptainBadge from '../../components/CaptainBadge'
 import CartaoDePartida, { type PartidaDoCartao } from '../../components/CartaoDePartida'
@@ -118,7 +119,7 @@ export const PECAS: Peca[] = [
       },
       {
         rotulo: 'com ícone — CriarPartida, Tournaments',
-        render: () => <EmptyState icone="🏆">Nenhum torneio encontrado.</EmptyState>,
+        render: () => <EmptyState icone={<Trophy size={28} />}>Nenhum torneio encontrado.</EmptyState>,
       },
       {
         rotulo: 'com título e ação — vira região nomeada, e ganha moldura',

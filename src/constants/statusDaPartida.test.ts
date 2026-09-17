@@ -31,11 +31,10 @@ describe('status da partida', () => {
     expect(STATUS_DA_PARTIDA.WAITING.label).toBe('Aguardando')
   })
 
-  it('todo status tem rótulo, tom e bolinha — as três telas pedem coisas diferentes', () => {
+  it('todo status tem rótulo e tom', () => {
     for (const [chave, rotulo] of Object.entries(STATUS_DA_PARTIDA)) {
       expect(rotulo.label, chave).toBeTruthy()
       expect(rotulo.tom, chave).toBeTruthy()
-      expect(rotulo.emoji, chave).toBeTruthy()
     }
   })
 

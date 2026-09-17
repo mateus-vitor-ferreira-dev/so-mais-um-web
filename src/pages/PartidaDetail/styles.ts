@@ -87,12 +87,22 @@ export const PlaceName = styled.p`
 export const StatusBadge = styled.span<{ $status?: string; }>`
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   padding: 4px 10px;
   border-radius: ${({ theme }) => theme.radii.full};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   flex-shrink: 0;
+
+  /* A bolinha era emoji (🟢 🟡): cada sistema a pintava de um verde, e nenhum
+     era o do selo. Com currentColor, ela sai da mesma cor do texto (#511). */
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
 
   ${ate.celular} { grid-column: 2; justify-self: start; }
 
@@ -589,10 +599,10 @@ export const LinkInvalidoBox = styled.div`
   text-align: center;
   padding: 48px 20px;
 
-  span {
-    font-size: 2.5rem;
+  svg {
     display: block;
-    margin-bottom: 16px;
+    margin: 0 auto 16px;
+    color: ${({ theme }) => theme.colors.textMuted};
   }
 `
 
