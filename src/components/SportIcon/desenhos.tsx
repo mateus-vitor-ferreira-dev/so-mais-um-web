@@ -63,7 +63,10 @@ function couro(id: Id, cores: [string, string, string]) {
 function pentagono(cx: number, cy: number, r: number, giro = -90) {
   return Array.from({ length: 5 }, (_, i) => {
     const a = ((giro + i * 72) * Math.PI) / 180
-    return `${(cx + r * Math.cos(a)).toFixed(2)},${(cy + r * Math.sin(a)).toFixed(2)}`
+    // Duas casas, sem `toFixed`: aqui é coordenada de desenho, e o
+    // `formatacao:check` guarda os formatadores de número da interface.
+    const casas = (n: number) => Math.round(n * 100) / 100
+    return `${casas(cx + r * Math.cos(a))},${casas(cy + r * Math.sin(a))}`
   }).join(' ')
 }
 
