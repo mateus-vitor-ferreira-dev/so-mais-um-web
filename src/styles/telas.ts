@@ -50,6 +50,13 @@ export const ALVO_DE_TOQUE = '44px'
 export const ALVO_DE_PONTEIRO = '24px'
 
 /**
+ * A largura do texto corrido: ~75 caracteres por linha em Inter, o teto que a
+ * skill de UI/UX pede (65–75). Em `ch` e não em px, para acompanhar o tamanho da
+ * fonte. 60ch, e não 75: o `ch` é a largura do "0", mais largo que a letra média.
+ */
+export const LARGURA_DE_LEITURA = '60ch'
+
+/**
  * Garante o alvo mínimo: 44px em tela de toque e 24px com mouse.
  *
  * Pelo `min-*`, e não por `height`: o botão que já é maior continua como está,

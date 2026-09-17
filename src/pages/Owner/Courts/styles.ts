@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, LARGURA_DE_LEITURA } from '../../../styles/telas'
 
 /** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
 const campoNoCelular = css`
@@ -369,6 +369,8 @@ export const AvisoSemCobertura = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.warningText};
   background: ${({ theme }) => theme.colors.warningLight};
+
+  > :first-child { max-width: ${LARGURA_DE_LEITURA}; }
 `
 
 /** Fieldset para os dois rádios terem nome acessível; sem a moldura que o navegador desenha. */

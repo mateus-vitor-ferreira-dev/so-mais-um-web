@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { alvoDeToque, ate } from '../../styles/telas'
+import { alvoDeToque, ate, LARGURA_DE_LEITURA } from '../../styles/telas'
 
 /** A largura máxima do conteúdo e da linha da topbar. */
 const LARGURA_DO_CONTEUDO = '1440px'
@@ -343,6 +343,7 @@ export const TopbarTitle = styled.h1`
 `
 
 export const TopbarSub = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 0;

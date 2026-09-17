@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
 export { CaixaDaTabela } from '../../../components/TabelaResponsiva'
 import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
-import { alvoDeToque, ate } from '../../../styles/telas'
+import { alvoDeToque, ate, LARGURA_DE_LEITURA } from '../../../styles/telas'
 
 /** Os tons de selo. `manual`, `stripe` e `cortesia` marcam origem; o resto, situação. */
 export type TomDeSelo = 'ok' | 'alerta' | 'erro' | 'neutro' | 'manual' | 'stripe' | 'cortesia'
@@ -44,6 +44,7 @@ export const BotaoRegistrar = styled.button`
   ${alvoDeToque}
 `
 export const Aviso = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: 0 0 16px; font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
   color: ${({ theme }) => theme.colors.textSecondary};
 `
@@ -77,6 +78,7 @@ export const Contagem = styled.span<{ $alerta?: boolean }>`
 
 /** A explicação de um filtro, dita uma vez em cima da lista. */
 export const NotaDoFiltro = styled.p<{ $tom?: 'alerta'; $noCampo?: boolean }>`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: ${({ $noCampo }) => ($noCampo ? '6px 0 0' : '0 0 12px')};
   padding: 10px 14px; border-radius: ${({ theme }) => theme.radii.md};
   font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
