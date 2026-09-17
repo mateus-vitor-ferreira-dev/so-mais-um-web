@@ -114,7 +114,7 @@ export const StatusBadge = styled.span<{ $status?: string; }>`
   color: ${({ $status, theme }) =>
     $status === 'WAITING'   ? theme.colors.primaryDark   :
     $status === 'FULL'      ? theme.colors.warningText   :
-    $status === 'FINISHED'  ? theme.colors.info          :
+    $status === 'FINISHED'  ? theme.colors.infoText      :
     $status === 'CANCELLED' ? theme.colors.error         : theme.colors.textSecondary};
 `
 

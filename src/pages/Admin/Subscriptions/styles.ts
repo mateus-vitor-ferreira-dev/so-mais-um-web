@@ -10,9 +10,9 @@ const TONS = {
   ok:     css`background: ${({ theme }) => theme.colors.successLight}; color: ${({ theme }) => theme.colors.success};`,
   alerta: css`background: ${({ theme }) => theme.colors.warningLight}; color: ${({ theme }) => theme.colors.warningText};`,
   erro:   css`background: ${({ theme }) => theme.colors.errorLight};   color: ${({ theme }) => theme.colors.error};`,
-  neutro: css`background: ${({ theme }) => theme.colors.borderLight};  color: ${({ theme }) => theme.colors.textMuted};`,
+  neutro: css`background: ${({ theme }) => theme.colors.borderLight};  color: ${({ theme }) => theme.colors.textSecondary};`,
   manual: css`background: ${({ theme }) => theme.colors.primaryLight}; color: ${({ theme }) => theme.colors.primary};`,
-  stripe: css`background: ${({ theme }) => theme.colors.infoLight};    color: ${({ theme }) => theme.colors.info};`,
+  stripe: css`background: ${({ theme }) => theme.colors.infoLight};    color: ${({ theme }) => theme.colors.infoText};`,
   // Roxo, e não verde: cortesia ao lado da manual em verde diria "é a mesma
   // coisa que o Pix", que é o engano que a origem nova existe para desfazer.
   cortesia: css`background: ${({ theme }) => theme.colors.accentLight}; color: ${({ theme }) => theme.colors.accent};`,

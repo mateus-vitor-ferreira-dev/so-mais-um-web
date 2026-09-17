@@ -153,14 +153,14 @@ export const StatusBadge = styled.span<{ $status?: TournamentStatus }>`
   }};
   color: ${({ $status, theme }) => {
     const map: Record<TournamentStatus, string> = {
-      DRAFT:               theme.colors.textMuted,
-      OPEN:                theme.colors.info,
+      DRAFT:               theme.colors.textSecondary,
+      OPEN:                theme.colors.infoText,
       REGISTRATION_CLOSED: theme.colors.warningText,
       IN_PROGRESS:         theme.colors.warningText,
       FINISHED:            theme.colors.success,
       CANCELLED:           theme.colors.error,
     }
-    return ($status && map[$status]) || theme.colors.textMuted
+    return ($status && map[$status]) || theme.colors.textSecondary
   }};
 `
 
