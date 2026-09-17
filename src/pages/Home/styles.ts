@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ export const StatsRow = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 
-  @media (max-width: 480px) {
+  ${ate.celular} {
     gap: 8px;
   }
 `
@@ -28,7 +29,7 @@ export const StatBox = styled.div`
   align-items: center;
   gap: 14px;
 
-  @media (max-width: 480px) {
+  ${ate.celular} {
     padding: 14px;
     gap: 10px;
   }
@@ -105,8 +106,8 @@ export const TabsSeta = styled.button<{ $side: 'left' | 'right' }>`
   top: 50%;
   ${({ $side }) => $side}: 0;
   transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
+  width: ${ALVO_DE_TOQUE};
+  height: ${ALVO_DE_TOQUE};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,7 +137,7 @@ export const Tab = styled.button<{ $active?: boolean; }>`
   border-radius: 999px;
   border: 1.5px solid ${({ $active, theme }) => $active ? theme.colors.primary : theme.colors.border};
   background: ${({ $active, theme }) => $active ? theme.colors.primary : theme.colors.bgCard};
-  color: ${({ $active, theme }) => $active ? theme.colors.white : theme.colors.textPrimary};
+  color: ${({ $active, theme }) => $active ? theme.colors.textOnPrimary : theme.colors.textPrimary};
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -148,13 +149,14 @@ export const Tab = styled.button<{ $active?: boolean; }>`
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
     background: ${({ $active, theme }) => $active ? theme.colors.primaryHover : theme.colors.primarySubtle};
-    color: ${({ $active, theme }) => $active ? 'white' : theme.colors.primary};
+    color: ${({ $active, theme }) => $active ? theme.colors.textOnPrimary : theme.colors.primary};
   }
 
   &:focus-visible {
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+  ${alvoDeToque}
 `
 
 // ── Section ───────────────────────────────────────────────────────────────────
@@ -201,6 +203,7 @@ export const SeeAllBtn = styled.button`
   &:hover {
     color: ${({ theme }) => theme.colors.primaryHover};
   }
+  ${alvoDeToque}
 `
 
 // ── Game Cards ────────────────────────────────────────────────────────────────
@@ -210,7 +213,7 @@ export const GamesGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 12px;
 
-  @media (max-width: 768px) {
+  ${ate.tablet} {
     grid-template-columns: 1fr;
   }
 `
@@ -356,7 +359,7 @@ export const CTARow = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 
-  @media (max-width: 640px) {
+  ${ate.celular} {
     grid-template-columns: 1fr;
   }
 `
@@ -368,7 +371,7 @@ export const CTAPrimary = styled.button`
   gap: 8px;
   padding: 15px;
   background: ${({ theme }) => theme.colors.primary};
-  color: white;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   border: 2px solid transparent;
   border-radius: 12px;
   font-size: 0.9375rem;
@@ -381,6 +384,7 @@ export const CTAPrimary = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.primaryHover};
   }
+  ${alvoDeToque}
 `
 
 export const CTASecondary = styled.button`
@@ -402,4 +406,5 @@ export const CTASecondary = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.primarySubtle};
   }
+  ${alvoDeToque}
 `

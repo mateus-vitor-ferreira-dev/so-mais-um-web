@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { alvoDeToque } from '../../styles/telas'
 
 export type EstadoTom = 'neutro' | 'ok' | 'espera' | 'recusa'
 
@@ -51,7 +52,7 @@ export const Botao = styled.button`
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
@@ -63,6 +64,8 @@ export const Botao = styled.button`
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  ${alvoDeToque}
 `
 
 export const BotaoSecundario = styled(Botao)`

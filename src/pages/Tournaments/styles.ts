@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { cartaoClicavel } from '../../styles/cartaoClicavel'
 import type { TournamentStatus } from '../../types/api'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -11,7 +12,7 @@ export const CreateButton = styled.button`
   align-items: center;
   gap: 8px;
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   padding: 10px 18px;
@@ -23,6 +24,9 @@ export const CreateButton = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.primaryHover};
   }
+
+  ${alvoDeToque}
+  ${ate.celular} { width: 100%; justify-content: center; }
 `
 
 export const FiltersBar = styled.div`
@@ -52,6 +56,8 @@ export const FilterChip = styled.button<{ $active?: boolean; }>`
     border-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  ${alvoDeToque}
 `
 
 export const Grid = styled.div`
@@ -59,6 +65,8 @@ export const Grid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 16px;
   margin-bottom: 40px;
+
+  ${ate.celular} { grid-template-columns: minmax(0, 1fr); }
 `
 
 /**
@@ -80,6 +88,8 @@ export const TournamentCard = styled.div`
   padding: 20px;
   box-shadow: ${({ theme }) => theme.shadows.sm};
   ${cartaoClicavel}
+
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const CardTop = styled.div`
@@ -98,6 +108,8 @@ export const TournamentName = styled.h3`
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.textPrimary};
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 `
 
 /**
@@ -202,6 +214,8 @@ export const ViewBracketBtn = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.primarySubtle};
   }
+
+  ${alvoDeToque}
 `
 
 export const BracketSection = styled.div`
@@ -240,6 +254,8 @@ export const ModalBox = styled.div`
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: ${({ theme }) => theme.shadows.lg};
+
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const ModalHeader = styled.div`
@@ -268,6 +284,7 @@ export const CloseBtn = styled.button`
   transition: color 0.15s;
 
   &:hover { color: ${({ theme }) => theme.colors.textPrimary}; }
+  ${alvoDeToque}
 `
 
 export const Form = styled.form`
@@ -299,6 +316,7 @@ export const Input = styled.input<{ $error?: boolean; }>`
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
 
 export const Select = styled.select<{ $error?: boolean; }>`
@@ -313,6 +331,7 @@ export const Select = styled.select<{ $error?: boolean; }>`
   transition: border-color 0.15s;
 
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
 
 export const ErrorMsg = styled.span`
@@ -325,6 +344,7 @@ export const ModalActions = styled.div`
   justify-content: flex-end;
   gap: 12px;
   margin-top: 8px;
+  ${ate.celular} { flex-direction: column-reverse; }
 `
 
 export const CancelButton = styled.button`
@@ -339,6 +359,7 @@ export const CancelButton = styled.button`
   transition: all 0.15s;
 
   &:hover { border-color: ${({ theme }) => theme.colors.textSecondary}; }
+  ${alvoDeToque}
 `
 
 export const SubmitButton = styled.button`
@@ -346,7 +367,7 @@ export const SubmitButton = styled.button`
   border-radius: ${({ theme }) => theme.radii.md};
   border: none;
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;
@@ -354,6 +375,7 @@ export const SubmitButton = styled.button`
 
   &:hover { background: ${({ theme }) => theme.colors.primaryHover}; }
   &:disabled { opacity: 0.6; cursor: not-allowed; }
+  ${alvoDeToque}
 `
 
 
@@ -422,6 +444,7 @@ export const PresetChip = styled.button`
     color: ${({ theme }) => theme.colors.primary};
     background: ${({ theme }) => theme.colors.primarySubtle};
   }
+  ${alvoDeToque}
 `
 
 export const CatTag = styled.span`
@@ -431,7 +454,7 @@ export const CatTag = styled.span`
   padding: 4px 10px;
   border-radius: ${({ theme }) => theme.radii.full};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
 `
@@ -442,11 +465,12 @@ export const CatTagRemove = styled.button`
   background: none;
   border: none;
   padding: 0;
-  color: rgba(255,255,255,0.8);
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   cursor: pointer;
   line-height: 1;
 
-  &:hover { color: #fff; }
+  &:hover { opacity: 0.8; }
+  ${alvoDeToque}
 `
 
 export const CatInput = styled.input`
@@ -462,4 +486,5 @@ export const CatInput = styled.input`
 
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
   &:focus { border-color: ${({ theme }) => theme.colors.primary}; }
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `

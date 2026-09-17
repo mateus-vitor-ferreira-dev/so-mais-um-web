@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { hoverDeCartao } from '../../styles/cartaoClicavel'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -31,6 +32,9 @@ export const CreateButton = styled.button`
   }
 
   &:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  ${alvoDeToque}
+  ${ate.celular} { width: 100%; }
 `
 
 export const Grid = styled.ul`
@@ -128,6 +132,8 @@ export const CartaoDeNovoTime = styled.li`
     outline-offset: 2px;
   }
 
+  button { ${alvoDeToque} }
+
   .icone {
     display: flex;
     align-items: center;
@@ -171,6 +177,8 @@ export const ModalContent = styled.div`
   max-height: 90vh;
   overflow-y: auto;
 
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
+
   h2 {
     font-size: ${({ theme }) => theme.fontSizes.xl};
     color: ${({ theme }) => theme.colors.textPrimary};
@@ -198,6 +206,7 @@ export const Form = styled.form`
     padding: ${({ theme }) => theme.spacing[3]};
     font-size: ${({ theme }) => theme.fontSizes.sm};
     font-weight: 400;
+    ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
   }
 
   input:focus-visible, select:focus-visible {
@@ -244,6 +253,9 @@ export const ButtonGroup = styled.div`
   margin-top: ${({ theme }) => theme.spacing[2]};
 
   button { flex: 1; }
+
+  ${ate.tablet} { button { min-height: ${ALVO_DE_TOQUE}; } }
+  ${ate.celular} { flex-direction: column-reverse; }
 `
 
 export const SecondaryButton = styled.button`
@@ -262,4 +274,6 @@ export const SecondaryButton = styled.button`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+
+  ${alvoDeToque}
 `

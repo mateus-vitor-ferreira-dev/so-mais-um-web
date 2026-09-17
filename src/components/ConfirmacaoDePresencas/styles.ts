@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { alvoDeToque } from '../../styles/telas'
 
 export { ModalOverlay, ModalContent, AcoesDoModal } from '../SorteioDeTimes/styles'
 
@@ -33,6 +34,8 @@ export const Participante = styled.button<{ $presente: boolean }>`
   background: ${({ $presente, theme }) => $presente ? theme.colors.successLight : theme.colors.bgPage};
   color: ${({ theme }) => theme.colors.textPrimary};
   cursor: pointer;
+
+  ${alvoDeToque}
 `
 
 export const Nome = styled.span`
@@ -48,4 +51,3 @@ export const Estado = styled.span<{ $presente: boolean }>`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
 `
-
