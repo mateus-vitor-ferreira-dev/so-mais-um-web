@@ -155,8 +155,8 @@ export default function OwnerAccess() {
               {tab === 'register' ? (
                 <Form onSubmit={regForm.handleSubmit(onRegister)} noValidate>
                   <Field>
-                    <Label>E-mail (do convite)</Label>
-                    <Input value={inviteEmail} disabled />
+                    <Label htmlFor="parceiro-email-do-convite">E-mail (do convite)</Label>
+                    <Input id="parceiro-email-do-convite" value={inviteEmail} disabled />
                   </Field>
 
                   <Field>
