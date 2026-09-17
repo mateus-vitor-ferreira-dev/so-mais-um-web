@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft } from 'lucide-react'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEspacoDoEndereco } from '../../../hooks/useEspacoDoEndereco'
 import { toast } from 'sonner'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import { chaves } from '../../../lib/queryClient'
@@ -18,8 +19,7 @@ const reais = formatarReais
 
 export default function OwnerMensalidades() {
   const { turmaId = '' } = useParams()
-  const [params] = useSearchParams()
-  const placeId = params.get('placeId') ?? ''
+  const { placeId, procurando } = useEspacoDoEndereco({ tipo: 'turma', id: turmaId })
   const [competencia, setCompetencia] = useState(competenciaAtual)
   const navigate = useNavigate()
   const cliente = useQueryClient()
@@ -50,8 +50,9 @@ export default function OwnerMensalidades() {
         <CampoMes>Competência<Mes type="month" value={competencia} onChange={(e) => setCompetencia(e.target.value)} /></CampoMes>
       </Topo>
       {/* Ver o comentário em `Owner/Turmas`: consulta desabilitada fica
-          `isPending` para sempre, e o `placeId` vem da query string. */}
-      {!placeId || !turmaId ? <Estado role="alert">Falta o espaço no endereço. Volte para Turmas e abra a turma por lá.</Estado> : consulta.isPending ? <Estado>Carregando mensalidades…</Estado> : consulta.isError ? <Estado role="alert">Não foi possível carregar as mensalidades.</Estado> : consulta.data.alunos.length === 0 ? <Estado>Nenhum aluno nesta competência.</Estado> : <Lista>
+          `isPending` para sempre. Sem `?placeId=`, o espaço é procurado nos
+          do dono (web#520). */}
+      {procurando ? <Estado>Procurando o espaço da turma…</Estado> : !placeId || !turmaId ? <Estado role="alert">Não achamos esta turma nos seus espaços. Volte para Turmas e abra a turma por lá.</Estado> : consulta.isPending ? <Estado>Carregando mensalidades…</Estado> : consulta.isError ? <Estado role="alert">Não foi possível carregar as mensalidades.</Estado> : consulta.data.alunos.length === 0 ? <Estado>Nenhum aluno nesta competência.</Estado> : <Lista>
         {consulta.data.alunos.map((aluno) => {
           const diverge = Number(aluno.valor) !== Number(consulta.data.valorAtualDaTurma)
           return <Linha key={aluno.matriculaId} $pago={aluno.pago}>
