@@ -1,0 +1,982 @@
+{
+  "gravadoEm": "2026-09-17T14:22:50.921Z",
+  "respostas": {
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+          "name": "Mateus Vitor",
+          "email": "mateus@player.com",
+          "avatarUrl": null,
+          "role": "PLAYER",
+          "badge": "CRAQUE",
+          "badges": [
+            "CRAQUE",
+            "CONFIAVEL",
+            "ORGANIZADOR_NATO"
+          ],
+          "createdAt": "2026-09-15T14:00:52.715Z",
+          "phone": null,
+          "pixKey": "mateus@player.com",
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 13,
+            "participations": 18,
+            "reviewsReceived": 2
+          },
+          "stats": {
+            "averageStars": 4.5,
+            "totalReviews": 2,
+            "totalPartidas": 18,
+            "tags": [
+              {
+                "tag": "FAIR_PLAY",
+                "count": 1
+              },
+              {
+                "tag": "BOA_COMUNICACAO",
+                "count": 1
+              }
+            ]
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /events/my/participating": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3ie00grpk1x5w4qhyhi",
+            "matchId": "cmu2qp3ic00gnpk1x6v2hab4i",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.510Z",
+            "match": {
+              "id": "cmu2qp3ic00gnpk1x6v2hab4i",
+              "courtId": "cmu2qp3c7006ipk1ximp5yk29",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-09-22T00:00:00.000Z",
+              "endsAt": "2026-09-22T01:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "150",
+              "pixKey": "mateus@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": "cmu2qp3hr00empk1xvqamw5oh",
+              "priorityUntil": "2026-09-14T22:00:00.000Z",
+              "createdAt": "2026-09-15T14:00:53.508Z",
+              "updatedAt": "2026-09-15T14:00:53.508Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 2
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3ie00gopk1xrgtrta6p",
+            "matchId": "cmu2qp3ic00gmpk1xuiml0oy6",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.510Z",
+            "match": {
+              "id": "cmu2qp3ic00gmpk1xuiml0oy6",
+              "courtId": "cmu2qp3c7006ipk1ximp5yk29",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-09-19T00:00:00.000Z",
+              "endsAt": "2026-09-19T01:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "150",
+              "pixKey": "mateus@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": "cmu2qp3hr00empk1xvqamw5oh",
+              "priorityUntil": "2026-09-17T22:00:00.000Z",
+              "createdAt": "2026-09-15T14:00:53.508Z",
+              "updatedAt": "2026-09-15T14:00:53.508Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 3
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3i100f4pk1xm2d9tsfs",
+            "matchId": "cmu2qp3hy00eypk1xlyrd1dpb",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": true,
+            "joinedAt": "2026-09-15T14:00:53.498Z",
+            "match": {
+              "id": "cmu2qp3hy00eypk1xlyrd1dpb",
+              "courtId": "cmu2qp3c7006ipk1ximp5yk29",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-07-29T00:00:00.000Z",
+              "endsAt": "2026-07-29T01:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "150",
+              "pixKey": "mateus@player.com",
+              "status": "FINISHED",
+              "visibility": "PUBLIC",
+              "teamId": "cmu2qp3hr00empk1xvqamw5oh",
+              "priorityUntil": "2026-07-27T22:00:00.000Z",
+              "createdAt": "2026-09-15T14:00:53.494Z",
+              "updatedAt": "2026-09-15T14:00:53.494Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 7
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3i100f6pk1x5si3dk2k",
+            "matchId": "cmu2qp3hy00f0pk1x83gvaqzh",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": true,
+            "joinedAt": "2026-09-15T14:00:53.498Z",
+            "match": {
+              "id": "cmu2qp3hy00f0pk1x83gvaqzh",
+              "courtId": "cmu2qp3c7006ipk1ximp5yk29",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-08-12T00:00:00.000Z",
+              "endsAt": "2026-08-12T01:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "150",
+              "pixKey": "mateus@player.com",
+              "status": "FINISHED",
+              "visibility": "PUBLIC",
+              "teamId": "cmu2qp3hr00empk1xvqamw5oh",
+              "priorityUntil": "2026-08-10T22:00:00.000Z",
+              "createdAt": "2026-09-15T14:00:53.494Z",
+              "updatedAt": "2026-09-15T14:00:53.494Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 7
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3i100f8pk1xbg9xhbq1",
+            "matchId": "cmu2qp3hy00f2pk1x03tsml4g",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": true,
+            "joinedAt": "2026-09-15T14:00:53.498Z",
+            "match": {
+              "id": "cmu2qp3hy00f2pk1x03tsml4g",
+              "courtId": "cmu2qp3c7006ipk1ximp5yk29",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-08-26T00:00:00.000Z",
+              "endsAt": "2026-08-26T01:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "150",
+              "pixKey": "mateus@player.com",
+              "status": "FINISHED",
+              "visibility": "PUBLIC",
+              "teamId": "cmu2qp3hr00empk1xvqamw5oh",
+              "priorityUntil": "2026-08-24T22:00:00.000Z",
+              "createdAt": "2026-09-15T14:00:53.494Z",
+              "updatedAt": "2026-09-15T14:00:53.494Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 7
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3i100f7pk1xh3pjysl9",
+            "matchId": "cmu2qp3hy00f1pk1xirjjpxka",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": true,
+            "joinedAt": "2026-09-15T14:00:53.498Z",
+            "match": {
+              "id": "cmu2qp3hy00f1pk1xirjjpxka",
+              "courtId": "cmu2qp3c7006ipk1ximp5yk29",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-08-19T00:00:00.000Z",
+              "endsAt": "2026-08-19T01:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "150",
+              "pixKey": "mateus@player.com",
+              "status": "FINISHED",
+              "visibility": "PUBLIC",
+              "teamId": "cmu2qp3hr00empk1xvqamw5oh",
+              "priorityUntil": "2026-08-17T22:00:00.000Z",
+              "createdAt": "2026-09-15T14:00:53.494Z",
+              "updatedAt": "2026-09-15T14:00:53.494Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 7
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3i100f9pk1xwbblff02",
+            "matchId": "cmu2qp3hy00f3pk1x5ypdh44n",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": true,
+            "joinedAt": "2026-09-15T14:00:53.498Z",
+            "match": {
+              "id": "cmu2qp3hy00f3pk1x5ypdh44n",
+              "courtId": "cmu2qp3c7006ipk1ximp5yk29",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-09-02T00:00:00.000Z",
+              "endsAt": "2026-09-02T01:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "150",
+              "pixKey": "mateus@player.com",
+              "status": "FINISHED",
+              "visibility": "PUBLIC",
+              "teamId": "cmu2qp3hr00empk1xvqamw5oh",
+              "priorityUntil": "2026-08-31T22:00:00.000Z",
+              "createdAt": "2026-09-15T14:00:53.494Z",
+              "updatedAt": "2026-09-15T14:00:53.494Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 6
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3i100f5pk1xmqyjn58u",
+            "matchId": "cmu2qp3hy00ezpk1xczxyifdg",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": true,
+            "joinedAt": "2026-09-15T14:00:53.498Z",
+            "match": {
+              "id": "cmu2qp3hy00ezpk1xczxyifdg",
+              "courtId": "cmu2qp3c7006ipk1ximp5yk29",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-08-05T00:00:00.000Z",
+              "endsAt": "2026-08-05T01:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "150",
+              "pixKey": "mateus@player.com",
+              "status": "FINISHED",
+              "visibility": "PUBLIC",
+              "teamId": "cmu2qp3hr00empk1xvqamw5oh",
+              "priorityUntil": "2026-08-03T22:00:00.000Z",
+              "createdAt": "2026-09-15T14:00:53.494Z",
+              "updatedAt": "2026-09-15T14:00:53.494Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 7
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3gl00dmpk1x44soaann",
+            "matchId": "cmu2qp3dz009npk1xq6c3x30t",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.445Z",
+            "match": {
+              "id": "cmu2qp3dz009npk1xq6c3x30t",
+              "courtId": "cmu2qp3cj0077pk1x0g2qzrw1",
+              "organizerId": "cmu2qp2zi001ipk1xxjt252b2",
+              "date": "2026-09-20T20:00:00.000Z",
+              "endsAt": "2026-09-20T21:00:00.000Z",
+              "maxPlayers": 8,
+              "minPlayers": null,
+              "totalValue": "90",
+              "pixKey": "juliana@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.351Z",
+              "updatedAt": "2026-09-15T14:00:53.351Z",
+              "court": {
+                "id": "cmu2qp3cj0077pk1x0g2qzrw1",
+                "name": "Peteca",
+                "type": "PETECA",
+                "place": {
+                  "id": "cmu2qp3bl0057pk1x7pbahn4c",
+                  "name": "Lavras Tênis Clube — LTC",
+                  "city": "Lavras",
+                  "neighborhood": "Vila Brasília",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2zi001ipk1xxjt252b2",
+                "name": "Juliana Prado",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 5
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3g100cypk1xgti584qj",
+            "matchId": "cmu2qp3dx009kpk1xfln70y46",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.425Z",
+            "match": {
+              "id": "cmu2qp3dx009kpk1xfln70y46",
+              "courtId": "cmu2qp3dh008ipk1x5ic10vb0",
+              "organizerId": "cmu2qp2wb0019pk1x7oybmnlb",
+              "date": "2026-09-21T23:00:00.000Z",
+              "endsAt": "2026-09-22T00:00:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "50",
+              "pixKey": "diego@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.349Z",
+              "updatedAt": "2026-09-15T14:00:53.349Z",
+              "court": {
+                "id": "cmu2qp3dh008ipk1x5ic10vb0",
+                "name": "Futsal",
+                "type": "FUTSAL",
+                "place": {
+                  "id": "cmu2qp3bq005spk1xaqjf5rqd",
+                  "name": "Poliesportivo de Itumirim",
+                  "city": "Itumirim",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wb0019pk1x7oybmnlb",
+                "name": "Diego Mendes",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 7
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3fb00capk1x3d32zh5l",
+            "matchId": "cmu2qp3dw009hpk1xv2dlxa9v",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.399Z",
+            "match": {
+              "id": "cmu2qp3dw009hpk1xv2dlxa9v",
+              "courtId": "cmu2qp3d70085pk1xntoet1tz",
+              "organizerId": "cmu2qp2wb0016pk1xnlxhi3fz",
+              "date": "2026-09-18T23:00:00.000Z",
+              "endsAt": "2026-09-19T02:00:00.000Z",
+              "maxPlayers": 6,
+              "minPlayers": null,
+              "totalValue": "35",
+              "pixKey": "joao@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.349Z",
+              "updatedAt": "2026-09-15T14:00:53.349Z",
+              "court": {
+                "id": "cmu2qp3d70085pk1xntoet1tz",
+                "name": "Mesa de Poker",
+                "type": "POKER",
+                "place": {
+                  "id": "cmu2qp3bq005mpk1xljlw0k42",
+                  "name": "Clube Cafeeira",
+                  "city": "Varginha",
+                  "neighborhood": "Jardim Andere",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wb0016pk1xnlxhi3fz",
+                "name": "João Henrique",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 5
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3e500appk1x7amitf5o",
+            "matchId": "cmu2qp3dr009dpk1xktf033rw",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.358Z",
+            "match": {
+              "id": "cmu2qp3dr009dpk1xktf033rw",
+              "courtId": "cmu2qp3cx007qpk1xbvmtv80j",
+              "organizerId": "cmu2qp2wa0011pk1xlqx6z5q6",
+              "date": "2026-09-17T22:00:00.000Z",
+              "endsAt": "2026-09-17T23:30:00.000Z",
+              "maxPlayers": 10,
+              "minPlayers": null,
+              "totalValue": "280",
+              "pixKey": "gabriel@player.com",
+              "status": "FULL",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.343Z",
+              "updatedAt": "2026-09-15T14:00:53.343Z",
+              "court": {
+                "id": "cmu2qp3cx007qpk1xbvmtv80j",
+                "name": "Society",
+                "type": "SOCIETY",
+                "place": {
+                  "id": "cmu2qp3bl005fpk1xp8tj1k76",
+                  "name": "Arena TK9",
+                  "city": "Ijaci",
+                  "neighborhood": "Córrego Pintado",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0011pk1xlqx6z5q6",
+                "name": "Gabriel Cantanhede",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 10
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3e500b0pk1xcfvud99y",
+            "matchId": "cmu2qp3dr009epk1xec85q4vj",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": true,
+            "joinedAt": "2026-09-15T14:00:53.358Z",
+            "match": {
+              "id": "cmu2qp3dr009epk1xec85q4vj",
+              "courtId": "cmu2qp3bw005ypk1x80q9dyls",
+              "organizerId": "cmu2qp2wb0017pk1xjqls5sx7",
+              "date": "2026-09-10T12:00:00.000Z",
+              "endsAt": "2026-09-10T13:00:00.000Z",
+              "maxPlayers": 4,
+              "minPlayers": null,
+              "totalValue": "75",
+              "pixKey": "fernanda@player.com",
+              "status": "FINISHED",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.343Z",
+              "updatedAt": "2026-09-15T14:00:53.343Z",
+              "court": {
+                "id": "cmu2qp3bw005ypk1x80q9dyls",
+                "name": "Beach Tennis 1",
+                "type": "BEACH_TENNIS",
+                "place": {
+                  "id": "cmu2qp3bk004wpk1x2phsdjwo",
+                  "name": "Arena Beach Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Portal da Mata",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wb0017pk1xjqls5sx7",
+                "name": "Fernanda Alves",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 4
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3e500akpk1xjrj5l09g",
+            "matchId": "cmu2qp3dr009cpk1xbr14hyrt",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.358Z",
+            "match": {
+              "id": "cmu2qp3dr009cpk1xbr14hyrt",
+              "courtId": "cmu2qp3c20069pk1xv1o8a328",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-09-16T11:00:00.000Z",
+              "endsAt": "2026-09-16T12:00:00.000Z",
+              "maxPlayers": 4,
+              "minPlayers": null,
+              "totalValue": "70",
+              "pixKey": "mateus@player.com",
+              "status": "FULL",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.343Z",
+              "updatedAt": "2026-09-15T14:00:53.343Z",
+              "court": {
+                "id": "cmu2qp3c20069pk1xv1o8a328",
+                "name": "Beach Tennis 1",
+                "type": "BEACH_TENNIS",
+                "place": {
+                  "id": "cmu2qp3bl004zpk1xddd09sr2",
+                  "name": "Complexo PRB Beach Sports",
+                  "city": "Lavras",
+                  "neighborhood": "Santa Efigênia",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 4
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3e5009zpk1xfmk1mc2s",
+            "matchId": "cmu2qp3dp0095pk1x1102s62p",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.357Z",
+            "match": {
+              "id": "cmu2qp3dp0095pk1x1102s62p",
+              "courtId": "cmu2qp3by0061pk1xxhnc3jtg",
+              "organizerId": "cmu2qp2wa0011pk1xlqx6z5q6",
+              "date": "2026-09-18T11:00:00.000Z",
+              "endsAt": "2026-09-18T12:00:00.000Z",
+              "maxPlayers": 4,
+              "minPlayers": null,
+              "totalValue": "80",
+              "pixKey": "gabriel@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.343Z",
+              "updatedAt": "2026-09-15T14:00:53.343Z",
+              "court": {
+                "id": "cmu2qp3by0061pk1xxhnc3jtg",
+                "name": "Beach Tennis 1",
+                "type": "BEACH_TENNIS",
+                "place": {
+                  "id": "cmu2qp3bl004xpk1xn11abvx1",
+                  "name": "Arena JC Beach Club",
+                  "city": "Lavras",
+                  "neighborhood": "Alphaville",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0011pk1xlqx6z5q6",
+                "name": "Gabriel Cantanhede",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 3
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3e5009rpk1xgju85cu3",
+            "matchId": "cmu2qp3dp0092pk1xb8ig5gex",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.357Z",
+            "match": {
+              "id": "cmu2qp3dp0092pk1xb8ig5gex",
+              "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+              "organizerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "date": "2026-09-16T12:00:00.000Z",
+              "endsAt": "2026-09-16T13:00:00.000Z",
+              "maxPlayers": 4,
+              "minPlayers": null,
+              "totalValue": "80",
+              "pixKey": "mateus@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.343Z",
+              "updatedAt": "2026-09-15T14:16:36.041Z",
+              "court": {
+                "id": "cmu2qp3bu005xpk1xvk4b5rtz",
+                "name": "Beach Tennis",
+                "type": "BEACH_TENNIS",
+                "place": {
+                  "id": "cmu2qp3bk004vpk1xajo58ucp",
+                  "name": "Na Praia FTV Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+                "name": "Mateus Vitor",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 3
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3e500a3pk1xxznk0mzg",
+            "matchId": "cmu2qp3dq0097pk1xcbz9gal7",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.357Z",
+            "match": {
+              "id": "cmu2qp3dq0097pk1xcbz9gal7",
+              "courtId": "cmu2qp3c7006hpk1xvnyflcsz",
+              "organizerId": "cmu2qp2wa0013pk1xctmjn8nu",
+              "date": "2026-09-19T22:00:00.000Z",
+              "endsAt": "2026-09-19T23:30:00.000Z",
+              "maxPlayers": 14,
+              "minPlayers": null,
+              "totalValue": "280",
+              "pixKey": "nakazato@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.343Z",
+              "updatedAt": "2026-09-15T14:00:53.343Z",
+              "court": {
+                "id": "cmu2qp3c7006hpk1xvnyflcsz",
+                "name": "Society",
+                "type": "SOCIETY",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras",
+                  "city": "Lavras",
+                  "neighborhood": "Centro",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wa0013pk1xctmjn8nu",
+                "name": "Gabriel Nakazato",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 10
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3e500abpk1xe8v2e1bw",
+            "matchId": "cmu2qp3dq0099pk1xcrkwliin",
+            "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "attended": null,
+            "joinedAt": "2026-09-15T14:00:53.357Z",
+            "match": {
+              "id": "cmu2qp3dq0099pk1xcrkwliin",
+              "courtId": "cmu2qp3c9006jpk1x9vt1lagw",
+              "organizerId": "cmu2qp2wb0015pk1xd4yq9g5h",
+              "date": "2026-09-20T21:00:00.000Z",
+              "endsAt": "2026-09-20T23:00:00.000Z",
+              "maxPlayers": 22,
+              "minPlayers": null,
+              "totalValue": "440",
+              "pixKey": "gustavo@player.com",
+              "status": "WAITING",
+              "visibility": "PUBLIC",
+              "teamId": null,
+              "priorityUntil": null,
+              "createdAt": "2026-09-15T14:00:53.343Z",
+              "updatedAt": "2026-09-15T14:00:53.343Z",
+              "court": {
+                "id": "cmu2qp3c9006jpk1x9vt1lagw",
+                "name": "Campo de Futebol",
+                "type": "CAMPO",
+                "place": {
+                  "id": "cmu2qp3bl0053pk1x0nwnliy4",
+                  "name": "Operário Esporte Clube",
+                  "city": "Lavras",
+                  "neighborhood": "Das Mansões",
+                  "state": "MG"
+                }
+              },
+              "organizer": {
+                "id": "cmu2qp2wb0015pk1xd4yq9g5h",
+                "name": "Gustavo Rezende",
+                "avatarUrl": null
+              },
+              "_count": {
+                "participations": 16
+              }
+            }
+          }
+        ]
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [
+            {
+              "id": "cmu5ljnlh0006qt1xqrxm9ejl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0095pk1x1102s62p",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-17T14:00:00.053Z"
+            },
+            {
+              "id": "cmu2st420000bca1xxu3bp37e",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.072Z"
+            },
+            {
+              "id": "cmu2st41t0007ca1xhosc2g7g",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 9h, na quadra Beach Tennis (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.065Z"
+            },
+            {
+              "id": "cmu2r9arw000gl81xl1i8qbfl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_LEFT",
+              "title": "Jogador saiu da partida",
+              "body": "Mateus Vitor saiu da sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:36.044Z"
+            },
+            {
+              "id": "cmu2r94l4000fl81x4owpvu0i",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Partida cheia!",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:28.024Z"
+            },
+            {
+              "id": "cmu2qp3ja00hvpk1x2zrk8cy5",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_JOINED",
+              "title": "Jogador entrou na partida",
+              "body": "Gabriel Cantanhede entrou na sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hwpk1xe6yojnt0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Sua partida lotou",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hupk1xtpmbosc0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "TEAM_INVITE",
+              "title": "Convite para um time",
+              "body": "Fernanda Alves chamou você para o Areia Nossa",
+              "data": {
+                "teamId": "cmu2qp3hr00enpk1xjnbpx7l7"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hxpk1xf4tld757",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de tempestade para sua partida",
+              "body": "Previsão de tempestade para sua partida amanhã às 19h, na quadra Society (45% de chance).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3iu00hopk1x0yj2r15r",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            }
+          ],
+          "unreadCount": 9
+        }
+      }
+    }
+  }
+}

@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p e2e",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -17,7 +17,8 @@
     "readme:fix": "node scripts/verifica-numeros-do-readme.mjs --fix",
     "primeira-tela:check": "node scripts/verifica-primeira-tela.mjs",
     "formatacao:check": "node scripts/verifica-formatacao.mjs",
-    "contrato:check": "node scripts/verifica-contrato-com-o-produto.mjs"
+    "contrato:check": "node scripts/verifica-contrato-com-o-produto.mjs",
+    "test:responsividade": "playwright test -c e2e/responsividade/playwright.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -37,10 +38,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.3",
     "@types/leaflet": "^1.9.22",
+    "@types/node": "^24.13.5",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.1",

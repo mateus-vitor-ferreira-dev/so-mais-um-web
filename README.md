@@ -318,15 +318,16 @@ npm run dev
 | `npm run build` | Build de produção em `dist/` |
 | `npm run preview` | Serve o `dist/` em `http://localhost:4173` — use para reproduzir bug que só aparece em build |
 | `npm run lint` | ESLint 10 (flat config) + typescript-eslint em todo o projeto, `.js` e `.ts`/`.tsx` |
-| `npm run typecheck` | `tsc --noEmit` — checa os tipos sem gerar arquivo |
+| `npm run typecheck` | `tsc --noEmit` — checa os tipos sem gerar arquivo (o do app e o da checagem de responsividade, em `e2e/`) |
 | `npm test` | Roda a suíte uma vez e sai — é o que o CI executa |
 | `npm run test:watch` | Modo interativo: reexecuta só o que você mexeu. É o que você usa escrevendo teste |
 | `npm run test:coverage` | Suíte + relatório de cobertura no terminal e em `coverage/index.html` |
 | `npm run readme:check` | Confere contra a suíte os números que este README anuncia |
 | `npm run readme:fix` | Reescreve esses números — eles são gerados, não digitados |
 | `npm run primeira-tela:check` | Confere que a raiz sem sessão não carrega componente de rota autenticada |
+| `npm run test:responsividade` | Playwright, sem api: mede telas a 360 e 390px (vazamento e alvo < 44px) contra a lista de conhecidos em `e2e/responsividade/conhecidos/`. `GRAVAR=1` regrava as respostas da api local; `ATUALIZAR_CONHECIDOS=1` reescreve a lista |
 
-> O CI roda, nesta ordem, `lint` → `typecheck` → `test:ci` → `readme:check` → `primeira-tela:check` → `build`. Qualquer um vermelho barra o merge.
+> O CI roda, nesta ordem, `lint` → `typecheck` → `test:ci` → `readme:check` → `primeira-tela:check` → `build`. Qualquer um vermelho barra o merge. Em paralelo, o job `responsividade` roda o `test:responsividade`.
 
 ---
 
