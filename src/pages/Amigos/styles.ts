@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ALVO_DE_TOQUE, ate } from '../../styles/telas'
+import { ALVO_DE_TOQUE, ate, LARGURA_DE_LEITURA } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -38,6 +38,7 @@ export const Aba = styled.button<{ $ativa: boolean }>`
 `
 
 export const Explicacao = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: 16px 0 0;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.textSecondary};

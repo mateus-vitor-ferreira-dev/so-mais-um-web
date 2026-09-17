@@ -62,7 +62,8 @@ export const Identidade = styled.div`
   flex: 1;
 `
 
-export const Nome = styled.h1`
+/* h2, e não h1: o título da página já é o h1 da barra do topo (#511). */
+export const Nome = styled.h2`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSizes.xl};
   color: ${({ theme }) => theme.colors.textPrimary};

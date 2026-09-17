@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, LARGURA_DE_LEITURA } from '../../../styles/telas'
 
 /** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
 const campoNoCelular = `
@@ -73,6 +73,7 @@ export const TituloDaCaixa = styled.h2`
 `
 
 export const Explicacao = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: 4px 0 16px;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.textSecondary};

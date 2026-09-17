@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components'
 import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
+export { CaixaDaTabela } from '../../../components/TabelaResponsiva'
 import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
-import { alvoDeToque, ate } from '../../../styles/telas'
+import { alvoDeToque, ate, LARGURA_DE_LEITURA } from '../../../styles/telas'
 
 /** Os tons de selo. `manual`, `stripe` e `cortesia` marcam origem; o resto, situação. */
 export type TomDeSelo = 'ok' | 'alerta' | 'erro' | 'neutro' | 'manual' | 'stripe' | 'cortesia'
@@ -43,6 +44,7 @@ export const BotaoRegistrar = styled.button`
   ${alvoDeToque}
 `
 export const Aviso = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: 0 0 16px; font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
   color: ${({ theme }) => theme.colors.textSecondary};
 `
@@ -76,6 +78,7 @@ export const Contagem = styled.span<{ $alerta?: boolean }>`
 
 /** A explicação de um filtro, dita uma vez em cima da lista. */
 export const NotaDoFiltro = styled.p<{ $tom?: 'alerta'; $noCampo?: boolean }>`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: ${({ $noCampo }) => ($noCampo ? '6px 0 0' : '0 0 12px')};
   padding: 10px 14px; border-radius: ${({ theme }) => theme.radii.md};
   font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
@@ -93,7 +96,9 @@ export const NotaDoFiltro = styled.p<{ $tom?: 'alerta'; $noCampo?: boolean }>`
  * 1280px. O limite e as reticências impedem o e-mail muito comprido de empurrar
  * a tabela para fora da tela; o endereço inteiro fica no `title`.
  */
-export const Tabela = styled(TabelaResponsiva)`
+/* Cartão também quando a tabela tem menos de 920px: com a barra lateral, de
+   1024 a ~1280px, sete colunas mais as ações passavam da borda (#511, computador). */
+export const Tabela = styled(TabelaResponsiva).attrs({ $cartaoAbaixoDe: 920 })`
   td.principal span {
     max-width: 180px; overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }

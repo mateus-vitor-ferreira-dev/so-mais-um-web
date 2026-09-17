@@ -41,7 +41,7 @@ export const RequestHeader = styled.div`
   margin-bottom: 8px;
 `
 
-export const RequestTitle = styled.h3`
+export const RequestTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.textPrimary};

@@ -44,7 +44,8 @@ export const Hero = styled.header`
     margin-bottom: ${({ theme }) => theme.spacing[2]};
   }
 
-  h1 {
+  /* h2, e não h1: o título da página já é o h1 da barra do topo (#511). */
+  h2 {
     font-size: ${({ theme }) => theme.fontSizes['2xl']};
     color: ${({ theme }) => theme.colors.textPrimary};
     margin-bottom: 0;

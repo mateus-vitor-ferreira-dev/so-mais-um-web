@@ -46,13 +46,28 @@ export const telaDeToque = '@media (pointer: coarse)'
  */
 export const ALVO_DE_TOQUE = '44px'
 
+/** O mínimo com mouse: 24px, o que a WCAG 2.2 (2.5.8) pede para ponteiro (#511, computador). */
+export const ALVO_DE_PONTEIRO = '24px'
+
 /**
- * Garante o alvo mínimo em tela de toque, sem mexer no desenho com mouse.
+ * A largura do texto corrido: ~75 caracteres por linha em Inter, o teto que a
+ * skill de UI/UX pede (65–75). Em `ch` e não em px, para acompanhar o tamanho da
+ * fonte. 60ch, e não 75: o `ch` é a largura do "0", mais largo que a letra média.
+ */
+export const LARGURA_DE_LEITURA = '60ch'
+
+/**
+ * Garante o alvo mínimo: 44px em tela de toque e 24px com mouse.
  *
  * Pelo `min-*`, e não por `height`: o botão que já é maior continua como está,
- * e o ícone de 32px ganha área clicável sem o layout do computador mudar.
+ * e o ícone de 32px ganha área clicável sem o layout do computador mudar. Os
+ * 24px com mouse entraram na auditoria de computador da #511: o "Voltar" de
+ * texto tinha 16px de altura.
  */
 export const alvoDeToque = css`
+  min-height: ${ALVO_DE_PONTEIRO};
+  min-width: ${ALVO_DE_PONTEIRO};
+
   ${telaDeToque} {
     min-height: ${ALVO_DE_TOQUE};
     min-width: ${ALVO_DE_TOQUE};

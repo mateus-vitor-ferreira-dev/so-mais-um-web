@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { alvoDeToque, ate } from '../../styles/telas'
+import { alvoDeToque, ate, LARGURA_DE_LEITURA } from '../../styles/telas'
 
 /** A largura máxima do conteúdo e da linha da topbar. */
 const LARGURA_DO_CONTEUDO = '1440px'
@@ -165,11 +165,12 @@ export const NavBadge = styled.span`
   margin-left: auto;
   background: ${({ theme }) => theme.colors.error};
   color: ${({ theme }) => theme.colors.textOnError};
-  font-size: 10px;
+  /* 12px, o piso de texto, como o número do sino (#511). */
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-  min-width: 18px;
-  height: 18px;
-  border-radius: 9px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,6 +344,7 @@ export const TopbarTitle = styled.h1`
 `
 
 export const TopbarSub = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 0;

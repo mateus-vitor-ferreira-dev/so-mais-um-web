@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { alvoDeToque, ate } from '../../../styles/telas'
+import { alvoDeToque, ate, LARGURA_DE_LEITURA } from '../../../styles/telas'
 
 /** 16px no celular: abaixo disso o Safari do iPhone dá zoom ao focar o campo. */
 const campoNoCelular = `
@@ -52,6 +52,7 @@ export const TituloDaCaixa = styled.h2`
 `
 
 export const Explicacao = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: 0 0 16px;
   font-size: ${({ theme }) => theme.fontSizes.sm};
   color: ${({ theme }) => theme.colors.textSecondary};
@@ -71,6 +72,8 @@ export const Form = styled.form`
 export const CampoEmail = styled.div`
   flex: 1;
   width: 100%;
+  /* Um e-mail não precisa de 1.263px: no computador o campo parava a um palmo do botão (#511). */
+  max-width: 480px;
 `
 
 export const Input = styled.input<{ $erro?: boolean }>`
@@ -219,6 +222,7 @@ export const Erro = styled.p`
  * que não sabe: vínculo criado por outro caminho não aparece aqui.
  */
 export const Ressalva = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: 12px 0 0;
   font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
@@ -378,6 +382,7 @@ export const Revogar = styled.button`
  * tiver o link — e é o padrão de um uso que torna isso administrável.
  */
 export const AvisoDoPortador = styled.p`
+  max-width: ${LARGURA_DE_LEITURA};
   margin: 0 0 12px;
   padding: 10px 12px;
   border-left: 3px solid ${({ theme }) => theme.colors.warningText};

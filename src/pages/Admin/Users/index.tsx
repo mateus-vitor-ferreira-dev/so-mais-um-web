@@ -16,6 +16,7 @@ import {
   AvatarCell, UserMeta, UserEmail, ActionBtn, ErrorMsg, ModalWrap,
   ModalOverlay, ModalBox, ModalTitle, ModalText, ModalInput, ModalActions,
   ModalCancelBtn, ModalConfirmBtn,
+  CaixaDaTabela,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
 import { dataCurta } from '../../../utils/datas'
@@ -137,6 +138,7 @@ export default function AdminUsers() {
       )}
 
       {!error && filtered.length > 0 && (
+        <CaixaDaTabela>
         <Tabela>
           <thead>
             <tr>
@@ -180,6 +182,7 @@ export default function AdminUsers() {
             ))}
           </tbody>
         </Tabela>
+        </CaixaDaTabela>
       )}
       {showInvite && (
         <ModalWrap>

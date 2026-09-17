@@ -37,7 +37,7 @@ export const PlaceInfo = styled.div`
   min-width: 0;
 `
 
-export const PlaceName = styled.h3`
+export const PlaceName = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.textPrimary};

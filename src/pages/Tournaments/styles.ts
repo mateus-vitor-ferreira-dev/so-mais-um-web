@@ -100,7 +100,7 @@ export const CardTop = styled.div`
   margin-bottom: 12px;
 `
 
-export const TournamentName = styled.h3`
+export const TournamentName = styled.h2`
   display: flex;
   align-items: baseline;
   gap: 6px;
