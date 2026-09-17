@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { ate } from '../../styles/telas'
 
 /**
  * Tela de página inteira, e não card dentro do app.
@@ -13,6 +14,7 @@ export const Fundo = styled.div`
   min-height: 100vh;
   padding: 24px 16px;
   background: ${({ theme }) => theme.colors.bgPage};
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const Cartao = styled.main`
@@ -24,6 +26,7 @@ export const Cartao = styled.main`
   background: ${({ theme }) => theme.colors.bgCard};
   box-shadow: ${({ theme }) => theme.shadows.md};
   text-align: center;
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[5]} ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const Emblema = styled.div<{ $tom: 'convite' | 'erro' | 'feito' }>`
@@ -65,7 +68,7 @@ export const Acoes = styled.div`
   gap: 10px;
   margin-top: 24px;
 
-  @media (max-width: 420px) {
+  ${ate.celular} {
     flex-direction: column;
   }
 `
@@ -94,7 +97,7 @@ export const Principal = styled.button`
   ${base}
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
 
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.primaryHover};
@@ -117,7 +120,7 @@ export const LinkPrincipal = styled(Link)`
   ${base}
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
 
   &:hover {
     background: ${({ theme }) => theme.colors.primaryHover};

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ate } from '../../styles/telas'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -256,6 +257,8 @@ export const RightPanel = styled.div`
   position: sticky;
   top: 0;
   align-self: flex-start;
+
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const Card = styled.div`
@@ -266,4 +269,9 @@ export const Card = styled.div`
   padding: 32px 28px 24px;
   width: 100%;
   max-width: 400px;
+
+  ${ate.celular} {
+    padding: ${({ theme }) => theme.spacing[5]} ${({ theme }) => theme.spacing[4]};
+    border-radius: ${({ theme }) => theme.radii.lg};
+  }
 `
