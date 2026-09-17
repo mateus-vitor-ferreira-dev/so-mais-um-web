@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ALVO_DE_TOQUE, alvoDeToque, ate, telaDeToque } from '../../styles/telas'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, telaDeToque, ALVO_DE_PONTEIRO } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -21,6 +21,7 @@ export const BackBtn = styled.button`
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   cursor: pointer;
   padding: 0;
+  min-height: ${ALVO_DE_PONTEIRO};
   margin-bottom: ${({ theme }) => theme.spacing[4]};
   transition: color 0.15s;
 
