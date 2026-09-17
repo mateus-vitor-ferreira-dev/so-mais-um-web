@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, telaDeToque } from '../../styles/telas'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -21,6 +22,8 @@ export const Trigger = styled.button.attrs({ type: 'button' })<{ $open?: boolean
   transition: border-color 0.15s;
 
   &:hover { border-color: ${({ theme }) => theme.colors.primary}; }
+
+  ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Placeholder = styled.span`
@@ -93,6 +96,8 @@ export const Option = styled.div<{ $selected?: boolean; }>`
   transition: background 0.1s;
 
   &:hover { background: ${({ theme }) => theme.colors.primarySubtle}; }
+
+  ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Checkbox = styled.span<{ $checked?: boolean; }>`
