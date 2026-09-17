@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { alvoDeToque } from '../../styles/telas'
 
 export const Lista = styled.ul`
   display: flex;
@@ -60,6 +61,7 @@ export const NomeDaPessoa = styled(Link)`
   &:hover {
     color: ${({ theme }) => theme.colors.primaryHover};
   }
+  ${alvoDeToque}
 `
 
 /**
@@ -87,6 +89,7 @@ export const BotaoChamar = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.primaryLight};
   }
+  ${alvoDeToque}
 `
 
 export const Vazio = styled.p`

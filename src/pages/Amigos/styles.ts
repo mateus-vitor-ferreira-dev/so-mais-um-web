@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -11,6 +12,7 @@ export const Abas = styled.div`
   gap: 8px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   overflow-x: auto;
+  ${ate.celular} { gap: 0; }
 `
 
 export const Aba = styled.button<{ $ativa: boolean }>`
@@ -31,6 +33,8 @@ export const Aba = styled.button<{ $ativa: boolean }>`
   &:hover {
     color: ${({ theme }) => theme.colors.textPrimary};
   }
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
+  ${ate.celular} { flex: 1 0 auto; padding-inline: ${({ theme }) => theme.spacing[2]}; }
 `
 
 export const Explicacao = styled.p`

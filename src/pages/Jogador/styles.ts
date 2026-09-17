@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -18,6 +19,7 @@ export const BackLink = styled.a`
   &:hover {
     color: ${({ theme }) => theme.colors.textPrimary};
   }
+  ${alvoDeToque}
 `
 
 export const Hero = styled.header`
@@ -29,6 +31,7 @@ export const Hero = styled.header`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
+  ${ate.celular} { align-items: flex-start; padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const Avatar = styled.div`
@@ -103,6 +106,8 @@ export const Aba = styled.button<{ $ativa: boolean }>`
   &:hover {
     color: ${({ theme }) => theme.colors.textPrimary};
   }
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
+  ${ate.celular} { flex: 1; padding-inline: ${({ theme }) => theme.spacing[2]}; }
 `
 
 export const Erro = styled.div`
