@@ -84,8 +84,12 @@ export const Dropdown = styled.div`
   }
 `
 
-export const Option = styled.div<{ $selected?: boolean; }>`
+export const Option = styled.button.attrs({ type: 'button' })<{ $selected?: boolean; }>`
   display: flex;
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  text-align: left;
   align-items: center;
   gap: 10px;
   padding: 9px 12px;
@@ -96,6 +100,11 @@ export const Option = styled.div<{ $selected?: boolean; }>`
   transition: background 0.1s;
 
   &:hover { background: ${({ theme }) => theme.colors.primarySubtle}; }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: -2px;
+  }
 
   ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; }
 `
@@ -110,8 +119,7 @@ export const Checkbox = styled.span<{ $checked?: boolean; }>`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 10px;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   transition: all 0.1s;
 `
 
