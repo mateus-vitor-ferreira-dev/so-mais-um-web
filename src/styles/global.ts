@@ -44,6 +44,15 @@ const GlobalStyles = createGlobalStyle`
     --error-text: ${({ theme }) => theme.colors.error};
   }
 
+  /*
+   * Com mouse, o que é clicável troca o cursor (#511, computador). O <select> e
+   * o <summary> ficavam com a seta comum. Seletor de elemento, de propósito:
+   * qualquer componente que declare o próprio cursor ganha dele.
+   */
+  button:not(:disabled), select:not(:disabled), summary, [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
   input, select, textarea {
     background: ${({ theme }) => theme.colors.bgInput};
     color: ${({ theme }) => theme.colors.textPrimary};
