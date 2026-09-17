@@ -22,6 +22,12 @@ describe('CartaoDePartida (web#492)', () => {
     expect(screen.getByText('Centro, Lavras')).toBeInTheDocument()
   })
 
+  it('o título desce a h2 na tela em que a lista vem direto abaixo do título da página (#511)', () => {
+    renderWithProviders(<CartaoDePartida partida={PARTIDA} aoAbrir={() => {}} nivelDoTitulo={2} />)
+
+    expect(screen.getByRole('heading', { level: 2, name: 'Beach Tennis' })).toBeInTheDocument()
+  })
+
   it('as vagas, com o singular, e o valor por pessoa', () => {
     renderWithProviders(<CartaoDePartida partida={PARTIDA} aoAbrir={() => {}} />)
 

@@ -309,6 +309,7 @@ export default function MinhasPartidas() {
                 // precisa de stopPropagation — senão o modal abre e fecha no mesmo clique.
                 <CartaoDePartida
                   key={ev.id}
+                  nivelDoTitulo={2}
                   partida={ev}
                   aoAbrir={() => navigate(`/partida/${ev.id}`)}
                   selos={

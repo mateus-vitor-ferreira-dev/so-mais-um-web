@@ -204,7 +204,7 @@ export const ProductHeader = styled.div`
   justify-content: space-between;
   gap: 10px;
 
-  h3 {
+  h2 {
     margin: 0 0 4px;
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: 17px;

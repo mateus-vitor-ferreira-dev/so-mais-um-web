@@ -43,7 +43,7 @@ export const KpiCard = styled.div<{ $borderColor?: string; }>`
   padding: ${({ theme }) => theme.spacing[5]};
   box-shadow: ${({ theme }) => theme.shadows.sm};
 
-  h3 {
+  h2 {
     font-size: ${({ theme }) => theme.fontSizes.xs};
     color: ${({ theme }) => theme.colors.textSecondary};
     text-transform: uppercase;

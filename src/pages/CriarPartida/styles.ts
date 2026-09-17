@@ -82,7 +82,7 @@ export const Card = styled.div`
   ${ate.celular} { padding: 16px; }
 `
 
-export const SectionTitle = styled.h3`
+export const SectionTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.textPrimary};
