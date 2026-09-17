@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { AlvoDoCartao } from '../../styles/cartaoClicavel'
+import { Star } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { playerService } from '../../services/playerService'
 import type { Review, ReviewTag, UserStats } from '../../types/api'
@@ -20,8 +23,17 @@ const TAG_LABELS: Record<string, string> = {
   BOA_COMUNICACAO:  'Boa Comunicação',
 }
 
-function renderStars(count: number) {
-  return '⭐'.repeat(Math.min(Math.max(count, 1), 5))
+/**
+ * As estrelas da avaliação, em ícone e não em emoji (#511): o ⭐ saía com a cor
+ * e o peso de cada sistema. Para o leitor de tela, uma frase só.
+ */
+function Estrelas({ count }: { count: number }) {
+  const n = Math.min(Math.max(count, 1), 5)
+  return (
+    <span className="stars" role="img" aria-label={`${n} ${n === 1 ? 'estrela' : 'estrelas'}`}>
+      {Array.from({ length: n }, (_, i) => <Star key={i} size={16} fill="currentColor" aria-hidden="true" />)}
+    </span>
+  )
 }
 
 function formatDate(dateStr: string) {
@@ -31,6 +43,7 @@ function formatDate(dateStr: string) {
 export default function Avaliacoes() {
   usePageHeader('Minhas Avaliações')
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [summary, setSummary]           = useState<Partial<UserStats>>({})
   const [reviews, setReviews]           = useState<Review[]>([])
   const [reviewsGiven, setReviewsGiven] = useState<Review[]>([])
@@ -66,7 +79,7 @@ export default function Avaliacoes() {
       <Container>
         <StatsCard>
           <div className="stat-item">
-            <h2>⭐ {avgStars}</h2>
+            <h2><Star size={22} fill="currentColor" aria-hidden="true" style={{ verticalAlign: '-2px' }} /> {avgStars}</h2>
             <p>Nota Média</p>
           </div>
           <div className="stat-item">
@@ -109,13 +122,15 @@ export default function Avaliacoes() {
               ) : (
                 <ReviewList>
                   {reviews.map((review: Review) => (
-                    <ReviewCard key={review.id}>
+                    <ReviewCard key={review.id} $clicavel={Boolean(review.reviewer?.id)} onClick={review.reviewer?.id ? () => navigate(`/jogador/${review.reviewer!.id}`) : undefined}>
                       <ReviewHeader>
                         <div className="avatar">
                           {review.reviewer?.name?.charAt(0)?.toUpperCase()}
                         </div>
                         <div className="meta">
-                          <div className="reviewer-name">{review.reviewer?.name}</div>
+                          <div className="reviewer-name">
+                            {review.reviewer?.id ? <AlvoDoCartao>{review.reviewer.name}</AlvoDoCartao> : review.reviewer?.name}
+                          </div>
                           <div className="game-info">
                             {review.match?.court?.place?.name && (
                               <>{review.match.court.place.name} &mdash; </>
@@ -123,7 +138,7 @@ export default function Avaliacoes() {
                             {formatDate(review.createdAt)}
                           </div>
                         </div>
-                        <div className="stars">{renderStars(review.stars)}</div>
+                        <Estrelas count={review.stars} />
                       </ReviewHeader>
 
                       <TagBadge>{TAG_LABELS[review.tag] || review.tag}</TagBadge>
@@ -149,13 +164,15 @@ export default function Avaliacoes() {
               ) : (
                 <ReviewList>
                   {reviewsGiven.map((review: Review) => (
-                    <ReviewCard key={review.id}>
+                    <ReviewCard key={review.id} $clicavel={Boolean(review.reviewed?.id)} onClick={review.reviewed?.id ? () => navigate(`/jogador/${review.reviewed!.id}`) : undefined}>
                       <ReviewHeader>
                         <div className="avatar">
                           {review.reviewed?.name?.charAt(0)?.toUpperCase()}
                         </div>
                         <div className="meta">
-                          <div className="reviewer-name">{review.reviewed?.name}</div>
+                          <div className="reviewer-name">
+                            {review.reviewed?.id ? <AlvoDoCartao>{review.reviewed.name}</AlvoDoCartao> : review.reviewed?.name}
+                          </div>
                           <div className="game-info">
                             {review.match?.court?.place?.name && (
                               <>{review.match.court.place.name} &mdash; </>
@@ -163,7 +180,7 @@ export default function Avaliacoes() {
                             {formatDate(review.createdAt)}
                           </div>
                         </div>
-                        <div className="stars">{renderStars(review.stars)}</div>
+                        <Estrelas count={review.stars} />
                       </ReviewHeader>
 
                       <TagBadge>{TAG_LABELS[review.tag] || review.tag}</TagBadge>

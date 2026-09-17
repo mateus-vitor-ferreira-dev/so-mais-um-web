@@ -264,6 +264,7 @@ export default function QueroJogar() {
                 <ChevronDown size={16} aria-hidden />
               </span>
               <select
+                aria-label="Modalidade"
                 value={selectedSport}
                 onChange={e => setSelectedSport(e.target.value)}
               >

@@ -236,7 +236,7 @@ export const Lista = styled.ul`
  * sumir com ele levaria o registro do dinheiro junto. O cancelado fica
  * esmaecido quando o filtro o traz de volta.
  */
-export const Cartao = styled.div<{ $cancelado?: boolean }>`
+export const Cartao = styled.li<{ $cancelado?: boolean }>`
   display: flex;
   gap: 12px;
   align-items: flex-start;
@@ -397,10 +397,11 @@ export const Faixa = styled.span<{ $aluno: boolean }>`
  *
  * Os números vêm da api: somar `Decimal` no cliente é onde o centavo se perde.
  */
-export const Resumo = styled.div`
+export const Resumo = styled.dl`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  margin-top: 0;
   padding: 14px 16px;
   margin-bottom: 16px;
   border: 1px solid ${({ theme }) => theme.colors.border};
