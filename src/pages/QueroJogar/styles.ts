@@ -47,6 +47,16 @@ export const SearchInput = styled.div`
   /* Sem isto a largura natural do input empurrava o botão de filtros para
      fora da tela no celular (#492). */
   min-width: 0;
+  /* No computador a busca não se estica pela tela inteira: a 1920px o campo
+     chegava a 1.269px, longe do botão de filtros (#511, computador). */
+  max-width: 560px;
+
+  /* O foco é da caixa, e não do input sem borda: antes, andando de Tab, nada
+     mudava na tela quando a busca recebia o foco. */
+  &:focus-within {
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.primary};
+  }
 
   svg {
     color: ${({ theme }) => theme.colors.textMuted};
