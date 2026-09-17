@@ -248,6 +248,9 @@ export const LeftQuote = styled.p`
 
 export const RightPanel = styled.div`
   flex: 1;
+  /* Sem isto, o item flex não encolhe abaixo da largura mínima do conteúdo, e
+     a 360px o cartão passava 20px da borda (#511). */
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -269,6 +272,7 @@ export const Card = styled.div`
   padding: 32px 28px 24px;
   width: 100%;
   max-width: 400px;
+  min-width: 0;
 
   ${ate.celular} {
     padding: ${({ theme }) => theme.spacing[5]} ${({ theme }) => theme.spacing[4]};
