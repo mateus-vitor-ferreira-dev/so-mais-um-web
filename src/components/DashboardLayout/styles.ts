@@ -75,10 +75,10 @@ export const LogoName = styled.span`
   line-height: 1.2;
 `
 
-export const LogoTagline = styled.span<{ accent?: string; }>`
+export const LogoTagline = styled.span<{ accent: 'primary' | 'warning' }>`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  color: ${({ accent }) => accent};
+  color: ${({ accent, theme }) => theme.colors[accent]};
 `
 
 export const Divider = styled.div`
@@ -227,8 +227,8 @@ export const LogoutBtn = styled.button`
   margin-bottom: 4px;
 
   &:hover {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
+    background: ${({ theme }) => theme.colors.errorLight};
+    color: ${({ theme }) => theme.colors.error};
   }
 
   svg { flex-shrink: 0; }
@@ -281,10 +281,10 @@ export const UserName = styled.span`
   text-overflow: ellipsis;
 `
 
-export const UserRole = styled.span<{ accent?: string; }>`
+export const UserRole = styled.span<{ accent?: 'primary' | 'warning' }>`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  color: ${({ accent, theme }) => accent ?? theme.colors.textMuted};
+  color: ${({ accent, theme }) => (accent ? theme.colors[accent] : theme.colors.textMuted)};
 `
 
 // ── Main area ─────────────────────────────────────────────────────────────────

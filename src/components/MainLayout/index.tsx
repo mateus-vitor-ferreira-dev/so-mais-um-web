@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { useTheme } from 'styled-components'
 import type { LucideIcon } from 'lucide-react'
 import type { UserMe, UserRole } from '../../types/api'
 import { Home, Search, ClipboardList, History, User, Plus, Trophy, Star, LayoutDashboard, Store, Users, UserPlus, GraduationCap, Ticket } from 'lucide-react'
@@ -85,7 +84,6 @@ function getPanelLinks(user: UserMe | null | undefined): PanelLink[] {
  */
 export default function MainLayout() {
   const { user } = useAuth()
-  const { colors } = useTheme()
 
   const navItems = useMemo<NavItemDef[]>(() => {
     const paineis = getPanelLinks(user)
@@ -99,7 +97,7 @@ export default function MainLayout() {
     <DashboardLayout
       navItems={navItems}
       tagline="Área do Jogador"
-      accent={colors.primary}
+      accent="primary"
       sobreOUsuario={user ? `⭐ ${user.stats?.averageStars != null ? formatarNota(user.stats.averageStars) : '—'} · ${user.badge ?? 'Jogador'}` : undefined}
     />
   )
