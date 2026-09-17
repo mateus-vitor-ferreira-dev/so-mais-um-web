@@ -63,7 +63,7 @@ export const LogoName    = styled.span`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: #fff; line-height: 1.1;
 `
-export const LogoTagline = styled.span`font-size: 11px; color: rgba(255,255,255,0.7);`
+export const LogoTagline = styled.span`font-size: ${({ theme }) => theme.fontSizes.xs}; color: rgba(255,255,255,0.7);`
 
 /* ── Center content ──────────────────────────────────────────────────────── */
 
