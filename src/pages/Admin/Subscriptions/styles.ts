@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
 import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
-import { ate } from '../../../styles/telas'
+import { alvoDeToque, ate } from '../../../styles/telas'
 
 /** Os tons de selo. `manual`, `stripe` e `cortesia` marcam origem; o resto, situação. */
 export type TomDeSelo = 'ok' | 'alerta' | 'erro' | 'neutro' | 'manual' | 'stripe' | 'cortesia'
@@ -32,6 +32,7 @@ export const BotaoConceder = styled.button`
   background: transparent; color: ${({ theme }) => theme.colors.accent};
   font-weight: ${({ theme }) => theme.fontWeights.bold}; font-size: ${({ theme }) => theme.fontSizes.sm};
   &:hover { background: ${({ theme }) => theme.colors.accentLight}; }
+  ${alvoDeToque}
 `
 export const BotaoRegistrar = styled.button`
   display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
@@ -39,6 +40,7 @@ export const BotaoRegistrar = styled.button`
   background: ${({ theme }) => theme.colors.primary}; color: ${({ theme }) => theme.colors.textOnPrimary};
   font-weight: ${({ theme }) => theme.fontWeights.bold}; font-size: ${({ theme }) => theme.fontSizes.sm};
   &:hover { background: ${({ theme }) => theme.colors.primaryHover}; }
+  ${alvoDeToque}
 `
 export const Aviso = styled.p`
   margin: 0 0 16px; font-size: ${({ theme }) => theme.fontSizes.sm}; line-height: 1.5;
@@ -63,6 +65,7 @@ export const Filtro = styled.button<{ $ativo: boolean }>`
   border: 1px solid ${({ $ativo, theme }) => ($ativo ? theme.colors.primary : theme.colors.border)};
   background: ${({ $ativo, theme }) => ($ativo ? theme.colors.primaryLight : theme.colors.bgCard)};
   color: ${({ $ativo, theme }) => ($ativo ? theme.colors.primary : theme.colors.textSecondary)};
+  ${alvoDeToque}
 `
 export const Contagem = styled.span<{ $alerta?: boolean }>`
   min-width: 20px; padding: 0 6px; border-radius: ${({ theme }) => theme.radii.full};
@@ -125,6 +128,7 @@ export const Botao = styled.button<{ $perigo?: boolean }>`
   border: 1px solid ${({ $perigo, theme }) => ($perigo ? theme.colors.error : theme.colors.primary)};
   color: ${({ $perigo, theme }) => ($perigo ? theme.colors.error : theme.colors.primary)};
   &:disabled { opacity: .55; cursor: wait; }
+  ${alvoDeToque}
 `
 export const Estado = styled.p`color: ${({ theme }) => theme.colors.textSecondary}; margin: 20px 0 0;`
 
@@ -201,6 +205,7 @@ export const Trocar = styled.button`
   flex-shrink: 0; border: 0; background: transparent; cursor: pointer; padding: 4px 6px;
   color: ${({ theme }) => theme.colors.primary}; font-weight: ${({ theme }) => theme.fontWeights.bold};
   font-size: ${({ theme }) => theme.fontSizes.sm};
+  ${alvoDeToque}
 `
 /**
  * Ajuda de campo. Fora do `<label>` de propósito: dentro dele o parágrafo
