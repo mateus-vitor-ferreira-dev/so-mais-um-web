@@ -1,0 +1,13 @@
+{
+  "rota": "/owner/dashboard",
+  "larguras": {
+    "360": {
+      "vazando": [],
+      "alvos": []
+    },
+    "390": {
+      "vazando": [],
+      "alvos": []
+    }
+  }
+}

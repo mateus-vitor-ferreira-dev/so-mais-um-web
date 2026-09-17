@@ -1,0 +1,1354 @@
+{
+  "gravadoEm": "2026-09-17T14:22:50.915Z",
+  "respostas": {
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp2ct0005pk1xcveshkgw",
+          "name": "Na Praia FTV",
+          "email": "contato@napraialavras.com.br",
+          "avatarUrl": null,
+          "role": "OWNER",
+          "badge": null,
+          "badges": [],
+          "createdAt": "2026-09-15T14:00:52.013Z",
+          "phone": null,
+          "pixKey": "contato@napraialavras.com.br",
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 0,
+            "participations": 0,
+            "reviewsReceived": 0
+          },
+          "stats": {
+            "averageStars": null,
+            "totalReviews": 0,
+            "totalPartidas": 0,
+            "tags": []
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [],
+          "unreadCount": 0
+        }
+      }
+    },
+    "GET /owner/subscription/status": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "status": "active",
+          "currentPeriodEnd": "2026-10-05T15:00:00.000Z",
+          "stripeSubscriptionId": "sub_seed_napraia",
+          "plan": {
+            "id": "so-mais-um-premium",
+            "nome": "Só+1 Premium",
+            "precoCentavos": 38990,
+            "precoNoCartaoCentavos": 41000,
+            "funcionalidades": [
+              "DAY_USE",
+              "ESTATISTICAS",
+              "ESCOLINHA",
+              "EQUIPAMENTOS",
+              "ESTOQUE"
+            ]
+          },
+          "trocaAgendada": null,
+          "usage": {
+            "quadras": 5,
+            "estabelecimentos": 2
+          },
+          "stripeDisponivel": true,
+          "ehCortesia": false
+        }
+      }
+    },
+    "GET /place-requests/my?status=PENDING": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": []
+      }
+    },
+    "GET /places": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3bl0058pk1xlpdty5xh",
+            "name": "AABB Lavras",
+            "street": "Rodovia BR-265 — Sítio dos Barbosas",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Água Limpa",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2362619,
+            "longitude": -45.0415151,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000hpk1x7cory6be",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000hpk1x7cory6be",
+              "name": "AABB Lavras"
+            },
+            "_count": {
+              "courts": 5
+            }
+          },
+          {
+            "id": "cmu2r8fcu000dl81x0kqsyr0z",
+            "name": "Anexo Olímpica — Quadras do Bosque",
+            "street": "Rua Antônio Marcelino",
+            "number": "88",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2468546,
+            "longitude": -45.0086739,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000cpk1xqcojsk70",
+            "createdAt": "2026-09-15T14:15:55.326Z",
+            "updatedAt": "2026-09-15T14:15:55.326Z",
+            "owner": {
+              "id": "cmu2qp2ct000cpk1xqcojsk70",
+              "name": "Associação Olímpica"
+            },
+            "_count": {
+              "courts": 0
+            }
+          },
+          {
+            "id": "cmu2qp3bk004wpk1x2phsdjwo",
+            "name": "Arena Beach Lavras",
+            "street": "Rua Lucas Costa",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Portal da Mata",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37203-185",
+            "country": "BR",
+            "latitude": -21.2132705,
+            "longitude": -44.9705035,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct0006pk1xsbm6umke",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct0006pk1xsbm6umke",
+              "name": "Arena Beach Lavras"
+            },
+            "_count": {
+              "courts": 3
+            }
+          },
+          {
+            "id": "cmu2qp3bl0051pk1x8sm53vlx",
+            "name": "Arena Club",
+            "street": "Rua Professor John Henry Weelock",
+            "number": "134",
+            "complement": null,
+            "neighborhood": "Dos Ipês",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37203-808",
+            "country": "BR",
+            "latitude": -21.2398506,
+            "longitude": -44.9983535,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000bpk1xtcpy5utr",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000bpk1xtcpy5utr",
+              "name": "Arena Club Lavras"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bl004xpk1xn11abvx1",
+            "name": "Arena JC Beach Club",
+            "street": "Rua Sebastião Barnabé Passos Júnior",
+            "number": "31",
+            "complement": null,
+            "neighborhood": "Alphaville",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2508578,
+            "longitude": -44.9916015,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct0007pk1x1zsq9wjf",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct0007pk1x1zsq9wjf",
+              "name": "Arena JC Beach Club"
+            },
+            "_count": {
+              "courts": 3
+            }
+          },
+          {
+            "id": "cmu2qp3bl005hpk1x0vlom2sd",
+            "name": "Arena Match Point",
+            "street": "Rua dos Vereadores",
+            "number": "6642",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Perdões",
+            "state": "MG",
+            "zipCode": "37260-000",
+            "country": "BR",
+            "latitude": -21.1001129,
+            "longitude": -45.0984615,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000opk1xa8zs2o5m",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000opk1xa8zs2o5m",
+              "name": "Arena Match Point"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bq005lpk1xi87vdwxr",
+            "name": "Arena Rio Verde",
+            "street": "Rua das Acácias",
+            "number": "120",
+            "complement": null,
+            "neighborhood": "Vila Pinto",
+            "city": "Varginha",
+            "state": "MG",
+            "zipCode": "37026-000",
+            "country": "BR",
+            "latitude": -21.5514,
+            "longitude": -45.43,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ln000spk1xy7d112gh",
+            "createdAt": "2026-09-15T14:00:53.270Z",
+            "updatedAt": "2026-09-15T14:00:53.270Z",
+            "owner": {
+              "id": "cmu2qp2ln000spk1xy7d112gh",
+              "name": "Arena Rio Verde"
+            },
+            "_count": {
+              "courts": 3
+            }
+          },
+          {
+            "id": "cmu2qp3bl005fpk1xp8tj1k76",
+            "name": "Arena TK9",
+            "street": "Rua Projetada",
+            "number": "475",
+            "complement": null,
+            "neighborhood": "Córrego Pintado",
+            "city": "Ijaci",
+            "state": "MG",
+            "zipCode": "37218-000",
+            "country": "BR",
+            "latitude": -21.1737167,
+            "longitude": -44.9223735,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000mpk1xzkt8jj43",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000mpk1xzkt8jj43",
+              "name": "Arena TK9 Ijaci"
+            },
+            "_count": {
+              "courts": 1
+            }
+          },
+          {
+            "id": "cmu2qp3bq005opk1x3450yjep",
+            "name": "Arena Três Corações",
+            "street": "Rua do Rosário",
+            "number": "45",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Três Corações",
+            "state": "MG",
+            "zipCode": "37410-000",
+            "country": "BR",
+            "latitude": -21.6969,
+            "longitude": -45.2528,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ln000vpk1xgbvgy87z",
+            "createdAt": "2026-09-15T14:00:53.270Z",
+            "updatedAt": "2026-09-15T14:00:53.270Z",
+            "owner": {
+              "id": "cmu2qp2ln000vpk1xgbvgy87z",
+              "name": "Arena Três Corações"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bl005gpk1xfgyzimcq",
+            "name": "Arena ZFC",
+            "street": "Rua Floriano Peixoto",
+            "number": "304",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Perdões",
+            "state": "MG",
+            "zipCode": "37260-000",
+            "country": "BR",
+            "latitude": -21.0893701,
+            "longitude": -45.0881485,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000npk1x3bd93rzu",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000npk1x3bd93rzu",
+              "name": "Arena ZFC Perdões"
+            },
+            "_count": {
+              "courts": 1
+            }
+          },
+          {
+            "id": "cmu2qp3bl0052pk1xashopn01",
+            "name": "Associação Olímpica de Lavras",
+            "street": "Rua Desembargador Alberto Luz",
+            "number": "340",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2383167,
+            "longitude": -44.9999977,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000cpk1xqcojsk70",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000cpk1xqcojsk70",
+              "name": "Associação Olímpica"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bq005ppk1xt1073ufi",
+            "name": "Beira-Rio Esportes",
+            "street": "Avenida Beira Rio",
+            "number": "310",
+            "complement": null,
+            "neighborhood": "Jardim Ribeiro",
+            "city": "Três Corações",
+            "state": "MG",
+            "zipCode": "37410-000",
+            "country": "BR",
+            "latitude": -21.7002,
+            "longitude": -45.2481,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ln000wpk1x2ulrjpvj",
+            "createdAt": "2026-09-15T14:00:53.270Z",
+            "updatedAt": "2026-09-15T14:00:53.270Z",
+            "owner": {
+              "id": "cmu2qp2ln000wpk1x2ulrjpvj",
+              "name": "Beira-Rio Esportes"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bl005apk1xjn77xma6",
+            "name": "Campestre Clube Celso Baptista Dias",
+            "street": "Rua Raimunda Marques Guimarães",
+            "number": "152",
+            "complement": null,
+            "neighborhood": "Jardim Glória",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37209-228",
+            "country": "BR",
+            "latitude": -21.2292444,
+            "longitude": -45.0058131,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000jpk1x3xbb5ftb",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000jpk1x3xbb5ftb",
+              "name": "Campestre Clube"
+            },
+            "_count": {
+              "courts": 4
+            }
+          },
+          {
+            "id": "cmu2qp3bl005epk1xoy2zydih",
+            "name": "Campo de Futebol Flamboia",
+            "street": "Das Mansões — Condomínio Flamboia",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Das Mansões",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2404098,
+            "longitude": -45.0114479,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000lpk1xxfur6tt7",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000lpk1xxfur6tt7",
+              "name": "Condomínio Flamboia"
+            },
+            "_count": {
+              "courts": 1
+            }
+          },
+          {
+            "id": "cmu2qp3bl005jpk1x6675i0tn",
+            "name": "Campo do Ferroviário",
+            "street": "Centro",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Ribeirão Vermelho",
+            "state": "MG",
+            "zipCode": "37264-000",
+            "country": "BR",
+            "latitude": -21.1850551,
+            "longitude": -45.0588467,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000qpk1xdkqa7y2i",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000qpk1xdkqa7y2i",
+              "name": "Prefeitura Ribeirão Vermelho"
+            },
+            "_count": {
+              "courts": 1
+            }
+          },
+          {
+            "id": "cmu2qp3bq005npk1xs0bywspo",
+            "name": "Centro Esportivo Sul-Mineiro",
+            "street": "Rua Doze de Outubro",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Varginha",
+            "state": "MG",
+            "zipCode": "37002-000",
+            "country": "BR",
+            "latitude": -21.5498,
+            "longitude": -45.4342,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ln000upk1x7aytcvi0",
+            "createdAt": "2026-09-15T14:00:53.270Z",
+            "updatedAt": "2026-09-15T14:00:53.270Z",
+            "owner": {
+              "id": "cmu2qp2ln000upk1x7aytcvi0",
+              "name": "Centro Sul-Mineiro"
+            },
+            "_count": {
+              "courts": 3
+            }
+          },
+          {
+            "id": "cmu2qp3bl0059pk1xobwbbhzw",
+            "name": "Clube ABR Marelli",
+            "street": "Rua Rosa Kasinski",
+            "number": "865",
+            "complement": null,
+            "neighborhood": "Colinas da Serra",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37205-842",
+            "country": "BR",
+            "latitude": -21.2735386,
+            "longitude": -44.9823939,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000ipk1xeswqplcb",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000ipk1xeswqplcb",
+              "name": "Clube ABR Marelli"
+            },
+            "_count": {
+              "courts": 4
+            }
+          },
+          {
+            "id": "cmu2qp3bq005mpk1xljlw0k42",
+            "name": "Clube Cafeeira",
+            "street": "Avenida dos Cafeeiros",
+            "number": "980",
+            "complement": null,
+            "neighborhood": "Jardim Andere",
+            "city": "Varginha",
+            "state": "MG",
+            "zipCode": "37026-000",
+            "country": "BR",
+            "latitude": -21.556,
+            "longitude": -45.4265,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ln000tpk1xwvppd0sw",
+            "createdAt": "2026-09-15T14:00:53.270Z",
+            "updatedAt": "2026-09-15T14:00:53.270Z",
+            "owner": {
+              "id": "cmu2qp2ln000tpk1xwvppd0sw",
+              "name": "Clube Cafeeira"
+            },
+            "_count": {
+              "courts": 3
+            }
+          },
+          {
+            "id": "cmu2qp3bl0054pk1xfuuig54d",
+            "name": "Complexo Esportivo SELT",
+            "street": "Rua João Pomárico",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2449264,
+            "longitude": -44.9961585,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000epk1xvijur99m",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000epk1xvijur99m",
+              "name": "SELT Lavras"
+            },
+            "_count": {
+              "courts": 7
+            }
+          },
+          {
+            "id": "cmu2qp3bl004zpk1xddd09sr2",
+            "name": "Complexo PRB Beach Sports",
+            "street": "Rua Átila Goulart",
+            "number": "48",
+            "complement": null,
+            "neighborhood": "Santa Efigênia",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2621105,
+            "longitude": -44.9896562,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct0009pk1xwc5d82yy",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct0009pk1xwc5d82yy",
+              "name": "Complexo PRB Beach Sports"
+            },
+            "_count": {
+              "courts": 3
+            }
+          },
+          {
+            "id": "cmu2qp3bq005qpk1xvu11r7ne",
+            "name": "Espaço Tiradentes",
+            "street": "Rua Padre José Maria Xavier",
+            "number": "77",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "São João del-Rei",
+            "state": "MG",
+            "zipCode": "36307-000",
+            "country": "BR",
+            "latitude": -21.1356,
+            "longitude": -44.2619,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ln000xpk1xbx9korxy",
+            "createdAt": "2026-09-15T14:00:53.270Z",
+            "updatedAt": "2026-09-15T14:00:53.270Z",
+            "owner": {
+              "id": "cmu2qp2ln000xpk1xbx9korxy",
+              "name": "Espaço Tiradentes"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bl005bpk1xr3k55ilj",
+            "name": "Fabril Esporte Clube",
+            "street": "Avenida Anísio Haddad",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Jardim Vila Rica",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37203-771",
+            "country": "BR",
+            "latitude": -21.2514067,
+            "longitude": -44.9815856,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000kpk1xmraqlahh",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000kpk1xmraqlahh",
+              "name": "Fabril Esporte Clube"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bl0056pk1xwh8lfs0m",
+            "name": "Ginásio Poliesportivo UFLA",
+            "street": "Campus UFLA — Jardim das Alterosas",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Jardim das Alterosas",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2320537,
+            "longitude": -44.9903501,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000fpk1xuhd0zx5c",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+              "name": "Ginásio UFLA"
+            },
+            "_count": {
+              "courts": 6
+            }
+          },
+          {
+            "id": "cmu2qp3bl0055pk1xb3svnvgz",
+            "name": "Ginásio Poliesportivo Vila Brasília",
+            "street": "Vila Brasília",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Vila Brasília",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2431549,
+            "longitude": -44.9943634,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000epk1xvijur99m",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000epk1xvijur99m",
+              "name": "SELT Lavras"
+            },
+            "_count": {
+              "courts": 4
+            }
+          },
+          {
+            "id": "cmu2qp3bl0057pk1x7pbahn4c",
+            "name": "Lavras Tênis Clube — LTC",
+            "street": "Rua Procópio Alvarenga",
+            "number": "8",
+            "complement": null,
+            "neighborhood": "Vila Brasília",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.24246,
+            "longitude": -44.995708,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000gpk1xt9bn0193",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000gpk1xt9bn0193",
+              "name": "Lavras Tênis Clube"
+            },
+            "_count": {
+              "courts": 6
+            }
+          },
+          {
+            "id": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Na Praia FTV Lavras",
+            "street": "Rua Bernardino Macieira",
+            "number": "581",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2391667,
+            "longitude": -44.9994407,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct0005pk1xcveshkgw",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct0005pk1xcveshkgw",
+              "name": "Na Praia FTV"
+            },
+            "_count": {
+              "courts": 5
+            }
+          },
+          {
+            "id": "cmu2r8eet0009l81xxonw1dvw",
+            "name": "Na Praia FTV — Unidade Jardim Floresta",
+            "street": "Rua José Bento de Oliveira",
+            "number": "410",
+            "complement": null,
+            "neighborhood": "Jardim Floresta",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2677586,
+            "longitude": -44.9992255,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct0005pk1xcveshkgw",
+            "createdAt": "2026-09-15T14:15:54.101Z",
+            "updatedAt": "2026-09-15T14:15:54.101Z",
+            "owner": {
+              "id": "cmu2qp2ct0005pk1xcveshkgw",
+              "name": "Na Praia FTV"
+            },
+            "_count": {
+              "courts": 0
+            }
+          },
+          {
+            "id": "cmu2qp3bl004ypk1xro32cis6",
+            "name": "Olaria Beach Sports",
+            "street": "Rua Expedicionário Sebastião Urbano",
+            "number": "245",
+            "complement": null,
+            "neighborhood": "Dos Ipês",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-430",
+            "country": "BR",
+            "latitude": -21.2349877,
+            "longitude": -44.9953188,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct0008pk1x2ymo7b8y",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+              "name": "Olaria Beach Sports"
+            },
+            "_count": {
+              "courts": 5
+            }
+          },
+          {
+            "id": "cmu2qp3bl0053pk1x0nwnliy4",
+            "name": "Operário Esporte Clube",
+            "street": "Rua Gautiero Franco",
+            "number": "437",
+            "complement": null,
+            "neighborhood": "Das Mansões",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2350255,
+            "longitude": -45.0114436,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000dpk1xvzq2hij4",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000dpk1xvzq2hij4",
+              "name": "Operário Esporte Clube"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bq005spk1xaqjf5rqd",
+            "name": "Poliesportivo de Itumirim",
+            "street": "Praça Coronel Bento",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Itumirim",
+            "state": "MG",
+            "zipCode": "37210-000",
+            "country": "BR",
+            "latitude": -21.3167,
+            "longitude": -44.8667,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ln000zpk1xk8soayuk",
+            "createdAt": "2026-09-15T14:00:53.270Z",
+            "updatedAt": "2026-09-15T14:00:53.270Z",
+            "owner": {
+              "id": "cmu2qp2ln000zpk1xk8soayuk",
+              "name": "Poliesportivo Itumirim"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2qp3bl005ipk1xt5z6alma",
+            "name": "Praça de Esportes de Perdões",
+            "street": "Praça Pio XII",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Perdões",
+            "state": "MG",
+            "zipCode": "37260-000",
+            "country": "BR",
+            "latitude": -21.0998646,
+            "longitude": -45.0904984,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000ppk1xumttumgn",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000ppk1xumttumgn",
+              "name": "Prefeitura de Perdões"
+            },
+            "_count": {
+              "courts": 3
+            }
+          },
+          {
+            "id": "cmu2qp3bl005dpk1x65cd1ooc",
+            "name": "Quadra Esportiva São Vicente",
+            "street": "Belizandra",
+            "number": "s/n",
+            "complement": null,
+            "neighborhood": "São Vicente",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.2389522,
+            "longitude": -45.0164711,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000epk1xvijur99m",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000epk1xvijur99m",
+              "name": "SELT Lavras"
+            },
+            "_count": {
+              "courts": 1
+            }
+          },
+          {
+            "id": "cmu2qp3bl005cpk1xr6iese6l",
+            "name": "Quadra Poliesportiva Rafael Salustiano Silva",
+            "street": "Rua José Luiz Santana",
+            "number": "450",
+            "complement": null,
+            "neighborhood": "Nova Lavras",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": -21.239304,
+            "longitude": -44.990832,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000epk1xvijur99m",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000epk1xvijur99m",
+              "name": "SELT Lavras"
+            },
+            "_count": {
+              "courts": 1
+            }
+          },
+          {
+            "id": "cmu2qp3bq005rpk1xcqmjqvcb",
+            "name": "Serra de São João Arena",
+            "street": "Rua da Serra",
+            "number": "202",
+            "complement": null,
+            "neighborhood": "Colônia do Marçal",
+            "city": "São João del-Rei",
+            "state": "MG",
+            "zipCode": "36301-000",
+            "country": "BR",
+            "latitude": -21.1418,
+            "longitude": -44.257,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ln000ypk1x391995k1",
+            "createdAt": "2026-09-15T14:00:53.270Z",
+            "updatedAt": "2026-09-15T14:00:53.270Z",
+            "owner": {
+              "id": "cmu2qp2ln000ypk1x391995k1",
+              "name": "Serra de São João"
+            },
+            "_count": {
+              "courts": 3
+            }
+          },
+          {
+            "id": "cmu2qp3bl005kpk1x6krwatt5",
+            "name": "Summer Beach Tennis Nepomuceno",
+            "street": "Rua Latife Sarquis",
+            "number": "165",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Nepomuceno",
+            "state": "MG",
+            "zipCode": "37250-000",
+            "country": "BR",
+            "latitude": -21.2529275,
+            "longitude": -45.2275363,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000rpk1xn10rfubu",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000rpk1xn10rfubu",
+              "name": "Summer Beach Tennis"
+            },
+            "_count": {
+              "courts": 2
+            }
+          },
+          {
+            "id": "cmu2r8ep5000bl81x13g7giji",
+            "name": "Summer Beach — Filial Três Pontas",
+            "street": "Avenida Getúlio Vargas",
+            "number": "1245",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Três Pontas",
+            "state": "MG",
+            "zipCode": "37190-000",
+            "country": "BR",
+            "latitude": -21.3674574,
+            "longitude": -45.5142157,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000rpk1xn10rfubu",
+            "createdAt": "2026-09-15T14:15:54.473Z",
+            "updatedAt": "2026-09-15T14:15:54.473Z",
+            "owner": {
+              "id": "cmu2qp2ct000rpk1xn10rfubu",
+              "name": "Summer Beach Tennis"
+            },
+            "_count": {
+              "courts": 0
+            }
+          },
+          {
+            "id": "cmu2qp3bl0050pk1xxqkmidse",
+            "name": "Sunset Arena Lavras",
+            "street": "Rua Bernardino Macieira",
+            "number": "556",
+            "complement": null,
+            "neighborhood": "Centro",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-198",
+            "country": "BR",
+            "latitude": -21.2390844,
+            "longitude": -44.9996904,
+            "status": "OPEN",
+            "ownerId": "cmu2qp2ct000apk1xuseeytv2",
+            "createdAt": "2026-09-15T14:00:53.265Z",
+            "updatedAt": "2026-09-15T14:00:53.265Z",
+            "owner": {
+              "id": "cmu2qp2ct000apk1xuseeytv2",
+              "name": "Sunset Arena Lavras"
+            },
+            "_count": {
+              "courts": 3
+            }
+          }
+        ]
+      }
+    },
+    "GET /places/cmu2qp3bk004vpk1xajo58ucp/courts": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3bu005xpk1xvk4b5rtz",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Beach Tennis",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": true,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.337Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 95
+          },
+          {
+            "id": "cmu2qp3bu005tpk1xbelnc3q6",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 1",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3bu005upk1xe8897i77",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 2",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3bu005vpk1x4hf6r46j",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 3",
+            "type": "AREIA",
+            "pricePerHour": null,
+            "coberta": null,
+            "precoVariaPorHorario": true,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.337Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3bu005wpk1xoibcsc0d",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Vôlei de Areia",
+            "type": "VOLEI_AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          }
+        ]
+      }
+    },
+    "GET /places/cmu2qp3bk004vpk1xajo58ucp/members": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3kq00k2pk1xf2vgtdu7",
+            "papel": "PROFESSOR",
+            "createdAt": "2026-09-15T14:00:53.594Z",
+            "user": {
+              "id": "cmu2qp2zj001jpk1xh0mradij",
+              "name": "Bianca Moreira",
+              "avatarUrl": null
+            }
+          }
+        ]
+      }
+    },
+    "GET /places/cmu2qp3bk004vpk1xajo58ucp/turmas": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3l400ldpk1xhlhzjvzw",
+            "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+            "modalidade": "BEACH_TENNIS",
+            "diaDaSemana": 2,
+            "horario": "19:00",
+            "duracaoMinutos": 60,
+            "vagas": 8,
+            "valorMensalidade": "180",
+            "professorId": "cmu2qp3kq00k2pk1xf2vgtdu7",
+            "ativa": true,
+            "court": {
+              "id": "cmu2qp3bu005xpk1xvk4b5rtz",
+              "name": "Beach Tennis"
+            },
+            "professor": {
+              "id": "cmu2qp3kq00k2pk1xf2vgtdu7",
+              "user": {
+                "id": "cmu2qp2zj001jpk1xh0mradij",
+                "name": "Bianca Moreira"
+              }
+            },
+            "matriculasAtivas": 7
+          }
+        ]
+      }
+    },
+    "GET /sports": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "SOCIETY",
+            "label": "Society",
+            "icon": "society",
+            "iconFallback": "⚽",
+            "description": "Campo society — grama sintética",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "CAMPO",
+            "label": "Futebol de Campo",
+            "icon": "futebol-campo",
+            "iconFallback": "🏟️",
+            "description": "Campo convencional",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "FUTSAL",
+            "label": "Futsal",
+            "icon": "futsal",
+            "iconFallback": "👟",
+            "description": "Quadra de futsal coberta",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "AREIA",
+            "label": "Futevôlei",
+            "icon": "futevolei",
+            "iconFallback": null,
+            "description": "Quadra de areia",
+            "group": "FUTEVOLEI",
+            "groupLabel": "Futevôlei",
+            "groupIcon": "futevolei",
+            "groupIconFallback": null,
+            "groupOrder": 2
+          },
+          {
+            "id": "VOLEI",
+            "label": "Vôlei",
+            "icon": "volei",
+            "iconFallback": "🏐",
+            "description": "Quadra de vôlei indoor",
+            "group": "VOLEI",
+            "groupLabel": "Vôlei",
+            "groupIcon": "volei",
+            "groupIconFallback": "🏐",
+            "groupOrder": 3
+          },
+          {
+            "id": "VOLEI_AREIA",
+            "label": "Vôlei de Areia",
+            "icon": "volei-areia",
+            "iconFallback": null,
+            "description": "Quadra de vôlei de areia",
+            "group": "VOLEI",
+            "groupLabel": "Vôlei",
+            "groupIcon": "volei",
+            "groupIconFallback": "🏐",
+            "groupOrder": 3
+          },
+          {
+            "id": "HANDBALL",
+            "label": "Handebol",
+            "icon": "handebol",
+            "iconFallback": "🤾",
+            "description": "Quadra de handebol",
+            "group": "HANDBALL",
+            "groupLabel": "Handebol",
+            "groupIcon": "handebol",
+            "groupIconFallback": "🤾",
+            "groupOrder": 4
+          },
+          {
+            "id": "PETECA",
+            "label": "Peteca",
+            "icon": "peteca",
+            "iconFallback": null,
+            "description": "Quadra de peteca",
+            "group": "PETECA",
+            "groupLabel": "Peteca",
+            "groupIcon": "peteca",
+            "groupIconFallback": null,
+            "groupOrder": 5
+          },
+          {
+            "id": "BEACH_TENNIS",
+            "label": "Beach Tennis",
+            "icon": "beach-tennis",
+            "iconFallback": "🎾",
+            "description": "Quadra de beach tennis",
+            "group": "BEACH_TENNIS",
+            "groupLabel": "Beach Tennis",
+            "groupIcon": "beach-tennis",
+            "groupIconFallback": "🎾",
+            "groupOrder": 6
+          },
+          {
+            "id": "BASQUETE",
+            "label": "Basquete",
+            "icon": "basquete",
+            "iconFallback": "🏀",
+            "description": "Quadra de basquete",
+            "group": "BASQUETE",
+            "groupLabel": "Basquete",
+            "groupIcon": "basquete",
+            "groupIconFallback": "🏀",
+            "groupOrder": 7
+          },
+          {
+            "id": "TENIS",
+            "label": "Tênis",
+            "icon": "tenis",
+            "iconFallback": "🥎",
+            "description": "Quadra de tênis",
+            "group": "TENIS",
+            "groupLabel": "Tênis",
+            "groupIcon": "tenis",
+            "groupIconFallback": "🥎",
+            "groupOrder": 8
+          },
+          {
+            "id": "POKER",
+            "label": "Poker",
+            "icon": "poker",
+            "iconFallback": "🃏",
+            "description": "Mesa de poker",
+            "group": "POKER",
+            "groupLabel": "Poker",
+            "groupIcon": "poker",
+            "groupIconFallback": "🃏",
+            "groupOrder": 9
+          }
+        ]
+      }
+    }
+  }
+}

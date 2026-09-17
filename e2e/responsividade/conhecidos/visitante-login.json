@@ -1,0 +1,19 @@
+{
+  "rota": "/login",
+  "larguras": {
+    "360": {
+      "vazando": [],
+      "alvos": [
+        "a \"Política de Privacidade\"",
+        "a \"Termos de Uso\""
+      ]
+    },
+    "390": {
+      "vazando": [],
+      "alvos": [
+        "a \"Política de Privacidade\"",
+        "a \"Termos de Uso\""
+      ]
+    }
+  }
+}

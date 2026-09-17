@@ -1,0 +1,627 @@
+{
+  "gravadoEm": "2026-09-17T14:22:50.916Z",
+  "respostas": {
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+          "name": "Mateus Vitor",
+          "email": "mateus@player.com",
+          "avatarUrl": null,
+          "role": "PLAYER",
+          "badge": "CRAQUE",
+          "badges": [
+            "CRAQUE",
+            "CONFIAVEL",
+            "ORGANIZADOR_NATO"
+          ],
+          "createdAt": "2026-09-15T14:00:52.715Z",
+          "phone": null,
+          "pixKey": "mateus@player.com",
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 13,
+            "participations": 18,
+            "reviewsReceived": 2
+          },
+          "stats": {
+            "averageStars": 4.5,
+            "totalReviews": 2,
+            "totalPartidas": 18,
+            "tags": [
+              {
+                "tag": "FAIR_PLAY",
+                "count": 1
+              },
+              {
+                "tag": "BOA_COMUNICACAO",
+                "count": 1
+              }
+            ]
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [
+            {
+              "id": "cmu5ljnlh0006qt1xqrxm9ejl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0095pk1x1102s62p",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-17T14:00:00.053Z"
+            },
+            {
+              "id": "cmu2st420000bca1xxu3bp37e",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.072Z"
+            },
+            {
+              "id": "cmu2st41t0007ca1xhosc2g7g",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 9h, na quadra Beach Tennis (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.065Z"
+            },
+            {
+              "id": "cmu2r9arw000gl81xl1i8qbfl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_LEFT",
+              "title": "Jogador saiu da partida",
+              "body": "Mateus Vitor saiu da sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:36.044Z"
+            },
+            {
+              "id": "cmu2r94l4000fl81x4owpvu0i",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Partida cheia!",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:28.024Z"
+            },
+            {
+              "id": "cmu2qp3ja00hvpk1x2zrk8cy5",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_JOINED",
+              "title": "Jogador entrou na partida",
+              "body": "Gabriel Cantanhede entrou na sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hwpk1xe6yojnt0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Sua partida lotou",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hupk1xtpmbosc0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "TEAM_INVITE",
+              "title": "Convite para um time",
+              "body": "Fernanda Alves chamou você para o Areia Nossa",
+              "data": {
+                "teamId": "cmu2qp3hr00enpk1xjnbpx7l7"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hxpk1xf4tld757",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de tempestade para sua partida",
+              "body": "Previsão de tempestade para sua partida amanhã às 19h, na quadra Society (45% de chance).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3iu00hopk1x0yj2r15r",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            }
+          ],
+          "unreadCount": 9
+        }
+      }
+    },
+    "GET /sports": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "SOCIETY",
+            "label": "Society",
+            "icon": "society",
+            "iconFallback": "⚽",
+            "description": "Campo society — grama sintética",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "CAMPO",
+            "label": "Futebol de Campo",
+            "icon": "futebol-campo",
+            "iconFallback": "🏟️",
+            "description": "Campo convencional",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "FUTSAL",
+            "label": "Futsal",
+            "icon": "futsal",
+            "iconFallback": "👟",
+            "description": "Quadra de futsal coberta",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "AREIA",
+            "label": "Futevôlei",
+            "icon": "futevolei",
+            "iconFallback": null,
+            "description": "Quadra de areia",
+            "group": "FUTEVOLEI",
+            "groupLabel": "Futevôlei",
+            "groupIcon": "futevolei",
+            "groupIconFallback": null,
+            "groupOrder": 2
+          },
+          {
+            "id": "VOLEI",
+            "label": "Vôlei",
+            "icon": "volei",
+            "iconFallback": "🏐",
+            "description": "Quadra de vôlei indoor",
+            "group": "VOLEI",
+            "groupLabel": "Vôlei",
+            "groupIcon": "volei",
+            "groupIconFallback": "🏐",
+            "groupOrder": 3
+          },
+          {
+            "id": "VOLEI_AREIA",
+            "label": "Vôlei de Areia",
+            "icon": "volei-areia",
+            "iconFallback": null,
+            "description": "Quadra de vôlei de areia",
+            "group": "VOLEI",
+            "groupLabel": "Vôlei",
+            "groupIcon": "volei",
+            "groupIconFallback": "🏐",
+            "groupOrder": 3
+          },
+          {
+            "id": "HANDBALL",
+            "label": "Handebol",
+            "icon": "handebol",
+            "iconFallback": "🤾",
+            "description": "Quadra de handebol",
+            "group": "HANDBALL",
+            "groupLabel": "Handebol",
+            "groupIcon": "handebol",
+            "groupIconFallback": "🤾",
+            "groupOrder": 4
+          },
+          {
+            "id": "PETECA",
+            "label": "Peteca",
+            "icon": "peteca",
+            "iconFallback": null,
+            "description": "Quadra de peteca",
+            "group": "PETECA",
+            "groupLabel": "Peteca",
+            "groupIcon": "peteca",
+            "groupIconFallback": null,
+            "groupOrder": 5
+          },
+          {
+            "id": "BEACH_TENNIS",
+            "label": "Beach Tennis",
+            "icon": "beach-tennis",
+            "iconFallback": "🎾",
+            "description": "Quadra de beach tennis",
+            "group": "BEACH_TENNIS",
+            "groupLabel": "Beach Tennis",
+            "groupIcon": "beach-tennis",
+            "groupIconFallback": "🎾",
+            "groupOrder": 6
+          },
+          {
+            "id": "BASQUETE",
+            "label": "Basquete",
+            "icon": "basquete",
+            "iconFallback": "🏀",
+            "description": "Quadra de basquete",
+            "group": "BASQUETE",
+            "groupLabel": "Basquete",
+            "groupIcon": "basquete",
+            "groupIconFallback": "🏀",
+            "groupOrder": 7
+          },
+          {
+            "id": "TENIS",
+            "label": "Tênis",
+            "icon": "tenis",
+            "iconFallback": "🥎",
+            "description": "Quadra de tênis",
+            "group": "TENIS",
+            "groupLabel": "Tênis",
+            "groupIcon": "tenis",
+            "groupIconFallback": "🥎",
+            "groupOrder": 8
+          },
+          {
+            "id": "POKER",
+            "label": "Poker",
+            "icon": "poker",
+            "iconFallback": "🃏",
+            "description": "Mesa de poker",
+            "group": "POKER",
+            "groupLabel": "Poker",
+            "groupIcon": "poker",
+            "groupIconFallback": "🃏",
+            "groupOrder": 9
+          }
+        ]
+      }
+    },
+    "GET /tournament-formats": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "KNOCKOUT",
+            "label": "Eliminatório Simples",
+            "description": "Mata-mata: quem perde está fora.",
+            "implemented": true
+          },
+          {
+            "id": "LEAGUE",
+            "label": "Pontos Corridos",
+            "description": "Todos jogam entre si e acumulam pontos na tabela.",
+            "implemented": false
+          },
+          {
+            "id": "GROUPS_AND_KNOCKOUT",
+            "label": "Grupos + Eliminatório",
+            "description": "Fase de grupos seguida de mata-mata.",
+            "implemented": false
+          },
+          {
+            "id": "DOUBLE_ELIMINATION",
+            "label": "Dupla Eliminação",
+            "description": "Só está fora quem perde duas vezes.",
+            "implemented": false
+          },
+          {
+            "id": "SWISS",
+            "label": "Sistema Suíço",
+            "description": "Rodadas emparelhando quem tem pontuação parecida.",
+            "implemented": false
+          }
+        ]
+      }
+    },
+    "GET /tournaments": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3rf00yhpk1xeshhrwou",
+            "name": "Copa Universitária de Vôlei",
+            "description": "Rascunho: faltam confirmar as datas com a coordenação.",
+            "placeId": "cmu2qp3bl0056pk1xwh8lfs0m",
+            "createdById": "cmu2qp2ct000fpk1xuhd0zx5c",
+            "organizerType": "PLACE",
+            "organizerName": null,
+            "organizerUserId": null,
+            "sportType": "VOLEI",
+            "format": "KNOCKOUT",
+            "participantType": "TEAM",
+            "status": "DRAFT",
+            "registrationMode": "OPEN",
+            "registrationStartDate": null,
+            "registrationEndDate": null,
+            "startDate": null,
+            "endDate": null,
+            "maxParticipants": null,
+            "registrationFee": null,
+            "paymentInstructions": null,
+            "pixKey": null,
+            "rules": null,
+            "createdAt": "2026-09-15T14:00:53.835Z",
+            "updatedAt": "2026-09-15T14:00:53.835Z",
+            "place": {
+              "id": "cmu2qp3bl0056pk1xwh8lfs0m",
+              "name": "Ginásio Poliesportivo UFLA",
+              "city": "Lavras",
+              "state": "MG"
+            },
+            "createdBy": {
+              "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+              "name": "Ginásio UFLA"
+            },
+            "organizerUser": null,
+            "_count": {
+              "divisions": 1
+            }
+          },
+          {
+            "id": "cmu2qp3rf00yipk1x10zcetdc",
+            "name": "Copa de Verão de Peteca",
+            "description": "Edição encerrada — fica no histórico do clube.",
+            "placeId": "cmu2qp3bl0057pk1x7pbahn4c",
+            "createdById": "cmu2qp2ct000gpk1xt9bn0193",
+            "organizerType": "PLACE",
+            "organizerName": null,
+            "organizerUserId": null,
+            "sportType": "PETECA",
+            "format": "KNOCKOUT",
+            "participantType": "INDIVIDUAL",
+            "status": "FINISHED",
+            "registrationMode": "OPEN",
+            "registrationStartDate": "2026-07-17T12:00:00.000Z",
+            "registrationEndDate": "2026-08-07T02:00:00.000Z",
+            "startDate": "2026-08-11T11:00:00.000Z",
+            "endDate": "2026-08-12T21:00:00.000Z",
+            "maxParticipants": 16,
+            "registrationFee": null,
+            "paymentInstructions": null,
+            "pixKey": null,
+            "rules": null,
+            "createdAt": "2026-09-15T14:00:53.835Z",
+            "updatedAt": "2026-09-15T14:00:53.835Z",
+            "place": {
+              "id": "cmu2qp3bl0057pk1x7pbahn4c",
+              "name": "Lavras Tênis Clube — LTC",
+              "city": "Lavras",
+              "state": "MG"
+            },
+            "createdBy": {
+              "id": "cmu2qp2ct000gpk1xt9bn0193",
+              "name": "Lavras Tênis Clube"
+            },
+            "organizerUser": null,
+            "_count": {
+              "divisions": 1
+            }
+          },
+          {
+            "id": "cmu2qp3re00yfpk1xk3oc5g0j",
+            "name": "Torneio Aberto de Tênis do LTC",
+            "description": "A comissão confere o ranking do inscrito antes de aceitar.",
+            "placeId": "cmu2qp3bl0057pk1x7pbahn4c",
+            "createdById": "cmu2qp2ct000gpk1xt9bn0193",
+            "organizerType": "PLACE",
+            "organizerName": null,
+            "organizerUserId": null,
+            "sportType": "TENIS",
+            "format": "KNOCKOUT",
+            "participantType": "INDIVIDUAL",
+            "status": "OPEN",
+            "registrationMode": "APPROVAL_REQUIRED",
+            "registrationStartDate": "2026-09-12T12:00:00.000Z",
+            "registrationEndDate": "2026-09-28T02:00:00.000Z",
+            "startDate": "2026-10-05T11:00:00.000Z",
+            "endDate": "2026-10-07T23:00:00.000Z",
+            "maxParticipants": 32,
+            "registrationFee": "80",
+            "paymentInstructions": null,
+            "pixKey": "ltc@ltcoficial.com.br",
+            "rules": null,
+            "createdAt": "2026-09-15T14:00:53.835Z",
+            "updatedAt": "2026-09-15T14:00:53.835Z",
+            "place": {
+              "id": "cmu2qp3bl0057pk1x7pbahn4c",
+              "name": "Lavras Tênis Clube — LTC",
+              "city": "Lavras",
+              "state": "MG"
+            },
+            "createdBy": {
+              "id": "cmu2qp2ct000gpk1xt9bn0193",
+              "name": "Lavras Tênis Clube"
+            },
+            "organizerUser": null,
+            "_count": {
+              "divisions": 2
+            }
+          },
+          {
+            "id": "cmu2qp3rf00ygpk1xfd1uwahc",
+            "name": "Liga Society de Lavras",
+            "description": "Pontos corridos, turno único, rodadas aos sábados.",
+            "placeId": "cmu2qp3bl0052pk1xashopn01",
+            "createdById": "cmu2qp2ct000cpk1xqcojsk70",
+            "organizerType": "PLACE",
+            "organizerName": null,
+            "organizerUserId": null,
+            "sportType": "SOCIETY",
+            "format": "LEAGUE",
+            "participantType": "TEAM",
+            "status": "IN_PROGRESS",
+            "registrationMode": "APPROVAL_REQUIRED",
+            "registrationStartDate": "2026-08-16T12:00:00.000Z",
+            "registrationEndDate": "2026-09-06T02:00:00.000Z",
+            "startDate": "2026-09-12T18:00:00.000Z",
+            "endDate": "2026-10-15T21:00:00.000Z",
+            "maxParticipants": 24,
+            "registrationFee": "200",
+            "paymentInstructions": null,
+            "pixKey": "contato@olimpicalavras.com.br",
+            "rules": null,
+            "createdAt": "2026-09-15T14:00:53.835Z",
+            "updatedAt": "2026-09-15T14:00:53.835Z",
+            "place": {
+              "id": "cmu2qp3bl0052pk1xashopn01",
+              "name": "Associação Olímpica de Lavras",
+              "city": "Lavras",
+              "state": "MG"
+            },
+            "createdBy": {
+              "id": "cmu2qp2ct000cpk1xqcojsk70",
+              "name": "Associação Olímpica"
+            },
+            "organizerUser": null,
+            "_count": {
+              "divisions": 2
+            }
+          },
+          {
+            "id": "cmu2qp3rf00yjpk1x7zrmuzc9",
+            "name": "Circuito AABB de Tênis",
+            "description": "Chave única, eliminatória simples. Oito inscritos, quartas em andamento.",
+            "placeId": "cmu2qp3bl0058pk1xlpdty5xh",
+            "createdById": "cmu2qp2ct000hpk1x7cory6be",
+            "organizerType": "PLACE",
+            "organizerName": null,
+            "organizerUserId": null,
+            "sportType": "TENIS",
+            "format": "KNOCKOUT",
+            "participantType": "INDIVIDUAL",
+            "status": "IN_PROGRESS",
+            "registrationMode": "OPEN",
+            "registrationStartDate": "2026-08-16T12:00:00.000Z",
+            "registrationEndDate": "2026-09-04T02:00:00.000Z",
+            "startDate": "2026-09-13T11:00:00.000Z",
+            "endDate": "2026-09-20T23:00:00.000Z",
+            "maxParticipants": 8,
+            "registrationFee": "90",
+            "paymentInstructions": null,
+            "pixKey": "aabb@aabblavras.com.br",
+            "rules": "Sets curtos até 4 games, tie-break em 7.",
+            "createdAt": "2026-09-15T14:00:53.835Z",
+            "updatedAt": "2026-09-15T14:00:53.835Z",
+            "place": {
+              "id": "cmu2qp3bl0058pk1xlpdty5xh",
+              "name": "AABB Lavras",
+              "city": "Lavras",
+              "state": "MG"
+            },
+            "createdBy": {
+              "id": "cmu2qp2ct000hpk1x7cory6be",
+              "name": "AABB Lavras"
+            },
+            "organizerUser": null,
+            "_count": {
+              "divisions": 1
+            }
+          },
+          {
+            "id": "cmu2qp3re00yepk1xrhesxlar",
+            "name": "Copa Só+1 de Beach Tennis",
+            "description": "Inscrição individual: as duplas são sorteadas na hora da chave.",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "createdById": "cmu2qp2ct0005pk1xcveshkgw",
+            "organizerType": "PLACE",
+            "organizerName": null,
+            "organizerUserId": null,
+            "sportType": "BEACH_TENNIS",
+            "format": "GROUPS_AND_KNOCKOUT",
+            "participantType": "INDIVIDUAL",
+            "status": "OPEN",
+            "registrationMode": "OPEN",
+            "registrationStartDate": "2026-09-09T12:00:00.000Z",
+            "registrationEndDate": "2026-09-26T02:00:00.000Z",
+            "startDate": "2026-09-30T11:00:00.000Z",
+            "endDate": "2026-10-01T23:00:00.000Z",
+            "maxParticipants": 32,
+            "registrationFee": "120",
+            "paymentInstructions": "Pix para a chave acima e envie o comprovante no WhatsApp da arena.",
+            "pixKey": "contato@napraialavras.com.br",
+            "rules": "Melhor de 3 sets, com tie-break de 10 pontos no terceiro.",
+            "createdAt": "2026-09-15T14:00:53.835Z",
+            "updatedAt": "2026-09-15T14:00:53.835Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "state": "MG"
+            },
+            "createdBy": {
+              "id": "cmu2qp2ct0005pk1xcveshkgw",
+              "name": "Na Praia FTV"
+            },
+            "organizerUser": null,
+            "_count": {
+              "divisions": 3
+            }
+          }
+        ]
+      }
+    },
+    "GET /tournaments/matches/refereeing": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": []
+      }
+    }
+  }
+}

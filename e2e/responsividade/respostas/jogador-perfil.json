@@ -1,0 +1,182 @@
+{
+  "gravadoEm": "2026-09-17T14:22:50.917Z",
+  "respostas": {
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+          "name": "Mateus Vitor",
+          "email": "mateus@player.com",
+          "avatarUrl": null,
+          "role": "PLAYER",
+          "badge": "CRAQUE",
+          "badges": [
+            "CRAQUE",
+            "CONFIAVEL",
+            "ORGANIZADOR_NATO"
+          ],
+          "createdAt": "2026-09-15T14:00:52.715Z",
+          "phone": null,
+          "pixKey": "mateus@player.com",
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 13,
+            "participations": 18,
+            "reviewsReceived": 2
+          },
+          "stats": {
+            "averageStars": 4.5,
+            "totalReviews": 2,
+            "totalPartidas": 18,
+            "tags": [
+              {
+                "tag": "FAIR_PLAY",
+                "count": 1
+              },
+              {
+                "tag": "BOA_COMUNICACAO",
+                "count": 1
+              }
+            ]
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [
+            {
+              "id": "cmu5ljnlh0006qt1xqrxm9ejl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0095pk1x1102s62p",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-17T14:00:00.053Z"
+            },
+            {
+              "id": "cmu2st420000bca1xxu3bp37e",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.072Z"
+            },
+            {
+              "id": "cmu2st41t0007ca1xhosc2g7g",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 9h, na quadra Beach Tennis (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.065Z"
+            },
+            {
+              "id": "cmu2r9arw000gl81xl1i8qbfl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_LEFT",
+              "title": "Jogador saiu da partida",
+              "body": "Mateus Vitor saiu da sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:36.044Z"
+            },
+            {
+              "id": "cmu2r94l4000fl81x4owpvu0i",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Partida cheia!",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:28.024Z"
+            },
+            {
+              "id": "cmu2qp3ja00hvpk1x2zrk8cy5",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_JOINED",
+              "title": "Jogador entrou na partida",
+              "body": "Gabriel Cantanhede entrou na sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hwpk1xe6yojnt0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Sua partida lotou",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hupk1xtpmbosc0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "TEAM_INVITE",
+              "title": "Convite para um time",
+              "body": "Fernanda Alves chamou você para o Areia Nossa",
+              "data": {
+                "teamId": "cmu2qp3hr00enpk1xjnbpx7l7"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hxpk1xf4tld757",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de tempestade para sua partida",
+              "body": "Previsão de tempestade para sua partida amanhã às 19h, na quadra Society (45% de chance).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3iu00hopk1x0yj2r15r",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            }
+          ],
+          "unreadCount": 9
+        }
+      }
+    }
+  }
+}

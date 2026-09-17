@@ -8,7 +8,10 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
   // 'coverage' é o relatório gerado pelo `npm run test:coverage` — código de
   // terceiro, não nosso, e o ESLint reclamava dos arquivos dele.
-  globalIgnores(['dist', 'coverage']),
+  //
+  // 'dist-responsividade', 'test-results' e 'playwright-report' são a saída da
+  // checagem de responsividade (`npm run test:responsividade`).
+  globalIgnores(['dist', 'coverage', 'dist-responsividade', 'test-results', 'playwright-report']),
 
   // Arquivos .js na raiz — este config e nada mais. O `src` é todo TypeScript
   // desde a migração, e o `tsconfig` desliga `allowJs` para impedir a volta.
@@ -78,6 +81,18 @@ export default defineConfig([
       // O helper de teste exporta função e componente do mesmo arquivo de
       // propósito — a regra existe para não quebrar o Fast Refresh, e teste
       // não passa por Fast Refresh.
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+
+  // A checagem de responsividade roda no Node (Playwright), e só o `medir` vai
+  // para a página — e ele usa só o que o navegador tem.
+  {
+    files: ['e2e/**/*.ts'],
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+    },
+    rules: {
       'react-refresh/only-export-components': 'off',
     },
   },

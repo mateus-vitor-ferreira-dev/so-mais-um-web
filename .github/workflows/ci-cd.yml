@@ -96,6 +96,56 @@ jobs:
       - name: Build
         run: npm run build
 
+  # Largura não quebra teste: um botão de 32px ou uma coluna que passa da borda
+  # a 360px deixam o app correto, só que ruim no celular — e foi assim que a
+  # auditoria da web#511 achou 1.247 elementos vazando e 302 alvos pequenos.
+  #
+  # Não depende da api: o app é servido pelo `vite preview` e a api é o que
+  # está gravado em `e2e/responsividade/respostas/`. Ocorrência nova reprova;
+  # conhecida que sumiu só avisa. Ver `e2e/responsividade/responsividade.spec.ts`.
+  responsividade:
+    name: Responsividade (360 e 390px)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Versão do Playwright
+        id: playwright
+        run: echo "versao=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache do navegador
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.versao }}
+
+      # Com o cache, o download é pulado; o `--with-deps` ainda instala as
+      # bibliotecas do sistema, que não moram no cache.
+      - name: Instala o Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Mede as telas
+        run: npm run test:responsividade
+
+      - name: Capturas e traces da falha
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: responsividade
+          path: test-results/responsividade
+          retention-days: 7
+
   deploy:
     name: Deploy to Vercel
     runs-on: ubuntu-latest

@@ -1,0 +1,1553 @@
+{
+  "gravadoEm": "2026-09-17T14:22:50.900Z",
+  "respostas": {
+    "GET /admin/suporte": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2r0y670000l81x5s0qh86p",
+            "ultimaMensagemEm": "2026-09-15T14:10:06.459Z",
+            "dono": {
+              "id": "cmu2qp2ct0006pk1xsbm6umke",
+              "name": "Arena Beach Lavras"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "Oi! Como eu cadastro o day use de domingo?",
+              "daEquipe": false,
+              "criadaEm": "2026-09-15T14:10:06.459Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jk00i4pk1xjhfdlo9q",
+            "ultimaMensagemEm": "2026-09-15T13:40:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct000cpk1xqcojsk70",
+              "name": "Associação Olímpica"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "E a 1h da manhã de domingo usa o preço de sábado ou o padrão?",
+              "daEquipe": false,
+              "criadaEm": "2026-09-15T13:40:50.774Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jl00i7pk1xp6lvtx49",
+            "ultimaMensagemEm": "2026-09-15T13:00:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+              "name": "Olaria Beach Sports"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "Consegue: edite o day use e aumente as vagas. Só não dá para baixar para menos do que já está inscrito.",
+              "daEquipe": true,
+              "criadaEm": "2026-09-15T13:00:50.774Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jl00i8pk1x0ex8rzt3",
+            "ultimaMensagemEm": "2026-09-13T18:39:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct0005pk1xcveshkgw",
+              "name": "Na Praia FTV"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "Nós que agradecemos. Qualquer coisa, é só escrever por aqui.",
+              "daEquipe": true,
+              "criadaEm": "2026-09-13T18:39:50.774Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jl00i6pk1xkelwvewb",
+            "ultimaMensagemEm": "2026-09-13T13:35:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct000jpk1x3xbb5ftb",
+              "name": "Campestre Clube"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "Mandei o Pix do mês ontem pelo WhatsApp. Podem conferir?",
+              "daEquipe": false,
+              "criadaEm": "2026-09-13T13:35:50.774Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jl00i5pk1x7g9j2ga0",
+            "ultimaMensagemEm": "2026-09-10T15:10:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct000gpk1xt9bn0193",
+              "name": "Lavras Tênis Clube"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "São, quem tem conta recebe o aviso. E a quadra volta a ficar livre naquele horário.",
+              "daEquipe": true,
+              "criadaEm": "2026-09-10T15:10:50.774Z"
+            }
+          }
+        ]
+      }
+    },
+    "GET /admin/users": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp39v002npk1xa837hxs8",
+            "name": "Lorena Vasconcelos",
+            "email": "fig36@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.203Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp39v002lpk1xwq81n4id",
+            "name": "Ivo Marchetti",
+            "email": "fig33@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.203Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp39v002mpk1xcie1atot",
+            "name": "Kauê Simões",
+            "email": "fig35@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.203Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp39v002kpk1xed30wuta",
+            "name": "Júlia Wanderley",
+            "email": "fig34@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.203Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp38v002jpk1xqqjaf501",
+            "name": "Hugo Bandeira",
+            "email": "fig32@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.167Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp38v002ipk1x62lg2ome",
+            "name": "Giovana Pádua",
+            "email": "fig31@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.167Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp38u002hpk1xrry1t6ar",
+            "name": "Elisa Sanches",
+            "email": "fig29@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.166Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp38u002gpk1xqngl9ut3",
+            "name": "Fabrício Nogueira",
+            "email": "fig30@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.166Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp37u002epk1xco3m85bo",
+            "name": "Clara Bittencourt",
+            "email": "fig27@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.130Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp37u002dpk1x613o839m",
+            "name": "Alice Fontoura",
+            "email": "fig25@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.130Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp37u002cpk1xip53ojsh",
+            "name": "Breno Malaquias",
+            "email": "fig26@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.130Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp37u002fpk1xshe0lcy4",
+            "name": "Danilo Peixoto",
+            "email": "fig28@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.130Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp36u002bpk1xcnhrp5ap",
+            "name": "Zeca Bertolucci",
+            "email": "fig24@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.094Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp36u002apk1xogcf693t",
+            "name": "Yasmin Carvalho",
+            "email": "fig23@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.094Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp36t0028pk1xt8xa48bt",
+            "name": "Vanessa Drumond",
+            "email": "fig21@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.093Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp36t0029pk1x7a10rdym",
+            "name": "Wagner Sobral",
+            "email": "fig22@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.093Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp35u0027pk1x4onq9e1c",
+            "name": "Tales Monteiro",
+            "email": "fig19@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.058Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp35t0024pk1xeijsx284",
+            "name": "Sabrina Lemos",
+            "email": "fig18@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.057Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp35t0026pk1xokt22nn6",
+            "name": "Ulisses Paiva",
+            "email": "fig20@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.057Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp35t0025pk1xy0z74ckg",
+            "name": "Renan Portilho",
+            "email": "fig17@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.057Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp34t0023pk1xu8bg4ps9",
+            "name": "Quésia Martins",
+            "email": "fig16@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.021Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp34s0021pk1xek835675",
+            "name": "Natália Braga",
+            "email": "fig13@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.020Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp34s0022pk1xcuh3o2wd",
+            "name": "Priscila Gontijo",
+            "email": "fig15@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.020Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp34s0020pk1x97hhpe7o",
+            "name": "Otávio Ferraz",
+            "email": "fig14@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:53.020Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp33s001zpk1x1e4htp3c",
+            "name": "Mariana Teixeira",
+            "email": "fig12@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.984Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp33s001ypk1x7lajrjpt",
+            "name": "Kelly Andrade",
+            "email": "fig10@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.984Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp33r001xpk1xsk6k74rd",
+            "name": "Jonas Ferrari",
+            "email": "fig09@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.983Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp33r001wpk1xqbd6gow9",
+            "name": "Leandro Bicalho",
+            "email": "fig11@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.983Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp32s001vpk1xnk6ajc9z",
+            "name": "Fábio Resende",
+            "email": "fig05@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.948Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp32r001upk1xsfytnp0o",
+            "name": "Isabela Pinto",
+            "email": "fig08@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.947Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp32r001tpk1xfb1qscl3",
+            "name": "Heitor Bragança",
+            "email": "fig07@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.947Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp32q001spk1xnsf6135j",
+            "name": "Gisele Amâncio",
+            "email": "fig06@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.946Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp31r001rpk1xtcu5ncry",
+            "name": "Eduardo Vilela",
+            "email": "fig04@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.911Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp31q001qpk1x2202y7ph",
+            "name": "Débora Antunes",
+            "email": "fig03@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.910Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp31q001opk1xnryexv9r",
+            "name": "Ana Beatriz Coelho",
+            "email": "fig01@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.910Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp31q001ppk1x9664snm3",
+            "name": "Caio Moraes",
+            "email": "fig02@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.910Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp30j001npk1xjjjnxfq0",
+            "name": "Caio Peçanha",
+            "email": "caio@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.867Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp30j001mpk1xvyuoirox",
+            "name": "Aline Duarte",
+            "email": "aline@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.867Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 4
+            }
+          },
+          {
+            "id": "cmu2qp2zk001lpk1x0q234gfz",
+            "name": "Henrique Salles",
+            "email": "henrique@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.832Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2zj001kpk1xr9emm80h",
+            "name": "Rafael Quintão",
+            "email": "rafael@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.831Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2zj001jpk1xh0mradij",
+            "name": "Bianca Moreira",
+            "email": "bianca@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.831Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 1,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2zi001ipk1xxjt252b2",
+            "name": "Juliana Prado",
+            "email": "juliana@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.830Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 1,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2yj001hpk1xrj98isyd",
+            "name": "Larissa Campos",
+            "email": "larissa@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.795Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2yj001gpk1x30aavo93",
+            "name": "Patrícia Nunes",
+            "email": "patricia@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.795Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2yi001epk1x3t7y0l43",
+            "name": "André Lisboa",
+            "email": "andre@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.794Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 1,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2yi001fpk1xgpm8fghq",
+            "name": "Vinícius Rocha",
+            "email": "vinicius@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.794Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 1,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2xi001dpk1xc5lp11fi",
+            "name": "Thiago Barcelos",
+            "email": "thiago@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.758Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2xi001cpk1xbcxltfos",
+            "name": "Marcelo Vidal",
+            "email": "marcelo@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.758Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2xi001bpk1xbdnz9c7m",
+            "name": "Bruno Tavares",
+            "email": "bruno@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.758Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2xh001apk1xc02u3ajp",
+            "name": "Lucas Prado",
+            "email": "lucas@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.757Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 5
+            }
+          },
+          {
+            "id": "cmu2qp2wb0017pk1xjqls5sx7",
+            "name": "Fernanda Alves",
+            "email": "fernanda@player.com",
+            "role": "PLAYER",
+            "badge": "CRAQUE",
+            "badges": [
+              "CRAQUE"
+            ],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 4,
+              "participations": 9
+            }
+          },
+          {
+            "id": "cmu2qp2wa0011pk1xlqx6z5q6",
+            "name": "Gabriel Cantanhede",
+            "email": "gabriel@player.com",
+            "role": "PLAYER",
+            "badge": "CRAQUE",
+            "badges": [
+              "CRAQUE"
+            ],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 3,
+              "participations": 17
+            }
+          },
+          {
+            "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "name": "Mateus Vitor",
+            "email": "mateus@player.com",
+            "role": "PLAYER",
+            "badge": "CRAQUE",
+            "badges": [
+              "CRAQUE",
+              "CONFIAVEL",
+              "ORGANIZADOR_NATO"
+            ],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 13,
+              "participations": 18
+            }
+          },
+          {
+            "id": "cmu2qp2wb0015pk1xd4yq9g5h",
+            "name": "Gustavo Rezende",
+            "email": "gustavo@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 2,
+              "participations": 16
+            }
+          },
+          {
+            "id": "cmu2qp2wb0018pk1xwss84akq",
+            "name": "Camila Souza",
+            "email": "camila@player.com",
+            "role": "PLAYER",
+            "badge": "CRAQUE",
+            "badges": [
+              "CRAQUE"
+            ],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 2,
+              "participations": 10
+            }
+          },
+          {
+            "id": "cmu2qp2wb0016pk1xnlxhi3fz",
+            "name": "João Henrique",
+            "email": "joao@player.com",
+            "role": "PLAYER",
+            "badge": "CRAQUE",
+            "badges": [
+              "CRAQUE",
+              "CONFIAVEL"
+            ],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 3,
+              "participations": 16
+            }
+          },
+          {
+            "id": "cmu2qp2wa0013pk1xctmjn8nu",
+            "name": "Gabriel Nakazato",
+            "email": "nakazato@player.com",
+            "role": "PLAYER",
+            "badge": "CRAQUE",
+            "badges": [
+              "CRAQUE"
+            ],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 2,
+              "participations": 15
+            }
+          },
+          {
+            "id": "cmu2qp2wb0019pk1x7oybmnlb",
+            "name": "Diego Mendes",
+            "email": "diego@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 2,
+              "participations": 14
+            }
+          },
+          {
+            "id": "cmu2qp2wa0012pk1x3zjhn89e",
+            "name": "Rodrigo Adonias",
+            "email": "rodrigo@player.com",
+            "role": "PLAYER",
+            "badge": "CRAQUE",
+            "badges": [
+              "CRAQUE"
+            ],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 2,
+              "participations": 10
+            }
+          },
+          {
+            "id": "cmu2qp2wa0014pk1x3k5n0crr",
+            "name": "Gabriel Soares",
+            "email": "gsoares@player.com",
+            "role": "PLAYER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.715Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 2,
+              "participations": 16
+            }
+          },
+          {
+            "id": "cmu2qp2ln000tpk1xwvppd0sw",
+            "name": "Clube Cafeeira",
+            "email": "contato@clubecafeeira.exemplo",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.331Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ln000vpk1xgbvgy87z",
+            "name": "Arena Três Corações",
+            "email": "contato@arena3coracoes.exemplo",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.331Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ln000xpk1xbx9korxy",
+            "name": "Espaço Tiradentes",
+            "email": "contato@espacotiradentes.exemplo",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.331Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ln000ypk1x391995k1",
+            "name": "Serra de São João",
+            "email": "contato@serrasaojoao.exemplo",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.331Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ln000zpk1xk8soayuk",
+            "name": "Poliesportivo Itumirim",
+            "email": "contato@poliitumirim.exemplo",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.331Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ln000wpk1x2ulrjpvj",
+            "name": "Beira-Rio Esportes",
+            "email": "contato@beirarioesportes.exemplo",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.331Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ln000spk1xy7d112gh",
+            "name": "Arena Rio Verde",
+            "email": "contato@arenarioverde.exemplo",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.331Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ln000upk1x7aytcvi0",
+            "name": "Centro Sul-Mineiro",
+            "email": "contato@sulmineiro.exemplo",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.331Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000gpk1xt9bn0193",
+            "name": "Lavras Tênis Clube",
+            "email": "ltc@ltcoficial.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct0005pk1xcveshkgw",
+            "name": "Na Praia FTV",
+            "email": "contato@napraialavras.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 2,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000rpk1xn10rfubu",
+            "name": "Summer Beach Tennis",
+            "email": "summer@summerbeach.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 2,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000opk1xa8zs2o5m",
+            "name": "Arena Match Point",
+            "email": "matchpoint@matchpointperdoes.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000ipk1xeswqplcb",
+            "name": "Clube ABR Marelli",
+            "email": "marelli@clubemarelli.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000epk1xvijur99m",
+            "name": "SELT Lavras",
+            "email": "selt@lavras.mg.gov.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 4,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000mpk1xzkt8jj43",
+            "name": "Arena TK9 Ijaci",
+            "email": "tk9@arenatk9.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000lpk1xxfur6tt7",
+            "name": "Condomínio Flamboia",
+            "email": "flamboia@condflamboia.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+            "name": "Ginásio UFLA",
+            "email": "esportes@ufla.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct0006pk1xsbm6umke",
+            "name": "Arena Beach Lavras",
+            "email": "arenabeach@arenabeachlavras.com",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000cpk1xqcojsk70",
+            "name": "Associação Olímpica",
+            "email": "contato@olimpicalavras.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 2,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000apk1xuseeytv2",
+            "name": "Sunset Arena Lavras",
+            "email": "sunset@sunsetarena.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000bpk1xtcpy5utr",
+            "name": "Arena Club Lavras",
+            "email": "arenaclub@arenaclub.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct0009pk1xwc5d82yy",
+            "name": "Complexo PRB Beach Sports",
+            "email": "prb@complexoprb.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000ppk1xumttumgn",
+            "name": "Prefeitura de Perdões",
+            "email": "esportes@perdoes.mg.gov.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000jpk1x3xbb5ftb",
+            "name": "Campestre Clube",
+            "email": "campestre@campestrelavras.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct0007pk1x1zsq9wjf",
+            "name": "Arena JC Beach Club",
+            "email": "jc@arenajcbeach.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000qpk1xdkqa7y2i",
+            "name": "Prefeitura Ribeirão Vermelho",
+            "email": "esportes@ribeiraovermelho.mg.gov.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000npk1x3bd93rzu",
+            "name": "Arena ZFC Perdões",
+            "email": "zfc@arenazfc.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000kpk1xmraqlahh",
+            "name": "Fabril Esporte Clube",
+            "email": "fabril@fabrilesporte.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000hpk1x7cory6be",
+            "name": "AABB Lavras",
+            "email": "aabb@aabblavras.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+            "name": "Olaria Beach Sports",
+            "email": "olaria@olariabeach.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp2ct000dpk1xvzq2hij4",
+            "name": "Operário Esporte Clube",
+            "email": "operario@operariolavras.com.br",
+            "role": "OWNER",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:52.013Z",
+            "_count": {
+              "placesOwned": 1,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp1od0003pk1xk7lxobhw",
+            "name": "Gabriel Nakazato",
+            "email": "gabriel.nakazato@so-mais-um.com",
+            "role": "ADMIN",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:51.133Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp1od0000pk1xptfv2gxm",
+            "name": "Mateus Vitor",
+            "email": "mateus.ferreira10profissional@gmail.com",
+            "role": "ADMIN",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:51.133Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp1od0004pk1xqsdampzi",
+            "name": "Gabriel Soares",
+            "email": "gabriel.soares@so-mais-um.com",
+            "role": "ADMIN",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:51.133Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp1od0002pk1x6fyzsoov",
+            "name": "Rodrigo Adonias",
+            "email": "rodrigo.adonias@so-mais-um.com",
+            "role": "ADMIN",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:51.133Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          },
+          {
+            "id": "cmu2qp1od0001pk1xjgwlfqma",
+            "name": "Gabriel Cantanhede",
+            "email": "gabriel.cantanhede@so-mais-um.com",
+            "role": "ADMIN",
+            "badge": null,
+            "badges": [],
+            "createdAt": "2026-09-15T14:00:51.133Z",
+            "_count": {
+              "placesOwned": 0,
+              "matchesCreated": 0,
+              "participations": 0
+            }
+          }
+        ]
+      }
+    },
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp1od0000pk1xptfv2gxm",
+          "name": "Mateus Vitor",
+          "email": "mateus.ferreira10profissional@gmail.com",
+          "avatarUrl": null,
+          "role": "ADMIN",
+          "badge": null,
+          "badges": [],
+          "createdAt": "2026-09-15T14:00:51.133Z",
+          "phone": null,
+          "pixKey": null,
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 0,
+            "participations": 0,
+            "reviewsReceived": 0
+          },
+          "stats": {
+            "averageStars": null,
+            "totalReviews": 0,
+            "totalPartidas": 0,
+            "tags": []
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [
+            {
+              "id": "cmu2r0y6i0004l81xbqx6viha",
+              "userId": "cmu2qp1od0000pk1xptfv2gxm",
+              "type": "SUPPORT_MESSAGE",
+              "title": "Mensagem nova no suporte",
+              "body": "Arena Beach Lavras escreveu para a equipe.",
+              "data": {
+                "conversaId": "cmu2r0y670000l81x5s0qh86p"
+              },
+              "read": true,
+              "createdAt": "2026-09-15T14:10:06.474Z"
+            },
+            {
+              "id": "cmu2qp3jp00jlpk1xdajlwxpf",
+              "userId": "cmu2qp1od0000pk1xptfv2gxm",
+              "type": "SUPPORT_MESSAGE",
+              "title": "Mensagem nova no suporte",
+              "body": "Campestre Clube escreveu para a equipe.",
+              "data": {
+                "conversaId": "cmu2qp3jl00i6pk1xkelwvewb"
+              },
+              "read": true,
+              "createdAt": "2026-09-15T14:00:53.557Z"
+            },
+            {
+              "id": "cmu2qp3jp00jqpk1x7pyik4lr",
+              "userId": "cmu2qp1od0000pk1xptfv2gxm",
+              "type": "SUPPORT_MESSAGE",
+              "title": "Mensagem nova no suporte",
+              "body": "Associação Olímpica escreveu para a equipe.",
+              "data": {
+                "conversaId": "cmu2qp3jk00i4pk1xjhfdlo9q"
+              },
+              "read": true,
+              "createdAt": "2026-09-15T14:00:53.557Z"
+            }
+          ],
+          "unreadCount": 0
+        }
+      }
+    },
+    "GET /place-requests?status=PENDING": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": []
+      }
+    }
+  }
+}
