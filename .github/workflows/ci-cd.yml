@@ -125,7 +125,7 @@ jobs:
         run: echo "versao=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Cache do navegador
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.versao }}
@@ -140,7 +140,7 @@ jobs:
 
       - name: Capturas e traces da falha
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: responsividade
           path: test-results/responsividade
