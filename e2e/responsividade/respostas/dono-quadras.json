@@ -1,0 +1,547 @@
+{
+  "gravadoEm": "2026-09-17T14:22:50.931Z",
+  "respostas": {
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp2ct0005pk1xcveshkgw",
+          "name": "Na Praia FTV",
+          "email": "contato@napraialavras.com.br",
+          "avatarUrl": null,
+          "role": "OWNER",
+          "badge": null,
+          "badges": [],
+          "createdAt": "2026-09-15T14:00:52.013Z",
+          "phone": null,
+          "pixKey": "contato@napraialavras.com.br",
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 0,
+            "participations": 0,
+            "reviewsReceived": 0
+          },
+          "stats": {
+            "averageStars": null,
+            "totalReviews": 0,
+            "totalPartidas": 0,
+            "tags": []
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [],
+          "unreadCount": 0
+        }
+      }
+    },
+    "GET /owner/subscription/status": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "status": "active",
+          "currentPeriodEnd": "2026-10-05T15:00:00.000Z",
+          "stripeSubscriptionId": "sub_seed_napraia",
+          "plan": {
+            "id": "so-mais-um-premium",
+            "nome": "Só+1 Premium",
+            "precoCentavos": 38990,
+            "precoNoCartaoCentavos": 41000,
+            "funcionalidades": [
+              "DAY_USE",
+              "ESTATISTICAS",
+              "ESCOLINHA",
+              "EQUIPAMENTOS",
+              "ESTOQUE"
+            ]
+          },
+          "trocaAgendada": null,
+          "usage": {
+            "quadras": 5,
+            "estabelecimentos": 2
+          },
+          "stripeDisponivel": true,
+          "ehCortesia": false
+        }
+      }
+    },
+    "GET /place-requests/my?status=PENDING": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": []
+      }
+    },
+    "GET /places/cmu2qp3bk004vpk1xajo58ucp": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp3bk004vpk1xajo58ucp",
+          "name": "Na Praia FTV Lavras",
+          "street": "Rua Bernardino Macieira",
+          "number": "581",
+          "complement": null,
+          "neighborhood": "Centro",
+          "city": "Lavras",
+          "state": "MG",
+          "zipCode": "37200-000",
+          "country": "BR",
+          "latitude": -21.2391667,
+          "longitude": -44.9994407,
+          "status": "OPEN",
+          "ownerId": "cmu2qp2ct0005pk1xcveshkgw",
+          "createdAt": "2026-09-15T14:00:53.265Z",
+          "updatedAt": "2026-09-15T14:00:53.265Z",
+          "owner": {
+            "id": "cmu2qp2ct0005pk1xcveshkgw",
+            "name": "Na Praia FTV"
+          },
+          "courts": [
+            {
+              "id": "cmu2qp3bu005xpk1xvk4b5rtz",
+              "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Beach Tennis",
+              "type": "BEACH_TENNIS",
+              "pricePerHour": "75",
+              "coberta": null,
+              "precoVariaPorHorario": true,
+              "status": "OPEN",
+              "createdAt": "2026-09-15T14:00:53.274Z",
+              "updatedAt": "2026-09-15T14:00:53.337Z",
+              "faixasDePreco": [
+                {
+                  "id": "cmu2qp3dm008qpk1xafat3d30",
+                  "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+                  "diaDaSemana": 0,
+                  "inicio": "08:00",
+                  "fim": "23:00",
+                  "valorPorHora": "85",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008kpk1x2co7gnqp",
+                  "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+                  "diaDaSemana": 1,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "95",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008lpk1x893e5vy8",
+                  "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+                  "diaDaSemana": 2,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "95",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008mpk1xcwggea5z",
+                  "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+                  "diaDaSemana": 3,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "95",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008npk1x61mpqtoa",
+                  "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+                  "diaDaSemana": 4,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "95",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008opk1xwzg3awz5",
+                  "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+                  "diaDaSemana": 5,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "95",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008ppk1xfrxom98g",
+                  "courtId": "cmu2qp3bu005xpk1xvk4b5rtz",
+                  "diaDaSemana": 6,
+                  "inicio": "08:00",
+                  "fim": "23:00",
+                  "valorPorHora": "85",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                }
+              ],
+              "precoMinimo": 75,
+              "precoMaximo": 95
+            },
+            {
+              "id": "cmu2qp3bu005tpk1xbelnc3q6",
+              "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Futevôlei 1",
+              "type": "AREIA",
+              "pricePerHour": "65",
+              "coberta": null,
+              "precoVariaPorHorario": false,
+              "status": "OPEN",
+              "createdAt": "2026-09-15T14:00:53.274Z",
+              "updatedAt": "2026-09-15T14:00:53.274Z",
+              "faixasDePreco": [],
+              "precoMinimo": 65,
+              "precoMaximo": 65
+            },
+            {
+              "id": "cmu2qp3bu005upk1xe8897i77",
+              "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Futevôlei 2",
+              "type": "AREIA",
+              "pricePerHour": "65",
+              "coberta": null,
+              "precoVariaPorHorario": false,
+              "status": "OPEN",
+              "createdAt": "2026-09-15T14:00:53.274Z",
+              "updatedAt": "2026-09-15T14:00:53.274Z",
+              "faixasDePreco": [],
+              "precoMinimo": 65,
+              "precoMaximo": 65
+            },
+            {
+              "id": "cmu2qp3bu005vpk1x4hf6r46j",
+              "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Futevôlei 3",
+              "type": "AREIA",
+              "pricePerHour": null,
+              "coberta": null,
+              "precoVariaPorHorario": true,
+              "status": "OPEN",
+              "createdAt": "2026-09-15T14:00:53.274Z",
+              "updatedAt": "2026-09-15T14:00:53.337Z",
+              "faixasDePreco": [
+                {
+                  "id": "cmu2qp3dm008spk1xjk2ewqg2",
+                  "courtId": "cmu2qp3bu005vpk1x4hf6r46j",
+                  "diaDaSemana": 1,
+                  "inicio": "17:00",
+                  "fim": "22:00",
+                  "valorPorHora": "80",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008tpk1xu4f5p2sa",
+                  "courtId": "cmu2qp3bu005vpk1x4hf6r46j",
+                  "diaDaSemana": 2,
+                  "inicio": "17:00",
+                  "fim": "22:00",
+                  "valorPorHora": "80",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008upk1xwqxldmc0",
+                  "courtId": "cmu2qp3bu005vpk1x4hf6r46j",
+                  "diaDaSemana": 3,
+                  "inicio": "17:00",
+                  "fim": "22:00",
+                  "valorPorHora": "80",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008vpk1xic2ym67k",
+                  "courtId": "cmu2qp3bu005vpk1x4hf6r46j",
+                  "diaDaSemana": 4,
+                  "inicio": "17:00",
+                  "fim": "22:00",
+                  "valorPorHora": "80",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008wpk1xwha9yaw2",
+                  "courtId": "cmu2qp3bu005vpk1x4hf6r46j",
+                  "diaDaSemana": 5,
+                  "inicio": "17:00",
+                  "fim": "22:00",
+                  "valorPorHora": "80",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                }
+              ],
+              "precoMinimo": 80,
+              "precoMaximo": 80
+            },
+            {
+              "id": "cmu2qp3bu005wpk1xoibcsc0d",
+              "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Vôlei de Areia",
+              "type": "VOLEI_AREIA",
+              "pricePerHour": "65",
+              "coberta": null,
+              "precoVariaPorHorario": false,
+              "status": "OPEN",
+              "createdAt": "2026-09-15T14:00:53.274Z",
+              "updatedAt": "2026-09-15T14:00:53.274Z",
+              "faixasDePreco": [
+                {
+                  "id": "cmu2qp3dm008xpk1xdj154cfl",
+                  "courtId": "cmu2qp3bu005wpk1xoibcsc0d",
+                  "diaDaSemana": 1,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "90",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008ypk1xvya8l73a",
+                  "courtId": "cmu2qp3bu005wpk1xoibcsc0d",
+                  "diaDaSemana": 2,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "90",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm008zpk1xrha4eq2v",
+                  "courtId": "cmu2qp3bu005wpk1xoibcsc0d",
+                  "diaDaSemana": 3,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "90",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm0090pk1x6gjwl0ts",
+                  "courtId": "cmu2qp3bu005wpk1xoibcsc0d",
+                  "diaDaSemana": 4,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "90",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                },
+                {
+                  "id": "cmu2qp3dm0091pk1xt7tv7ev1",
+                  "courtId": "cmu2qp3bu005wpk1xoibcsc0d",
+                  "diaDaSemana": 5,
+                  "inicio": "18:00",
+                  "fim": "23:00",
+                  "valorPorHora": "90",
+                  "createdAt": "2026-09-15T14:00:53.338Z",
+                  "updatedAt": "2026-09-15T14:00:53.338Z"
+                }
+              ],
+              "precoMinimo": 65,
+              "precoMaximo": 65
+            }
+          ]
+        }
+      }
+    },
+    "GET /places/cmu2qp3bk004vpk1xajo58ucp/courts": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3bu005xpk1xvk4b5rtz",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Beach Tennis",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": true,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.337Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 95
+          },
+          {
+            "id": "cmu2qp3bu005tpk1xbelnc3q6",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 1",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3bu005upk1xe8897i77",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 2",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3bu005vpk1x4hf6r46j",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 3",
+            "type": "AREIA",
+            "pricePerHour": null,
+            "coberta": null,
+            "precoVariaPorHorario": true,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.337Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3bu005wpk1xoibcsc0d",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Vôlei de Areia",
+            "type": "VOLEI_AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          }
+        ]
+      }
+    },
+    "GET /places/cmu2qp3bk004vpk1xajo58ucp/opening-hours": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3l100kgpk1xno79xder",
+            "diaDaSemana": 0,
+            "abre": "06:00",
+            "fecha": "23:00"
+          },
+          {
+            "id": "cmu2qp3l100khpk1xl0l25hyh",
+            "diaDaSemana": 1,
+            "abre": "06:00",
+            "fecha": "23:00"
+          },
+          {
+            "id": "cmu2qp3l100kipk1x8zbyiyrz",
+            "diaDaSemana": 2,
+            "abre": "06:00",
+            "fecha": "23:00"
+          },
+          {
+            "id": "cmu2qp3l100kjpk1xho619i63",
+            "diaDaSemana": 3,
+            "abre": "06:00",
+            "fecha": "23:00"
+          },
+          {
+            "id": "cmu2qp3l100kkpk1x3y0zpupf",
+            "diaDaSemana": 4,
+            "abre": "06:00",
+            "fecha": "23:00"
+          },
+          {
+            "id": "cmu2qp3l100klpk1xemsfv4rq",
+            "diaDaSemana": 5,
+            "abre": "06:00",
+            "fecha": "23:00"
+          },
+          {
+            "id": "cmu2qp3l100kmpk1xdlky2zqo",
+            "diaDaSemana": 6,
+            "abre": "06:00",
+            "fecha": "23:00"
+          }
+        ]
+      }
+    }
+  }
+}
