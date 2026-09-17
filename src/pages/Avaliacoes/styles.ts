@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { cartaoClicavel } from '../../styles/cartaoClicavel'
 import { ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
@@ -23,8 +24,8 @@ export const StatsCard = styled.div`
       font-size: ${({ theme }) => theme.fontSizes['3xl']};
       margin-bottom: 4px;
     }
+    /* Sem opacidade: o textOnPrimary a 80% dava 3,81:1 sobre o verde (axe, #511). */
     p {
-      opacity: 0.8;
       font-size: ${({ theme }) => theme.fontSizes.sm};
     }
   }
@@ -77,12 +78,16 @@ export const ReviewList = styled.div`
   gap: ${({ theme }) => theme.spacing[4]};
 `
 
-export const ReviewCard = styled.div`
+export const ReviewCard = styled.div<{ $clicavel?: boolean }>`
   background: ${({ theme }) => theme.colors.bgCard};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[5]};
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  /* O cartão inteiro leva ao perfil da pessoa; o nome é por onde o teclado
+     entra, como nos cartões de partida e de torneio. */
+  ${({ $clicavel }) => $clicavel && css`${cartaoClicavel}`}
 `
 
 export const ReviewHeader = styled.div`
@@ -124,11 +129,13 @@ export const ReviewHeader = styled.div`
   }
 
   .stars {
-    font-size: ${({ theme }) => theme.fontSizes.lg};
-    white-space: nowrap;
+    display: inline-flex;
+    gap: 2px;
+    flex-shrink: 0;
+    color: ${({ theme }) => theme.colors.warning};
   }
 
-  ${ate.celular} { align-items: flex-start; .stars { font-size: ${({ theme }) => theme.fontSizes.md}; } }
+  ${ate.celular} { align-items: flex-start; }
 `
 
 export const TagBadge = styled.span`
