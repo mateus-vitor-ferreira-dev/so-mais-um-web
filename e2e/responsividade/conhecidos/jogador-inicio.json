@@ -2,61 +2,11 @@
   "rota": "/home",
   "larguras": {
     "360": {
-      "vazando": [
-        "button \"Futevôlei\"",
-        "button \"Peteca\"",
-        "button \"Vôlei de Areia\"",
-        "button \"🃏Poker\"",
-        "button \"🎾Beach Tennis\"",
-        "button \"🏀Basquete\"",
-        "button \"🏐Vôlei\"",
-        "button \"🏟️Futebol de Campo\"",
-        "button \"👟Futsal\"",
-        "button \"🤾Handebol\"",
-        "button \"🥎Tênis\"",
-        "span \"🃏\"",
-        "span \"🎾\"",
-        "span \"🏀\"",
-        "span \"🏐\"",
-        "span \"👟\"",
-        "span \"🤾\"",
-        "span \"🥎\"",
-        "span em button \"Futevôlei\"",
-        "span em button \"Peteca\"",
-        "span em button \"Vôlei de Areia\"",
-        "svg em button \"Futevôlei\"",
-        "svg em button \"Peteca\"",
-        "svg em button \"Vôlei de Areia\""
-      ],
+      "vazando": [],
       "alvos": []
     },
     "390": {
-      "vazando": [
-        "button \"Futevôlei\"",
-        "button \"Peteca\"",
-        "button \"Vôlei de Areia\"",
-        "button \"🃏Poker\"",
-        "button \"🎾Beach Tennis\"",
-        "button \"🏀Basquete\"",
-        "button \"🏐Vôlei\"",
-        "button \"🏟️Futebol de Campo\"",
-        "button \"👟Futsal\"",
-        "button \"🤾Handebol\"",
-        "button \"🥎Tênis\"",
-        "span \"🃏\"",
-        "span \"🎾\"",
-        "span \"🏀\"",
-        "span \"🏐\"",
-        "span \"👟\"",
-        "span \"🤾\"",
-        "span \"🥎\"",
-        "span em button \"Futevôlei\"",
-        "span em button \"Peteca\"",
-        "span em button \"Vôlei de Areia\"",
-        "svg em button \"Futevôlei\"",
-        "svg em button \"Peteca\"",
-        "svg em button \"Vôlei de Areia\""
-      ],
+      "vazando": [],
       "alvos": []
     }
   }
