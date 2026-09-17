@@ -32,6 +32,12 @@ export interface CartaoDePartidaProps {
   rodape?: ReactNode
   /** O link do mapa, quando a tela tem como montá-lo. */
   mapaUrl?: string | null
+  /**
+   * O nível do título do cartão. 3 por padrão, embaixo do título de seção do
+   * Início; 2 nas telas em que a lista vem direto abaixo do título da página,
+   * para a hierarquia não pular de h1 para h3 (#511).
+   */
+  nivelDoTitulo?: 2 | 3
 }
 
 /**
@@ -54,7 +60,7 @@ export interface CartaoDePartidaProps {
  * As vagas e o valor ficam **sempre no mesmo lugar**, embaixo, com a barra. O
  * mapa é um link discreto na cor da marca, e não o azul de link do navegador.
  */
-export default function CartaoDePartida({ partida, aoAbrir, selos, extra, rodape, mapaUrl }: CartaoDePartidaProps) {
+export default function CartaoDePartida({ partida, aoAbrir, selos, extra, rodape, mapaUrl, nivelDoTitulo = 3 }: CartaoDePartidaProps) {
   const esporte = getSportMeta(partida.court?.type as CourtType)
   const confirmados = partida._count?.participations ?? 0
   const vagas = Math.max(partida.maxPlayers - confirmados, 0)
@@ -74,7 +80,7 @@ export default function CartaoDePartida({ partida, aoAbrir, selos, extra, rodape
             <SportIcon icon={esporte.icon} fallback={esporte.iconFallback} />
           </IconeDoEsporte>
           <div>
-            <NomeDoEsporte>
+            <NomeDoEsporte as={nivelDoTitulo === 2 ? 'h2' : 'h3'}>
               <AlvoDoCartao aria-describedby={idDoQuando}>{esporte.label}</AlvoDoCartao>
             </NomeDoEsporte>
             <Quando id={idDoQuando}>

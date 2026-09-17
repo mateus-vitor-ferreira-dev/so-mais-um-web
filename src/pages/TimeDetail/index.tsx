@@ -194,7 +194,7 @@ export default function TimeDetail() {
       <Hero>
         <div className="identidade">
           <MarcaDoTime nome={dados.name} cor={dados.cor} tamanho="lg" />
-          <h1>{dados.name}</h1>
+          <h2>{dados.name}</h2>
         </div>
         <div className="meta">
           <span><span aria-hidden="true"><SportIcon icon={modalidade.icon} fallback={modalidade.iconFallback} /></span> {modalidade.label}</span>

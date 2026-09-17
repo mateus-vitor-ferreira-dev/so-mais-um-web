@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, LARGURA_DE_LEITURA } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -75,7 +75,7 @@ export const Vazio = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
 
   strong { color: ${({ theme }) => theme.colors.textPrimary}; }
-  span { color: ${({ theme }) => theme.colors.textSecondary}; }
+  span { color: ${({ theme }) => theme.colors.textSecondary}; max-width: ${LARGURA_DE_LEITURA}; justify-self: center; }
 
   button {
     padding: 0; border: 0; background: transparent; cursor: pointer;

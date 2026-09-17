@@ -339,7 +339,7 @@ export default function OwnerInventory() {
                     <ProductCard key={product.id} $low={product.estoqueBaixo}>
                       <ProductHeader>
                         <div>
-                          <h3>{product.nome}</h3>
+                          <h2>{product.nome}</h2>
                           <ProductMeta>
                             {BRL.format(product.precoVendaCentavos / 100)} ·{' '}
                             {UNIDADES.find((unit) => unit.value === product.unidade)?.label}

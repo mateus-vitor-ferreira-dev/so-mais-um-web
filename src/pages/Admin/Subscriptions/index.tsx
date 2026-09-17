@@ -16,6 +16,7 @@ import {
   Acoes, Ajuda, Aviso, Botao, BotaoConceder, BotaoRegistrar, Campo, Cancelar, Confirmar, Contagem,
   Data, Detalhe, Estado, Filtro, Filtros, Grupo, ModalAcoes, ModalCaixa, ModalFundo, ModalTexto,
   ModalTitulo, Nome, NotaDoFiltro, Numeros, RotuloDeCampo, Selecao, Selo, SemQuebra, Tabela,
+  CaixaDaTabela,
 } from './styles'
 import BuscaDeDono from './BuscaDeDono'
 import EmailDoDono from './EmailDoDono'
@@ -445,6 +446,7 @@ export default function AdminSubscriptions() {
                   : 'Nenhuma assinatura neste filtro.'}
               </Estado>
             ) : (
+              <CaixaDaTabela>
               <Tabela>
                 <thead>
                   <tr>
@@ -471,6 +473,7 @@ export default function AdminSubscriptions() {
                   ))}
                 </tbody>
               </Tabela>
+              </CaixaDaTabela>
             )}
           </div>
         </>

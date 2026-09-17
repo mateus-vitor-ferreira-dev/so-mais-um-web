@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { cartaoClicavel } from '../../styles/cartaoClicavel'
-import { ALVO_DE_TOQUE, ate, telaDeToque } from '../../styles/telas'
+import { ALVO_DE_TOQUE, ate, telaDeToque, ALVO_DE_PONTEIRO } from '../../styles/telas'
 
 export const Cartao = styled.article`
   display: flex;
@@ -110,6 +110,12 @@ export const LinkDoMapa = styled.a`
   text-decoration: none;
 
   &:hover { text-decoration: underline; }
+
+  /* Com mouse, 24px de alvo; o texto fica onde estava. */
+  display: inline-flex;
+  align-items: center;
+  min-height: ${ALVO_DE_PONTEIRO};
+  margin-block: -4px;
 
   /* Um link de 17px de altura, dentro de um cartão que também é clicável:
      errar por pouco abria a partida em vez do mapa. */

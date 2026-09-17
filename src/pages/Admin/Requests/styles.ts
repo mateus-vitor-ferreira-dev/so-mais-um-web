@@ -89,7 +89,7 @@ export const RequestHeader = styled.div`
   & > div { min-width: 0; }
 `
 
-export const RequestTitle = styled.h3`
+export const RequestTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   color: ${({ theme }) => theme.colors.textPrimary};

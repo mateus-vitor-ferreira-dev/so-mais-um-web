@@ -78,10 +78,10 @@ export default function AdminDashboard() {
     <>
       <Container>
         <KpiGrid>
-          <KpiCard $borderColor="#3b82f6"><h3>Total de Arenas</h3><p>{stats.totalArenas}</p></KpiCard>
-          <KpiCard $borderColor="#22c55e"><h3>Assinaturas Ativas</h3><p>{stats.active}</p></KpiCard>
-          <KpiCard $borderColor="#f97316"><h3>Receita Mensal</h3><p>R$&nbsp;{stats.revenue}</p></KpiCard>
-          <KpiCard $borderColor="#ef4444"><h3>Vencendo</h3><p>{stats.expiring}</p></KpiCard>
+          <KpiCard $borderColor="#3b82f6"><h2>Total de Arenas</h2><p>{stats.totalArenas}</p></KpiCard>
+          <KpiCard $borderColor="#22c55e"><h2>Assinaturas Ativas</h2><p>{stats.active}</p></KpiCard>
+          <KpiCard $borderColor="#f97316"><h2>Receita Mensal</h2><p>R$&nbsp;{stats.revenue}</p></KpiCard>
+          <KpiCard $borderColor="#ef4444"><h2>Vencendo</h2><p>{stats.expiring}</p></KpiCard>
         </KpiGrid>
 
         <Section>

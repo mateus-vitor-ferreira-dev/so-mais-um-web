@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
+export { CaixaDaTabela } from '../../../components/TabelaResponsiva'
 import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
 import type { TomDoPapel } from '../../../constants/papeis'
 
@@ -121,7 +122,9 @@ export const BotaoConvidar = styled.button`
  * usuário vira um cartão, com a troca de papel no pé; antes a tabela tinha
  * 870px, e as ações ficavam fora de uma tela de 390.
  */
-export const Tabela = styled(TabelaResponsiva)`
+/* Cartão também quando a tabela tem menos de 860px: com a barra lateral, de
+   1024 a ~1280px, seis colunas mais as ações passavam da borda (#511, computador). */
+export const Tabela = styled(TabelaResponsiva).attrs({ $cartaoAbaixoDe: 860 })`
   box-shadow: ${({ theme }) => theme.shadows.sm};
 
   td { vertical-align: middle; }

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ALVO_DE_TOQUE, ate, telaDeToque } from '../../styles/telas'
+import { ALVO_DE_TOQUE, ate, telaDeToque, ALVO_DE_PONTEIRO } from '../../styles/telas'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -48,6 +48,11 @@ export const ToggleBtn = styled.button`
 
   &:hover:not(:disabled) { color: ${({ theme }) => theme.colors.textSecondary}; }
   &:disabled { opacity: 0.35; cursor: default; }
+
+  /* 24px com mouse, o mínimo da WCAG 2.2; o ícone continua com 16. */
+  right: 6px;
+  width: ${ALVO_DE_PONTEIRO};
+  height: ${ALVO_DE_PONTEIRO};
 
   /* O olho de mostrar a senha tinha 16px: em tela de toque, ele ocupa a ponta do campo inteira. */
   ${telaDeToque} {

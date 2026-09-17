@@ -1,9 +1,10 @@
 import styled from 'styled-components'
-import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+import { ALVO_DE_TOQUE, alvoDeToque, ate, ALVO_DE_PONTEIRO } from '../../../styles/telas'
 
 export const Voltar = styled.button`
   border: 0; background: none; color: ${({ theme }) => theme.colors.textSecondary}; cursor: pointer;
   display: inline-flex; gap: 8px; align-items: center; margin-bottom: 16px;
+  min-height: ${ALVO_DE_PONTEIRO};
   /* Um texto de 16px de altura: em tela de toque, a linha inteira vira alvo. */
   ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; margin-bottom: 8px; }
 `

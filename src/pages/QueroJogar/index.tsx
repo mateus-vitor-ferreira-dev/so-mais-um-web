@@ -475,6 +475,7 @@ export default function QueroJogar() {
             return (
               <CartaoDePartida
                 key={event.id}
+                nivelDoTitulo={2}
                 partida={event}
                 aoAbrir={() => navigate(`/partida/${event.id}`)}
                 mapaUrl={buildGoogleMapsUrl(event)}
