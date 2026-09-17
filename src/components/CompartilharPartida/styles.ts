@@ -83,7 +83,7 @@ export const BotaoPrincipal = styled.button`
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   cursor: pointer;

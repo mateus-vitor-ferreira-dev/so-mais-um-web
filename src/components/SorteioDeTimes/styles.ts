@@ -116,7 +116,7 @@ export const AcoesDoModal = styled.div`
   }
   .submit {
     background: ${({ theme }) => theme.colors.primary};
-    color: white;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
 
     &:disabled {
       opacity: 0.6;

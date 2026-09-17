@@ -193,7 +193,7 @@ export const ActionBtn = styled.button`
 
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.primary};
-    color: #fff;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
   }
 
   &:disabled {
@@ -305,7 +305,7 @@ export const ModalConfirmBtn = styled.button<{ $danger?: boolean; }>`
   border-radius: ${({ theme }) => theme.radii.md};
   border: none;
   background: ${({ $danger, theme }) => $danger ? theme.colors.error : theme.colors.primary};
-  color: #fff;
+  color: ${({ $danger, theme }) => $danger ? theme.colors.textOnError : theme.colors.textOnPrimary};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   cursor: pointer;

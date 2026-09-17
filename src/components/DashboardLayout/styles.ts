@@ -164,7 +164,7 @@ export const NavItemBloqueado = styled.button`
 export const NavBadge = styled.span`
   margin-left: auto;
   background: ${({ theme }) => theme.colors.error};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnError};
   font-size: 10px;
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   min-width: 18px;
@@ -257,7 +257,7 @@ export const Avatar = styled.div`
   height: 36px;
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   display: flex;
   align-items: center;
   justify-content: center;
