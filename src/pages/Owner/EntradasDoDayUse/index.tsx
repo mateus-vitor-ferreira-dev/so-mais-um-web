@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEspacoDoEndereco } from '../../../hooks/useEspacoDoEndereco'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -58,8 +59,7 @@ const emReais = formatarReais
  */
 export default function OwnerEntradasDoDayUse() {
   const { dayUseId = '' } = useParams()
-  const [searchParams] = useSearchParams()
-  const placeId = searchParams.get('placeId') ?? ''
+  const { placeId, procurando } = useEspacoDoEndereco({ tipo: 'dayUse', id: dayUseId })
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [abrindo, setAbrindo] = useState(false)
@@ -113,10 +113,13 @@ export default function OwnerEntradasDoDayUse() {
     onError: (err) => toastErroDeApi(err),
   })
 
+  // Sem `?placeId=`, o espaço é procurado nos do dono (web#520).
+  if (procurando) return <Skeleton />
+
   if (!placeId) {
     return (
       <Vazio>
-        <p>Faltou saber de qual espaço é este day use.</p>
+        <p>Não achamos este day use nos seus espaços.</p>
         <Botao type="button" onClick={() => navigate('/owner/day-uses')}>Voltar para os day uses</Botao>
       </Vazio>
     )

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEspacoDoEndereco } from '../../../hooks/useEspacoDoEndereco'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -60,8 +61,7 @@ const data = (iso: string) =>
  */
 export default function OwnerAlunos() {
   const { turmaId = '' } = useParams()
-  const [searchParams] = useSearchParams()
-  const placeId = searchParams.get('placeId') ?? ''
+  const { placeId, procurando } = useEspacoDoEndereco({ tipo: 'turma', id: turmaId })
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [comHistorico, setComHistorico] = useState(false)
@@ -222,12 +222,14 @@ export default function OwnerAlunos() {
         </Topo>
 
         {/* Ver o comentário em `Owner/Turmas`: consulta desabilitada fica
-            `isPending` para sempre. Aqui o `placeId` vem da query string, e
-            quem abre a URL sem ele ficava olhando esqueleto. */}
-        {!placeId || !turmaId ? (
+            `isPending` para sempre. Sem `?placeId=`, o espaço é procurado nos
+            do dono (web#520). */}
+        {procurando ? (
+          <Lista aria-busy><Skeleton height="56px" /><Skeleton height="56px" /></Lista>
+        ) : !placeId || !turmaId ? (
           <Erro role="alert">
-            Falta o espaço no endereço. Volte para <strong>Turmas</strong> e abra
-            a turma por lá.
+            Não achamos esta turma nos seus espaços. Volte para <strong>Turmas</strong> e
+            abra a turma por lá.
           </Erro>
         ) : matriculas.isPending ? (
           <Lista aria-busy><Skeleton height="56px" /><Skeleton height="56px" /></Lista>
