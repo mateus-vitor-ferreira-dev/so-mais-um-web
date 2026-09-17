@@ -23,8 +23,8 @@ export const StatsCard = styled.div`
       font-size: ${({ theme }) => theme.fontSizes['3xl']};
       margin-bottom: 4px;
     }
+    /* Sem opacidade: o textOnPrimary a 80% dava 4,38:1 sobre o verde (axe, #511). */
     p {
-      opacity: 0.8;
       font-size: ${({ theme }) => theme.fontSizes.sm};
     }
   }
@@ -36,7 +36,7 @@ export const StatsCard = styled.div`
       flex: 1 1 0;
       min-width: 0;
       h2 { font-size: ${({ theme }) => theme.fontSizes['2xl']}; }
-      p { font-size: ${({ theme }) => theme.fontSizes.xs}; opacity: 0.9; }
+      p { font-size: ${({ theme }) => theme.fontSizes.xs}; }
     }
   }
 `
