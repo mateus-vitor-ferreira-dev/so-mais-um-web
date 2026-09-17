@@ -32,12 +32,14 @@ export const Badge = styled.span`
   position: absolute;
   top: -4px;
   right: -4px;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 8px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
   background: ${({ theme }) => theme.colors.error};
-  color: #fff;
-  font-size: 10px;
+  color: ${({ theme }) => theme.colors.textOnError};
+  /* 12px, o piso de texto: com 10px e o branco sobre o vermelho do escuro, o
+     número era o que menos se lia no topo (#511). */
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: 700;
   display: flex;
   align-items: center;
