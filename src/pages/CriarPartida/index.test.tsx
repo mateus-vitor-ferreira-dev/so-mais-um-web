@@ -147,6 +147,16 @@ describe('CriarPartida — chegar ao formulário', () => {
       await screen.findByText(/nenhum estabelecimento disponível para essa modalidade/i),
     ).toBeInTheDocument()
   })
+  it('o teclado chega no estabelecimento: Tab até o nome e Enter escolhe (#511)', async () => {
+    const { user } = renderWithProviders(<CriarPartida />)
+    await user.click(await screen.findByRole('button', { name: /Society/ }))
+
+    const estabelecimento = await screen.findByRole('button', { name: 'Arena Sul' })
+    estabelecimento.focus()
+    await user.keyboard('{Enter}')
+
+    expect(await screen.findByText(/detalhes da partida em/i)).toBeInTheDocument()
+  })
 })
 
 describe('CriarPartida — validação do formulário', () => {

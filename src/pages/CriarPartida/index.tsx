@@ -1,4 +1,5 @@
 import { LandPlot, PartyPopper, TriangleAlert } from 'lucide-react'
+import { AlvoDoCartao } from '../../styles/cartaoClicavel'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -389,7 +390,7 @@ export default function CriarPartida() {
                         const count = sportCourts.filter(c => c.place?.id === place.id).length
                         return (
                           <PlaceCard key={place.id} onClick={() => handleSelectPlace(place)}>
-                            <PlaceName>{place.name}</PlaceName>
+                            <PlaceName><AlvoDoCartao>{place.name}</AlvoDoCartao></PlaceName>
                             <PlaceAddress>
                               {place.neighborhood && `${place.neighborhood} · `}{place.city}
                             </PlaceAddress>
@@ -412,7 +413,9 @@ export default function CriarPartida() {
                         $selected={selectedCourt?.id === court.id}
                         onClick={() => { setSelectedCourt(court); setStep(1) }}
                       >
-                        <CourtName>{court.name}</CourtName>
+                        <CourtName>
+                          <AlvoDoCartao aria-pressed={selectedCourt?.id === court.id}>{court.name}</AlvoDoCartao>
+                        </CourtName>
                         <CourtInfo>
                           {court.place?.name && <div>{court.place.name}</div>}
                           {court.place?.neighborhood && court.place?.city && (

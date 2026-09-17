@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { cartaoClicavel } from '../../styles/cartaoClicavel'
 import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /**
@@ -104,14 +105,12 @@ export const CourtCard = styled.div<{ $selected?: boolean; }>`
     $selected ? theme.colors.primary : theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.md};
   padding: 14px;
-  cursor: pointer;
   background: ${({ $selected, theme }) =>
     $selected ? theme.colors.primarySubtle : theme.colors.bgCard};
-  transition: all 0.15s;
 
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
+  /* O cartão inteiro é o alvo do toque; o nome, um AlvoDoCartao, é por onde o
+     teclado chega nele. Era só \`div\` com clique (#511). */
+  ${cartaoClicavel}
 `
 
 export const CourtName = styled.div`
@@ -381,14 +380,10 @@ export const PlaceCard = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.md};
   padding: 16px;
-  cursor: pointer;
   background: ${({ theme }) => theme.colors.bgCard};
-  transition: all 0.15s;
 
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.primarySubtle};
-  }
+  /* Mesmo arranjo do CourtCard: o teclado entra pelo nome (#511). */
+  ${cartaoClicavel}
 `
 
 export const PlaceName = styled.div`
