@@ -6,8 +6,6 @@ export type TomDoStatus = 'aberta' | 'cheia' | 'fim' | 'cancelada'
 export interface RotuloDeStatus {
   label: string
   tom: TomDoStatus
-  /** Bolinha colorida, para a tela que mostra o status por extenso. */
-  emoji: string
 }
 
 /**
@@ -70,13 +68,13 @@ export interface RotuloDeStatus {
  * necessidade. O que precisava sair de lá era o **vocabulário**, e saiu.
  */
 export const STATUS_DA_PARTIDA: Record<PartidaStatus, RotuloDeStatus> = {
-  WAITING:   { label: 'Aguardando', tom: 'aberta',    emoji: '🟢' },
-  FULL:      { label: 'Lotada',     tom: 'cheia',     emoji: '🟡' },
-  FINISHED:  { label: 'Finalizada', tom: 'fim',       emoji: '🔵' },
-  CANCELLED: { label: 'Cancelada',  tom: 'cancelada', emoji: '🔴' },
+  WAITING:   { label: 'Aguardando', tom: 'aberta' },
+  FULL:      { label: 'Lotada',     tom: 'cheia' },
+  FINISHED:  { label: 'Finalizada', tom: 'fim' },
+  CANCELLED: { label: 'Cancelada',  tom: 'cancelada' },
 }
 
 /** O rótulo de um status, com desfecho seguro para valor que a api ainda não tinha. */
 export function rotuloDoStatus(status: PartidaStatus | string): RotuloDeStatus {
-  return STATUS_DA_PARTIDA[status as PartidaStatus] ?? { label: status, tom: 'fim', emoji: '⚪' }
+  return STATUS_DA_PARTIDA[status as PartidaStatus] ?? { label: status, tom: 'fim' }
 }

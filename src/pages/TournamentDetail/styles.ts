@@ -80,13 +80,13 @@ export const StatusBadge = styled.span<{ $color?: BadgeTone }>`
   }};
   color: ${({ $color, theme }) => {
     const map: Record<BadgeTone, string> = {
-      info:    theme.colors.info,
+      info:    theme.colors.infoText,
       warning: theme.colors.warningText,
       success: theme.colors.success,
       error:   theme.colors.error,
-      default: theme.colors.textMuted,
+      default: theme.colors.textSecondary,
     }
-    return ($color && map[$color]) || theme.colors.textMuted
+    return ($color && map[$color]) || theme.colors.textSecondary
   }};
 `
 

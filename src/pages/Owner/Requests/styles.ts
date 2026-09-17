@@ -1,4 +1,14 @@
-import styled from 'styled-components'
+import styled, { type DefaultTheme } from 'styled-components'
+import { alvoDeToque } from '../../../styles/telas'
+
+export type TomDaSolicitacao = 'espera' | 'ok' | 'erro'
+
+/** Fundo, texto e faixa de cada tom: o texto passa dos 4,5:1 sobre o fundo nos dois temas. */
+const TONS = (theme: DefaultTheme) => ({
+  espera: { fundo: theme.colors.warningLight, texto: theme.colors.warningText, faixa: theme.colors.warning },
+  ok:     { fundo: theme.colors.primaryLight, texto: theme.colors.primaryDark, faixa: theme.colors.success },
+  erro:   { fundo: theme.colors.errorLight,   texto: theme.colors.error,       faixa: theme.colors.error },
+})
 
 export const RequestList = styled.div`
   display: flex;
@@ -16,11 +26,11 @@ export const RequestCard = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.sm};
 `
 
-export const RequestAccent = styled.div`
+export const RequestAccent = styled.div<{ $tom: TomDaSolicitacao }>`
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 4px;
-  background: ${({ color }) => color};
+  background: ${({ theme, $tom }) => TONS(theme)[$tom].faixa};
 `
 
 export const RequestHeader = styled.div`
@@ -38,9 +48,13 @@ export const RequestTitle = styled.h3`
   margin: 0 0 4px;
 `
 
-export const RequestMeta = styled.p`
+export const RequestMeta = styled.p<{ $tom?: TomDaSolicitacao }>`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ theme }) => theme.colors.textMuted};
+  font-weight: ${({ $tom, theme }) => ($tom === 'ok' ? theme.fontWeights.semibold : theme.fontWeights.regular)};
+  color: ${({ $tom, theme }) => ($tom === 'erro' ? theme.colors.error : $tom === 'ok' ? theme.colors.primaryDark : $tom === 'espera' ? theme.colors.warningText : theme.colors.textMuted)};
   margin: 0;
 `
 
@@ -64,15 +78,15 @@ export const RequestSentAt = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
 `
 
-export const StatusBadge = styled.span<{ bg?: string; }>`
+export const StatusBadge = styled.span<{ $tom: TomDaSolicitacao }>`
   display: inline-flex;
   align-items: center;
   padding: 4px 12px;
   border-radius: ${({ theme }) => theme.radii.full};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
-  background: ${({ bg }) => bg};
-  color: ${({ color }) => color};
+  background: ${({ theme, $tom }) => TONS(theme)[$tom].fundo};
+  color: ${({ theme, $tom }) => TONS(theme)[$tom].texto};
   white-space: nowrap;
   flex-shrink: 0;
 `
@@ -103,6 +117,8 @@ export const NewBtn = styled.button`
   /* Sem assinatura em dia o botão precisa parecer desabilitado, não só deixar
      de responder. */
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  ${alvoDeToque}
 `
 
 // ── Modal ─────────────────────────────────────────────────────────────────────

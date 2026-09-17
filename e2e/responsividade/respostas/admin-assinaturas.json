@@ -1,26 +1,6 @@
 {
-  "gravadoEm": "2026-09-17T14:22:50.949Z",
+  "gravadoEm": "2026-09-17T14:51:59.630Z",
   "respostas": {
-    "GET /admin/payments": {
-      "status": 200,
-      "corpo": {
-        "success": true,
-        "data": []
-      }
-    },
-    "GET /admin/stats": {
-      "status": 200,
-      "corpo": {
-        "success": true,
-        "data": {
-          "totalArenas": 37,
-          "active": 8,
-          "emTeste": 0,
-          "revenue": "1919,20",
-          "expiring": 3
-        }
-      }
-    },
     "GET /admin/subscriptions": {
       "status": 200,
       "corpo": {
@@ -225,6 +205,13 @@
             "registradaEm": null
           }
         ]
+      }
+    },
+    "GET /admin/subscriptions/cortesia/convites": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": []
       }
     },
     "GET /admin/suporte": {

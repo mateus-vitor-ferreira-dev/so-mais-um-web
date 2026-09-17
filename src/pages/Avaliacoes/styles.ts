@@ -134,7 +134,7 @@ export const ReviewHeader = styled.div`
 export const TagBadge = styled.span`
   display: inline-block;
   background: ${({ theme }) => theme.colors.infoLight};
-  color: ${({ theme }) => theme.colors.info};
+  color: ${({ theme }) => theme.colors.infoText};
   border-radius: ${({ theme }) => theme.radii.full};
   padding: 2px 10px;
   font-size: ${({ theme }) => theme.fontSizes.xs};

@@ -9,6 +9,7 @@
 import { describe, it, expect } from 'vitest'
 import { renderWithProviders, screen } from '../../test/render'
 import RoleBadge from './index'
+import { lightTheme } from '../../styles/theme'
 
 describe('<RoleBadge />', () => {
   it('mostra "Admin" para o papel ADMIN', () => {
@@ -26,8 +27,8 @@ describe('<RoleBadge />', () => {
     expect(screen.getByText('Usuário')).toBeInTheDocument()
   })
 
-  it('aplica a cor do papel no texto', () => {
+  it('aplica a cor do papel no texto, pelo token do tema', () => {
     renderWithProviders(<RoleBadge role="ADMIN" />)
-    expect(screen.getByText('Admin')).toHaveStyle({ color: '#d97706' })
+    expect(screen.getByText('Admin')).toHaveStyle({ color: lightTheme.colors.warningText })
   })
 })

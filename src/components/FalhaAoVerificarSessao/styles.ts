@@ -39,7 +39,7 @@ export const Tentar = styled.button`
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   font-weight: 700;
   cursor: pointer;
 

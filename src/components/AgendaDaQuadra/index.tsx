@@ -1,3 +1,4 @@
+import { Ban, TriangleAlert } from 'lucide-react'
 import { faixaDeHorario } from '../../utils/agenda'
 import { motivosPorExtenso, riscoDaOcupacao } from '../../utils/previsao'
 import FaixaDoTempo from '../FaixaDoTempo'
@@ -92,7 +93,7 @@ export function AgendaDaQuadra({
       */}
       {erro && (
         <Aviso $tom="atencao">
-          <span aria-hidden="true">⚠️</span>
+          <TriangleAlert size={16} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
           <span>
             {mensagemDeErro}
           </span>
@@ -123,7 +124,7 @@ export function AgendaDaQuadra({
 
       {conflito && (
         <Aviso $tom="erro" role="alert">
-          <span aria-hidden="true">⛔</span>
+          <Ban size={16} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
           <span>
             O horário escolhido cruza com {conflito.descricao},{' '}
             {faixaDeHorario(conflito)}. Escolha outro horário ou outra quadra.

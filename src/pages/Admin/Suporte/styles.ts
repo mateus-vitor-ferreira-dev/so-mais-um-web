@@ -1,8 +1,6 @@
 import styled, { css } from 'styled-components'
 import { Link, NavLink } from 'react-router-dom'
-
-/** Abaixo disto, a lista e a conversa aparecem uma de cada vez. */
-const CELULAR = '760px'
+import { alvoDeToque, ate } from '../../../styles/telas'
 
 export const Layout = styled.div<{ $comConversa: boolean }>`
   display: grid;
@@ -10,7 +8,8 @@ export const Layout = styled.div<{ $comConversa: boolean }>`
   gap: ${({ theme }) => theme.spacing[4]};
   align-items: start;
 
-  @media (max-width: ${CELULAR}) {
+  /* Até o tablet, a lista e a conversa aparecem uma de cada vez. */
+  ${ate.tablet} {
     grid-template-columns: minmax(0, 1fr);
 
     /* Uma de cada vez: com conversa aberta, some a lista; sem, some o painel. */
@@ -37,6 +36,13 @@ export const Caixa = styled.nav`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.bgCard};
+
+  /* Sozinha na tela, a lista rola com a página: uma rolagem dentro da outra
+     prende o dedo na caixa e esconde o fim da página. */
+  ${ate.tablet} {
+    max-height: none;
+    overflow-y: visible;
+  }
 `
 
 export const Carregando = styled.p`
@@ -130,9 +136,11 @@ export const Voltar = styled(Link)`
   font-weight: ${({ theme }) => theme.fontWeights.semibold};
   text-decoration: none;
 
-  @media (max-width: ${CELULAR}) {
+  ${ate.tablet} {
     display: inline-flex;
   }
+
+  ${alvoDeToque}
 `
 
 export const Dono = styled.header`

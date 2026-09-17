@@ -125,7 +125,7 @@ function preenche(container: HTMLElement) {
     data: campoData(container),
     vagas: screen.getByPlaceholderText('Ex: 10'),
     valor: screen.getByPlaceholderText('Ex: 100.00'),
-    pix: screen.getByPlaceholderText(/CPF, e-mail, telefone/i),
+    pix: screen.getByLabelText(/Chave Pix/),
     enviar: screen.getByRole('button', { name: /criar partida/i }),
   }
 }
@@ -146,6 +146,16 @@ describe('CriarPartida — chegar ao formulário', () => {
     expect(
       await screen.findByText(/nenhum estabelecimento disponível para essa modalidade/i),
     ).toBeInTheDocument()
+  })
+  it('o teclado chega no estabelecimento: Tab até o nome e Enter escolhe (#511)', async () => {
+    const { user } = renderWithProviders(<CriarPartida />)
+    await user.click(await screen.findByRole('button', { name: /Society/ }))
+
+    const estabelecimento = await screen.findByRole('button', { name: 'Arena Sul' })
+    estabelecimento.focus()
+    await user.keyboard('{Enter}')
+
+    expect(await screen.findByText(/detalhes da partida em/i)).toBeInTheDocument()
   })
 })
 

@@ -1,0 +1,13 @@
+{
+  "rota": "/owner/requests",
+  "larguras": {
+    "360": {
+      "vazando": [],
+      "alvos": []
+    },
+    "390": {
+      "vazando": [],
+      "alvos": []
+    }
+  }
+}

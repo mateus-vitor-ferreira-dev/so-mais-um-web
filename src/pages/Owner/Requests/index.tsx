@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { CircleCheck, Hourglass } from 'lucide-react'
 import { usePageHeader, PageActions } from '../../../components/DashboardLayout/pageHeader'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -24,8 +25,9 @@ import EmptyState from '../../../components/EmptyState'
 import { dataCurta } from '../../../utils/datas'
 
 const STATUS_LABEL = { PENDING: 'Aguardando', APPROVED: 'Aprovada', REJECTED: 'Rejeitada' }
-const STATUS_COLOR = { PENDING: '#d97706', APPROVED: '#16a34a', REJECTED: '#dc2626' }
-const STATUS_BG    = { PENDING: '#fef3c7', APPROVED: '#dcfce7', REJECTED: '#fee2e2' }
+/* O tom de cada status, por token (#511): o #16a34a do "Aprovada" dava 3,00:1
+   sobre o próprio fundo, e o #d97706 do "Em análise", 3,19. */
+const STATUS_TOM = { PENDING: 'espera', APPROVED: 'ok', REJECTED: 'erro' } as const
 
 /**
  * Espelha o `createPlaceRequestSchema` da API, campo a campo.
@@ -180,7 +182,7 @@ export default function OwnerRequests() {
       <RequestList>
         {requests.map((req) => (
           <RequestCard key={req.id}>
-            <RequestAccent color={STATUS_COLOR[req.status]} />
+            <RequestAccent $tom={STATUS_TOM[req.status]} />
 
             <RequestHeader>
               <div>
@@ -195,7 +197,7 @@ export default function OwnerRequests() {
                   {req.street && ` · ${req.street}, ${req.number}`}
                 </RequestMeta>
               </div>
-              <StatusBadge bg={STATUS_BG[req.status]} color={STATUS_COLOR[req.status]}>
+              <StatusBadge $tom={STATUS_TOM[req.status]}>
                 {STATUS_LABEL[req.status]}
               </StatusBadge>
             </RequestHeader>
@@ -207,7 +209,7 @@ export default function OwnerRequests() {
               * em services/placeRequests.reject.)
               */}
             {req.status === 'REJECTED' && req.adminNote && (
-              <RequestMeta style={{ color: '#b91c1c' }}>
+              <RequestMeta $tom="erro">
                 Motivo: {req.adminNote}
               </RequestMeta>
             )}
@@ -217,13 +219,13 @@ export default function OwnerRequests() {
                 Enviada em {dataCurta(req.createdAt)}
               </RequestSentAt>
               {req.status === 'APPROVED' && (
-                <RequestMeta style={{ color: '#16a34a', fontWeight: 600 }}>
-                  ✓ Disponível em Meus Estabelecimentos
+                <RequestMeta $tom="ok">
+                  <CircleCheck size={14} aria-hidden="true" /> Disponível em Meus Estabelecimentos
                 </RequestMeta>
               )}
               {req.status === 'PENDING' && (
-                <RequestMeta style={{ color: '#d97706' }}>
-                  ⏳ Em análise pelo Admin
+                <RequestMeta $tom="espera">
+                  <Hourglass size={14} aria-hidden="true" /> Em análise pelo Admin
                 </RequestMeta>
               )}
             </RequestFooter>

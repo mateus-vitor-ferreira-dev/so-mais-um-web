@@ -109,7 +109,9 @@ export const lightTheme = {
      */
     textPrimary:   '#111827',
     textSecondary: '#4b5563',
-    textMuted:     '#6b7280',
+    /* #6b7280 até a #511: passava no branco e dava 4,39 sobre o `borderLight`,
+       o fundo dos selos neutros (Rascunho, contagem dos filtros). */
+    textMuted:     '#667085',
     textOnPrimary: '#ffffff',
 
     border:        '#e5e7eb',
@@ -135,6 +137,11 @@ export const lightTheme = {
     errorLight:    '#fee2e2',
     info:          '#2563eb',
     infoLight:     '#dbeafe',
+    /* O `info` dá 4,24 sobre o próprio `infoLight`: passa como texto solto, e
+       não dentro do selo azul (#511). Mesmo papel do `warningText`. */
+    infoText:      '#1d4ed8',
+    /* O que se lê sobre o `error` cheio, como o número do sino. */
+    textOnError:   '#ffffff',
 
     /*
      * O roxo entrou com a cortesia (api#551, web#456), e a razão é que ela
@@ -193,8 +200,9 @@ export const darkTheme = {
     textSecondary: '#a0a0a0',
     /* 2,97:1 contra o bgCard antes da #435 — abaixo até do piso de 3:1 que
        vale para elemento não-texto. Aqui o `textSecondary` já passava com
-       folga, então só este subiu. */
-    textMuted:     '#8a8a8a',
+       folga, então só este subiu. #8a8a8a até a #511, com 4,33 sobre o
+       `borderLight` dos selos neutros. */
+    textMuted:     '#909090',
     /*
      * Quase preto, e não branco (#436).
      *
@@ -221,6 +229,9 @@ export const darkTheme = {
     errorLight:    '#1a0808',
     info:          '#93c5fd',
     infoLight:     '#080f1c',
+    infoText:      '#93c5fd',
+    /* O branco sobre o vermelho claro do escuro dava 2,77 (#511). */
+    textOnError:   '#1a0808',
 
     /* Mesma inversão dos outros semânticos no escuro: o tom vivo vira o texto e
        o fundo vira quase preto. */

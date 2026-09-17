@@ -30,16 +30,21 @@ export const LOGINS: Record<Exclude<Sessao, 'visitante'>, { email: string; senha
 export const TELAS: Tela[] = [
   { id: 'admin-usuarios', sessao: 'admin', rota: '/admin/users' },
   { id: 'admin-visao-geral', sessao: 'admin', rota: '/admin/dashboard' },
+  { id: 'admin-assinaturas', sessao: 'admin', rota: '/admin/subscriptions' },
+  { id: 'admin-suporte', sessao: 'admin', rota: '/admin/suporte' },
 
   { id: 'dono-visao-geral', sessao: 'dono', rota: '/owner/dashboard' },
   { id: 'dono-turmas', sessao: 'dono', rota: '/owner/turmas' },
   { id: 'dono-quadras', sessao: 'dono', rota: '/owner/places/cmu2qp3bk004vpk1xajo58ucp/courts' },
   { id: 'dono-estoque', sessao: 'dono', rota: '/owner/inventory' },
+  { id: 'dono-solicitacoes', sessao: 'dono', rota: '/owner/requests' },
 
   { id: 'jogador-inicio', sessao: 'jogador', rota: '/home' },
   { id: 'jogador-minhas-partidas', sessao: 'jogador', rota: '/minhas-partidas' },
   { id: 'jogador-torneios', sessao: 'jogador', rota: '/torneios' },
   { id: 'jogador-perfil', sessao: 'jogador', rota: '/perfil' },
+  { id: 'jogador-criar-partida', sessao: 'jogador', rota: '/criar-partida' },
+  { id: 'jogador-avaliacoes', sessao: 'jogador', rota: '/avaliacoes' },
 
   { id: 'visitante-login', sessao: 'visitante', rota: '/login' },
   { id: 'visitante-cadastro', sessao: 'visitante', rota: '/register' },

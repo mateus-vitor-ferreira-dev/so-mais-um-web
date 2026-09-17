@@ -92,6 +92,9 @@ export const BenefitItem = styled.li`
 /* ── Coluna direita (formulário) ─────────────────────────────────────────────── */
 export const FormCol = styled.main`
   flex: 1;
+  /* Mesmo caso do AuthLayout: sem isto o item flex não encolhe abaixo dos
+     campos, e a 360px o formulário passava da borda (#511). */
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,6 +105,7 @@ export const FormCol = styled.main`
 export const Card = styled.div`
   width: 100%;
   max-width: 420px;
+  min-width: 0;
 `
 
 export const CardHead = styled.div`

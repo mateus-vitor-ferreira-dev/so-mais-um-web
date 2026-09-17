@@ -1,0 +1,362 @@
+{
+  "gravadoEm": "2026-09-17T14:52:18.527Z",
+  "respostas": {
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+          "name": "Mateus Vitor",
+          "email": "mateus@player.com",
+          "avatarUrl": null,
+          "role": "PLAYER",
+          "badge": "CRAQUE",
+          "badges": [
+            "CRAQUE",
+            "CONFIAVEL",
+            "ORGANIZADOR_NATO"
+          ],
+          "createdAt": "2026-09-15T14:00:52.715Z",
+          "phone": null,
+          "pixKey": "mateus@player.com",
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 13,
+            "participations": 18,
+            "reviewsReceived": 2
+          },
+          "stats": {
+            "averageStars": 4.5,
+            "totalReviews": 2,
+            "totalPartidas": 18,
+            "tags": [
+              {
+                "tag": "FAIR_PLAY",
+                "count": 1
+              },
+              {
+                "tag": "BOA_COMUNICACAO",
+                "count": 1
+              }
+            ]
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [
+            {
+              "id": "cmu5ljnlh0006qt1xqrxm9ejl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0095pk1x1102s62p",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-17T14:00:00.053Z"
+            },
+            {
+              "id": "cmu2st420000bca1xxu3bp37e",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.072Z"
+            },
+            {
+              "id": "cmu2st41t0007ca1xhosc2g7g",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 9h, na quadra Beach Tennis (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.065Z"
+            },
+            {
+              "id": "cmu2r9arw000gl81xl1i8qbfl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_LEFT",
+              "title": "Jogador saiu da partida",
+              "body": "Mateus Vitor saiu da sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:36.044Z"
+            },
+            {
+              "id": "cmu2r94l4000fl81x4owpvu0i",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Partida cheia!",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:28.024Z"
+            },
+            {
+              "id": "cmu2qp3ja00hvpk1x2zrk8cy5",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_JOINED",
+              "title": "Jogador entrou na partida",
+              "body": "Gabriel Cantanhede entrou na sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hwpk1xe6yojnt0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Sua partida lotou",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hupk1xtpmbosc0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "TEAM_INVITE",
+              "title": "Convite para um time",
+              "body": "Fernanda Alves chamou você para o Areia Nossa",
+              "data": {
+                "teamId": "cmu2qp3hr00enpk1xjnbpx7l7"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hxpk1xf4tld757",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de tempestade para sua partida",
+              "body": "Previsão de tempestade para sua partida amanhã às 19h, na quadra Society (45% de chance).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3iu00hopk1x0yj2r15r",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            }
+          ],
+          "unreadCount": 9
+        }
+      }
+    },
+    "GET /users/cmu2qp2wa0010pk1xxtyo1zy5/reviews": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "summary": {
+            "averageStars": 4.5,
+            "totalReviews": 2,
+            "tags": [
+              {
+                "tag": "FAIR_PLAY",
+                "count": 1
+              },
+              {
+                "tag": "BOA_COMUNICACAO",
+                "count": 1
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "id": "cmu2qp3i700gbpk1xnso33aat",
+              "matchId": "cmu2qp3hy00f3pk1x5ypdh44n",
+              "reviewerId": "cmu2qp2wb0016pk1xnlxhi3fz",
+              "reviewedId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "stars": 5,
+              "tag": "BOA_COMUNICACAO",
+              "comment": null,
+              "createdAt": "2026-09-15T14:00:53.503Z",
+              "reviewer": {
+                "id": "cmu2qp2wb0016pk1xnlxhi3fz",
+                "name": "João Henrique",
+                "avatarUrl": null
+              },
+              "match": {
+                "id": "cmu2qp3hy00f3pk1x5ypdh44n",
+                "date": "2026-09-02T00:00:00.000Z",
+                "court": {
+                  "id": "cmu2qp3c7006ipk1ximp5yk29",
+                  "name": "Futsal Coberto",
+                  "place": {
+                    "id": "cmu2qp3bl0052pk1xashopn01",
+                    "name": "Associação Olímpica de Lavras"
+                  }
+                }
+              }
+            },
+            {
+              "id": "cmu2qp3hf00eapk1x7vm8mlmq",
+              "matchId": "cmu2qp3dr009epk1xec85q4vj",
+              "reviewerId": "cmu2qp2wb0017pk1xjqls5sx7",
+              "reviewedId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "stars": 4,
+              "tag": "FAIR_PLAY",
+              "comment": null,
+              "createdAt": "2026-09-15T14:00:53.476Z",
+              "reviewer": {
+                "id": "cmu2qp2wb0017pk1xjqls5sx7",
+                "name": "Fernanda Alves",
+                "avatarUrl": null
+              },
+              "match": {
+                "id": "cmu2qp3dr009epk1xec85q4vj",
+                "date": "2026-09-10T12:00:00.000Z",
+                "court": {
+                  "id": "cmu2qp3bw005ypk1x80q9dyls",
+                  "name": "Beach Tennis 1",
+                  "place": {
+                    "id": "cmu2qp3bk004wpk1x2phsdjwo",
+                    "name": "Arena Beach Lavras"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "GET /users/cmu2qp2wa0010pk1xxtyo1zy5/reviews/given": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3i700g9pk1xs7rtbiye",
+            "matchId": "cmu2qp3hy00f3pk1x5ypdh44n",
+            "reviewerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "reviewedId": "cmu2qp2wb0016pk1xnlxhi3fz",
+            "stars": 5,
+            "tag": "PONTUAL",
+            "comment": null,
+            "createdAt": "2026-09-15T14:00:53.503Z",
+            "reviewed": {
+              "id": "cmu2qp2wb0016pk1xnlxhi3fz",
+              "name": "João Henrique",
+              "avatarUrl": null,
+              "badge": "CRAQUE",
+              "badges": [
+                "CRAQUE",
+                "CONFIAVEL"
+              ]
+            },
+            "match": {
+              "id": "cmu2qp3hy00f3pk1x5ypdh44n",
+              "date": "2026-09-02T00:00:00.000Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras"
+                }
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3i700gapk1xbgiaq51a",
+            "matchId": "cmu2qp3hy00f3pk1x5ypdh44n",
+            "reviewerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "reviewedId": "cmu2qp2wa0011pk1xlqx6z5q6",
+            "stars": 5,
+            "tag": "CRAQUE_DA_PARTIDA",
+            "comment": null,
+            "createdAt": "2026-09-15T14:00:53.503Z",
+            "reviewed": {
+              "id": "cmu2qp2wa0011pk1xlqx6z5q6",
+              "name": "Gabriel Cantanhede",
+              "avatarUrl": null,
+              "badge": "CRAQUE",
+              "badges": [
+                "CRAQUE"
+              ]
+            },
+            "match": {
+              "id": "cmu2qp3hy00f3pk1x5ypdh44n",
+              "date": "2026-09-02T00:00:00.000Z",
+              "court": {
+                "id": "cmu2qp3c7006ipk1ximp5yk29",
+                "name": "Futsal Coberto",
+                "place": {
+                  "id": "cmu2qp3bl0052pk1xashopn01",
+                  "name": "Associação Olímpica de Lavras"
+                }
+              }
+            }
+          },
+          {
+            "id": "cmu2qp3hg00edpk1xevpijj4j",
+            "matchId": "cmu2qp3dr009epk1xec85q4vj",
+            "reviewerId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "reviewedId": "cmu2qp2wa0011pk1xlqx6z5q6",
+            "stars": 5,
+            "tag": "BOA_COMUNICACAO",
+            "comment": null,
+            "createdAt": "2026-09-15T14:00:53.476Z",
+            "reviewed": {
+              "id": "cmu2qp2wa0011pk1xlqx6z5q6",
+              "name": "Gabriel Cantanhede",
+              "avatarUrl": null,
+              "badge": "CRAQUE",
+              "badges": [
+                "CRAQUE"
+              ]
+            },
+            "match": {
+              "id": "cmu2qp3dr009epk1xec85q4vj",
+              "date": "2026-09-10T12:00:00.000Z",
+              "court": {
+                "id": "cmu2qp3bw005ypk1x80q9dyls",
+                "name": "Beach Tennis 1",
+                "place": {
+                  "id": "cmu2qp3bk004wpk1x2phsdjwo",
+                  "name": "Arena Beach Lavras"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
