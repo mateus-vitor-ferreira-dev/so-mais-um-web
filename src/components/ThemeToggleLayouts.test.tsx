@@ -11,7 +11,7 @@ describe('seletor de tema dos layouts', () => {
   it('alterna o tema no painel administrativo', async () => {
     const { user } = renderWithProviders(
       <Routes>
-        <Route element={<DashboardLayout navItems={[]} tagline="Painel" accent="#3baa34" />}>
+        <Route element={<DashboardLayout navItems={[]} tagline="Painel" accent="primary" />}>
           <Route index element={<p>Conteúdo</p>} />
         </Route>
       </Routes>,

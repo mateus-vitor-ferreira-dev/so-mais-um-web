@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { alvoDeToque } from '../../styles/telas'
+import { alvoDeToque, ate } from '../../styles/telas'
 
 /**
  * Estilos do sorteio de times.
@@ -31,6 +31,11 @@ export const ModalContent = styled.div`
   max-width: 640px;
   max-height: 90vh;
   overflow-y: auto;
+
+  ${ate.celular} {
+    width: calc(100% - ${({ theme }) => theme.spacing[6]});
+    padding: ${({ theme }) => theme.spacing[4]};
+  }
 
   h2 {
     margin-bottom: ${({ theme }) => theme.spacing[2]};
@@ -111,7 +116,7 @@ export const AcoesDoModal = styled.div`
   }
   .submit {
     background: ${({ theme }) => theme.colors.primary};
-    color: white;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
 
     &:disabled {
       opacity: 0.6;
@@ -160,7 +165,7 @@ export const TeamVersus = styled.div`
   /* Abaixo de 480px os dois cartões espremeriam o nome dos jogadores. O ✕ vai
      para o meio da coluna, entre um time e outro, e o confronto se lê de cima
      para baixo. */
-  @media (max-width: 480px) {
+  ${ate.celular} {
     grid-template-columns: 1fr;
   }
 `
@@ -262,7 +267,7 @@ export const AcoesDoResultado = styled.div`
   /* Abaixo de 480px os dois rótulos não cabem lado a lado sem quebrar linha
      no meio da palavra. Empilhados, "Fechar" continua sendo o de baixo — o
      último da leitura, como já era quando ele era o único. */
-  @media (max-width: 480px) {
+  ${ate.celular} {
     flex-direction: column;
   }
 `

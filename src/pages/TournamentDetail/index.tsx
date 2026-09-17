@@ -20,7 +20,7 @@ import {
   Body, InfoGrid, InfoItem, InfoIcon, InfoLabel, InfoValue,
   Divider, FormatCard, FormatIcon, FormatDesc, FormatHint,
   DivisionsSection, SectionTitle,
-  BracketSection,
+  BracketSection, BracketToggle,
 } from './styles'
 import { formatarReais } from '../../utils/formatCurrency'
 import type { BadgeTone } from './styles'
@@ -256,13 +256,14 @@ export default function TournamentDetail() {
           {/* Chaveamento */}
           <Divider />
           <BracketSection>
-            <SectionTitle
-              style={{ cursor: 'pointer', userSelect: 'none' }}
+            <BracketToggle
+              type="button"
+              aria-expanded={showBracket}
               onClick={() => setShowBracket(v => !v)}
             >
               <Trophy size={16} aria-hidden /> Chaveamento
               {showBracket ? <ChevronUp size={16} aria-hidden /> : <ChevronDown size={16} aria-hidden />}
-            </SectionTitle>
+            </BracketToggle>
             {showBracket && id && (
               /* `mostrarInscritos` é o sinal de que o 403 NÃO veio — ou seja,
                  quem olha gerencia este campeonato. O mesmo sinal libera o

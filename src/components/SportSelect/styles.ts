@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, telaDeToque } from '../../styles/telas'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -21,6 +22,8 @@ export const Trigger = styled.button.attrs({ type: 'button' })<{ $open?: boolean
   transition: border-color 0.15s;
 
   &:hover { border-color: ${({ theme }) => theme.colors.primary}; }
+
+  ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Placeholder = styled.span`
@@ -36,7 +39,7 @@ export const Tag = styled.span`
   background: ${({ theme }) => theme.colors.primaryLight};
   color: ${({ theme }) => theme.colors.primaryDark};
   border-radius: ${({ theme }) => theme.radii.full};
-  font-size: 11px;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   line-height: 1.6;
 `
@@ -51,7 +54,7 @@ export const TagRemove = styled.span`
 
 export const ChevronIcon = styled.span<{ $open?: boolean; }>`
   margin-left: auto;
-  font-size: 11px;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
   flex-shrink: 0;
   transition: transform 0.15s;
@@ -81,8 +84,12 @@ export const Dropdown = styled.div`
   }
 `
 
-export const Option = styled.div<{ $selected?: boolean; }>`
+export const Option = styled.button.attrs({ type: 'button' })<{ $selected?: boolean; }>`
   display: flex;
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  text-align: left;
   align-items: center;
   gap: 10px;
   padding: 9px 12px;
@@ -93,6 +100,13 @@ export const Option = styled.div<{ $selected?: boolean; }>`
   transition: background 0.1s;
 
   &:hover { background: ${({ theme }) => theme.colors.primarySubtle}; }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: -2px;
+  }
+
+  ${telaDeToque} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Checkbox = styled.span<{ $checked?: boolean; }>`
@@ -105,8 +119,7 @@ export const Checkbox = styled.span<{ $checked?: boolean; }>`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 10px;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   transition: all 0.1s;
 `
 

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ate } from '../../styles/telas'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -62,7 +63,7 @@ export const LogoName    = styled.span`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   color: #fff; line-height: 1.1;
 `
-export const LogoTagline = styled.span`font-size: 11px; color: rgba(255,255,255,0.7);`
+export const LogoTagline = styled.span`font-size: ${({ theme }) => theme.fontSizes.xs}; color: rgba(255,255,255,0.7);`
 
 /* ── Center content ──────────────────────────────────────────────────────── */
 
@@ -247,6 +248,9 @@ export const LeftQuote = styled.p`
 
 export const RightPanel = styled.div`
   flex: 1;
+  /* Sem isto, o item flex não encolhe abaixo da largura mínima do conteúdo, e
+     a 360px o cartão passava 20px da borda (#511). */
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,6 +260,8 @@ export const RightPanel = styled.div`
   position: sticky;
   top: 0;
   align-self: flex-start;
+
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const Card = styled.div`
@@ -266,4 +272,10 @@ export const Card = styled.div`
   padding: 32px 28px 24px;
   width: 100%;
   max-width: 400px;
+  min-width: 0;
+
+  ${ate.celular} {
+    padding: ${({ theme }) => theme.spacing[5]} ${({ theme }) => theme.spacing[4]};
+    border-radius: ${({ theme }) => theme.radii.lg};
+  }
 `

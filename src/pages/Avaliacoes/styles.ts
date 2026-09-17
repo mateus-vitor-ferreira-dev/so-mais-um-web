@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -8,11 +9,13 @@ export const StatsCard = styled.div`
   background: ${({ theme }) => theme.colors.primary};
   border-radius: ${({ theme }) => theme.radii.xl};
   padding: ${({ theme }) => theme.spacing[6]};
-  color: white;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   display: flex;
   justify-content: space-around;
   margin-bottom: ${({ theme }) => theme.spacing[8]};
   box-shadow: ${({ theme }) => theme.shadows.md};
+
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[4]}; flex-direction: column; gap: ${({ theme }) => theme.spacing[4]}; }
 
   .stat-item {
     text-align: center;
@@ -60,7 +63,7 @@ export const TagChip = styled.div`
 
   .count {
     background: ${({ theme }) => theme.colors.primary};
-    color: white;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
     border-radius: ${({ theme }) => theme.radii.full};
     font-size: ${({ theme }) => theme.fontSizes.xs};
     font-weight: 700;
@@ -104,11 +107,13 @@ export const ReviewHeader = styled.div`
 
   .meta {
     flex: 1;
+    min-width: 0;
 
     .reviewer-name {
       font-weight: 600;
       color: ${({ theme }) => theme.colors.textPrimary};
       font-size: ${({ theme }) => theme.fontSizes.md};
+      overflow-wrap: anywhere;
     }
 
     .game-info {
@@ -122,12 +127,14 @@ export const ReviewHeader = styled.div`
     font-size: ${({ theme }) => theme.fontSizes.lg};
     white-space: nowrap;
   }
+
+  ${ate.celular} { align-items: flex-start; .stars { font-size: ${({ theme }) => theme.fontSizes.md}; } }
 `
 
 export const TagBadge = styled.span`
   display: inline-block;
   background: ${({ theme }) => theme.colors.infoLight};
-  color: ${({ theme }) => theme.colors.info};
+  color: ${({ theme }) => theme.colors.infoText};
   border-radius: ${({ theme }) => theme.radii.full};
   padding: 2px 10px;
   font-size: ${({ theme }) => theme.fontSizes.xs};
@@ -143,4 +150,3 @@ export const ReviewComment = styled.p`
   padding-top: ${({ theme }) => theme.spacing[2]};
   border-top: 1px solid ${({ theme }) => theme.colors.borderLight};
 `
-

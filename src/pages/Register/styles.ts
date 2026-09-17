@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /* ── Tabs ──────────────────────────────────────────────────────────────────── */
 export const Tabs = styled.div`
@@ -21,6 +22,7 @@ export const Tab = styled.button<{ $active?: boolean; }>`
   background: ${({ $active, theme }) => $active ? theme.colors.bgCard : 'transparent'};
   color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textSecondary};
   box-shadow: ${({ $active, theme }) => $active ? theme.shadows.sm : 'none'};
+  ${ate.tablet} { height: ${ALVO_DE_TOQUE}; }
 `
 
 /* ── Form header ───────────────────────────────────────────────────────────── */
@@ -70,8 +72,9 @@ export const Field = styled.div`
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+  ${ate.celular} { grid-template-columns: minmax(0, 1fr); }
 `
 
 export const Label = styled.label`
@@ -95,6 +98,7 @@ export const Input = styled.input<{ $error?: boolean; }>`
 
   &:focus { border-color: ${({ $error, theme }) => $error ? theme.colors.error : theme.colors.primary}; }
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+  ${ate.tablet} { height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
 
 export const ErrorMsg = styled.span`
@@ -125,6 +129,7 @@ export const ModalidadeOption = styled.button.attrs({ type: 'button' })<{ $activ
   transition: all 0.12s;
 
   &:hover { border-color: ${({ theme }) => theme.colors.primary}; }
+  ${alvoDeToque}
 `
 
 /* ── Submit ────────────────────────────────────────────────────────────────── */
@@ -132,7 +137,7 @@ export const SubmitButton = styled.button`
   width: 100%;
   height: 44px;
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
@@ -160,6 +165,7 @@ export const SwitchText = styled.p`
     font-size: inherit;
     padding: 0;
     &:hover { text-decoration: underline; }
+    ${alvoDeToque}
   }
 `
 
@@ -174,11 +180,12 @@ export const ForgotLink = styled.button`
   display: block;
   margin-top: -4px;
   &:hover { color: ${({ theme }) => theme.colors.primary}; text-decoration: underline; }
+  ${alvoDeToque}
 `
 
 export const LegalText = styled.p`
   text-align: center;
-  font-size: 11px;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 14px 0 0;
   line-height: 1.5;
@@ -202,4 +209,6 @@ export const MarketingConsent = styled.label`
     margin-top: 2px;
     accent-color: ${({ theme }) => theme.colors.primary};
   }
+
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; align-items: center; }
 `

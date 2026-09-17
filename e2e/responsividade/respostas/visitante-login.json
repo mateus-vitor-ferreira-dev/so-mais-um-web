@@ -1,0 +1,169 @@
+{
+  "gravadoEm": "2026-09-17T14:22:50.954Z",
+  "respostas": {
+    "GET /sports": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "SOCIETY",
+            "label": "Society",
+            "icon": "society",
+            "iconFallback": "⚽",
+            "description": "Campo society — grama sintética",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "CAMPO",
+            "label": "Futebol de Campo",
+            "icon": "futebol-campo",
+            "iconFallback": "🏟️",
+            "description": "Campo convencional",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "FUTSAL",
+            "label": "Futsal",
+            "icon": "futsal",
+            "iconFallback": "👟",
+            "description": "Quadra de futsal coberta",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "AREIA",
+            "label": "Futevôlei",
+            "icon": "futevolei",
+            "iconFallback": null,
+            "description": "Quadra de areia",
+            "group": "FUTEVOLEI",
+            "groupLabel": "Futevôlei",
+            "groupIcon": "futevolei",
+            "groupIconFallback": null,
+            "groupOrder": 2
+          },
+          {
+            "id": "VOLEI",
+            "label": "Vôlei",
+            "icon": "volei",
+            "iconFallback": "🏐",
+            "description": "Quadra de vôlei indoor",
+            "group": "VOLEI",
+            "groupLabel": "Vôlei",
+            "groupIcon": "volei",
+            "groupIconFallback": "🏐",
+            "groupOrder": 3
+          },
+          {
+            "id": "VOLEI_AREIA",
+            "label": "Vôlei de Areia",
+            "icon": "volei-areia",
+            "iconFallback": null,
+            "description": "Quadra de vôlei de areia",
+            "group": "VOLEI",
+            "groupLabel": "Vôlei",
+            "groupIcon": "volei",
+            "groupIconFallback": "🏐",
+            "groupOrder": 3
+          },
+          {
+            "id": "HANDBALL",
+            "label": "Handebol",
+            "icon": "handebol",
+            "iconFallback": "🤾",
+            "description": "Quadra de handebol",
+            "group": "HANDBALL",
+            "groupLabel": "Handebol",
+            "groupIcon": "handebol",
+            "groupIconFallback": "🤾",
+            "groupOrder": 4
+          },
+          {
+            "id": "PETECA",
+            "label": "Peteca",
+            "icon": "peteca",
+            "iconFallback": null,
+            "description": "Quadra de peteca",
+            "group": "PETECA",
+            "groupLabel": "Peteca",
+            "groupIcon": "peteca",
+            "groupIconFallback": null,
+            "groupOrder": 5
+          },
+          {
+            "id": "BEACH_TENNIS",
+            "label": "Beach Tennis",
+            "icon": "beach-tennis",
+            "iconFallback": "🎾",
+            "description": "Quadra de beach tennis",
+            "group": "BEACH_TENNIS",
+            "groupLabel": "Beach Tennis",
+            "groupIcon": "beach-tennis",
+            "groupIconFallback": "🎾",
+            "groupOrder": 6
+          },
+          {
+            "id": "BASQUETE",
+            "label": "Basquete",
+            "icon": "basquete",
+            "iconFallback": "🏀",
+            "description": "Quadra de basquete",
+            "group": "BASQUETE",
+            "groupLabel": "Basquete",
+            "groupIcon": "basquete",
+            "groupIconFallback": "🏀",
+            "groupOrder": 7
+          },
+          {
+            "id": "TENIS",
+            "label": "Tênis",
+            "icon": "tenis",
+            "iconFallback": "🥎",
+            "description": "Quadra de tênis",
+            "group": "TENIS",
+            "groupLabel": "Tênis",
+            "groupIcon": "tenis",
+            "groupIconFallback": "🥎",
+            "groupOrder": 8
+          },
+          {
+            "id": "POKER",
+            "label": "Poker",
+            "icon": "poker",
+            "iconFallback": "🃏",
+            "description": "Mesa de poker",
+            "group": "POKER",
+            "groupLabel": "Poker",
+            "groupIcon": "poker",
+            "groupIconFallback": "🃏",
+            "groupOrder": 9
+          }
+        ]
+      }
+    },
+    "GET /stats": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "jogadores": 60,
+          "matchesAbertas": 23,
+          "cidades": 10,
+          "arenas": 37
+        }
+      }
+    }
+  }
+}

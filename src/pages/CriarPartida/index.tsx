@@ -1,3 +1,5 @@
+import { LandPlot, PartyPopper, TriangleAlert } from 'lucide-react'
+import { AlvoDoCartao } from '../../styles/cartaoClicavel'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -21,6 +23,7 @@ import { useCotacaoDoHorario } from '../../hooks/useCotacaoDoHorario'
 import { detalhamentoPorExtenso, reaisCurtos, seloDePrecoDaQuadra } from '../../utils/faixasDePreco'
 import {
   Container, StepIndicator, Step, StepDot, StepLine, Card, SectionTitle, CourtsGrid, CourtCard, CourtName, CourtInfo, SportBadge, Form, Row, Field, Label, Input, ErrorMsg, HintMsg, Actions, BackButton, NextButton, LoadingState, SuccessBox, SuccessActions, PrimaryBtn, SecondaryBtn, SportChipsGrid, SportChip, PlacesGrid, PlaceCard, PlaceName, PlaceAddress, PlaceCourtCount, BreadcrumbBar, BreadcrumbTag, BreadcrumbSep, CotacaoBox,
+  FaixaDeErro,
 } from './styles'
 import { valorPorPessoa } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
@@ -364,7 +367,7 @@ export default function CriarPartida() {
                 {/* Sub-etapa A: Escolher Modalidade */}
                 {!filterSport && (
                   sportOptions.length === 0 ? (
-                    <EmptyState icone="🏟️">Nenhuma quadra disponível no momento.</EmptyState>
+                    <EmptyState icone={<LandPlot size={28} />}>Nenhuma quadra disponível no momento.</EmptyState>
                   ) : (
                     <SportChipsGrid>
                       {sportOptions.map(s => (
@@ -380,14 +383,14 @@ export default function CriarPartida() {
                 {/* Sub-etapa B: Escolher Estabelecimento */}
                 {filterSport && !filterPlace && (
                   availablePlaces.length === 0 ? (
-                    <EmptyState icone="🏟️">Nenhum estabelecimento disponível para essa modalidade.</EmptyState>
+                    <EmptyState icone={<LandPlot size={28} />}>Nenhum estabelecimento disponível para essa modalidade.</EmptyState>
                   ) : (
                     <PlacesGrid>
                       {availablePlaces.map((place: Place) => {
                         const count = sportCourts.filter(c => c.place?.id === place.id).length
                         return (
                           <PlaceCard key={place.id} onClick={() => handleSelectPlace(place)}>
-                            <PlaceName>{place.name}</PlaceName>
+                            <PlaceName><AlvoDoCartao>{place.name}</AlvoDoCartao></PlaceName>
                             <PlaceAddress>
                               {place.neighborhood && `${place.neighborhood} · `}{place.city}
                             </PlaceAddress>
@@ -410,7 +413,9 @@ export default function CriarPartida() {
                         $selected={selectedCourt?.id === court.id}
                         onClick={() => { setSelectedCourt(court); setStep(1) }}
                       >
-                        <CourtName>{court.name}</CourtName>
+                        <CourtName>
+                          <AlvoDoCartao aria-pressed={selectedCourt?.id === court.id}>{court.name}</AlvoDoCartao>
+                        </CourtName>
                         <CourtInfo>
                           {court.place?.name && <div>{court.place.name}</div>}
                           {court.place?.neighborhood && court.place?.city && (
@@ -536,14 +541,17 @@ export default function CriarPartida() {
               </Row>
 
               <Field>
-                <Label>Chave Pix *</Label>
+                <Label htmlFor="criar-partida-pix">Chave Pix *</Label>
                 <Input
-                  placeholder="CPF, e-mail, telefone ou chave aleatória"
+                  id="criar-partida-pix"
+                  placeholder="Sua chave Pix"
                   {...register('pixKey')}
                   $error={!!errors.pixKey}
                 />
                 {errors.pixKey && <ErrorMsg>{errors.pixKey.message}</ErrorMsg>}
-                <HintMsg>Os jogadores usarão essa chave para pagar a partida.</HintMsg>
+                {/* Os formatos aceitos ficam no texto de apoio, e não no exemplo do campo:
+                    a 360px o exemplo saía cortado em "…ou chave" (#511). */}
+                <HintMsg>CPF, e-mail, telefone ou chave aleatória. Os jogadores usarão essa chave para pagar a partida.</HintMsg>
               </Field>
 
               {/* Quem vê e quem entra (#228). O mesmo componente edita a partida
@@ -562,9 +570,10 @@ export default function CriarPartida() {
               />
 
               {error && (
-                <ErrorMsg style={{ padding: '10px', background: '#fff5f5', borderRadius: '6px' }}>
-                  ⚠️ {error}
-                </ErrorMsg>
+                <FaixaDeErro role="alert">
+                  <TriangleAlert size={14} aria-hidden="true" />
+                  {error}
+                </FaixaDeErro>
               )}
 
               <Actions>
@@ -586,7 +595,7 @@ export default function CriarPartida() {
         {step === 2 && (
           <Card>
             <SuccessBox>
-              <span>🎉</span>
+              <PartyPopper size={48} aria-hidden="true" />
               <h3>Partida criada com sucesso!</h3>
               <p>
                 Sua partida foi aberta em <strong>{selectedCourt?.name}</strong>.
@@ -602,9 +611,10 @@ export default function CriarPartida() {
                 fechada quando ela está aberta para qualquer um.
               */}
               {error && (
-                <ErrorMsg style={{ padding: '10px', background: '#fff5f5', borderRadius: '6px' }}>
-                  ⚠️ {error}
-                </ErrorMsg>
+                <FaixaDeErro role="alert">
+                  <TriangleAlert size={14} aria-hidden="true" />
+                  {error}
+                </FaixaDeErro>
               )}
 
               <SuccessActions>

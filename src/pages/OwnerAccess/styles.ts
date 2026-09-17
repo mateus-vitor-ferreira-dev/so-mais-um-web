@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 export const Page = styled.div`
   display: flex;
@@ -91,15 +92,20 @@ export const BenefitItem = styled.li`
 /* ── Coluna direita (formulário) ─────────────────────────────────────────────── */
 export const FormCol = styled.main`
   flex: 1;
+  /* Mesmo caso do AuthLayout: sem isto o item flex não encolhe abaixo dos
+     campos, e a 360px o formulário passava da borda (#511). */
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 32px 20px;
+  ${ate.celular} { padding: ${({ theme }) => theme.spacing[5]} ${({ theme }) => theme.spacing[4]}; }
 `
 
 export const Card = styled.div`
   width: 100%;
   max-width: 420px;
+  min-width: 0;
 `
 
 export const CardHead = styled.div`
@@ -141,6 +147,7 @@ export const Tab = styled.button<{ $active?: boolean; }>`
   background: ${({ $active, theme }) => $active ? theme.colors.bgCard : 'transparent'};
   color: ${({ $active, theme }) => $active ? theme.colors.textPrimary : theme.colors.textSecondary};
   box-shadow: ${({ $active, theme }) => $active ? theme.shadows.sm : 'none'};
+  ${ate.tablet} { height: ${ALVO_DE_TOQUE}; }
 `
 
 /* ── Form fields ─────────────────────────────────────────────────────────────── */
@@ -158,8 +165,9 @@ export const Field = styled.div`
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+  ${ate.celular} { grid-template-columns: minmax(0, 1fr); }
 `
 
 export const Label = styled.label`
@@ -185,6 +193,7 @@ export const Input = styled.input<{ $error?: boolean; }>`
     border-color: ${({ $error, theme }) => $error ? theme.colors.error : theme.colors.primary};
   }
   &::placeholder { color: ${({ theme }) => theme.colors.textMuted}; }
+  ${ate.tablet} { height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
 `
 
 export const ErrorMsg = styled.span`
@@ -196,7 +205,7 @@ export const SubmitBtn = styled.button`
   width: 100%;
   height: 44px;
   background: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
@@ -207,6 +216,7 @@ export const SubmitBtn = styled.button`
 
   &:hover:not(:disabled) { background: ${({ theme }) => theme.colors.primaryHover}; }
   &:disabled { opacity: 0.65; cursor: not-allowed; }
+  ${alvoDeToque}
 `
 
 export const ForgotLink = styled.button`
@@ -220,6 +230,7 @@ export const ForgotLink = styled.button`
   display: block;
   margin-top: -4px;
   &:hover { color: ${({ theme }) => theme.colors.primary}; text-decoration: underline; }
+  ${alvoDeToque}
 `
 
 export const LockBadge = styled.div`

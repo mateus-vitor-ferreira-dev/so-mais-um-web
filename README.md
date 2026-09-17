@@ -318,15 +318,16 @@ npm run dev
 | `npm run build` | Build de produção em `dist/` |
 | `npm run preview` | Serve o `dist/` em `http://localhost:4173` — use para reproduzir bug que só aparece em build |
 | `npm run lint` | ESLint 10 (flat config) + typescript-eslint em todo o projeto, `.js` e `.ts`/`.tsx` |
-| `npm run typecheck` | `tsc --noEmit` — checa os tipos sem gerar arquivo |
+| `npm run typecheck` | `tsc --noEmit` — checa os tipos sem gerar arquivo (o do app e o da checagem de responsividade, em `e2e/`) |
 | `npm test` | Roda a suíte uma vez e sai — é o que o CI executa |
 | `npm run test:watch` | Modo interativo: reexecuta só o que você mexeu. É o que você usa escrevendo teste |
 | `npm run test:coverage` | Suíte + relatório de cobertura no terminal e em `coverage/index.html` |
 | `npm run readme:check` | Confere contra a suíte os números que este README anuncia |
 | `npm run readme:fix` | Reescreve esses números — eles são gerados, não digitados |
 | `npm run primeira-tela:check` | Confere que a raiz sem sessão não carrega componente de rota autenticada |
+| `npm run test:responsividade` | Playwright, sem api: mede telas a 360 e 390px (vazamento e alvo < 44px) contra a lista de conhecidos em `e2e/responsividade/conhecidos/`. `GRAVAR=1` regrava as respostas da api local; `ATUALIZAR_CONHECIDOS=1` reescreve a lista |
 
-> O CI roda, nesta ordem, `lint` → `typecheck` → `test:ci` → `readme:check` → `primeira-tela:check` → `build`. Qualquer um vermelho barra o merge.
+> O CI roda, nesta ordem, `lint` → `typecheck` → `test:ci` → `readme:check` → `primeira-tela:check` → `build`. Qualquer um vermelho barra o merge. Em paralelo, o job `responsividade` roda o `test:responsividade`.
 
 ---
 
@@ -419,7 +420,7 @@ Os fluxos críticos do jogador, o que dá mais prejuízo quando quebra:
 | Gate de assinatura | `hooks/useSubscription.test.tsx` · `utils/toastErro.test.ts` | O `isActive` concordando com o middleware da API, inclusive na tolerância de `past_due`, e o erro 402 mostrando o caminho do pagamento |
 | Assinatura vencida no painel | `pages/Owner/{Places,Courts,Equipment,Requests,Inventory}/index.test.tsx` | As cinco telas se comportando igual: conteúdo consultável, ações que gravam desabilitadas e ninguém gravando antes de o status chegar |
 
-**1256 testes, ~9s.** A cobertura de linhas está em **~75%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
+**1258 testes, ~9s.** A cobertura de linhas está em **~75%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
 
 ---
 

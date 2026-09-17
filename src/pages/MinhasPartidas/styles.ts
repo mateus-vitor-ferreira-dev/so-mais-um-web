@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import type { TomDoStatus } from '../../constants/statusDaPartida'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -7,7 +8,7 @@ export const Container = styled.div``
 
 export const CreateButton = styled.button`
   background: ${({ theme }) => theme.colors.primary};
-  color: white;
+  color: ${({ theme }) => theme.colors.textOnPrimary};
   padding: ${({ theme }) => theme.spacing[3]} ${({ theme }) => theme.spacing[6]};
   border-radius: ${({ theme }) => theme.radii.full};
   font-weight: bold;
@@ -18,6 +19,9 @@ export const CreateButton = styled.button`
   &:hover {
     background: ${({ theme }) => theme.colors.primaryHover};
   }
+
+  ${alvoDeToque}
+  ${ate.celular} { width: 100%; }
 `
 
 /**
@@ -34,6 +38,8 @@ export const Tabs = styled.div`
   gap: ${({ theme }) => theme.spacing[6]};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   margin-bottom: ${({ theme }) => theme.spacing[6]};
+
+  ${ate.celular} { gap: ${({ theme }) => theme.spacing[3]}; }
 `
 
 export const Tab = styled.button<{ $active?: boolean; }>`
@@ -48,6 +54,9 @@ export const Tab = styled.button<{ $active?: boolean; }>`
   border-bottom: 3px solid
     ${({ $active, theme }) => ($active ? theme.colors.primary : 'transparent')};
   cursor: pointer;
+
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
+  ${ate.celular} { flex: 1; }
 `
 
 export const PixBox = styled.div`
@@ -64,6 +73,8 @@ export const PixBox = styled.div`
     font-family: monospace;
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: ${({ theme }) => theme.fontSizes.sm};
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   button {
@@ -76,6 +87,14 @@ export const PixBox = styled.div`
     gap: 4px;
     font-size: ${({ theme }) => theme.fontSizes.xs};
     font-weight: bold;
+    ${alvoDeToque}
+  }
+
+  ${ate.celular} {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing[2]};
+    button { align-self: flex-end; }
   }
 `
 
@@ -101,6 +120,11 @@ export const ModalContent = styled.div`
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+
+  ${ate.celular} {
+    width: calc(100% - ${({ theme }) => theme.spacing[6]});
+    padding: ${({ theme }) => theme.spacing[4]};
+  }
 
   h2 {
     margin-bottom: ${({ theme }) => theme.spacing[6]};
@@ -129,6 +153,8 @@ export const Form = styled.form`
     font-family: ${({ theme }) => theme.fonts.sans};
     background: ${({ theme }) => theme.colors.bgInput};
     color: ${({ theme }) => theme.colors.textPrimary};
+
+    ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
   }
 `
 export const ButtonGroup = styled.div`
@@ -151,13 +177,16 @@ export const ButtonGroup = styled.div`
   }
   .submit {
     background: ${({ theme }) => theme.colors.primary};
-    color: white;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
 
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
   }
+
+  ${ate.tablet} { button { min-height: ${ALVO_DE_TOQUE}; } }
+  ${ate.celular} { flex-direction: column-reverse; }
 `
 
 /**
@@ -179,6 +208,8 @@ export const SeloDeStatus = styled.span<{ $tom: TomDoStatus }>`
 export const AcoesDoStatus = styled.div`
   display: flex;
   gap: 8px;
+
+  ${ate.celular} { flex-direction: column; }
 `
 
 /**
@@ -201,5 +232,7 @@ export const AcaoDoOrganizador = styled.button<{ $tom: 'finalizar' | 'cancelar' 
   border: 1px solid
     ${({ theme, $tom }) => ({ finalizar: theme.colors.border, cancelar: theme.colors.errorLight, presencas: theme.colors.info })[$tom]};
   background: ${({ theme, $tom }) => ({ finalizar: theme.colors.primarySubtle, cancelar: theme.colors.errorLight, presencas: theme.colors.infoLight })[$tom]};
-  color: ${({ theme, $tom }) => ({ finalizar: theme.colors.primaryDark, cancelar: theme.colors.error, presencas: theme.colors.info })[$tom]};
+  color: ${({ theme, $tom }) => ({ finalizar: theme.colors.primaryDark, cancelar: theme.colors.error, presencas: theme.colors.infoText })[$tom]};
+
+  ${alvoDeToque}
 `

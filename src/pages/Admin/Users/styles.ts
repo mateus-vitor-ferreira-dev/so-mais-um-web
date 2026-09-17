@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
 import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+import type { TomDoPapel } from '../../../constants/papeis'
 
 export const FilterBar = styled.div`
   display: flex;
@@ -145,12 +146,14 @@ export const Usuario = styled.div`
   min-width: 0;
 `
 
-export const AvatarCell = styled.div`
+/* As iniciais usam o par do selo do papel: a cor com 22 de alfa por cima do
+   cartão escuro dava 2,95:1 (#511). */
+export const AvatarCell = styled.div<{ $tom: TomDoPapel }>`
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: ${({ color }) => color}22;
-  color: ${({ color }) => color};
+  background: ${({ theme, $tom }) => theme.colors[$tom.fundo]};
+  color: ${({ theme, $tom }) => theme.colors[$tom.texto]};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,7 +193,7 @@ export const ActionBtn = styled.button`
 
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors.primary};
-    color: #fff;
+    color: ${({ theme }) => theme.colors.textOnPrimary};
   }
 
   &:disabled {
@@ -302,7 +305,7 @@ export const ModalConfirmBtn = styled.button<{ $danger?: boolean; }>`
   border-radius: ${({ theme }) => theme.radii.md};
   border: none;
   background: ${({ $danger, theme }) => $danger ? theme.colors.error : theme.colors.primary};
-  color: #fff;
+  color: ${({ $danger, theme }) => $danger ? theme.colors.textOnError : theme.colors.textOnPrimary};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   cursor: pointer;

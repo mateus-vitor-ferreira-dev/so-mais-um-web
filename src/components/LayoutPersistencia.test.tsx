@@ -86,7 +86,7 @@ describe('layout como rota-pai', () => {
           element={
             <>
               <SondaDeMontagem />
-              <DashboardLayout navItems={[]} tagline="Painel" accent="#3baa34" />
+              <DashboardLayout navItems={[]} tagline="Painel" accent="primary" />
             </>
           }
         >
@@ -123,7 +123,7 @@ describe('publicação da página na topbar', () => {
 
     renderWithProviders(
       <Routes>
-        <Route element={<DashboardLayout navItems={[]} tagline="Painel" accent="#3baa34" />}>
+        <Route element={<DashboardLayout navItems={[]} tagline="Painel" accent="primary" />}>
           <Route index element={<ComAcoes />} />
         </Route>
       </Routes>,
@@ -142,7 +142,7 @@ describe('publicação da página na topbar', () => {
 
     renderWithProviders(
       <Routes>
-        <Route element={<DashboardLayout navItems={itens} tagline="Painel" accent="#3baa34" />}>
+        <Route element={<DashboardLayout navItems={itens} tagline="Painel" accent="primary" />}>
           <Route index element={<p>corpo</p>} />
         </Route>
       </Routes>,

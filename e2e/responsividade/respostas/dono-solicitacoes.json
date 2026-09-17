@@ -1,0 +1,117 @@
+{
+  "gravadoEm": "2026-09-17T14:52:08.796Z",
+  "respostas": {
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp2ct0005pk1xcveshkgw",
+          "name": "Na Praia FTV",
+          "email": "contato@napraialavras.com.br",
+          "avatarUrl": null,
+          "role": "OWNER",
+          "badge": null,
+          "badges": [],
+          "createdAt": "2026-09-15T14:00:52.013Z",
+          "phone": null,
+          "pixKey": "contato@napraialavras.com.br",
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 0,
+            "participations": 0,
+            "reviewsReceived": 0
+          },
+          "stats": {
+            "averageStars": null,
+            "totalReviews": 0,
+            "totalPartidas": 0,
+            "tags": []
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [],
+          "unreadCount": 0
+        }
+      }
+    },
+    "GET /owner/subscription/status": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "status": "active",
+          "currentPeriodEnd": "2026-10-05T15:00:00.000Z",
+          "stripeSubscriptionId": "sub_seed_napraia",
+          "plan": {
+            "id": "so-mais-um-premium",
+            "nome": "Só+1 Premium",
+            "precoCentavos": 38990,
+            "precoNoCartaoCentavos": 41000,
+            "funcionalidades": [
+              "DAY_USE",
+              "ESTATISTICAS",
+              "ESCOLINHA",
+              "EQUIPAMENTOS",
+              "ESTOQUE"
+            ]
+          },
+          "trocaAgendada": null,
+          "usage": {
+            "quadras": 5,
+            "estabelecimentos": 2
+          },
+          "stripeDisponivel": true,
+          "ehCortesia": false
+        }
+      }
+    },
+    "GET /place-requests/my": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3kn00jvpk1xvu4bpvvm",
+            "name": "Na Praia FTV — Unidade Jardim Floresta",
+            "street": "Rua José Bento de Oliveira",
+            "number": "410",
+            "complement": null,
+            "neighborhood": "Jardim Floresta",
+            "city": "Lavras",
+            "state": "MG",
+            "zipCode": "37200-000",
+            "country": "BR",
+            "latitude": null,
+            "longitude": null,
+            "status": "APPROVED",
+            "adminNote": null,
+            "createdAt": "2026-09-15T14:00:53.591Z",
+            "updatedAt": "2026-09-15T14:15:54.102Z",
+            "owner": {
+              "id": "cmu2qp2ct0005pk1xcveshkgw",
+              "name": "Na Praia FTV",
+              "email": "contato@napraialavras.com.br"
+            }
+          }
+        ]
+      }
+    },
+    "GET /place-requests/my?status=PENDING": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": []
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "rota": "/avaliacoes",
+  "larguras": {
+    "360": {
+      "vazando": [],
+      "alvos": []
+    },
+    "390": {
+      "vazando": [],
+      "alvos": []
+    }
+  }
+}

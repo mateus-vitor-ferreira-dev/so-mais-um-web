@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -83,6 +84,7 @@ export const Botao = styled.button`
   cursor: pointer;
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+  ${alvoDeToque}
 `
 
 export const BotaoSecundario = styled(Botao)`
@@ -109,6 +111,8 @@ export const Aluno = styled.div`
 
   .nome { color: ${({ theme }) => theme.colors.textPrimary}; font-size: ${({ theme }) => theme.fontSizes.sm}; }
   .pendente { color: ${({ theme }) => theme.colors.textSecondary}; font-size: ${({ theme }) => theme.fontSizes.xs}; }
+
+  ${ate.celular} { align-items: flex-start; }
 `
 
 export const Opcoes = styled.div`
@@ -122,6 +126,7 @@ export const Opcoes = styled.div`
     font-size: ${({ theme }) => theme.fontSizes.sm};
     color: ${({ theme }) => theme.colors.textSecondary};
     cursor: pointer;
+    ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
   }
 `
 

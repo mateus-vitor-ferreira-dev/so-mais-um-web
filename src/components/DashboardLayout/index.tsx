@@ -64,7 +64,8 @@ export interface NavItemDef {
 export interface DashboardLayoutProps {
   navItems: NavItemDef[]
   tagline: string
-  accent: string
+  /** A cor da tagline e do papel: um token do tema, para o escuro trocar junto. */
+  accent: 'primary' | 'warning'
   /**
    * A segunda linha do cartão do usuário, embaixo do nome. Nos painéis é o
    * papel; na área do jogador, a nota e o selo.

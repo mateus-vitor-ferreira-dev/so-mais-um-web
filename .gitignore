@@ -32,3 +32,8 @@ coverage
 # vercel
 .vercel
 .vitest-report.json
+
+# Checagem de responsividade (npm run test:responsividade)
+dist-responsividade
+test-results
+playwright-report

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../styles/telas'
 
 /* Largura, respiro e alinhamento são do layout (web#493): a página não
    repete o padding do conteúdo nem se centraliza por conta própria. */
@@ -6,6 +7,7 @@ export const Container = styled.div`
   > button {
     display: inline-flex; align-items: center; gap: 6px; border: 0; padding: 0;
     background: transparent; color: ${({ theme }) => theme.colors.textSecondary}; cursor: pointer;
+    ${alvoDeToque}
   }
 `
 
@@ -26,10 +28,11 @@ export const Filtros = styled.div`
     border-radius: ${({ theme }) => theme.radii.md};
     background: ${({ theme }) => theme.colors.bgCard};
     color: ${({ theme }) => theme.colors.textPrimary};
+    ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; font-size: ${({ theme }) => theme.fontSizes.md}; }
   }
 
-  @media (max-width: 900px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  @media (max-width: 600px) { grid-template-columns: 1fr; }
+  ${ate.notebook} { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  ${ate.celular} { grid-template-columns: 1fr; }
 `
 
 /** Cidade ou perto de mim: uma pergunta, duas respostas — nunca as duas. */
@@ -45,17 +48,19 @@ export const Aba = styled.button<{ $ativa: boolean }>`
   border-radius: ${({ theme }) => theme.radii.sm};
   font-size: ${({ theme }) => theme.fontSizes.sm};
   background: ${({ $ativa, theme }) => ($ativa ? theme.colors.primary : 'transparent')};
-  color: ${({ $ativa, theme }) => ($ativa ? '#fff' : theme.colors.textSecondary)};
+  color: ${({ $ativa, theme }) => ($ativa ? theme.colors.textOnPrimary : theme.colors.textSecondary)};
 
   /* Desabilitado e mudo faria a pessoa procurar o que ela fez de errado; o
      title do componente diz o motivo onde ela está olhando. */
   &:disabled { cursor: not-allowed; opacity: 0.5; }
+  ${ate.tablet} { min-height: ${ALVO_DE_TOQUE}; }
 `
 
 export const Limpar = styled.button`
   justify-self: start; align-self: center; padding: 0; border: 0; background: transparent;
   color: ${({ theme }) => theme.colors.primary}; cursor: pointer;
   font-size: ${({ theme }) => theme.fontSizes.sm}; text-decoration: underline;
+  ${alvoDeToque}
 `
 
 /**
@@ -75,5 +80,6 @@ export const Vazio = styled.div`
   button {
     padding: 0; border: 0; background: transparent; cursor: pointer;
     color: ${({ theme }) => theme.colors.primary}; text-decoration: underline;
+    ${alvoDeToque}
   }
 `

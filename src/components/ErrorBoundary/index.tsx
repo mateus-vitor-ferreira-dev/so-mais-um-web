@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
 import logoSoMaisUm from '../../assets/logo-so-mais-um.svg'
+import { lightTheme } from '../../styles/theme'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -55,7 +56,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
         }}>
           <img src={logoSoMaisUm} alt="Só+1" style={{ height: 56, marginBottom: 8 }} />
           <h2 style={{ fontSize: 22, fontWeight: 700, margin: 0 }}>Algo deu errado</h2>
-          <p style={{ color: '#6b7280', margin: 0, maxWidth: 360 }}>
+          <p style={{ color: lightTheme.colors.textMuted, margin: 0, maxWidth: 360 }}>
             Ocorreu um erro inesperado. Tente recarregar a página.
           </p>
           <button
@@ -63,8 +64,9 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             style={{
               marginTop: 8,
               padding: '10px 24px',
-              background: '#22c55e',
-              color: '#fff',
+              // Fora do ThemeProvider, mas do tema claro: o #22c55e com branco dava 2,28:1 (#511).
+              background: lightTheme.colors.primary,
+              color: lightTheme.colors.textOnPrimary,
               border: 'none',
               borderRadius: 8,
               fontWeight: 600,

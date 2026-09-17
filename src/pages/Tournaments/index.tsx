@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import PartidasParaApitar from '../../components/PartidasParaApitar'
-import { Plus, MapPin, Calendar, Users, Trophy, X, Layers, ChevronUp } from 'lucide-react'
+import { Plus, MapPin, Calendar, Users, Trophy, X, Layers, ChevronUp, TriangleAlert } from 'lucide-react'
 import { ICONE_DO_FORMATO } from '../../utils/iconeDoFormato'
 import { useForm, useWatch } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -26,6 +26,7 @@ type FormularioTorneio = InferType<typeof schema>
 import { mensagemDeErro } from '../../utils/apiError'
 import {
   Container, CreateButton, FiltersBar, FilterChip, Grid, TournamentCard, CardTop, TournamentName, SportIcon, StatusBadge, CardMeta, MetaRow, ViewBracketBtn, BracketSection, BracketTitle, Modal, ModalBox, ModalHeader, ModalTitle, CloseBtn, Form, Field, Label, Input, Select, ErrorMsg, ModalActions, CancelButton, SubmitButton, FormatHint, FormatPreview, CategorySection, CatChipsRow, PresetChip, CatTag, CatTagRemove, CatInput,
+  FaixaDeErro,
 } from './styles'
 import { formatarReais } from '../../utils/formatCurrency'
 import EmptyState from '../../components/EmptyState'
@@ -452,7 +453,7 @@ export default function Tournaments() {
         {loading ? (
           <Grid aria-busy="true" aria-label="Carregando torneios"><SkeletonCard count={6} /></Grid>
         ) : tournaments.length === 0 ? (
-          <EmptyState icone="🏆">Nenhum torneio encontrado.</EmptyState>
+          <EmptyState icone={<Trophy size={28} />}>Nenhum torneio encontrado.</EmptyState>
         ) : (
           <Grid>
             {tournaments.map((t) => {
@@ -700,9 +701,10 @@ export default function Tournaments() {
                 </Field>
 
                 {apiError && (
-                  <ErrorMsg style={{ padding: '10px', background: '#fff5f5', borderRadius: '6px' }}>
-                    ⚠️ {apiError}
-                  </ErrorMsg>
+                  <FaixaDeErro role="alert">
+                    <TriangleAlert size={14} aria-hidden="true" />
+                    {apiError}
+                  </FaixaDeErro>
                 )}
 
                 <ModalActions>

@@ -1,0 +1,397 @@
+{
+  "gravadoEm": "2026-09-17T14:51:59.630Z",
+  "respostas": {
+    "GET /admin/subscriptions": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3bi004tpk1xi61ip1fb",
+            "owner": {
+              "name": "Arena ZFC Perdões",
+              "email": "espaco26@exemplo.com.br"
+            },
+            "place": {
+              "name": "Arena ZFC"
+            },
+            "planName": "Só+1 Pro",
+            "monthlyValue": "189,90",
+            "status": "active",
+            "currentPeriodEnd": "2026-10-07T15:00:00.000Z",
+            "origem": "MANUAL",
+            "emDia": true,
+            "registradaPor": "Rodrigo Adonias",
+            "registradaEm": "2026-09-07T15:00:00.000Z"
+          },
+          {
+            "id": "cmu2qp3bi004upk1xzstd8u0f",
+            "owner": {
+              "name": "Campestre Clube",
+              "email": "espaco4@exemplo.com.br"
+            },
+            "place": {
+              "name": "Campestre Clube Celso Baptista Dias"
+            },
+            "planName": "Só+1 Básico",
+            "monthlyValue": "89,90",
+            "status": "active",
+            "currentPeriodEnd": "2026-09-11T15:00:00.000Z",
+            "origem": "MANUAL",
+            "emDia": false,
+            "registradaPor": "Mateus Vitor",
+            "registradaEm": "2026-08-12T15:00:00.000Z"
+          },
+          {
+            "id": "cmu2qp3bf004mpk1x3mw8tblg",
+            "owner": {
+              "name": "Associação Olímpica",
+              "email": "espaco5@exemplo.com.br"
+            },
+            "place": {
+              "name": "Associação Olímpica de Lavras"
+            },
+            "planName": "Só+1 Premium",
+            "monthlyValue": "389,90",
+            "status": "active",
+            "currentPeriodEnd": "2026-10-10T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": true,
+            "registradaPor": null,
+            "registradaEm": null
+          },
+          {
+            "id": "cmu2qp3bf004npk1x3jzkyb0j",
+            "owner": {
+              "name": "Olaria Beach Sports",
+              "email": "espaco18@exemplo.com.br"
+            },
+            "place": {
+              "name": "Olaria Beach Sports"
+            },
+            "planName": "Só+1 Pro",
+            "monthlyValue": "189,90",
+            "status": "active",
+            "currentPeriodEnd": "2026-09-20T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": true,
+            "registradaPor": null,
+            "registradaEm": null
+          },
+          {
+            "id": "cmu2qp3bf004ppk1xd1pzs4d7",
+            "owner": {
+              "name": "SELT Lavras",
+              "email": "espaco22@exemplo.com.br"
+            },
+            "place": {
+              "name": "Quadra Poliesportiva Rafael Salustiano Silva"
+            },
+            "planName": "Só+1 Básico",
+            "monthlyValue": "89,90",
+            "status": "active",
+            "currentPeriodEnd": "2026-10-03T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": true,
+            "registradaPor": null,
+            "registradaEm": null
+          },
+          {
+            "id": "cmu2qp3be004lpk1xyipk9nd1",
+            "owner": {
+              "name": "Arena Beach Lavras",
+              "email": "espaco2@exemplo.com.br"
+            },
+            "place": {
+              "name": "Arena Beach Lavras"
+            },
+            "planName": "Só+1 Premium",
+            "monthlyValue": "389,90",
+            "status": "active",
+            "currentPeriodEnd": "2026-09-29T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": true,
+            "registradaPor": null,
+            "registradaEm": null
+          },
+          {
+            "id": "cmu2qp3bf004qpk1xnva3tzf9",
+            "owner": {
+              "name": "Lavras Tênis Clube",
+              "email": "espaco15@exemplo.com.br"
+            },
+            "place": {
+              "name": "Lavras Tênis Clube — LTC"
+            },
+            "planName": "Só+1 Básico",
+            "monthlyValue": "89,90",
+            "status": "trialing",
+            "currentPeriodEnd": "2026-09-18T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": true,
+            "registradaPor": null,
+            "registradaEm": null
+          },
+          {
+            "id": "cmu2qp3bf004rpk1xpcmv9rl0",
+            "owner": {
+              "name": "Arena Match Point",
+              "email": "espaco17@exemplo.com.br"
+            },
+            "place": {
+              "name": "Arena Match Point"
+            },
+            "planName": "Só+1 Básico",
+            "monthlyValue": "89,90",
+            "status": "past_due",
+            "currentPeriodEnd": "2026-09-13T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": true,
+            "registradaPor": null,
+            "registradaEm": null
+          },
+          {
+            "id": "cmu2qp3bf004spk1x1j6xnl5z",
+            "owner": {
+              "name": "Arena Rio Verde",
+              "email": "contato@arenarioverde.exemplo"
+            },
+            "place": {
+              "name": "Arena Rio Verde"
+            },
+            "planName": "Só+1 Básico",
+            "monthlyValue": "89,90",
+            "status": "canceled",
+            "currentPeriodEnd": "2026-09-05T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": false,
+            "registradaPor": null,
+            "registradaEm": null
+          },
+          {
+            "id": "cmu2qp3bf004opk1xsa9xng2x",
+            "owner": {
+              "name": "Arena TK9 Ijaci",
+              "email": "espaco25@exemplo.com.br"
+            },
+            "place": {
+              "name": "Arena TK9"
+            },
+            "planName": "Só+1 Pro",
+            "monthlyValue": "189,90",
+            "status": "active",
+            "currentPeriodEnd": "2026-09-24T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": true,
+            "registradaPor": null,
+            "registradaEm": null
+          },
+          {
+            "id": "cmu2qp3be004kpk1xyjzo8uze",
+            "owner": {
+              "name": "Na Praia FTV",
+              "email": "contato@napraialavras.com.br"
+            },
+            "place": {
+              "name": "Na Praia FTV Lavras"
+            },
+            "planName": "Só+1 Premium",
+            "monthlyValue": "389,90",
+            "status": "active",
+            "currentPeriodEnd": "2026-10-05T15:00:00.000Z",
+            "origem": "STRIPE",
+            "emDia": true,
+            "registradaPor": null,
+            "registradaEm": null
+          }
+        ]
+      }
+    },
+    "GET /admin/subscriptions/cortesia/convites": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": []
+      }
+    },
+    "GET /admin/suporte": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2r0y670000l81x5s0qh86p",
+            "ultimaMensagemEm": "2026-09-15T14:10:06.459Z",
+            "dono": {
+              "id": "cmu2qp2ct0006pk1xsbm6umke",
+              "name": "Arena Beach Lavras"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "Oi! Como eu cadastro o day use de domingo?",
+              "daEquipe": false,
+              "criadaEm": "2026-09-15T14:10:06.459Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jk00i4pk1xjhfdlo9q",
+            "ultimaMensagemEm": "2026-09-15T13:40:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct000cpk1xqcojsk70",
+              "name": "Associação Olímpica"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "E a 1h da manhã de domingo usa o preço de sábado ou o padrão?",
+              "daEquipe": false,
+              "criadaEm": "2026-09-15T13:40:50.774Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jl00i7pk1xp6lvtx49",
+            "ultimaMensagemEm": "2026-09-15T13:00:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+              "name": "Olaria Beach Sports"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "Consegue: edite o day use e aumente as vagas. Só não dá para baixar para menos do que já está inscrito.",
+              "daEquipe": true,
+              "criadaEm": "2026-09-15T13:00:50.774Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jl00i8pk1x0ex8rzt3",
+            "ultimaMensagemEm": "2026-09-13T18:39:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct0005pk1xcveshkgw",
+              "name": "Na Praia FTV"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "Nós que agradecemos. Qualquer coisa, é só escrever por aqui.",
+              "daEquipe": true,
+              "criadaEm": "2026-09-13T18:39:50.774Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jl00i6pk1xkelwvewb",
+            "ultimaMensagemEm": "2026-09-13T13:35:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct000jpk1x3xbb5ftb",
+              "name": "Campestre Clube"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "Mandei o Pix do mês ontem pelo WhatsApp. Podem conferir?",
+              "daEquipe": false,
+              "criadaEm": "2026-09-13T13:35:50.774Z"
+            }
+          },
+          {
+            "id": "cmu2qp3jl00i5pk1x7g9j2ga0",
+            "ultimaMensagemEm": "2026-09-10T15:10:50.774Z",
+            "dono": {
+              "id": "cmu2qp2ct000gpk1xt9bn0193",
+              "name": "Lavras Tênis Clube"
+            },
+            "naoLidas": 0,
+            "ultimaMensagem": {
+              "texto": "São, quem tem conta recebe o aviso. E a quadra volta a ficar livre naquele horário.",
+              "daEquipe": true,
+              "criadaEm": "2026-09-10T15:10:50.774Z"
+            }
+          }
+        ]
+      }
+    },
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp1od0000pk1xptfv2gxm",
+          "name": "Mateus Vitor",
+          "email": "mateus.ferreira10profissional@gmail.com",
+          "avatarUrl": null,
+          "role": "ADMIN",
+          "badge": null,
+          "badges": [],
+          "createdAt": "2026-09-15T14:00:51.133Z",
+          "phone": null,
+          "pixKey": null,
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 0,
+            "participations": 0,
+            "reviewsReceived": 0
+          },
+          "stats": {
+            "averageStars": null,
+            "totalReviews": 0,
+            "totalPartidas": 0,
+            "tags": []
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [
+            {
+              "id": "cmu2r0y6i0004l81xbqx6viha",
+              "userId": "cmu2qp1od0000pk1xptfv2gxm",
+              "type": "SUPPORT_MESSAGE",
+              "title": "Mensagem nova no suporte",
+              "body": "Arena Beach Lavras escreveu para a equipe.",
+              "data": {
+                "conversaId": "cmu2r0y670000l81x5s0qh86p"
+              },
+              "read": true,
+              "createdAt": "2026-09-15T14:10:06.474Z"
+            },
+            {
+              "id": "cmu2qp3jp00jlpk1xdajlwxpf",
+              "userId": "cmu2qp1od0000pk1xptfv2gxm",
+              "type": "SUPPORT_MESSAGE",
+              "title": "Mensagem nova no suporte",
+              "body": "Campestre Clube escreveu para a equipe.",
+              "data": {
+                "conversaId": "cmu2qp3jl00i6pk1xkelwvewb"
+              },
+              "read": true,
+              "createdAt": "2026-09-15T14:00:53.557Z"
+            },
+            {
+              "id": "cmu2qp3jp00jqpk1x7pyik4lr",
+              "userId": "cmu2qp1od0000pk1xptfv2gxm",
+              "type": "SUPPORT_MESSAGE",
+              "title": "Mensagem nova no suporte",
+              "body": "Associação Olímpica escreveu para a equipe.",
+              "data": {
+                "conversaId": "cmu2qp3jk00i4pk1xjhfdlo9q"
+              },
+              "read": true,
+              "createdAt": "2026-09-15T14:00:53.557Z"
+            }
+          ],
+          "unreadCount": 0
+        }
+      }
+    },
+    "GET /place-requests?status=PENDING": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": []
+      }
+    }
+  }
+}

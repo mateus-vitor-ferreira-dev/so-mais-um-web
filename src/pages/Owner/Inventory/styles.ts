@@ -293,6 +293,13 @@ export const HistoryList = styled.div`
   max-height: 640px;
   overflow: auto;
 
+  /* Até o notebook o histórico vem embaixo dos produtos, e a página já rola: a
+     caixa com rolagem própria prendia o dedo no meio da tela (#511). */
+  ${ate.notebook} {
+    max-height: none;
+    overflow: visible;
+  }
+
   > p { color: ${({ theme }) => theme.colors.textMuted}; font-size: 13px; }
 `
 

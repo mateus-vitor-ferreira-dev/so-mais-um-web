@@ -1,3 +1,6 @@
+import {
+  Cloud, CloudLightning, CloudRain, CloudSnow, CloudSun, Sun, SunDim, Thermometer, Wind, type LucideIcon,
+} from 'lucide-react'
 import type { HoraDoTempo, MotivoDoRisco, OcupacaoDaQuadra, AvaliacaoDoTempo } from '../types/api'
 
 /**
@@ -29,18 +32,20 @@ export function motivosPorExtenso(motivos: MotivoDoRisco[]): string {
  * (`LIGHT_RAIN_SHOWERS`, `SCATTERED_THUNDERSTORMS`…), e o que a tela precisa
  * distinguir são seis. A ordem importa — `THUNDERSHOWER` é tempestade antes de
  * ser chuva.
+ *
+ * Ícone de traço, e não emoji (#511): quem desenha é o `IconeDoTempo`.
  */
-export function iconeDaCondicao(condicao: string | null): string {
-  if (!condicao) return '🌡️'
-  if (condicao.includes('THUNDER')) return '⛈️'
-  if (condicao.includes('RAIN') || condicao.includes('SHOWER')) return '🌧️'
-  if (condicao.includes('SNOW') || condicao.includes('HAIL')) return '🌨️'
-  if (condicao.includes('WIND')) return '💨'
-  if (condicao === 'PARTLY_CLOUDY') return '⛅'
-  if (condicao.includes('CLOUDY')) return '☁️'
-  if (condicao === 'MOSTLY_CLEAR') return '🌤️'
-  if (condicao === 'CLEAR') return '☀️'
-  return '🌡️'
+export function iconeDaCondicao(condicao: string | null): LucideIcon {
+  if (!condicao) return Thermometer
+  if (condicao.includes('THUNDER')) return CloudLightning
+  if (condicao.includes('RAIN') || condicao.includes('SHOWER')) return CloudRain
+  if (condicao.includes('SNOW') || condicao.includes('HAIL')) return CloudSnow
+  if (condicao.includes('WIND')) return Wind
+  if (condicao === 'PARTLY_CLOUDY') return CloudSun
+  if (condicao.includes('CLOUDY')) return Cloud
+  if (condicao === 'MOSTLY_CLEAR') return SunDim
+  if (condicao === 'CLEAR') return Sun
+  return Thermometer
 }
 
 /** `24°`, ou `—` quando a Google não mandou o número. */

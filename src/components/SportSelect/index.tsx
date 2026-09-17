@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import type { MouseEvent } from 'react'
+import type { KeyboardEvent, MouseEvent } from 'react'
+import { Check } from 'lucide-react'
 import type { CourtType } from '../../types/api'
 import type { SportOption } from '../../hooks/useSports'
 import SportIcon from '../SportIcon'
@@ -20,6 +21,9 @@ export interface SportSelectProps {
  *
  * Exibe as modalidades selecionadas como tags removíveis e abre um dropdown
  * com todas as opções disponíveis ao clicar. Fecha ao clicar fora.
+ *
+ * As opções são botões com `aria-pressed` (#511): eram `div` com clique, e o
+ * teclado não chegava nelas. Esc fecha a lista e devolve o foco ao gatilho.
  */
 export default function SportSelect({
   sports = [],
@@ -29,6 +33,7 @@ export default function SportSelect({
 }: SportSelectProps) {
   const [open, setOpen] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   // Fecha o dropdown ao clicar fora do componente
   useEffect(() => {
@@ -54,9 +59,16 @@ export default function SportSelect({
 
   const selectedSports = sports.filter((s) => value.includes(s.id))
 
+  function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    if (e.key !== 'Escape' || !open) return
+    e.stopPropagation()
+    setOpen(false)
+    triggerRef.current?.focus()
+  }
+
   return (
-    <Wrapper ref={wrapperRef}>
-      <Trigger $open={open} onClick={() => setOpen((v) => !v)}>
+    <Wrapper ref={wrapperRef} onKeyDown={onKeyDown}>
+      <Trigger ref={triggerRef} $open={open} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
         {loading ? (
           <Placeholder>Carregando…</Placeholder>
         ) : selectedSports.length === 0 ? (
@@ -69,7 +81,7 @@ export default function SportSelect({
             </Tag>
           ))
         )}
-        <ChevronIcon $open={open}>▾</ChevronIcon>
+        <ChevronIcon $open={open} aria-hidden="true">▾</ChevronIcon>
       </Trigger>
 
       {open && (
@@ -79,8 +91,8 @@ export default function SportSelect({
           {sports.map((s) => {
             const checked = value.includes(s.id)
             return (
-              <Option key={s.id} $selected={checked} onClick={() => toggle(s.id)}>
-                <Checkbox $checked={checked}>{checked ? '✓' : ''}</Checkbox>
+              <Option key={s.id} $selected={checked} aria-pressed={checked} onClick={() => toggle(s.id)}>
+                <Checkbox $checked={checked} aria-hidden="true">{checked && <Check size={12} strokeWidth={3} />}</Checkbox>
                 <OptionIcon><SportIcon icon={s.icon} fallback={s.iconFallback} /></OptionIcon>
                 {s.label}
               </Option>

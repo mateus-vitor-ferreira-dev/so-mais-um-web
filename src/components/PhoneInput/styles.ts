@@ -62,7 +62,7 @@ export const DialCode = styled.span`
 `
 
 export const Chevron = styled.span<{ $open?: boolean; }>`
-  font-size: 10px;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.textMuted};
   transition: transform 0.15s;
   transform: ${({ $open }) => $open ? 'rotate(180deg)' : 'rotate(0deg)'};

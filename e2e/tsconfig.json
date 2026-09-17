@@ -1,0 +1,17 @@
+{
+  // A checagem de responsividade (web#511) roda no Node, pelo Playwright, e
+  // fica fora do tsconfig do app: lá os tipos são só os do Vite. O `medir`
+  // roda na página, por isso o DOM entra junto.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "types": ["node"]
+  },
+  "include": ["**/*.ts"]
+}

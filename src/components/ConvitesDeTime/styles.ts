@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { alvoDeToque } from '../../styles/telas'
 
 export const Bloco = styled.section`
   margin-bottom: ${({ theme }) => theme.spacing[6]};
@@ -88,6 +89,8 @@ export const Aceitar = styled.button`
     outline: 2px solid ${({ theme }) => theme.colors.primaryDark};
     outline-offset: 2px;
   }
+
+  ${alvoDeToque}
 `
 
 export const Recusar = styled.button`
@@ -102,6 +105,8 @@ export const Recusar = styled.button`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+
+  ${alvoDeToque}
 `
 
 export const Vencido = styled.span`

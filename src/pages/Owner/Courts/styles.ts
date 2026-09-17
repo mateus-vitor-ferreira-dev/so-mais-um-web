@@ -352,7 +352,7 @@ export const SeloCoberta = styled.span`
   border-radius: ${({ theme }) => theme.radii.full};
   font-size: ${({ theme }) => theme.fontSizes.xs};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
-  color: ${({ theme }) => theme.colors.info};
+  color: ${({ theme }) => theme.colors.infoText};
   background: ${({ theme }) => theme.colors.infoLight};
   vertical-align: middle;
 `

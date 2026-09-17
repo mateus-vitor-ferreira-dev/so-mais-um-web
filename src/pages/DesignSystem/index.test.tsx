@@ -45,6 +45,7 @@ const NAO_SAO_VOCABULARIO = new Set([
   'NotificationBell', 'PartidasParaApitar', 'PartidasPerto', 'PasswordInput',
   'PerfilEsportivo', 'PhoneInput', 'PlanGate', 'RegrasDaPartida',
   'RequisitosDaPartida', 'SorteioDeTimes', 'SportIcon', 'SportSelect',
+  'IconeDoTempo', // o ícone da condição do tempo: um mapa de valor para ícone, sem desenho próprio (#511)
   'StatCard', 'SubscriptionGate', 'TournamentBracket', 'TournamentRegistrations',
   'TempoNaAgenda', // a agenda do dia do dono com a previsão: fala com a api (web#477)
   'VinculosDeProfessor',
