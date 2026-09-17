@@ -23,11 +23,37 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen, waitFor, within } from '@testing-library/react'
 import { renderWithProviders } from '../../../test/render'
 import { dayUsesService } from '../../../services/dayUses'
+import * as placesService from '../../../services/places'
 import OwnerEntradasDoDayUse from './index'
-import type { EntradaNoDayUse, EntradasDoDayUse } from '../../../types/api'
+import type { AxiosResponse } from 'axios'
+import type { ApiEnvelope, DayUse, EntradaNoDayUse, EntradasDoDayUse, Place } from '../../../types/api'
 
 vi.mock('../../../services/dayUses')
+vi.mock('../../../services/places')
 const servico = vi.mocked(dayUsesService)
+const espacos = vi.mocked(placesService)
+
+const auth = vi.hoisted(() => ({ estado: { user: { id: 'dono', role: 'OWNER' } } }))
+vi.mock('../../../contexts/AuthContext', async (original) => ({
+  ...(await original<Record<string, unknown>>()),
+  useAuth: () => auth.estado,
+}))
+
+/** Dois espaços do dono e um de outro: o day use `d1` é do segundo (web#520). */
+function espacosDoDono() {
+  espacos.list.mockResolvedValue({
+    data: {
+      success: true,
+      data: [
+        { id: 'ltc', name: 'Lavras Tênis Clube', ownerId: 'dono' },
+        { id: 'arena', name: 'Arena', ownerId: 'dono' },
+        { id: 'alheio', name: 'De outro dono', ownerId: 'outro' },
+      ] as Place[],
+    },
+  } as AxiosResponse<ApiEnvelope<Place[]>>)
+  servico.listar.mockImplementation(async (placeId: string) =>
+    (placeId === 'arena' ? [{ id: 'd1' }] : [{ id: 'd9' }]) as DayUse[])
+}
 
 function entrada(over: Partial<EntradaNoDayUse> = {}): EntradaNoDayUse {
   return {
@@ -164,11 +190,34 @@ describe('OwnerEntradasDoDayUse', () => {
     await waitFor(() => expect(servico.removerEntrada).toHaveBeenCalledWith('ltc', 'd1', 'e1'))
   })
 
-  it('sem placeId na URL, explica em vez de chamar a api sem espaço', async () => {
+  it('sem placeId na URL, acha o espaço do day use entre os do dono (web#520)', async () => {
+    espacosDoDono()
     monta('')
 
-    expect(await screen.findByText(/Faltou saber de qual espaço/)).toBeInTheDocument()
+    expect(await screen.findByText(/Ninguém entrou ainda/)).toBeInTheDocument()
+    expect(servico.entradas).toHaveBeenCalledWith('arena', 'd1')
+    // O espaço de outro dono nem é consultado.
+    expect(servico.listar).not.toHaveBeenCalledWith('alheio', true)
+  })
+
+  it('sem placeId, e o day use não é de nenhum espaço do dono: explica em vez de chamar a api', async () => {
+    espacosDoDono()
+    servico.listar.mockResolvedValue([])
+    monta('')
+
+    expect(await screen.findByText(/Não achamos este day use nos seus espaços/)).toBeInTheDocument()
     expect(servico.entradas).not.toHaveBeenCalled()
+  })
+
+  it('um espaço que recusa a lista não derruba a busca nos outros', async () => {
+    espacosDoDono()
+    servico.listar.mockImplementation(async (placeId: string) => {
+      if (placeId === 'ltc') throw new Error('403')
+      return [{ id: 'd1' }] as DayUse[]
+    })
+    monta('')
+
+    await waitFor(() => expect(servico.entradas).toHaveBeenCalledWith('arena', 'd1'))
   })
 
   it('ninguém dentro ainda diz isso, e não parece erro', async () => {
