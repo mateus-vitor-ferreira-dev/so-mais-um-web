@@ -1,0 +1,2850 @@
+{
+  "gravadoEm": "2026-09-17T14:52:13.452Z",
+  "respostas": {
+    "GET /auth/me": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+          "name": "Mateus Vitor",
+          "email": "mateus@player.com",
+          "avatarUrl": null,
+          "role": "PLAYER",
+          "badge": "CRAQUE",
+          "badges": [
+            "CRAQUE",
+            "CONFIAVEL",
+            "ORGANIZADOR_NATO"
+          ],
+          "createdAt": "2026-09-15T14:00:52.715Z",
+          "phone": null,
+          "pixKey": "mateus@player.com",
+          "marketingOptIn": false,
+          "_count": {
+            "matchesCreated": 13,
+            "participations": 18,
+            "reviewsReceived": 2
+          },
+          "stats": {
+            "averageStars": 4.5,
+            "totalReviews": 2,
+            "totalPartidas": 18,
+            "tags": [
+              {
+                "tag": "FAIR_PLAY",
+                "count": 1
+              },
+              {
+                "tag": "BOA_COMUNICACAO",
+                "count": 1
+              }
+            ]
+          },
+          "vinculos": {
+            "professorEm": []
+          }
+        }
+      }
+    },
+    "GET /courts": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3cx007qpk1xbvmtv80j",
+            "placeId": "cmu2qp3bl005fpk1xp8tj1k76",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "110",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.313Z",
+            "updatedAt": "2026-09-15T14:00:53.313Z",
+            "place": {
+              "id": "cmu2qp3bl005fpk1xp8tj1k76",
+              "name": "Arena TK9",
+              "city": "Ijaci",
+              "neighborhood": "Córrego Pintado",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000mpk1xzkt8jj43",
+                "name": "Arena TK9 Ijaci"
+              }
+            },
+            "precoMinimo": 110,
+            "precoMaximo": 110
+          },
+          {
+            "id": "cmu2qp3dh008ipk1x5ic10vb0",
+            "placeId": "cmu2qp3bq005spk1xaqjf5rqd",
+            "name": "Futsal",
+            "type": "FUTSAL",
+            "pricePerHour": "25",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.333Z",
+            "updatedAt": "2026-09-15T14:00:53.333Z",
+            "place": {
+              "id": "cmu2qp3bq005spk1xaqjf5rqd",
+              "name": "Poliesportivo de Itumirim",
+              "city": "Itumirim",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000zpk1xk8soayuk",
+                "name": "Poliesportivo Itumirim"
+              }
+            },
+            "precoMinimo": 25,
+            "precoMaximo": 25
+          },
+          {
+            "id": "cmu2qp3dh008jpk1x8sqn8pnx",
+            "placeId": "cmu2qp3bq005spk1xaqjf5rqd",
+            "name": "Handebol",
+            "type": "HANDBALL",
+            "pricePerHour": "25",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.333Z",
+            "updatedAt": "2026-09-15T14:00:53.333Z",
+            "place": {
+              "id": "cmu2qp3bq005spk1xaqjf5rqd",
+              "name": "Poliesportivo de Itumirim",
+              "city": "Itumirim",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000zpk1xk8soayuk",
+                "name": "Poliesportivo Itumirim"
+              }
+            },
+            "precoMinimo": 25,
+            "precoMaximo": 25
+          },
+          {
+            "id": "cmu2qp3ce006upk1xqf8esjwc",
+            "placeId": "cmu2qp3bl0055pk1xb3svnvgz",
+            "name": "Basquete",
+            "type": "BASQUETE",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.294Z",
+            "updatedAt": "2026-09-15T14:00:53.294Z",
+            "place": {
+              "id": "cmu2qp3bl0055pk1xb3svnvgz",
+              "name": "Ginásio Poliesportivo Vila Brasília",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cc006qpk1x4bfdk6if",
+            "placeId": "cmu2qp3bl0054pk1xfuuig54d",
+            "name": "Basquete",
+            "type": "BASQUETE",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.292Z",
+            "updatedAt": "2026-09-15T14:00:53.292Z",
+            "place": {
+              "id": "cmu2qp3bl0054pk1xfuuig54d",
+              "name": "Complexo Esportivo SELT",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cg006ypk1x5m3dnaay",
+            "placeId": "cmu2qp3bl0056pk1xwh8lfs0m",
+            "name": "Basquete 1",
+            "type": "BASQUETE",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.296Z",
+            "updatedAt": "2026-09-15T14:00:53.296Z",
+            "place": {
+              "id": "cmu2qp3bl0056pk1xwh8lfs0m",
+              "name": "Ginásio Poliesportivo UFLA",
+              "city": "Lavras",
+              "neighborhood": "Jardim das Alterosas",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+                "name": "Ginásio UFLA"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3cg006zpk1xakwp2qum",
+            "placeId": "cmu2qp3bl0056pk1xwh8lfs0m",
+            "name": "Basquete 2",
+            "type": "BASQUETE",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.296Z",
+            "updatedAt": "2026-09-15T14:00:53.296Z",
+            "place": {
+              "id": "cmu2qp3bl0056pk1xwh8lfs0m",
+              "name": "Ginásio Poliesportivo UFLA",
+              "city": "Lavras",
+              "neighborhood": "Jardim das Alterosas",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+                "name": "Ginásio UFLA"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3bu005xpk1xvk4b5rtz",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Beach Tennis",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": true,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.337Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 95
+          },
+          {
+            "id": "cmu2qp3c5006fpk1x4csu719i",
+            "placeId": "cmu2qp3bl0051pk1x8sm53vlx",
+            "name": "Beach Tennis",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.285Z",
+            "updatedAt": "2026-09-15T14:00:53.285Z",
+            "place": {
+              "id": "cmu2qp3bl0051pk1x8sm53vlx",
+              "name": "Arena Club",
+              "city": "Lavras",
+              "neighborhood": "Dos Ipês",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000bpk1xtcpy5utr",
+                "name": "Arena Club Lavras"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 75
+          },
+          {
+            "id": "cmu2qp3c00064pk1xps24kshk",
+            "placeId": "cmu2qp3bl004ypk1xro32cis6",
+            "name": "Beach Tennis 1",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.280Z",
+            "updatedAt": "2026-09-15T14:00:53.280Z",
+            "place": {
+              "id": "cmu2qp3bl004ypk1xro32cis6",
+              "name": "Olaria Beach Sports",
+              "city": "Lavras",
+              "neighborhood": "Dos Ipês",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+                "name": "Olaria Beach Sports"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 75
+          },
+          {
+            "id": "cmu2qp3bw005ypk1x80q9dyls",
+            "placeId": "cmu2qp3bk004wpk1x2phsdjwo",
+            "name": "Beach Tennis 1",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.276Z",
+            "updatedAt": "2026-09-15T14:00:53.276Z",
+            "place": {
+              "id": "cmu2qp3bk004wpk1x2phsdjwo",
+              "name": "Arena Beach Lavras",
+              "city": "Lavras",
+              "neighborhood": "Portal da Mata",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0006pk1xsbm6umke",
+                "name": "Arena Beach Lavras"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 75
+          },
+          {
+            "id": "cmu2qp3by0061pk1xxhnc3jtg",
+            "placeId": "cmu2qp3bl004xpk1xn11abvx1",
+            "name": "Beach Tennis 1",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "80",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.278Z",
+            "updatedAt": "2026-09-15T14:00:53.278Z",
+            "place": {
+              "id": "cmu2qp3bl004xpk1xn11abvx1",
+              "name": "Arena JC Beach Club",
+              "city": "Lavras",
+              "neighborhood": "Alphaville",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0007pk1x1zsq9wjf",
+                "name": "Arena JC Beach Club"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3c20069pk1xv1o8a328",
+            "placeId": "cmu2qp3bl004zpk1xddd09sr2",
+            "name": "Beach Tennis 1",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.282Z",
+            "updatedAt": "2026-09-15T14:00:53.282Z",
+            "place": {
+              "id": "cmu2qp3bl004zpk1xddd09sr2",
+              "name": "Complexo PRB Beach Sports",
+              "city": "Lavras",
+              "neighborhood": "Santa Efigênia",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0009pk1xwc5d82yy",
+                "name": "Complexo PRB Beach Sports"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3c4006cpk1xd6yo0axb",
+            "placeId": "cmu2qp3bl0050pk1xxqkmidse",
+            "name": "Beach Tennis 1",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.284Z",
+            "updatedAt": "2026-09-15T14:00:53.284Z",
+            "place": {
+              "id": "cmu2qp3bl0050pk1xxqkmidse",
+              "name": "Sunset Arena Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000apk1xuseeytv2",
+                "name": "Sunset Arena Lavras"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 75
+          },
+          {
+            "id": "cmu2qp3by0062pk1xcqy81119",
+            "placeId": "cmu2qp3bl004xpk1xn11abvx1",
+            "name": "Beach Tennis 2",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "80",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.278Z",
+            "updatedAt": "2026-09-15T14:00:53.278Z",
+            "place": {
+              "id": "cmu2qp3bl004xpk1xn11abvx1",
+              "name": "Arena JC Beach Club",
+              "city": "Lavras",
+              "neighborhood": "Alphaville",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0007pk1x1zsq9wjf",
+                "name": "Arena JC Beach Club"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3c4006dpk1xsrlt5kgv",
+            "placeId": "cmu2qp3bl0050pk1xxqkmidse",
+            "name": "Beach Tennis 2",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.284Z",
+            "updatedAt": "2026-09-15T14:00:53.284Z",
+            "place": {
+              "id": "cmu2qp3bl0050pk1xxqkmidse",
+              "name": "Sunset Arena Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000apk1xuseeytv2",
+                "name": "Sunset Arena Lavras"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 75
+          },
+          {
+            "id": "cmu2qp3c2006apk1xmmszbcnr",
+            "placeId": "cmu2qp3bl004zpk1xddd09sr2",
+            "name": "Beach Tennis 2",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.282Z",
+            "updatedAt": "2026-09-15T14:00:53.282Z",
+            "place": {
+              "id": "cmu2qp3bl004zpk1xddd09sr2",
+              "name": "Complexo PRB Beach Sports",
+              "city": "Lavras",
+              "neighborhood": "Santa Efigênia",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0009pk1xwc5d82yy",
+                "name": "Complexo PRB Beach Sports"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3c00065pk1xnn911lma",
+            "placeId": "cmu2qp3bl004ypk1xro32cis6",
+            "name": "Beach Tennis 2",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.280Z",
+            "updatedAt": "2026-09-15T14:00:53.280Z",
+            "place": {
+              "id": "cmu2qp3bl004ypk1xro32cis6",
+              "name": "Olaria Beach Sports",
+              "city": "Lavras",
+              "neighborhood": "Dos Ipês",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+                "name": "Olaria Beach Sports"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 75
+          },
+          {
+            "id": "cmu2qp3bw005zpk1xww8fjgqe",
+            "placeId": "cmu2qp3bk004wpk1x2phsdjwo",
+            "name": "Beach Tennis 2",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "75",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.276Z",
+            "updatedAt": "2026-09-15T14:00:53.276Z",
+            "place": {
+              "id": "cmu2qp3bk004wpk1x2phsdjwo",
+              "name": "Arena Beach Lavras",
+              "city": "Lavras",
+              "neighborhood": "Portal da Mata",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0006pk1xsbm6umke",
+                "name": "Arena Beach Lavras"
+              }
+            },
+            "precoMinimo": 75,
+            "precoMaximo": 75
+          },
+          {
+            "id": "cmu2qp3cp007hpk1xt8x3uh21",
+            "placeId": "cmu2qp3bl005apk1xjn77xma6",
+            "name": "Campo de Futebol",
+            "type": "CAMPO",
+            "pricePerHour": "160",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.306Z",
+            "updatedAt": "2026-09-15T14:00:53.306Z",
+            "place": {
+              "id": "cmu2qp3bl005apk1xjn77xma6",
+              "name": "Campestre Clube Celso Baptista Dias",
+              "city": "Lavras",
+              "neighborhood": "Jardim Glória",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000jpk1x3xbb5ftb",
+                "name": "Campestre Clube"
+              }
+            },
+            "precoMinimo": 160,
+            "precoMaximo": 160
+          },
+          {
+            "id": "cmu2qp3c9006jpk1x9vt1lagw",
+            "placeId": "cmu2qp3bl0053pk1x0nwnliy4",
+            "name": "Campo de Futebol",
+            "type": "CAMPO",
+            "pricePerHour": "160",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.289Z",
+            "updatedAt": "2026-09-15T14:00:53.289Z",
+            "place": {
+              "id": "cmu2qp3bl0053pk1x0nwnliy4",
+              "name": "Operário Esporte Clube",
+              "city": "Lavras",
+              "neighborhood": "Das Mansões",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000dpk1xvzq2hij4",
+                "name": "Operário Esporte Clube"
+              }
+            },
+            "precoMinimo": 160,
+            "precoMaximo": 160
+          },
+          {
+            "id": "cmu2qp3cw007ppk1x6fkbargq",
+            "placeId": "cmu2qp3bl005epk1xoy2zydih",
+            "name": "Campo de Futebol",
+            "type": "CAMPO",
+            "pricePerHour": "150",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.312Z",
+            "updatedAt": "2026-09-15T14:00:53.312Z",
+            "place": {
+              "id": "cmu2qp3bl005epk1xoy2zydih",
+              "name": "Campo de Futebol Flamboia",
+              "city": "Lavras",
+              "neighborhood": "Das Mansões",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000lpk1xxfur6tt7",
+                "name": "Condomínio Flamboia"
+              }
+            },
+            "precoMinimo": 150,
+            "precoMaximo": 150
+          },
+          {
+            "id": "cmu2qp3cs007lpk1xsvwfctla",
+            "placeId": "cmu2qp3bl005bpk1xr3k55ilj",
+            "name": "Campo de Futebol",
+            "type": "CAMPO",
+            "pricePerHour": "150",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.308Z",
+            "updatedAt": "2026-09-15T14:00:53.308Z",
+            "place": {
+              "id": "cmu2qp3bl005bpk1xr3k55ilj",
+              "name": "Fabril Esporte Clube",
+              "city": "Lavras",
+              "neighborhood": "Jardim Vila Rica",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000kpk1xmraqlahh",
+                "name": "Fabril Esporte Clube"
+              }
+            },
+            "precoMinimo": 150,
+            "precoMaximo": 150
+          },
+          {
+            "id": "cmu2qp3cl007apk1x77s7w0qm",
+            "placeId": "cmu2qp3bl0058pk1xlpdty5xh",
+            "name": "Campo de Futebol",
+            "type": "CAMPO",
+            "pricePerHour": "170",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.301Z",
+            "updatedAt": "2026-09-15T14:00:53.301Z",
+            "place": {
+              "id": "cmu2qp3bl0058pk1xlpdty5xh",
+              "name": "AABB Lavras",
+              "city": "Lavras",
+              "neighborhood": "Água Limpa",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000hpk1x7cory6be",
+                "name": "AABB Lavras"
+              }
+            },
+            "precoMinimo": 170,
+            "precoMaximo": 170
+          },
+          {
+            "id": "cmu2qp3bw0060pk1xupfej65z",
+            "placeId": "cmu2qp3bk004wpk1x2phsdjwo",
+            "name": "Futevôlei",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.276Z",
+            "updatedAt": "2026-09-15T14:00:53.276Z",
+            "place": {
+              "id": "cmu2qp3bk004wpk1x2phsdjwo",
+              "name": "Arena Beach Lavras",
+              "city": "Lavras",
+              "neighborhood": "Portal da Mata",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0006pk1xsbm6umke",
+                "name": "Arena Beach Lavras"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3c5006gpk1xy4jfmf0w",
+            "placeId": "cmu2qp3bl0051pk1x8sm53vlx",
+            "name": "Futevôlei",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.285Z",
+            "updatedAt": "2026-09-15T14:00:53.285Z",
+            "place": {
+              "id": "cmu2qp3bl0051pk1x8sm53vlx",
+              "name": "Arena Club",
+              "city": "Lavras",
+              "neighborhood": "Dos Ipês",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000bpk1xtcpy5utr",
+                "name": "Arena Club Lavras"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3c4006epk1xqppnqe1m",
+            "placeId": "cmu2qp3bl0050pk1xxqkmidse",
+            "name": "Futevôlei",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.284Z",
+            "updatedAt": "2026-09-15T14:00:53.284Z",
+            "place": {
+              "id": "cmu2qp3bl0050pk1xxqkmidse",
+              "name": "Sunset Arena Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000apk1xuseeytv2",
+                "name": "Sunset Arena Lavras"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3c2006bpk1xis7o7cxg",
+            "placeId": "cmu2qp3bl004zpk1xddd09sr2",
+            "name": "Futevôlei",
+            "type": "AREIA",
+            "pricePerHour": "60",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.282Z",
+            "updatedAt": "2026-09-15T14:00:53.282Z",
+            "place": {
+              "id": "cmu2qp3bl004zpk1xddd09sr2",
+              "name": "Complexo PRB Beach Sports",
+              "city": "Lavras",
+              "neighborhood": "Santa Efigênia",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0009pk1xwc5d82yy",
+                "name": "Complexo PRB Beach Sports"
+              }
+            },
+            "precoMinimo": 60,
+            "precoMaximo": 60
+          },
+          {
+            "id": "cmu2qp3by0063pk1x3wh4t0p9",
+            "placeId": "cmu2qp3bl004xpk1xn11abvx1",
+            "name": "Futevôlei",
+            "type": "AREIA",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.278Z",
+            "updatedAt": "2026-09-15T14:00:53.278Z",
+            "place": {
+              "id": "cmu2qp3bl004xpk1xn11abvx1",
+              "name": "Arena JC Beach Club",
+              "city": "Lavras",
+              "neighborhood": "Alphaville",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0007pk1x1zsq9wjf",
+                "name": "Arena JC Beach Club"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3bu005tpk1xbelnc3q6",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 1",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3c00066pk1xpmbfbo8p",
+            "placeId": "cmu2qp3bl004ypk1xro32cis6",
+            "name": "Futevôlei 1",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.280Z",
+            "updatedAt": "2026-09-15T14:00:53.280Z",
+            "place": {
+              "id": "cmu2qp3bl004ypk1xro32cis6",
+              "name": "Olaria Beach Sports",
+              "city": "Lavras",
+              "neighborhood": "Dos Ipês",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+                "name": "Olaria Beach Sports"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3c00067pk1x7jwr0n91",
+            "placeId": "cmu2qp3bl004ypk1xro32cis6",
+            "name": "Futevôlei 2",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.280Z",
+            "updatedAt": "2026-09-15T14:00:53.280Z",
+            "place": {
+              "id": "cmu2qp3bl004ypk1xro32cis6",
+              "name": "Olaria Beach Sports",
+              "city": "Lavras",
+              "neighborhood": "Dos Ipês",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+                "name": "Olaria Beach Sports"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3bu005upk1xe8897i77",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 2",
+            "type": "AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3bu005vpk1x4hf6r46j",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Futevôlei 3",
+            "type": "AREIA",
+            "pricePerHour": null,
+            "coberta": null,
+            "precoVariaPorHorario": true,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.337Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3cp007ipk1xfd7k93f7",
+            "placeId": "cmu2qp3bl005apk1xjn77xma6",
+            "name": "Futsal",
+            "type": "FUTSAL",
+            "pricePerHour": "80",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.306Z",
+            "updatedAt": "2026-09-15T14:00:53.306Z",
+            "place": {
+              "id": "cmu2qp3bl005apk1xjn77xma6",
+              "name": "Campestre Clube Celso Baptista Dias",
+              "city": "Lavras",
+              "neighborhood": "Jardim Glória",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000jpk1x3xbb5ftb",
+                "name": "Campestre Clube"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3ce006spk1xz97yed8y",
+            "placeId": "cmu2qp3bl0055pk1xb3svnvgz",
+            "name": "Futsal",
+            "type": "FUTSAL",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.294Z",
+            "updatedAt": "2026-09-15T14:00:53.294Z",
+            "place": {
+              "id": "cmu2qp3bl0055pk1xb3svnvgz",
+              "name": "Ginásio Poliesportivo Vila Brasília",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3cn007epk1xkmlip7yd",
+            "placeId": "cmu2qp3bl0059pk1xobwbbhzw",
+            "name": "Futsal",
+            "type": "FUTSAL",
+            "pricePerHour": "80",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.304Z",
+            "updatedAt": "2026-09-15T14:00:53.304Z",
+            "place": {
+              "id": "cmu2qp3bl0059pk1xobwbbhzw",
+              "name": "Clube ABR Marelli",
+              "city": "Lavras",
+              "neighborhood": "Colinas da Serra",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000ipk1xeswqplcb",
+                "name": "Clube ABR Marelli"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3cg0071pk1xf58rhc31",
+            "placeId": "cmu2qp3bl0056pk1xwh8lfs0m",
+            "name": "Futsal",
+            "type": "FUTSAL",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.296Z",
+            "updatedAt": "2026-09-15T14:00:53.296Z",
+            "place": {
+              "id": "cmu2qp3bl0056pk1xwh8lfs0m",
+              "name": "Ginásio Poliesportivo UFLA",
+              "city": "Lavras",
+              "neighborhood": "Jardim das Alterosas",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+                "name": "Ginásio UFLA"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3cv007npk1xz72khk2n",
+            "placeId": "cmu2qp3bl005cpk1xr6iese6l",
+            "name": "Futsal",
+            "type": "FUTSAL",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.311Z",
+            "updatedAt": "2026-09-15T14:00:53.311Z",
+            "place": {
+              "id": "cmu2qp3bl005cpk1xr6iese6l",
+              "name": "Quadra Poliesportiva Rafael Salustiano Silva",
+              "city": "Lavras",
+              "neighborhood": "Nova Lavras",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cb006npk1x5bi618w0",
+            "placeId": "cmu2qp3bl0054pk1xfuuig54d",
+            "name": "Futsal 1",
+            "type": "FUTSAL",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.292Z",
+            "updatedAt": "2026-09-15T14:00:53.292Z",
+            "place": {
+              "id": "cmu2qp3bl0054pk1xfuuig54d",
+              "name": "Complexo Esportivo SELT",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3cb006opk1xk6z5xger",
+            "placeId": "cmu2qp3bl0054pk1xfuuig54d",
+            "name": "Futsal 2",
+            "type": "FUTSAL",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.292Z",
+            "updatedAt": "2026-09-15T14:00:53.292Z",
+            "place": {
+              "id": "cmu2qp3bl0054pk1xfuuig54d",
+              "name": "Complexo Esportivo SELT",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3c7006ipk1ximp5yk29",
+            "placeId": "cmu2qp3bl0052pk1xashopn01",
+            "name": "Futsal Coberto",
+            "type": "FUTSAL",
+            "pricePerHour": "90",
+            "coberta": true,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.287Z",
+            "updatedAt": "2026-09-15T14:00:53.287Z",
+            "place": {
+              "id": "cmu2qp3bl0052pk1xashopn01",
+              "name": "Associação Olímpica de Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000cpk1xqcojsk70",
+                "name": "Associação Olímpica"
+              }
+            },
+            "precoMinimo": 90,
+            "precoMaximo": 90
+          },
+          {
+            "id": "cmu2qp3cc006rpk1xelhwcp91",
+            "placeId": "cmu2qp3bl0054pk1xfuuig54d",
+            "name": "Handebol",
+            "type": "HANDBALL",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.292Z",
+            "updatedAt": "2026-09-15T14:00:53.292Z",
+            "place": {
+              "id": "cmu2qp3bl0054pk1xfuuig54d",
+              "name": "Complexo Esportivo SELT",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cg0070pk1xijy4lc6s",
+            "placeId": "cmu2qp3bl0056pk1xwh8lfs0m",
+            "name": "Handebol",
+            "type": "HANDBALL",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.296Z",
+            "updatedAt": "2026-09-15T14:00:53.296Z",
+            "place": {
+              "id": "cmu2qp3bl0056pk1xwh8lfs0m",
+              "name": "Ginásio Poliesportivo UFLA",
+              "city": "Lavras",
+              "neighborhood": "Jardim das Alterosas",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+                "name": "Ginásio UFLA"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3ce006vpk1xubnqpfz0",
+            "placeId": "cmu2qp3bl0055pk1xb3svnvgz",
+            "name": "Handebol",
+            "type": "HANDBALL",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.294Z",
+            "updatedAt": "2026-09-15T14:00:53.294Z",
+            "place": {
+              "id": "cmu2qp3bl0055pk1xb3svnvgz",
+              "name": "Ginásio Poliesportivo Vila Brasília",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cj0077pk1x0g2qzrw1",
+            "placeId": "cmu2qp3bl0057pk1x7pbahn4c",
+            "name": "Peteca",
+            "type": "PETECA",
+            "pricePerHour": "45",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.299Z",
+            "updatedAt": "2026-09-15T14:00:53.299Z",
+            "place": {
+              "id": "cmu2qp3bl0057pk1x7pbahn4c",
+              "name": "Lavras Tênis Clube — LTC",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000gpk1xt9bn0193",
+                "name": "Lavras Tênis Clube"
+              }
+            },
+            "precoMinimo": 45,
+            "precoMaximo": 45
+          },
+          {
+            "id": "cmu2qp3cl007cpk1xio3swo8y",
+            "placeId": "cmu2qp3bl0058pk1xlpdty5xh",
+            "name": "Peteca",
+            "type": "PETECA",
+            "pricePerHour": "45",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.301Z",
+            "updatedAt": "2026-09-15T14:00:53.301Z",
+            "place": {
+              "id": "cmu2qp3bl0058pk1xlpdty5xh",
+              "name": "AABB Lavras",
+              "city": "Lavras",
+              "neighborhood": "Água Limpa",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000hpk1x7cory6be",
+                "name": "AABB Lavras"
+              }
+            },
+            "precoMinimo": 45,
+            "precoMaximo": 45
+          },
+          {
+            "id": "cmu2qp3co007gpk1x4v58hqko",
+            "placeId": "cmu2qp3bl0059pk1xobwbbhzw",
+            "name": "Peteca",
+            "type": "PETECA",
+            "pricePerHour": "40",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.304Z",
+            "updatedAt": "2026-09-15T14:00:53.304Z",
+            "place": {
+              "id": "cmu2qp3bl0059pk1xobwbbhzw",
+              "name": "Clube ABR Marelli",
+              "city": "Lavras",
+              "neighborhood": "Colinas da Serra",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000ipk1xeswqplcb",
+                "name": "Clube ABR Marelli"
+              }
+            },
+            "precoMinimo": 40,
+            "precoMaximo": 40
+          },
+          {
+            "id": "cmu2qp3cq007kpk1xj1bdntj2",
+            "placeId": "cmu2qp3bl005apk1xjn77xma6",
+            "name": "Peteca",
+            "type": "PETECA",
+            "pricePerHour": "40",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.306Z",
+            "updatedAt": "2026-09-15T14:00:53.306Z",
+            "place": {
+              "id": "cmu2qp3bl005apk1xjn77xma6",
+              "name": "Campestre Clube Celso Baptista Dias",
+              "city": "Lavras",
+              "neighborhood": "Jardim Glória",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000jpk1x3xbb5ftb",
+                "name": "Campestre Clube"
+              }
+            },
+            "precoMinimo": 40,
+            "precoMaximo": 40
+          },
+          {
+            "id": "cmu2qp3cw007opk1xw6v7u4ii",
+            "placeId": "cmu2qp3bl005dpk1x65cd1ooc",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.312Z",
+            "updatedAt": "2026-09-15T14:00:53.312Z",
+            "place": {
+              "id": "cmu2qp3bl005dpk1x65cd1ooc",
+              "name": "Quadra Esportiva São Vicente",
+              "city": "Lavras",
+              "neighborhood": "São Vicente",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cs007mpk1xt1tg7qrl",
+            "placeId": "cmu2qp3bl005bpk1xr3k55ilj",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "100",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.308Z",
+            "updatedAt": "2026-09-15T14:00:53.308Z",
+            "place": {
+              "id": "cmu2qp3bl005bpk1xr3k55ilj",
+              "name": "Fabril Esporte Clube",
+              "city": "Lavras",
+              "neighborhood": "Jardim Vila Rica",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000kpk1xmraqlahh",
+                "name": "Fabril Esporte Clube"
+              }
+            },
+            "precoMinimo": 100,
+            "precoMaximo": 100
+          },
+          {
+            "id": "cmu2qp3cn007dpk1xqmn0qx2b",
+            "placeId": "cmu2qp3bl0059pk1xobwbbhzw",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "110",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.304Z",
+            "updatedAt": "2026-09-15T14:00:53.304Z",
+            "place": {
+              "id": "cmu2qp3bl0059pk1xobwbbhzw",
+              "name": "Clube ABR Marelli",
+              "city": "Lavras",
+              "neighborhood": "Colinas da Serra",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000ipk1xeswqplcb",
+                "name": "Clube ABR Marelli"
+              }
+            },
+            "precoMinimo": 110,
+            "precoMaximo": 110
+          },
+          {
+            "id": "cmu2qp3cl007bpk1x1z04oglp",
+            "placeId": "cmu2qp3bl0058pk1xlpdty5xh",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "120",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.301Z",
+            "updatedAt": "2026-09-15T14:00:53.301Z",
+            "place": {
+              "id": "cmu2qp3bl0058pk1xlpdty5xh",
+              "name": "AABB Lavras",
+              "city": "Lavras",
+              "neighborhood": "Água Limpa",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000hpk1x7cory6be",
+                "name": "AABB Lavras"
+              }
+            },
+            "precoMinimo": 120,
+            "precoMaximo": 120
+          },
+          {
+            "id": "cmu2qp3c9006kpk1xn34dloqc",
+            "placeId": "cmu2qp3bl0053pk1x0nwnliy4",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "110",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.289Z",
+            "updatedAt": "2026-09-15T14:00:53.289Z",
+            "place": {
+              "id": "cmu2qp3bl0053pk1x0nwnliy4",
+              "name": "Operário Esporte Clube",
+              "city": "Lavras",
+              "neighborhood": "Das Mansões",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000dpk1xvzq2hij4",
+                "name": "Operário Esporte Clube"
+              }
+            },
+            "precoMinimo": 110,
+            "precoMaximo": 110
+          },
+          {
+            "id": "cmu2qp3c7006hpk1xvnyflcsz",
+            "placeId": "cmu2qp3bl0052pk1xashopn01",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "120",
+            "coberta": false,
+            "precoVariaPorHorario": true,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.287Z",
+            "updatedAt": "2026-09-15T14:00:53.337Z",
+            "place": {
+              "id": "cmu2qp3bl0052pk1xashopn01",
+              "name": "Associação Olímpica de Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000cpk1xqcojsk70",
+                "name": "Associação Olímpica"
+              }
+            },
+            "precoMinimo": 120,
+            "precoMaximo": 150
+          },
+          {
+            "id": "cmu2qp3cl0078pk1xzsdms4by",
+            "placeId": "cmu2qp3bl0058pk1xlpdty5xh",
+            "name": "Tênis 1",
+            "type": "TENIS",
+            "pricePerHour": "85",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.301Z",
+            "updatedAt": "2026-09-15T14:00:53.301Z",
+            "place": {
+              "id": "cmu2qp3bl0058pk1xlpdty5xh",
+              "name": "AABB Lavras",
+              "city": "Lavras",
+              "neighborhood": "Água Limpa",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000hpk1x7cory6be",
+                "name": "AABB Lavras"
+              }
+            },
+            "precoMinimo": 85,
+            "precoMaximo": 85
+          },
+          {
+            "id": "cmu2qp3ci0072pk1xcf1oaasw",
+            "placeId": "cmu2qp3bl0057pk1x7pbahn4c",
+            "name": "Tênis 1 (saibro)",
+            "type": "TENIS",
+            "pricePerHour": "90",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.299Z",
+            "updatedAt": "2026-09-15T14:00:53.299Z",
+            "place": {
+              "id": "cmu2qp3bl0057pk1x7pbahn4c",
+              "name": "Lavras Tênis Clube — LTC",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000gpk1xt9bn0193",
+                "name": "Lavras Tênis Clube"
+              }
+            },
+            "precoMinimo": 90,
+            "precoMaximo": 90
+          },
+          {
+            "id": "cmu2qp3cl0079pk1xv9hz474d",
+            "placeId": "cmu2qp3bl0058pk1xlpdty5xh",
+            "name": "Tênis 2",
+            "type": "TENIS",
+            "pricePerHour": "85",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.301Z",
+            "updatedAt": "2026-09-15T14:00:53.301Z",
+            "place": {
+              "id": "cmu2qp3bl0058pk1xlpdty5xh",
+              "name": "AABB Lavras",
+              "city": "Lavras",
+              "neighborhood": "Água Limpa",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000hpk1x7cory6be",
+                "name": "AABB Lavras"
+              }
+            },
+            "precoMinimo": 85,
+            "precoMaximo": 85
+          },
+          {
+            "id": "cmu2qp3ci0073pk1x5kue71on",
+            "placeId": "cmu2qp3bl0057pk1x7pbahn4c",
+            "name": "Tênis 2 (saibro)",
+            "type": "TENIS",
+            "pricePerHour": "90",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.299Z",
+            "updatedAt": "2026-09-15T14:00:53.299Z",
+            "place": {
+              "id": "cmu2qp3bl0057pk1x7pbahn4c",
+              "name": "Lavras Tênis Clube — LTC",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000gpk1xt9bn0193",
+                "name": "Lavras Tênis Clube"
+              }
+            },
+            "precoMinimo": 90,
+            "precoMaximo": 90
+          },
+          {
+            "id": "cmu2qp3ci0074pk1xcvogxue6",
+            "placeId": "cmu2qp3bl0057pk1x7pbahn4c",
+            "name": "Tênis 3 (dura)",
+            "type": "TENIS",
+            "pricePerHour": "80",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.299Z",
+            "updatedAt": "2026-09-15T14:00:53.299Z",
+            "place": {
+              "id": "cmu2qp3bl0057pk1x7pbahn4c",
+              "name": "Lavras Tênis Clube — LTC",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000gpk1xt9bn0193",
+                "name": "Lavras Tênis Clube"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3cj0075pk1xqlr4i366",
+            "placeId": "cmu2qp3bl0057pk1x7pbahn4c",
+            "name": "Tênis 4 (dura)",
+            "type": "TENIS",
+            "pricePerHour": "80",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.299Z",
+            "updatedAt": "2026-09-15T14:00:53.299Z",
+            "place": {
+              "id": "cmu2qp3bl0057pk1x7pbahn4c",
+              "name": "Lavras Tênis Clube — LTC",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000gpk1xt9bn0193",
+                "name": "Lavras Tênis Clube"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3ce006tpk1xwkfyoo26",
+            "placeId": "cmu2qp3bl0055pk1xb3svnvgz",
+            "name": "Vôlei",
+            "type": "VOLEI",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.294Z",
+            "updatedAt": "2026-09-15T14:00:53.294Z",
+            "place": {
+              "id": "cmu2qp3bl0055pk1xb3svnvgz",
+              "name": "Ginásio Poliesportivo Vila Brasília",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cj0076pk1xmci684e0",
+            "placeId": "cmu2qp3bl0057pk1x7pbahn4c",
+            "name": "Vôlei",
+            "type": "VOLEI",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.299Z",
+            "updatedAt": "2026-09-15T14:00:53.299Z",
+            "place": {
+              "id": "cmu2qp3bl0057pk1x7pbahn4c",
+              "name": "Lavras Tênis Clube — LTC",
+              "city": "Lavras",
+              "neighborhood": "Vila Brasília",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000gpk1xt9bn0193",
+                "name": "Lavras Tênis Clube"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3cq007jpk1x36ph2zoj",
+            "placeId": "cmu2qp3bl005apk1xjn77xma6",
+            "name": "Vôlei",
+            "type": "VOLEI",
+            "pricePerHour": "60",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.306Z",
+            "updatedAt": "2026-09-15T14:00:53.306Z",
+            "place": {
+              "id": "cmu2qp3bl005apk1xjn77xma6",
+              "name": "Campestre Clube Celso Baptista Dias",
+              "city": "Lavras",
+              "neighborhood": "Jardim Glória",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000jpk1x3xbb5ftb",
+                "name": "Campestre Clube"
+              }
+            },
+            "precoMinimo": 60,
+            "precoMaximo": 60
+          },
+          {
+            "id": "cmu2qp3cb006lpk1xbq7g5jfx",
+            "placeId": "cmu2qp3bl0054pk1xfuuig54d",
+            "name": "Vôlei 1",
+            "type": "VOLEI",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.292Z",
+            "updatedAt": "2026-09-15T14:00:53.292Z",
+            "place": {
+              "id": "cmu2qp3bl0054pk1xfuuig54d",
+              "name": "Complexo Esportivo SELT",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cg006wpk1xki9ipnwa",
+            "placeId": "cmu2qp3bl0056pk1xwh8lfs0m",
+            "name": "Vôlei 1",
+            "type": "VOLEI",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.296Z",
+            "updatedAt": "2026-09-15T14:00:53.296Z",
+            "place": {
+              "id": "cmu2qp3bl0056pk1xwh8lfs0m",
+              "name": "Ginásio Poliesportivo UFLA",
+              "city": "Lavras",
+              "neighborhood": "Jardim das Alterosas",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+                "name": "Ginásio UFLA"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3cb006mpk1x0h9uch68",
+            "placeId": "cmu2qp3bl0054pk1xfuuig54d",
+            "name": "Vôlei 2",
+            "type": "VOLEI",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.292Z",
+            "updatedAt": "2026-09-15T14:00:53.292Z",
+            "place": {
+              "id": "cmu2qp3bl0054pk1xfuuig54d",
+              "name": "Complexo Esportivo SELT",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cg006xpk1x8vzpmvh0",
+            "placeId": "cmu2qp3bl0056pk1xwh8lfs0m",
+            "name": "Vôlei 2",
+            "type": "VOLEI",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.296Z",
+            "updatedAt": "2026-09-15T14:00:53.296Z",
+            "place": {
+              "id": "cmu2qp3bl0056pk1xwh8lfs0m",
+              "name": "Ginásio Poliesportivo UFLA",
+              "city": "Lavras",
+              "neighborhood": "Jardim das Alterosas",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000fpk1xuhd0zx5c",
+                "name": "Ginásio UFLA"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3c00068pk1xkt1yd69k",
+            "placeId": "cmu2qp3bl004ypk1xro32cis6",
+            "name": "Vôlei de Areia",
+            "type": "VOLEI_AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.280Z",
+            "updatedAt": "2026-09-15T14:00:53.280Z",
+            "place": {
+              "id": "cmu2qp3bl004ypk1xro32cis6",
+              "name": "Olaria Beach Sports",
+              "city": "Lavras",
+              "neighborhood": "Dos Ipês",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0008pk1x2ymo7b8y",
+                "name": "Olaria Beach Sports"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3co007fpk1xkthfz557",
+            "placeId": "cmu2qp3bl0059pk1xobwbbhzw",
+            "name": "Vôlei de Areia",
+            "type": "VOLEI_AREIA",
+            "pricePerHour": "60",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.304Z",
+            "updatedAt": "2026-09-15T14:00:53.304Z",
+            "place": {
+              "id": "cmu2qp3bl0059pk1xobwbbhzw",
+              "name": "Clube ABR Marelli",
+              "city": "Lavras",
+              "neighborhood": "Colinas da Serra",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000ipk1xeswqplcb",
+                "name": "Clube ABR Marelli"
+              }
+            },
+            "precoMinimo": 60,
+            "precoMaximo": 60
+          },
+          {
+            "id": "cmu2qp3cb006ppk1xi1x8x4ov",
+            "placeId": "cmu2qp3bl0054pk1xfuuig54d",
+            "name": "Vôlei de Areia",
+            "type": "VOLEI_AREIA",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.292Z",
+            "updatedAt": "2026-09-15T14:00:53.292Z",
+            "place": {
+              "id": "cmu2qp3bl0054pk1xfuuig54d",
+              "name": "Complexo Esportivo SELT",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000epk1xvijur99m",
+                "name": "SELT Lavras"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3bu005wpk1xoibcsc0d",
+            "placeId": "cmu2qp3bk004vpk1xajo58ucp",
+            "name": "Vôlei de Areia",
+            "type": "VOLEI_AREIA",
+            "pricePerHour": "65",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.274Z",
+            "updatedAt": "2026-09-15T14:00:53.274Z",
+            "place": {
+              "id": "cmu2qp3bk004vpk1xajo58ucp",
+              "name": "Na Praia FTV Lavras",
+              "city": "Lavras",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct0005pk1xcveshkgw",
+                "name": "Na Praia FTV"
+              }
+            },
+            "precoMinimo": 65,
+            "precoMaximo": 65
+          },
+          {
+            "id": "cmu2qp3d3007ypk1x1zc1cpwl",
+            "placeId": "cmu2qp3bl005kpk1x6krwatt5",
+            "name": "Beach Tennis 1",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.319Z",
+            "updatedAt": "2026-09-15T14:00:53.319Z",
+            "place": {
+              "id": "cmu2qp3bl005kpk1x6krwatt5",
+              "name": "Summer Beach Tennis Nepomuceno",
+              "city": "Nepomuceno",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000rpk1xn10rfubu",
+                "name": "Summer Beach Tennis"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3d3007zpk1xeuxgf8q1",
+            "placeId": "cmu2qp3bl005kpk1x6krwatt5",
+            "name": "Beach Tennis 2",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.319Z",
+            "updatedAt": "2026-09-15T14:00:53.319Z",
+            "place": {
+              "id": "cmu2qp3bl005kpk1x6krwatt5",
+              "name": "Summer Beach Tennis Nepomuceno",
+              "city": "Nepomuceno",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000rpk1xn10rfubu",
+                "name": "Summer Beach Tennis"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3d0007upk1xpy3wfjom",
+            "placeId": "cmu2qp3bl005ipk1xt5z6alma",
+            "name": "Basquete",
+            "type": "BASQUETE",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.316Z",
+            "updatedAt": "2026-09-15T14:00:53.316Z",
+            "place": {
+              "id": "cmu2qp3bl005ipk1xt5z6alma",
+              "name": "Praça de Esportes de Perdões",
+              "city": "Perdões",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000ppk1xumttumgn",
+                "name": "Prefeitura de Perdões"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cz007spk1x6j8uz51z",
+            "placeId": "cmu2qp3bl005hpk1x0vlom2sd",
+            "name": "Beach Tennis 1",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.315Z",
+            "updatedAt": "2026-09-15T14:00:53.315Z",
+            "place": {
+              "id": "cmu2qp3bl005hpk1x0vlom2sd",
+              "name": "Arena Match Point",
+              "city": "Perdões",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000opk1xa8zs2o5m",
+                "name": "Arena Match Point"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3cz007tpk1xc3mb5yqp",
+            "placeId": "cmu2qp3bl005hpk1x0vlom2sd",
+            "name": "Beach Tennis 2",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.315Z",
+            "updatedAt": "2026-09-15T14:00:53.315Z",
+            "place": {
+              "id": "cmu2qp3bl005hpk1x0vlom2sd",
+              "name": "Arena Match Point",
+              "city": "Perdões",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000opk1xa8zs2o5m",
+                "name": "Arena Match Point"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3d0007wpk1xytt9ijnj",
+            "placeId": "cmu2qp3bl005ipk1xt5z6alma",
+            "name": "Futsal",
+            "type": "FUTSAL",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.316Z",
+            "updatedAt": "2026-09-15T14:00:53.316Z",
+            "place": {
+              "id": "cmu2qp3bl005ipk1xt5z6alma",
+              "name": "Praça de Esportes de Perdões",
+              "city": "Perdões",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000ppk1xumttumgn",
+                "name": "Prefeitura de Perdões"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3cy007rpk1xofhkdmkb",
+            "placeId": "cmu2qp3bl005gpk1xfgyzimcq",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "100",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.314Z",
+            "updatedAt": "2026-09-15T14:00:53.314Z",
+            "place": {
+              "id": "cmu2qp3bl005gpk1xfgyzimcq",
+              "name": "Arena ZFC",
+              "city": "Perdões",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000npk1x3bd93rzu",
+                "name": "Arena ZFC Perdões"
+              }
+            },
+            "precoMinimo": 100,
+            "precoMaximo": 100
+          },
+          {
+            "id": "cmu2qp3d0007vpk1xvh02jkkn",
+            "placeId": "cmu2qp3bl005ipk1xt5z6alma",
+            "name": "Vôlei",
+            "type": "VOLEI",
+            "pricePerHour": "25",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.316Z",
+            "updatedAt": "2026-09-15T14:00:53.316Z",
+            "place": {
+              "id": "cmu2qp3bl005ipk1xt5z6alma",
+              "name": "Praça de Esportes de Perdões",
+              "city": "Perdões",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000ppk1xumttumgn",
+                "name": "Prefeitura de Perdões"
+              }
+            },
+            "precoMinimo": 25,
+            "precoMaximo": 25
+          },
+          {
+            "id": "cmu2qp3d2007xpk1x32ytkagg",
+            "placeId": "cmu2qp3bl005jpk1x6675i0tn",
+            "name": "Campo de Futebol",
+            "type": "CAMPO",
+            "pricePerHour": "130",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.318Z",
+            "updatedAt": "2026-09-15T14:00:53.318Z",
+            "place": {
+              "id": "cmu2qp3bl005jpk1x6675i0tn",
+              "name": "Campo do Ferroviário",
+              "city": "Ribeirão Vermelho",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ct000qpk1xdkqa7y2i",
+                "name": "Prefeitura Ribeirão Vermelho"
+              }
+            },
+            "precoMinimo": 130,
+            "precoMaximo": 130
+          },
+          {
+            "id": "cmu2qp3de008fpk1x1t991h3r",
+            "placeId": "cmu2qp3bq005rpk1xcqmjqvcb",
+            "name": "Beach Tennis",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.331Z",
+            "updatedAt": "2026-09-15T14:00:53.331Z",
+            "place": {
+              "id": "cmu2qp3bq005rpk1xcqmjqvcb",
+              "name": "Serra de São João Arena",
+              "city": "São João del-Rei",
+              "neighborhood": "Colônia do Marçal",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000ypk1x391995k1",
+                "name": "Serra de São João"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3df008hpk1x1j49l5nn",
+            "placeId": "cmu2qp3bq005rpk1xcqmjqvcb",
+            "name": "Mesa de Poker",
+            "type": "POKER",
+            "pricePerHour": "30",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.331Z",
+            "updatedAt": "2026-09-15T14:00:53.331Z",
+            "place": {
+              "id": "cmu2qp3bq005rpk1xcqmjqvcb",
+              "name": "Serra de São João Arena",
+              "city": "São João del-Rei",
+              "neighborhood": "Colônia do Marçal",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000ypk1x391995k1",
+                "name": "Serra de São João"
+              }
+            },
+            "precoMinimo": 30,
+            "precoMaximo": 30
+          },
+          {
+            "id": "cmu2qp3dd008epk1xedcfhpbu",
+            "placeId": "cmu2qp3bq005qpk1xvu11r7ne",
+            "name": "Peteca",
+            "type": "PETECA",
+            "pricePerHour": "40",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.329Z",
+            "updatedAt": "2026-09-15T14:00:53.329Z",
+            "place": {
+              "id": "cmu2qp3bq005qpk1xvu11r7ne",
+              "name": "Espaço Tiradentes",
+              "city": "São João del-Rei",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000xpk1xbx9korxy",
+                "name": "Espaço Tiradentes"
+              }
+            },
+            "precoMinimo": 40,
+            "precoMaximo": 40
+          },
+          {
+            "id": "cmu2qp3de008gpk1x8tq0e94i",
+            "placeId": "cmu2qp3bq005rpk1xcqmjqvcb",
+            "name": "Tênis",
+            "type": "TENIS",
+            "pricePerHour": "80",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.331Z",
+            "updatedAt": "2026-09-15T14:00:53.331Z",
+            "place": {
+              "id": "cmu2qp3bq005rpk1xcqmjqvcb",
+              "name": "Serra de São João Arena",
+              "city": "São João del-Rei",
+              "neighborhood": "Colônia do Marçal",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000ypk1x391995k1",
+                "name": "Serra de São João"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          },
+          {
+            "id": "cmu2qp3dd008dpk1xi73xv12q",
+            "placeId": "cmu2qp3bq005qpk1xvu11r7ne",
+            "name": "Vôlei",
+            "type": "VOLEI",
+            "pricePerHour": "60",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.329Z",
+            "updatedAt": "2026-09-15T14:00:53.329Z",
+            "place": {
+              "id": "cmu2qp3bq005qpk1xvu11r7ne",
+              "name": "Espaço Tiradentes",
+              "city": "São João del-Rei",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000xpk1xbx9korxy",
+                "name": "Espaço Tiradentes"
+              }
+            },
+            "precoMinimo": 60,
+            "precoMaximo": 60
+          },
+          {
+            "id": "cmu2qp3db008bpk1xry7gzsus",
+            "placeId": "cmu2qp3bq005ppk1xt1073ufi",
+            "name": "Campo de Futebol",
+            "type": "CAMPO",
+            "pricePerHour": "150",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.327Z",
+            "updatedAt": "2026-09-15T14:00:53.327Z",
+            "place": {
+              "id": "cmu2qp3bq005ppk1xt1073ufi",
+              "name": "Beira-Rio Esportes",
+              "city": "Três Corações",
+              "neighborhood": "Jardim Ribeiro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000wpk1x2ulrjpvj",
+                "name": "Beira-Rio Esportes"
+              }
+            },
+            "precoMinimo": 150,
+            "precoMaximo": 150
+          },
+          {
+            "id": "cmu2qp3da008apk1x0mqmwyfs",
+            "placeId": "cmu2qp3bq005opk1x3450yjep",
+            "name": "Peteca",
+            "type": "PETECA",
+            "pricePerHour": "40",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.326Z",
+            "updatedAt": "2026-09-15T14:00:53.326Z",
+            "place": {
+              "id": "cmu2qp3bq005opk1x3450yjep",
+              "name": "Arena Três Corações",
+              "city": "Três Corações",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000vpk1xgbvgy87z",
+                "name": "Arena Três Corações"
+              }
+            },
+            "precoMinimo": 40,
+            "precoMaximo": 40
+          },
+          {
+            "id": "cmu2qp3da0089pk1x9c12ylmi",
+            "placeId": "cmu2qp3bq005opk1x3450yjep",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "110",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.326Z",
+            "updatedAt": "2026-09-15T14:00:53.326Z",
+            "place": {
+              "id": "cmu2qp3bq005opk1x3450yjep",
+              "name": "Arena Três Corações",
+              "city": "Três Corações",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000vpk1xgbvgy87z",
+                "name": "Arena Três Corações"
+              }
+            },
+            "precoMinimo": 110,
+            "precoMaximo": 110
+          },
+          {
+            "id": "cmu2qp3db008cpk1x0bnohygt",
+            "placeId": "cmu2qp3bq005ppk1xt1073ufi",
+            "name": "Vôlei de Areia",
+            "type": "VOLEI_AREIA",
+            "pricePerHour": "60",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.327Z",
+            "updatedAt": "2026-09-15T14:00:53.327Z",
+            "place": {
+              "id": "cmu2qp3bq005ppk1xt1073ufi",
+              "name": "Beira-Rio Esportes",
+              "city": "Três Corações",
+              "neighborhood": "Jardim Ribeiro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000wpk1x2ulrjpvj",
+                "name": "Beira-Rio Esportes"
+              }
+            },
+            "precoMinimo": 60,
+            "precoMaximo": 60
+          },
+          {
+            "id": "cmu2qp3d80088pk1x56eeayvy",
+            "placeId": "cmu2qp3bq005npk1xs0bywspo",
+            "name": "Basquete",
+            "type": "BASQUETE",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.324Z",
+            "updatedAt": "2026-09-15T14:00:53.324Z",
+            "place": {
+              "id": "cmu2qp3bq005npk1xs0bywspo",
+              "name": "Centro Esportivo Sul-Mineiro",
+              "city": "Varginha",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000upk1x7aytcvi0",
+                "name": "Centro Sul-Mineiro"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3d50080pk1xnnfsbsqt",
+            "placeId": "cmu2qp3bq005lpk1xi87vdwxr",
+            "name": "Beach Tennis 1",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.321Z",
+            "updatedAt": "2026-09-15T14:00:53.321Z",
+            "place": {
+              "id": "cmu2qp3bq005lpk1xi87vdwxr",
+              "name": "Arena Rio Verde",
+              "city": "Varginha",
+              "neighborhood": "Vila Pinto",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000spk1xy7d112gh",
+                "name": "Arena Rio Verde"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3d50081pk1x0k17bmj0",
+            "placeId": "cmu2qp3bq005lpk1xi87vdwxr",
+            "name": "Beach Tennis 2",
+            "type": "BEACH_TENNIS",
+            "pricePerHour": "70",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.321Z",
+            "updatedAt": "2026-09-15T14:00:53.321Z",
+            "place": {
+              "id": "cmu2qp3bq005lpk1xi87vdwxr",
+              "name": "Arena Rio Verde",
+              "city": "Varginha",
+              "neighborhood": "Vila Pinto",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000spk1xy7d112gh",
+                "name": "Arena Rio Verde"
+              }
+            },
+            "precoMinimo": 70,
+            "precoMaximo": 70
+          },
+          {
+            "id": "cmu2qp3d50082pk1xmtccsoeq",
+            "placeId": "cmu2qp3bq005lpk1xi87vdwxr",
+            "name": "Futevôlei",
+            "type": "AREIA",
+            "pricePerHour": "60",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.321Z",
+            "updatedAt": "2026-09-15T14:00:53.321Z",
+            "place": {
+              "id": "cmu2qp3bq005lpk1xi87vdwxr",
+              "name": "Arena Rio Verde",
+              "city": "Varginha",
+              "neighborhood": "Vila Pinto",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000spk1xy7d112gh",
+                "name": "Arena Rio Verde"
+              }
+            },
+            "precoMinimo": 60,
+            "precoMaximo": 60
+          },
+          {
+            "id": "cmu2qp3d80086pk1xi84ablvt",
+            "placeId": "cmu2qp3bq005npk1xs0bywspo",
+            "name": "Futsal",
+            "type": "FUTSAL",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.324Z",
+            "updatedAt": "2026-09-15T14:00:53.324Z",
+            "place": {
+              "id": "cmu2qp3bq005npk1xs0bywspo",
+              "name": "Centro Esportivo Sul-Mineiro",
+              "city": "Varginha",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000upk1x7aytcvi0",
+                "name": "Centro Sul-Mineiro"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3d80087pk1xv8ltufbp",
+            "placeId": "cmu2qp3bq005npk1xs0bywspo",
+            "name": "Handebol",
+            "type": "HANDBALL",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.324Z",
+            "updatedAt": "2026-09-15T14:00:53.324Z",
+            "place": {
+              "id": "cmu2qp3bq005npk1xs0bywspo",
+              "name": "Centro Esportivo Sul-Mineiro",
+              "city": "Varginha",
+              "neighborhood": "Centro",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000upk1x7aytcvi0",
+                "name": "Centro Sul-Mineiro"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3d70085pk1xntoet1tz",
+            "placeId": "cmu2qp3bq005mpk1xljlw0k42",
+            "name": "Mesa de Poker",
+            "type": "POKER",
+            "pricePerHour": "35",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.323Z",
+            "updatedAt": "2026-09-15T14:00:53.323Z",
+            "place": {
+              "id": "cmu2qp3bq005mpk1xljlw0k42",
+              "name": "Clube Cafeeira",
+              "city": "Varginha",
+              "neighborhood": "Jardim Andere",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000tpk1xwvppd0sw",
+                "name": "Clube Cafeeira"
+              }
+            },
+            "precoMinimo": 35,
+            "precoMaximo": 35
+          },
+          {
+            "id": "cmu2qp3d60083pk1xf3o3s894",
+            "placeId": "cmu2qp3bq005mpk1xljlw0k42",
+            "name": "Society",
+            "type": "SOCIETY",
+            "pricePerHour": "120",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.323Z",
+            "updatedAt": "2026-09-15T14:00:53.323Z",
+            "place": {
+              "id": "cmu2qp3bq005mpk1xljlw0k42",
+              "name": "Clube Cafeeira",
+              "city": "Varginha",
+              "neighborhood": "Jardim Andere",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000tpk1xwvppd0sw",
+                "name": "Clube Cafeeira"
+              }
+            },
+            "precoMinimo": 120,
+            "precoMaximo": 120
+          },
+          {
+            "id": "cmu2qp3d60084pk1xawd1jr6j",
+            "placeId": "cmu2qp3bq005mpk1xljlw0k42",
+            "name": "Tênis",
+            "type": "TENIS",
+            "pricePerHour": "80",
+            "coberta": null,
+            "precoVariaPorHorario": false,
+            "status": "OPEN",
+            "createdAt": "2026-09-15T14:00:53.323Z",
+            "updatedAt": "2026-09-15T14:00:53.323Z",
+            "place": {
+              "id": "cmu2qp3bq005mpk1xljlw0k42",
+              "name": "Clube Cafeeira",
+              "city": "Varginha",
+              "neighborhood": "Jardim Andere",
+              "state": "MG",
+              "owner": {
+                "id": "cmu2qp2ln000tpk1xwvppd0sw",
+                "name": "Clube Cafeeira"
+              }
+            },
+            "precoMinimo": 80,
+            "precoMaximo": 80
+          }
+        ]
+      }
+    },
+    "GET /notifications": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": {
+          "notifications": [
+            {
+              "id": "cmu5ljnlh0006qt1xqrxm9ejl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0095pk1x1102s62p",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-17T14:00:00.053Z"
+            },
+            {
+              "id": "cmu2st420000bca1xxu3bp37e",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 8h, na quadra Beach Tennis 1 (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.072Z"
+            },
+            {
+              "id": "cmu2st41t0007ca1xhosc2g7g",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de vento forte para sua partida",
+              "body": "Previsão de vento forte para sua partida amanhã às 9h, na quadra Beach Tennis (rajadas de 50 km/h).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T15:00:00.065Z"
+            },
+            {
+              "id": "cmu2r9arw000gl81xl1i8qbfl",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_LEFT",
+              "title": "Jogador saiu da partida",
+              "body": "Mateus Vitor saiu da sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:36.044Z"
+            },
+            {
+              "id": "cmu2r94l4000fl81x4owpvu0i",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Partida cheia!",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:16:28.024Z"
+            },
+            {
+              "id": "cmu2qp3ja00hvpk1x2zrk8cy5",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "PLAYER_JOINED",
+              "title": "Jogador entrou na partida",
+              "body": "Gabriel Cantanhede entrou na sua partida",
+              "data": {
+                "matchId": "cmu2qp3dp0092pk1xb8ig5gex"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hwpk1xe6yojnt0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "MATCH_FULL",
+              "title": "Sua partida lotou",
+              "body": "Todas as vagas da sua partida foram preenchidas",
+              "data": {
+                "matchId": "cmu2qp3dr009cpk1xbr14hyrt"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hupk1xtpmbosc0",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "TEAM_INVITE",
+              "title": "Convite para um time",
+              "body": "Fernanda Alves chamou você para o Areia Nossa",
+              "data": {
+                "teamId": "cmu2qp3hr00enpk1xjnbpx7l7"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            },
+            {
+              "id": "cmu2qp3ja00hxpk1xf4tld757",
+              "userId": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "type": "WEATHER_ALERT",
+              "title": "Previsão de tempestade para sua partida",
+              "body": "Previsão de tempestade para sua partida amanhã às 19h, na quadra Society (45% de chance).",
+              "data": {
+                "risco": "ALTO",
+                "janela": "VESPERA",
+                "matchId": "cmu2qp3iu00hopk1x0yj2r15r",
+                "atividade": "PARTIDA"
+              },
+              "read": false,
+              "createdAt": "2026-09-15T14:00:53.543Z"
+            }
+          ],
+          "unreadCount": 9
+        }
+      }
+    },
+    "GET /sports": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "SOCIETY",
+            "label": "Society",
+            "icon": "society",
+            "iconFallback": "⚽",
+            "description": "Campo society — grama sintética",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "CAMPO",
+            "label": "Futebol de Campo",
+            "icon": "futebol-campo",
+            "iconFallback": "🏟️",
+            "description": "Campo convencional",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "FUTSAL",
+            "label": "Futsal",
+            "icon": "futsal",
+            "iconFallback": "👟",
+            "description": "Quadra de futsal coberta",
+            "group": "FUTEBOL",
+            "groupLabel": "Futebol",
+            "groupIcon": "futebol",
+            "groupIconFallback": "⚽",
+            "groupOrder": 1
+          },
+          {
+            "id": "AREIA",
+            "label": "Futevôlei",
+            "icon": "futevolei",
+            "iconFallback": null,
+            "description": "Quadra de areia",
+            "group": "FUTEVOLEI",
+            "groupLabel": "Futevôlei",
+            "groupIcon": "futevolei",
+            "groupIconFallback": null,
+            "groupOrder": 2
+          },
+          {
+            "id": "VOLEI",
+            "label": "Vôlei",
+            "icon": "volei",
+            "iconFallback": "🏐",
+            "description": "Quadra de vôlei indoor",
+            "group": "VOLEI",
+            "groupLabel": "Vôlei",
+            "groupIcon": "volei",
+            "groupIconFallback": "🏐",
+            "groupOrder": 3
+          },
+          {
+            "id": "VOLEI_AREIA",
+            "label": "Vôlei de Areia",
+            "icon": "volei-areia",
+            "iconFallback": null,
+            "description": "Quadra de vôlei de areia",
+            "group": "VOLEI",
+            "groupLabel": "Vôlei",
+            "groupIcon": "volei",
+            "groupIconFallback": "🏐",
+            "groupOrder": 3
+          },
+          {
+            "id": "HANDBALL",
+            "label": "Handebol",
+            "icon": "handebol",
+            "iconFallback": "🤾",
+            "description": "Quadra de handebol",
+            "group": "HANDBALL",
+            "groupLabel": "Handebol",
+            "groupIcon": "handebol",
+            "groupIconFallback": "🤾",
+            "groupOrder": 4
+          },
+          {
+            "id": "PETECA",
+            "label": "Peteca",
+            "icon": "peteca",
+            "iconFallback": null,
+            "description": "Quadra de peteca",
+            "group": "PETECA",
+            "groupLabel": "Peteca",
+            "groupIcon": "peteca",
+            "groupIconFallback": null,
+            "groupOrder": 5
+          },
+          {
+            "id": "BEACH_TENNIS",
+            "label": "Beach Tennis",
+            "icon": "beach-tennis",
+            "iconFallback": "🎾",
+            "description": "Quadra de beach tennis",
+            "group": "BEACH_TENNIS",
+            "groupLabel": "Beach Tennis",
+            "groupIcon": "beach-tennis",
+            "groupIconFallback": "🎾",
+            "groupOrder": 6
+          },
+          {
+            "id": "BASQUETE",
+            "label": "Basquete",
+            "icon": "basquete",
+            "iconFallback": "🏀",
+            "description": "Quadra de basquete",
+            "group": "BASQUETE",
+            "groupLabel": "Basquete",
+            "groupIcon": "basquete",
+            "groupIconFallback": "🏀",
+            "groupOrder": 7
+          },
+          {
+            "id": "TENIS",
+            "label": "Tênis",
+            "icon": "tenis",
+            "iconFallback": "🥎",
+            "description": "Quadra de tênis",
+            "group": "TENIS",
+            "groupLabel": "Tênis",
+            "groupIcon": "tenis",
+            "groupIconFallback": "🥎",
+            "groupOrder": 8
+          },
+          {
+            "id": "POKER",
+            "label": "Poker",
+            "icon": "poker",
+            "iconFallback": "🃏",
+            "description": "Mesa de poker",
+            "group": "POKER",
+            "groupLabel": "Poker",
+            "groupIcon": "poker",
+            "groupIconFallback": "🃏",
+            "groupOrder": 9
+          }
+        ]
+      }
+    },
+    "GET /users/me/teams": {
+      "status": 200,
+      "corpo": {
+        "success": true,
+        "data": [
+          {
+            "id": "cmu2qp3hr00empk1xvqamw5oh",
+            "name": "Quarta dos Guerreiros",
+            "sport": "FUTSAL",
+            "city": "Lavras",
+            "cor": "AZUL",
+            "captainId": "cmu2qp2wa0010pk1xxtyo1zy5",
+            "createdAt": "2026-09-15T14:00:53.487Z",
+            "updatedAt": "2026-09-15T14:00:53.487Z",
+            "captain": {
+              "id": "cmu2qp2wa0010pk1xxtyo1zy5",
+              "name": "Mateus Vitor",
+              "nickname": null,
+              "avatarUrl": null,
+              "badge": "CRAQUE",
+              "badges": [
+                "CRAQUE",
+                "CONFIAVEL",
+                "ORGANIZADOR_NATO"
+              ]
+            },
+            "_count": {
+              "members": 6
+            }
+          }
+        ]
+      }
+    }
+  }
+}
