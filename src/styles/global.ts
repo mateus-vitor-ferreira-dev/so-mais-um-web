@@ -23,6 +23,27 @@ const GlobalStyles = createGlobalStyle`
     height: 100vh;
   }
 
+  /*
+   * As cores dos avisos (sonner, com richColors), pelos tokens do tema (#511).
+   * As do próprio sonner davam 4,35:1 no erro e perto disso nos outros tons. O
+   * atributo repetido só ganha em especificidade do CSS da biblioteca, que é
+   * injetado depois deste.
+   */
+  [data-sonner-toaster][data-sonner-theme][data-sonner-theme] {
+    --success-bg: ${({ theme }) => theme.colors.successLight};
+    --success-border: ${({ theme }) => theme.colors.border};
+    --success-text: ${({ theme }) => theme.colors.success};
+    --info-bg: ${({ theme }) => theme.colors.infoLight};
+    --info-border: ${({ theme }) => theme.colors.border};
+    --info-text: ${({ theme }) => theme.colors.infoText};
+    --warning-bg: ${({ theme }) => theme.colors.warningLight};
+    --warning-border: ${({ theme }) => theme.colors.warningBorder};
+    --warning-text: ${({ theme }) => theme.colors.warningText};
+    --error-bg: ${({ theme }) => theme.colors.errorLight};
+    --error-border: ${({ theme }) => theme.colors.border};
+    --error-text: ${({ theme }) => theme.colors.error};
+  }
+
   input, select, textarea {
     background: ${({ theme }) => theme.colors.bgInput};
     color: ${({ theme }) => theme.colors.textPrimary};
