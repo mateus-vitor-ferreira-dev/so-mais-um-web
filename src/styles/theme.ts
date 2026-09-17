@@ -135,6 +135,11 @@ export const lightTheme = {
     errorLight:    '#fee2e2',
     info:          '#2563eb',
     infoLight:     '#dbeafe',
+    /* O `info` dá 4,24 sobre o próprio `infoLight`: passa como texto solto, e
+       não dentro do selo azul (#511). Mesmo papel do `warningText`. */
+    infoText:      '#1d4ed8',
+    /* O que se lê sobre o `error` cheio, como o número do sino. */
+    textOnError:   '#ffffff',
 
     /*
      * O roxo entrou com a cortesia (api#551, web#456), e a razão é que ela
@@ -221,6 +226,9 @@ export const darkTheme = {
     errorLight:    '#1a0808',
     info:          '#93c5fd',
     infoLight:     '#080f1c',
+    infoText:      '#93c5fd',
+    /* O branco sobre o vermelho claro do escuro dava 2,77 (#511). */
+    textOnError:   '#1a0808',
 
     /* Mesma inversão dos outros semânticos no escuro: o tom vivo vira o texto e
        o fundo vira quase preto. */

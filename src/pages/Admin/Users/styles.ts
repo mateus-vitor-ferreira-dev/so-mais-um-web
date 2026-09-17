@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { TabelaResponsiva } from '../../../components/TabelaResponsiva'
 import { ALVO_DE_TOQUE, alvoDeToque, ate } from '../../../styles/telas'
+import type { TomDoPapel } from '../../../constants/papeis'
 
 export const FilterBar = styled.div`
   display: flex;
@@ -145,12 +146,14 @@ export const Usuario = styled.div`
   min-width: 0;
 `
 
-export const AvatarCell = styled.div`
+/* As iniciais usam o par do selo do papel: a cor com 22 de alfa por cima do
+   cartão escuro dava 2,95:1 (#511). */
+export const AvatarCell = styled.div<{ $tom: TomDoPapel }>`
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: ${({ color }) => color}22;
-  color: ${({ color }) => color};
+  background: ${({ theme, $tom }) => theme.colors[$tom.fundo]};
+  color: ${({ theme, $tom }) => theme.colors[$tom.texto]};
   display: flex;
   align-items: center;
   justify-content: center;

@@ -7,6 +7,7 @@ import { Mail } from 'lucide-react'
 import StatCard from '../../../components/StatCard'
 import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
 import RoleBadge from '../../../components/RoleBadge'
+import { papel } from '../../../constants/papeis'
 import * as adminService from '../../../services/admin'
 import type { AdminUser, InviteResult } from '../../../services/admin'
 import { mensagemDeErro } from '../../../utils/apiError'
@@ -20,12 +21,6 @@ import EmptyState from '../../../components/EmptyState'
 import { dataCurta } from '../../../utils/datas'
 
 const ROLES = ['Todos', 'PLAYER', 'OWNER', 'ADMIN']
-
-const ROLE_COLORS = {
-  ADMIN:  '#d97706',
-  OWNER:  '#16a34a',
-  PLAYER: '#2563eb',
-}
 
 function getInitials(name = '') {
   return name.split(' ').slice(0, 2).map((n) => n[0]?.toUpperCase()).join('')
@@ -158,7 +153,7 @@ export default function AdminUsers() {
               <tr key={u.id}>
                 <td className="principal">
                   <Usuario>
-                    <AvatarCell color={ROLE_COLORS[u.role] ?? '#6b7280'}>
+                    <AvatarCell $tom={papel(u.role)}>
                       {getInitials(u.name)}
                     </AvatarCell>
                     <UserMeta>
