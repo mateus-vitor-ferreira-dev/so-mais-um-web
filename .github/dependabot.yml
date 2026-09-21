@@ -1,0 +1,33 @@
+# Atualização de dependências, semanal.
+#
+# Por que agrupado: quase todo o movimento é patch de dependência transitiva.
+# Um PR por pacote vira enxurrada que ninguém lê — e PR que ninguém lê é pior
+# que atualização que não acontece, porque dá a sensação de que o assunto está
+# cuidado.
+#
+# Major sai sozinho, de propósito: `react-router`, `vite` e `styled-components`
+# são o tipo de major que muda o build ou a rota, e isso se lê antes de mesclar,
+# não depois do CI ficar vermelho.
+#
+# O alvo é a `develop`, branch padrão do repositório: PR de dependência entra no
+# fluxo normal e sobe para a `main` no próximo release.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: America/Sao_Paulo
+    open-pull-requests-limit: 5
+    labels:
+      - "tipo:técnica"
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      patch-e-minor:
+        update-types:
+          - minor
+          - patch
