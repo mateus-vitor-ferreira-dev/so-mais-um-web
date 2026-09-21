@@ -1,12 +1,43 @@
 import react from '@vitejs/plugin-react'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 // defineConfig vem de 'vitest/config', e não de 'vite': é a mesma função,
 // só que ciente da chave `test` abaixo. Importar de 'vite' faz o tsc acusar
 // propriedade desconhecida.
 import { defineConfig, coverageConfigDefaults } from 'vitest/config'
 
 // https://vite.dev/config/
+/**
+ * O upload dos source maps só acontece com as três variáveis do Sentry (web#529).
+ *
+ * Sem elas — máquina de quem desenvolve, PR de quem clonou o repositório — o
+ * build é exatamente o de antes: nenhum `.map` é gerado e o plugin nem entra na
+ * lista. Com elas, o CI manda os mapas e **apaga os arquivos antes do deploy**:
+ * mapa de origem servido junto do bundle é o código-fonte inteiro público, e o
+ * que se quer é stack legível no painel, não na internet.
+ */
+const sentryLigado = Boolean(
+  process.env.SENTRY_AUTH_TOKEN && process.env.SENTRY_ORG && process.env.SENTRY_PROJECT,
+)
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    ...(sentryLigado
+      ? [
+          sentryVitePlugin({
+            org: process.env.SENTRY_ORG,
+            project: process.env.SENTRY_PROJECT,
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            release: { name: process.env.VITE_COMMIT || undefined },
+            sourcemaps: { filesToDeleteAfterUpload: ['./dist/**/*.map'] },
+          }),
+        ]
+      : []),
+  ],
+
+  // `hidden`: gera o mapa para o upload, sem deixar o comentário que o aponta
+  // no bundle servido.
+  build: { sourcemap: sentryLigado ? 'hidden' : false },
 
   test: {
     // jsdom dá ao teste um DOM de mentira — sem ele não há document para

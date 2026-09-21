@@ -2,6 +2,7 @@ import { Component } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
 import logoSoMaisUm from '../../assets/logo-so-mais-um.svg'
 import { lightTheme } from '../../styles/theme'
+import { reportaErro } from '../../config/observabilidade'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -38,6 +39,18 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
 
   componentDidCatch(error: unknown, info: ErrorInfo) {
     console.error('[ErrorBoundary]', error, info.componentStack)
+
+    /**
+     * Aqui é onde o erro do usuário deixava de existir (web#529): esta tela
+     * aparecia para ele e mais ninguém ficava sabendo.
+     *
+     * O de chunk fica de fora: ele é deploy novo com HTML velho em cache, o
+     * `getDerivedStateFromError` acima já recarrega a página, e isso é o
+     * tratamento certo — não é notícia. O `beforeSend` do `observabilidade.ts`
+     * também o descarta, para quando ele vier por outro caminho; aqui a checagem
+     * é direta porque quem sabe que é chunk é este componente.
+     */
+    if (!isChunkError(error)) reportaErro(error, { origem: 'errorBoundary' })
   }
 
   render() {
