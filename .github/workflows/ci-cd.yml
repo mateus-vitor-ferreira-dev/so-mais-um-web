@@ -202,10 +202,20 @@ jobs:
       # Então toda variável precisa de uma das duas coisas: `--no-sensitive` na
       # Vercel, ou estar nesta lista. Custou dez minutos de link quebrado em
       # produção em 09/09/2026; ver web#463.
+      # As três variáveis do Sentry são opcionais: sem elas o build é o de
+      # sempre, o app sobe e os erros ficam no console. Com elas, o CI manda os
+      # source maps e apaga os `.map` antes do deploy — mapa servido junto do
+      # bundle é o código-fonte inteiro público. Ver web#529.
       - name: Build project artifacts
         env:
           VITE_API_URL: https://api.so-mais-um.com
           VITE_GOOGLE_CLIENT_ID: 446784228326-i78g3nfnmdvpgoqt6bmdgr43hc756p13.apps.googleusercontent.com
+          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          VITE_COMMIT: ${{ github.sha }}
+          VITE_AMBIENTE: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
             npx vercel build --prod --token=$VERCEL_TOKEN
