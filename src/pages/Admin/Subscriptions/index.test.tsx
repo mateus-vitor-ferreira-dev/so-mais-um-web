@@ -75,8 +75,28 @@ const dono = (id: string, name: string, email: string) => ({
   _count: { placesOwned: 1, matchesCreated: 0, participations: 0 },
 })
 
-const donosDaBase = (...lista: (Omit<ReturnType<typeof dono>, 'role'> & { role: 'PLAYER' | 'OWNER' | 'ADMIN' })[]) =>
-  ({ data: { data: lista } }) as Awaited<ReturnType<typeof adminService.listUsers>>
+type ContaDaBase = Omit<ReturnType<typeof dono>, 'role'> & { role: 'PLAYER' | 'OWNER' | 'ADMIN' }
+
+/**
+ * A api de usuários de mentira, com a base dada (api#618).
+ *
+ * Os campos de pessoa buscam no servidor desde a api#618, então o mock precisa
+ * responder como a api responde: filtrando pelo papel e pelo pedaço de nome ou
+ * e-mail, sem diferença de maiúscula — e **com** diferença de acento, que é o
+ * que o `contains … insensitive` do Postgres faz.
+ */
+const donosDaBase = (...lista: ContaDaBase[]) =>
+  ((filtro: adminService.FiltroDeUsuarios = {}) => {
+    const busca = filtro.busca?.trim().toLowerCase() ?? ''
+    const achados = lista
+      .filter((c) => !filtro.role || c.role === filtro.role)
+      .filter((c) => !busca || c.name.toLowerCase().includes(busca) || c.email.toLowerCase().includes(busca))
+    return Promise.resolve({
+      success: true as const,
+      data: achados,
+      pagina: { proximo: null, total: achados.length, porPapel: { PLAYER: 0, OWNER: 0, ADMIN: 0 } },
+    })
+  }) as typeof adminService.listUsers
 
 const monta = () => renderWithProviders(<AdminSubscriptions />, { route: '/admin/subscriptions' })
 
@@ -97,7 +117,7 @@ beforeEach(() => {
     // não devolve mais.
     { id: 'p-pro', nome: 'Pro', precoCentavos: 7990, precoNoCartaoCentavos: 8411, funcionalidades: [] },
   ])
-  admin.listUsers.mockResolvedValue(
+  admin.listUsers.mockImplementation(
     donosDaBase(dono('u1', 'Joana Ribeiro', 'joana@arena.com'), dono('u2', 'Carla Dias', 'carla@nova.com')),
   )
 })
@@ -294,20 +314,24 @@ describe('a busca de dono (web#502)', () => {
     return montado
   }
 
-  it('acha por e-mail e por nome sem acento, e escolhe', async () => {
-    admin.listUsers.mockResolvedValue(
+  it('acha por e-mail e por nome, e escolhe', async () => {
+    admin.listUsers.mockImplementation(
       donosDaBase(dono('u2', 'Carla Dias', 'carla@nova.com'), dono('u3', 'Tânia Brás', 'tania@beach.com')),
     )
     const { user } = await abreRegistro()
 
     const busca = await screen.findByRole('combobox', { name: 'Dono' })
     await user.type(busca, 'nova.com')
-    expect(screen.getByRole('option', { name: /Carla Dias/ })).toBeInTheDocument()
-    expect(screen.queryByRole('option', { name: /Tânia/ })).not.toBeInTheDocument()
+    expect(await screen.findByRole('option', { name: /Carla Dias/ })).toBeInTheDocument()
+    // A busca vai ao servidor depois do debounce; até lá a lista de antes fica.
+    await waitFor(() => expect(screen.queryByRole('option', { name: /Tânia/ })).not.toBeInTheDocument())
+    expect(admin.listUsers).toHaveBeenLastCalledWith({ role: 'OWNER', busca: 'nova.com' }, expect.anything())
 
     await user.clear(busca)
-    await user.type(busca, 'tania bras')
-    await user.click(screen.getByRole('option', { name: /Tânia Brás/ }))
+    // Com o acento: a api compara sem diferença de maiúscula, mas não de
+    // acento (api#618) — antes da busca no servidor, "tania bras" achava.
+    await user.type(busca, 'tânia brás')
+    await user.click(await screen.findByRole('option', { name: /Tânia Brás/ }))
 
     // Escolhido, o campo vira o nome, com o jeito de trocar.
     expect(screen.queryByRole('combobox', { name: 'Dono' })).not.toBeInTheDocument()
@@ -422,7 +446,7 @@ describe('a tela nunca cobra', () => {
 describe('cortesia', () => {
   const concedeParaMarina = async () => {
     servico.listar.mockResolvedValue([])
-    admin.listUsers.mockResolvedValue(donosDaBase(dono('u9', 'Marina Costa', 'marina@arena.com')))
+    admin.listUsers.mockImplementation(donosDaBase(dono('u9', 'Marina Costa', 'marina@arena.com')))
 
     const montado = monta()
     const { user } = montado
@@ -549,17 +573,11 @@ describe('cortesia por e-mail', () => {
   beforeEach(() => {
     servico.convitesPendentes.mockResolvedValue([])
     servico.conceder.mockResolvedValue({ resultado: 'CONCEDIDA' })
-    admin.listUsers.mockImplementation((papel) =>
-      Promise.resolve(
-        donosDaBase(
-          ...(papel === 'OWNER'
-            ? [dono('u2', 'Carla Dias', 'carla@nova.com')]
-            : [
-                conta('u1', 'Joana Ribeiro', 'joana@arena.com', 'OWNER'),
-                conta('u2', 'Carla Dias', 'carla@nova.com', 'OWNER'),
-                conta('u5', 'Davi Jogador', 'davi@gmail.com', 'PLAYER'),
-              ]),
-        ),
+    admin.listUsers.mockImplementation(
+      donosDaBase(
+        conta('u1', 'Joana Ribeiro', 'joana@arena.com', 'OWNER'),
+        conta('u2', 'Carla Dias', 'carla@nova.com', 'OWNER'),
+        conta('u5', 'Davi Jogador', 'davi@gmail.com', 'PLAYER'),
       ),
     )
   })
@@ -568,8 +586,9 @@ describe('cortesia por e-mail', () => {
     const montado = monta()
     await montado.user.click(await screen.findByRole('button', { name: /Conceder cortesia/i }))
     const modal = within(await screen.findByRole('dialog', { name: /Conceder cortesia/i }))
-    // As contas carregam depois de o modal abrir; a previsão só sai com elas.
-    await waitFor(() => expect(admin.listUsers).toHaveBeenCalledWith())
+    // As contas vêm da busca pelo e-mail digitado (api#618): nada é pedido
+    // antes de a pessoa digitar.
+    expect(admin.listUsers).not.toHaveBeenCalled()
     return { ...montado, modal }
   }
 
@@ -620,7 +639,8 @@ describe('cortesia por e-mail', () => {
 
     await user.type(modal.getByRole('combobox', { name: 'E-mail do dono' }), 'outra@arena.com')
     await user.selectOptions(modal.getByLabelText('Plano'), 'p-pro')
-    await user.click(modal.getByRole('button', { name: 'Enviar convite' }))
+    // O rótulo do convite espera a busca do e-mail responder (api#618).
+    await user.click(await modal.findByRole('button', { name: 'Enviar convite' }))
 
     expect(await modal.findByRole('alert')).toHaveTextContent('válido até 21/09/2026')
     expect(screen.getByRole('dialog', { name: /Conceder cortesia/i })).toBeInTheDocument()

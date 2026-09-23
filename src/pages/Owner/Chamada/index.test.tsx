@@ -62,7 +62,7 @@ describe('OwnerChamada', () => {
   })
 
   it('sem placeId no endereço, acha o espaço da turma entre os do dono (web#520)', async () => {
-    vi.mocked(placesService).list.mockResolvedValue({
+    vi.mocked(placesService).mine.mockResolvedValue({
       data: { success: true, data: [
         { id: 'p0', name: 'Outro espaço', ownerId: 'dono' },
         { id: 'p1', name: 'Espaço da turma', ownerId: 'dono' },

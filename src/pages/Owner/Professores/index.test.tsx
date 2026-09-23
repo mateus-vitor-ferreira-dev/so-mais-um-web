@@ -74,7 +74,7 @@ const monta = (query = '?placeId=ltc') =>
 
 beforeEach(() => {
   vi.clearAllMocks()
-  espacos.list.mockResolvedValue({
+  espacos.mine.mockResolvedValue({
     data: {
       success: true,
       data: [

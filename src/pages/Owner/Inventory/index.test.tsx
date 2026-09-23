@@ -38,7 +38,7 @@ beforeEach(() => {
   vi.clearAllMocks()
   subscriptionState.isActive = true
   subscriptionState.loading = false
-  vi.mocked(placesService.list).mockResolvedValue({ data: { data: [{ id: 'place-1', ownerId: 'owner-1', name: 'Arena Um' }] } } as never)
+  vi.mocked(placesService.mine).mockResolvedValue({ data: { data: [{ id: 'place-1', ownerId: 'owner-1', name: 'Arena Um' }] } } as never)
   vi.mocked(inventoryService.listProducts).mockResolvedValue([product])
   vi.mocked(inventoryService.listMovements).mockResolvedValue([{
     id: 'movement-1', productId: product.id, tipo: 'ENTRADA', motivo: 'REPOSICAO', quantidade: 5,

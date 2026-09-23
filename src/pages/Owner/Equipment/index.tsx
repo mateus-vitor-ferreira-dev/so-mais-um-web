@@ -79,10 +79,9 @@ export default function OwnerEquipment() {
   const [settlementModal, setSettlementModal] = useState<EquipmentLoan | null>(null)
 
   useEffect(() => {
-    placesService.list().then((response) => {
-      const available = user?.role === 'ADMIN'
-        ? response.data.data
-        : response.data.data.filter((place) => place.ownerId === user?.id)
+    placesService.mine().then((response) => {
+      // Os do dono, ou todos para o admin: quem filtra é a api (api#618).
+      const available = response.data.data
       setPlaces(available)
       const requested = searchParams.get('placeId')
       const selected = available.some((place) => place.id === requested) ? requested! : available[0]?.id ?? ''

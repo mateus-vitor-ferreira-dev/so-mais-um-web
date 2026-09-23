@@ -1,6 +1,8 @@
 import api from './api'
 import type {
   ApiEnvelope,
+  ApiPaginada,
+  PedidoDePagina,
   DrawMode,
   DrawResult,
   Participation,
@@ -19,6 +21,12 @@ import type {
 import type { CourtFilters } from './courts'
 import type { Court } from '../types/api'
 import type { CreateEventInput, EventFilters } from './events'
+
+/** Um item do histórico: a partida, com o meu papel nela e se fui (api#618). */
+export type ItemDoHistorico = Partida & {
+  role: 'organizer' | 'participant'
+  attended: boolean | null
+}
 
 /**
  * ⚠️ Convenção deste arquivo: desestrutura `{ data }` da resposta axios, então
@@ -131,6 +139,19 @@ export const playerService = {
   // --- MEUS JOGOS ---
   getMyCreatedEvents: async (params?: EventFilters): Promise<ApiEnvelope<Partida[]>> => {
     const { data } = await api.get('/events/my/created', { params })
+    return data
+  },
+
+  /**
+   * Uma página do histórico: as partidas que já passaram em que joguei ou que
+   * organizei, da mais recente para a mais antiga (api#618). O `total` da
+   * `pagina` conta todas com o filtro — é o "Partidas Disputadas".
+   */
+  getHistorico: async (
+    filtros: { role?: 'organizer' | 'participant'; status?: 'FINISHED' | 'CANCELLED' } = {},
+    pagina: PedidoDePagina = {},
+  ): Promise<ApiPaginada<ItemDoHistorico>> => {
+    const { data } = await api.get('/users/me/history', { params: { ...filtros, ...pagina } })
     return data
   },
 

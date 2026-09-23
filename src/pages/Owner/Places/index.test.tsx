@@ -54,7 +54,7 @@ beforeEach(() => {
   vi.clearAllMocks()
   assinatura.isActive = true
   assinatura.loading = false
-  vi.mocked(placesService.list).mockResolvedValue({ data: { data: [arena] } } as never)
+  vi.mocked(placesService.mine).mockResolvedValue({ data: { data: [arena] } } as never)
 })
 
 describe('OwnerPlaces — assinatura inativa', () => {

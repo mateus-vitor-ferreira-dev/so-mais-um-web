@@ -35,6 +35,7 @@ import DesignSystem from './index'
  */
 const NAO_SAO_VOCABULARIO = new Set([
   'AgendaDaQuadra', 'AuthLayout', 'BotaoSeguir', 'ChamarParaJogar',
+  'BuscaDePessoa', // a busca de pessoa do admin: pergunta à api a cada tecla (api#618)
   'CompartilharPartida', 'ConfiguracaoDeAcesso', 'ConfirmacaoDePresencas',
   'ContentLoader', 'ConviteDeLocalizacao', 'ConvitesDeTime', 'DashboardLayout',
   'ConversaDeSuporte', // a conversa de suporte: fala com a api e guarda o estado da conversa (web#472, web#473)

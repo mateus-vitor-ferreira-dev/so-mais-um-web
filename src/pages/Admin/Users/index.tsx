@@ -1,7 +1,8 @@
 import type { FormEvent } from 'react'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import type { UserRole } from '../../../types/api'
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { Mail } from 'lucide-react'
 import StatCard from '../../../components/StatCard'
@@ -19,6 +20,11 @@ import {
   CaixaDaTabela,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
+import CarregarMais from '../../../components/CarregarMais'
+import { useListaPaginada } from '../../../hooks/useListaPaginada'
+import { useValorAtrasado } from '../../../hooks/useValorAtrasado'
+import { chaves } from '../../../lib/queryClient'
+import type { PaginaDeUsuarios } from '../../../services/admin'
 import { dataCurta } from '../../../utils/datas'
 
 const ROLES = ['Todos', 'PLAYER', 'OWNER', 'ADMIN']
@@ -28,11 +34,9 @@ function getInitials(name = '') {
 }
 
 export default function AdminUsers() {
-  const [users, setUsers]         = useState<AdminUser[]>([])
+  const queryClient = useQueryClient()
   const [search, setSearch]       = useState('')
   const [roleFilter, setRoleFilter] = useState('Todos')
-  const [loading, setLoading]     = useState(true)
-  const [error, setError]         = useState<string | null>(null)
   const [updatingId, setUpdatingId] = useState<string | null>(null)
   const [confirmTarget, setConfirmTarget] = useState<AdminUser | null>(null)
   const [showInvite, setShowInvite]       = useState(false)
@@ -40,21 +44,22 @@ export default function AdminUsers() {
   const [inviteSending, setInviteSending] = useState(false)
   const [inviteResult, setInviteResult]   = useState<InviteResult | null>(null) // { email, inviteUrl }
 
-  const fetchUsers = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const role = roleFilter === 'Todos' ? undefined : (roleFilter as UserRole)
-      const res = await adminService.listUsers(role)
-      setUsers(res.data.data)
-    } catch {
-      setError('Não foi possível carregar os usuários.')
-    } finally {
-      setLoading(false)
-    }
-  }, [roleFilter])
+  /**
+   * A busca e o papel filtram na api, e a tela recebe uma página por vez
+   * (api#618). Até ali ela baixava a base inteira e filtrava aqui — com 500
+   * mil usuários, meio milhão de linhas para desenhar 25.
+   */
+  const busca = useValorAtrasado(search.trim())
+  const role = roleFilter === 'Todos' ? undefined : (roleFilter as UserRole)
+  const usuarios = useListaPaginada<AdminUser, PaginaDeUsuarios>(
+    chaves.paginaDeUsuarios(role ?? 'TODOS', busca),
+    (cursor) => adminService.listUsers({ role, busca }, { cursor }),
+  )
+  const users = usuarios.itens
+  const error = usuarios.erro ? 'Não foi possível carregar os usuários.' : null
 
-  useEffect(() => { fetchUsers() }, [fetchUsers])
+  /** Recarrega as páginas e as buscas de pessoa: o papel de alguém mudou. */
+  const fetchUsers = () => queryClient.invalidateQueries({ queryKey: ['admin', 'usuarios'] })
 
   const handleSendInvite = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -89,17 +94,14 @@ export default function AdminUsers() {
     }
   }
 
+  // A base inteira por papel, contada na api: a tela só tem a página.
+  const porPapel = usuarios.pagina?.porPapel
   const counts = {
-    total: users.length,
-    owners: users.filter((u: AdminUser) => u.role === 'OWNER').length,
-    admins: users.filter((u: AdminUser) => u.role === 'ADMIN').length,
-    regular: users.filter((u: AdminUser) => u.role === 'PLAYER').length,
+    total: porPapel ? porPapel.PLAYER + porPapel.OWNER + porPapel.ADMIN : 0,
+    owners: porPapel?.OWNER ?? 0,
+    admins: porPapel?.ADMIN ?? 0,
+    regular: porPapel?.PLAYER ?? 0,
   }
-
-  const filtered = users.filter((u: AdminUser) =>
-    u.name.toLowerCase().includes(search.toLowerCase()) ||
-    u.email.toLowerCase().includes(search.toLowerCase())
-  )
 
   usePageHeader("Gestão de Usuários", "Gerencie roles, filtre e monitore todos os usuários da plataforma")
 
@@ -133,12 +135,16 @@ export default function AdminUsers() {
 
       {error && <ErrorMsg>{error}</ErrorMsg>}
 
-      {!loading && filtered.length === 0 && !error && (
-        <EmptyState>Nenhum usuário encontrado.</EmptyState>
+      {!usuarios.carregando && users.length === 0 && !error && (
+        <EmptyState>
+          {search.trim() || role
+            ? 'Ninguém com esse nome, e-mail e papel. Tente outro pedaço do nome, ou volte para "Todos".'
+            : 'Nenhum usuário encontrado.'}
+        </EmptyState>
       )}
 
-      {!error && filtered.length > 0 && (
-        <CaixaDaTabela>
+      {!error && users.length > 0 && (
+        <CaixaDaTabela aria-busy={usuarios.atualizando}>
         <Tabela>
           <thead>
             <tr>
@@ -151,7 +157,7 @@ export default function AdminUsers() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((u: AdminUser) => (
+            {users.map((u: AdminUser) => (
               <tr key={u.id}>
                 <td className="principal">
                   <Usuario>
@@ -184,6 +190,15 @@ export default function AdminUsers() {
         </Tabela>
         </CaixaDaTabela>
       )}
+
+      <CarregarMais
+        mostrando={users.length}
+        total={usuarios.pagina?.total}
+        temMais={usuarios.temMais}
+        carregando={usuarios.carregandoMais}
+        aoCarregar={usuarios.carregarMais}
+        rotulo="usuários"
+      />
       {showInvite && (
         <ModalWrap>
           <ModalOverlay onClick={() => { setShowInvite(false); setInviteEmail(''); setInviteResult(null) }} />
