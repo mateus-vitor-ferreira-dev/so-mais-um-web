@@ -108,10 +108,9 @@ export default function OwnerDayUses() {
   usePageHeader('Day use', 'Um dia avulso: paga-se um valor fixo, por pessoa, e joga-se até o espaço fechar')
 
   useEffect(() => {
-    placesService.list().then((resposta) => {
-      const meus = user?.role === 'ADMIN'
-        ? resposta.data.data
-        : resposta.data.data.filter((espaco) => espaco.ownerId === user?.id)
+    placesService.mine().then((resposta) => {
+      // Os do dono, ou todos para o admin: quem filtra é a api (api#618).
+      const meus = resposta.data.data
       setEspacos(meus)
       const pedido = searchParams.get('placeId')
       setPlaceId(meus.some((espaco) => espaco.id === pedido) ? pedido! : meus[0]?.id ?? '')

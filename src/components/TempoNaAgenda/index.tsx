@@ -43,7 +43,8 @@ export default function TempoNaAgenda() {
   const espacos = useQuery({
     queryKey: chaves.meusEspacos(user?.id ?? ''),
     queryFn: () =>
-      placesService.list().then((r) => r.data.data.filter((espaco) => espaco.ownerId === user?.id)),
+      // O `mine` do admin traz todos; a agenda do painel é a dos espaços dele.
+      placesService.mine().then((r) => r.data.data.filter((espaco) => espaco.ownerId === user?.id)),
     enabled: Boolean(user?.id),
   })
 

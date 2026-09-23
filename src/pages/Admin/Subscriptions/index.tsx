@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTheme } from 'styled-components'
@@ -8,7 +8,6 @@ import { PageActions, usePageHeader } from '../../../components/DashboardLayout/
 import StatCard from '../../../components/StatCard'
 import { assinaturasDoAdmin } from '../../../services/assinaturasDoAdmin'
 import { plansService } from '../../../services/plansService'
-import * as adminService from '../../../services/admin'
 import { chaves } from '../../../lib/queryClient'
 import { codigoDeErro, mensagemDeErro } from '../../../utils/apiError'
 import type { AssinaturaDoAdmin, ConviteDeCortesia } from '../../../types/api'
@@ -18,7 +17,8 @@ import {
   ModalTitulo, Nome, NotaDoFiltro, Numeros, RotuloDeCampo, Selecao, Selo, SemQuebra, Tabela,
   CaixaDaTabela,
 } from './styles'
-import BuscaDeDono from './BuscaDeDono'
+import BuscaDePessoa from '../../../components/BuscaDePessoa'
+import { useBuscaDeUsuarios } from '../../../hooks/useBuscaDeUsuarios'
 import EmailDoDono from './EmailDoDono'
 import { oQueAcontece } from './previsaoDaCortesia'
 import { FILTROS, numeros, situacao, venceuPorData } from './situacao'
@@ -158,18 +158,19 @@ export default function AdminSubscriptions() {
   const porEmail = Array.isArray(convites.data)
   const pendentes = useMemo(() => convites.data ?? [], [convites.data])
 
-  // Só quando o formulário abre: quem entrou para conferir vencimento não
-  // precisa da base de usuários inteira.
-  const donos = useQuery({
-    queryKey: chaves.usuariosDoAdmin('OWNER'),
-    queryFn: () => adminService.listUsers('OWNER').then((r) => r.data.data),
-    enabled: registrando || (concedendo && !porEmail),
-  })
-  // Todos os papéis: é o que diz se o e-mail é de um jogador ou de ninguém.
-  const contas = useQuery({
-    queryKey: chaves.usuariosDoAdmin('TODOS'),
-    queryFn: () => adminService.listUsers().then((r) => r.data.data),
-    enabled: concedendo && porEmail,
+  /**
+   * As contas que casam com o e-mail digitado na cortesia, de qualquer papel: é
+   * o que diz se o e-mail é de um jogador, de um dono ou de ninguém.
+   *
+   * Até a api#618 era a base inteira, baixada ao abrir o formulário. Agora é a
+   * busca pelo que foi digitado — o conjunto em que a previsão procura o e-mail
+   * exato e as sugestões procuram o pedaço. O limite folgado é para o e-mail
+   * exato não ficar de fora quando muitas contas contêm o texto.
+   */
+  const contas = useBuscaDeUsuarios({
+    termo: emailDoDono,
+    limite: 100,
+    habilitada: concedendo && porEmail && emailDoDono.trim().length > 0,
   })
   const planos = useQuery({
     queryKey: chaves.planos(),
@@ -292,14 +293,14 @@ export default function AdminSubscriptions() {
    * descobri-lo depois de preencher três campos não.
    */
   const jaAssinam = useMemo(() => new Set(lista.map((a) => a.owner.email.toLowerCase())), [lista])
-  const donosDisponiveis = useMemo(
-    () => (donos.data ?? []).filter((dono) => !jaAssinam.has(dono.email.toLowerCase())),
-    [donos.data, jaAssinam],
+  const jaAssina = useCallback(
+    (pessoa: { email: string }) => jaAssinam.has(pessoa.email.toLowerCase()),
+    [jaAssinam],
   )
   const emailsPendentes = useMemo(() => new Set(pendentes.map((c) => c.email.toLowerCase())), [pendentes])
   const diasDeCortesia = diasAteACampo(validoAte)
-  const previsao = oQueAcontece(emailDoDono, {
-    contas: contas.data ?? [],
+  const previsao = contas.buscando ? null : oQueAcontece(emailDoDono, {
+    contas: contas.pessoas,
     assinam: jaAssinam,
     pendentes: emailsPendentes,
     dias: diasDeCortesia,
@@ -351,10 +352,12 @@ export default function AdminSubscriptions() {
   const campoDoDono = (ajuda: ReactNode) => (
     <Grupo>
       <RotuloDeCampo aria-hidden>Dono</RotuloDeCampo>
-      <BuscaDeDono
-        donos={donosDisponiveis}
-        carregando={donos.isPending}
-        donoId={donoId}
+      <BuscaDePessoa
+        papel="OWNER"
+        excluir={jaAssina}
+        rotulo="Dono"
+        semResultado="Nenhum dono sem assinatura com esse nome ou e-mail."
+        pessoaId={donoId}
         aoEscolher={escolherDono}
         erro={erroDoDono}
       />
@@ -556,8 +559,8 @@ export default function AdminSubscriptions() {
                 <Grupo>
                   <RotuloDeCampo aria-hidden>E-mail do dono</RotuloDeCampo>
                   <EmailDoDono
-                    contas={contas.data ?? []}
-                    carregando={contas.isPending}
+                    contas={contas.pessoas}
+                    carregando={contas.buscando}
                     assinam={jaAssinam}
                     pendentes={emailsPendentes}
                     email={emailDoDono}

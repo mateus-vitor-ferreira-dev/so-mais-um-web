@@ -60,7 +60,7 @@ vi.mock('../../../contexts/AuthContext', async (original) => ({
 
 beforeEach(() => {
   vi.clearAllMocks()
-  espacos.list.mockResolvedValue({
+  espacos.mine.mockResolvedValue({
     data: { success: true, data: [{ id: 'ltc', name: 'Lavras Tênis Clube', ownerId: 'dono' }] as Place[] },
   } as AxiosResponse<ApiEnvelope<Place[]>>)
   quadras.getCourtsByPlace.mockResolvedValue({
@@ -220,7 +220,7 @@ describe('OwnerDayUses', () => {
   })
 
   it('sem espaço cadastrado, manda cadastrar em vez de mostrar lista vazia', async () => {
-    espacos.list.mockResolvedValue({
+    espacos.mine.mockResolvedValue({
       data: { success: true, data: [] as Place[] },
     } as AxiosResponse<ApiEnvelope<Place[]>>)
     monta()

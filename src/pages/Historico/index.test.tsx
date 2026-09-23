@@ -45,8 +45,11 @@ beforeEach(() => {
   vi.clearAllMocks()
   auth.estado = { user: { id: 'eu', name: 'Eu' } }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  jogador.getMyParticipatingEvents.mockResolvedValue({ data: [{ userId: 'eu', match: PARTIDA }] } as any)
+  jogador.getHistorico.mockResolvedValue({
+    success: true,
+    data: [{ ...PARTIDA, role: 'participant', attended: true }],
+    pagina: { proximo: null, total: 1 },
+  } as never)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   jogador.getUserReviews.mockResolvedValue({ data: { summary: {} } } as any)
   jogador.getEventParticipants.mockResolvedValue({
@@ -65,6 +68,22 @@ beforeEach(() => {
 })
 
 describe('Histórico — seguir no fim da partida', () => {
+  it('pede só as concluídas em que jogou, e conta pelo total da api (api#618)', async () => {
+    jogador.getHistorico.mockResolvedValue({
+      success: true,
+      data: [{ ...PARTIDA, role: 'participant', attended: true }],
+      pagina: { proximo: 'm1', total: 42 },
+    } as never)
+    renderWithProviders(<Historico />)
+
+    expect(await screen.findByText('42')).toBeInTheDocument()
+    expect(jogador.getHistorico).toHaveBeenCalledWith(
+      { role: 'participant', status: 'FINISHED' },
+      { cursor: undefined },
+    )
+    expect(screen.getByRole('button', { name: 'Carregar mais' })).toBeInTheDocument()
+  })
+
   it('oferece seguir cada pessoa que jogou com você', async () => {
     const { user } = renderWithProviders(<Historico />)
 

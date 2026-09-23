@@ -53,7 +53,8 @@ export default function OwnerPlaces() {
     setLoading(true)
     setError(null)
     try {
-      const res = await placesService.list()
+      // O `mine` do admin traz todos; esta tela é "os meus" até para ele.
+      const res = await placesService.mine()
       const mine = res.data.data.filter((p) => p.ownerId === user?.id)
       setPlaces(mine)
     } catch {
