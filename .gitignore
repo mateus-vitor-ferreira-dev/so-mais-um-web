@@ -37,3 +37,6 @@ coverage
 dist-responsividade
 test-results
 playwright-report
+
+# Cache local do wrangler dev
+.wrangler/

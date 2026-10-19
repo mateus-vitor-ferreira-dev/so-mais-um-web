@@ -26,7 +26,7 @@ export default defineConfig({
     // `api/` entra junto: as funções serverless da Vercel são código de
     // produção como qualquer outro, e a prévia do link é justamente a parte que
     // ninguém vê quebrar até alguém colar um link no WhatsApp.
-    include: ['src/**/*.{test,spec}.{ts,tsx}', 'api/**/*.{test,spec}.{js,ts}'],
+    include: ['src/**/*.{test,spec}.{ts,tsx}', '{api,worker}/**/*.{test,spec}.{js,ts}'],
 
     coverage: {
       provider: 'v8',

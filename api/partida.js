@@ -6,8 +6,9 @@
  * isso uma meta tag no `index.html` seria necessariamente igual para todas as
  * partidas, e a prévia com data, local e vagas precisa ser montada no servidor.
  *
- * **Só rastreador passa por aqui.** O `vercel.json` roteia para esta função
- * apenas quando o `user-agent` casa com a lista de bots; gente de verdade
+ * **Só rastreador passa por aqui.** Na Vercel, o `vercel.json` roteia para esta
+ * função; no Cloudflare, `worker/index.js` faz o mesmo papel. Os
+ * dois só chamam a prévia quando o `user-agent` casa com a lista de bots; gente de verdade
  * continua indo direto para o `index.html`, sem servidor no caminho e sem
  * nenhum risco novo de a página da partida parar de abrir. Se a lista de bots
  * errar para menos, o efeito é o de hoje: link sem prévia.
@@ -25,6 +26,13 @@
  * ambiente — inclusive no teste, que troca a variável entre um caso e outro.
  */
 const apiUrl = () => process.env.API_URL || process.env.VITE_API_URL || ''
+
+/**
+ * Quem recebe a prévia em vez do app. É a mesma lista do `vercel.json`; enquanto
+ * os dois provedores existirem, mudar uma é mudar a outra.
+ */
+export const ROBOS =
+  /(facebookexternalhit|whatsapp|twitterbot|slackbot|telegrambot|discordbot|linkedinbot|googlebot|bingbot|embedly|quora link preview|pinterest|redditbot|applebot|vkshare|skypeuripreview|bot|crawler|spider|preview)/i
 
 const GENERICO = {
   titulo: 'Só+1 — Achou jogo.',
@@ -85,8 +93,7 @@ function descreve(partida) {
  * aqui a lógica de visibilidade criaria uma segunda fonte de verdade, e a que
  * vaza é sempre a cópia.
  */
-async function buscaPartida(id, convite) {
-  const base = apiUrl()
+async function buscaPartida(id, convite, base) {
   if (!base) return null
 
   const url = new URL(`${base.replace(/\/$/, '')}/events/${encodeURIComponent(id)}`)
@@ -136,28 +143,44 @@ function documento({ titulo, descricao, urlDaPagina, urlDaImagem }) {
 </html>`
 }
 
+/**
+ * O documento da prévia e os cabeçalhos dele, sem depender de provedor: a
+ * Vercel e o Cloudflare só mudam como o pedido chega e a resposta sai.
+ *
+ * O cartão fica no cache da borda por 5 minutos. Prévia é leitura pública e
+ * repetida — o WhatsApp busca uma vez por link colado —, e cinco minutos é curto
+ * o bastante para uma partida que mudou de vagas não mentir por muito tempo.
+ */
+export async function montaPrevia({ id, convite, origem, base }) {
+  const urlDaPagina = `${origem}/partida/${encodeURIComponent(id ?? '')}${
+    convite ? `?convite=${encodeURIComponent(convite)}` : ''
+  }`
+
+  const partida = id ? await buscaPartida(id, convite, base) : null
+  const { titulo, descricao } = partida ? descreve(partida) : GENERICO
+
+  return {
+    corpo: documento({ titulo, descricao, urlDaPagina, urlDaImagem: `${origem}/og-image.png` }),
+    cabecalhos: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+    },
+  }
+}
+
+/** A função serverless da Vercel. */
 export default async function handler(req, res) {
   const { id, convite } = req.query ?? {}
 
   const protocolo = (req.headers['x-forwarded-proto'] || 'https').split(',')[0]
   const host = req.headers['x-forwarded-host'] || req.headers.host || ''
-  const origem = `${protocolo}://${host}`
 
-  const urlDaPagina = `${origem}/partida/${encodeURIComponent(id ?? '')}${
-    convite ? `?convite=${encodeURIComponent(convite)}` : ''
-  }`
-
-  const partida = id ? await buscaPartida(id, convite) : null
-  const { titulo, descricao } = partida ? descreve(partida) : GENERICO
-
-  // O cartão fica no cache da borda por 5 minutos. Prévia é leitura pública e
-  // repetida — o WhatsApp busca uma vez por link colado —, e cinco minutos é
-  // curto o bastante para uma partida que mudou de vagas não mentir por muito
-  // tempo.
-  res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
-
-  return res.status(200).send(
-    documento({ titulo, descricao, urlDaPagina, urlDaImagem: `${origem}/og-image.png` }),
-  )
+  const { corpo, cabecalhos } = await montaPrevia({
+    id,
+    convite,
+    origem: `${protocolo}://${host}`,
+    base: apiUrl(),
+  })
+  for (const [chave, valor] of Object.entries(cabecalhos)) res.setHeader(chave, valor)
+  return res.status(200).send(corpo)
 }
