@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react'
+import CarregarMais from '../../components/CarregarMais'
+import { useListaPaginada } from '../../hooks/useListaPaginada'
+import { chaves } from '../../lib/queryClient'
 import { toast } from 'sonner'
 import { SkeletonList } from '../../components/Skeleton'
 import { getSportMeta } from '../../hooks/useSports'
@@ -7,7 +10,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { BotaoSeguir } from '../../components/BotaoSeguir'
 import { playerService } from '../../services/playerService'
 import { mensagemDeErro } from '../../utils/apiError'
-import type { ReviewProgress } from '../../services/playerService'
+import type { ItemDoHistorico, ReviewProgress } from '../../services/playerService'
 import type { Participation, Partida, ReviewTag, UserStats } from '../../types/api'
 import {
   Container, StatsCard, HistoryList, HistoryCard,
@@ -40,9 +43,21 @@ interface AvaliacaoEmEdicao {
 export default function Historico() {
   usePageHeader('Meu Histórico')
   const { user } = useAuth()
-  const [history, setHistory] = useState<Participation[]>([])
   const [reviewSummary, setReviewSummary] = useState<Partial<UserStats>>({})
-  const [loading, setLoading] = useState(true)
+
+  /**
+   * As partidas concluídas em que joguei, por página (api#618).
+   *
+   * Até ali eram todas as participações de uma vez, pela rota das "minhas
+   * partidas". O histórico tem a rota dele, que pagina e conta: o `total` é o
+   * "Partidas Disputadas", que antes era o tamanho da lista.
+   */
+  const historico = useListaPaginada<ItemDoHistorico>(
+    chaves.historico('FINISHED'),
+    (cursor) => playerService.getHistorico({ role: 'participant', status: 'FINISHED' }, { cursor }),
+    { habilitada: Boolean(user?.id) },
+  )
+  const history = historico.itens
 
   // Modal de avaliação
   const [evalEvent, setEvalEvent] = useState<Partida | null>(null)
@@ -53,26 +68,15 @@ export default function Historico() {
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
-    const fetchHistoric = async () => {
-      try {
-        setLoading(true)
-        const partRes = await playerService.getMyParticipatingEvents({ status: 'FINISHED' })
-        setHistory(partRes.data || [])
-
-        const revRes = await playerService.getUserReviews(user!.id)
-        setReviewSummary(revRes.data?.summary ?? {})
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    if (user?.id) fetchHistoric()
+    if (!user?.id) return
+    playerService
+      .getUserReviews(user.id)
+      .then((revRes) => setReviewSummary(revRes.data?.summary ?? {}))
+      .catch((error) => console.error(error))
   }, [user])
 
-  const openEvaluation = async (event: Participation) => {
+  const openEvaluation = async (partida: Partida) => {
     try {
-      const partida = event.match!
       const [participantsRes, progressRes] = await Promise.all([
         playerService.getEventParticipants(partida.courtId, partida.id),
         playerService.getReviewProgress(partida.courtId, partida.id).catch(() => null),
@@ -140,7 +144,7 @@ export default function Historico() {
             <p>Sua Nota Média</p>
           </div>
           <div className="stat-item">
-            <h2>{history.length}</h2>
+            <h2>{historico.total}</h2>
             <p>Partidas Disputadas</p>
           </div>
           <div className="stat-item">
@@ -151,11 +155,7 @@ export default function Historico() {
 
         <h3>Partidas Concluídas</h3>
         <HistoryList>
-          {loading ? <SkeletonList count={4} /> : history.map((event: Participation) => {
-            // A API sempre inclui `partida` neste endpoint, mas o tipo a marca
-            // opcional (o include varia por consulta) — daí a guarda.
-            const ev = event.match
-            if (!ev) return null
+          {historico.carregando ? <SkeletonList count={4} /> : history.map((ev) => {
             const sport = ev.court ? getSportMeta(ev.court.type) : { icon: 'society', iconFallback: '⚽', label: '—' }
             return (
               <HistoryCard key={ev.id}>
@@ -167,12 +167,21 @@ export default function Historico() {
                   </p>
                 </div>
                 <div className="action">
-                  <button onClick={() => openEvaluation(event)}>Avaliar Jogadores</button>
+                  <button onClick={() => openEvaluation(ev)}>Avaliar Jogadores</button>
                 </div>
               </HistoryCard>
             )
           })}
         </HistoryList>
+
+        <CarregarMais
+          mostrando={history.length}
+          total={historico.pagina?.total}
+          temMais={historico.temMais}
+          carregando={historico.carregandoMais}
+          aoCarregar={historico.carregarMais}
+          rotulo="partidas"
+        />
 
         {/* Modal de Avaliação Pós-Jogo */}
         {evalEvent && (

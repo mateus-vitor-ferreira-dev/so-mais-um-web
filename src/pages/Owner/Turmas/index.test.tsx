@@ -72,7 +72,7 @@ vi.mock('../../../contexts/AuthContext', async (original) => ({
 
 beforeEach(() => {
   vi.clearAllMocks()
-  espacos.list.mockResolvedValue({
+  espacos.mine.mockResolvedValue({
     data: {
       success: true,
       data: [
@@ -378,7 +378,7 @@ describe('OwnerTurmas', () => {
        e no TanStack Query v5 consulta desabilitada fica `isPending` para
        sempre. Quem não tem espaço via dois esqueletos girando sem fim, sem erro
        e sem estado vazio — foi assim que a tela subiu para produção. */
-    espacos.list.mockResolvedValue({ data: { success: true, data: [] as Place[] } } as AxiosResponse<ApiEnvelope<Place[]>>)
+    espacos.mine.mockResolvedValue({ data: { success: true, data: [] as Place[] } } as AxiosResponse<ApiEnvelope<Place[]>>)
     monta()
 
     expect(await screen.findByText(/nenhum espaço cadastrado ainda/i)).toBeInTheDocument()

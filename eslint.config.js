@@ -71,6 +71,15 @@ export default defineConfig([
     },
   },
 
+  // O Worker do Cloudflare roda no runtime dos Workers, que tem as APIs web
+  // (Request, Response, URL, fetch), e não as do Node.
+  {
+    files: ['worker/**/*.js'],
+    languageOptions: {
+      globals: { ...globals.browser },
+    },
+  },
+
   // Arquivos de teste rodam no Vitest, não no navegador.
   {
     files: ['**/*.{test,spec}.{ts,tsx}', 'src/test/**/*.{ts,tsx}'],

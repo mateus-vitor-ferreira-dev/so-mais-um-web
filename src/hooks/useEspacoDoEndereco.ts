@@ -47,10 +47,9 @@ export function useEspacoDoEndereco({ tipo, id }: AlvoDoEndereco): EspacoDoEnder
     enabled: !pedido && Boolean(id) && Boolean(user),
     staleTime: Infinity,
     queryFn: async (): Promise<string | null> => {
-      const resposta = await placesService.list()
-      const espacos = user?.role === 'ADMIN'
-        ? resposta.data.data
-        : resposta.data.data.filter((espaco) => espaco.ownerId === user?.id)
+      const resposta = await placesService.mine()
+      // Os do dono, ou todos para o admin: quem filtra é a api (api#618).
+      const espacos = resposta.data.data
 
       // Um espaço que recusa a lista (sem plano, sem permissão) não é o dono do
       // alvo, e não pode derrubar a busca nos outros.

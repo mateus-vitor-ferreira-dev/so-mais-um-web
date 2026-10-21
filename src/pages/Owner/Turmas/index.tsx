@@ -117,10 +117,9 @@ export default function OwnerTurmas() {
   /* O espaço vem do seletor, e não da rota — menu não carrega parâmetro. O
      `?placeId=` mantém funcionando quem chega por atalho já no espaço certo. */
   useEffect(() => {
-    placesService.list().then((resposta) => {
-      const meus = user?.role === 'ADMIN'
-        ? resposta.data.data
-        : resposta.data.data.filter((espaco) => espaco.ownerId === user?.id)
+    placesService.mine().then((resposta) => {
+      // Os do dono, ou todos para o admin: quem filtra é a api (api#618).
+      const meus = resposta.data.data
       setEspacos(meus)
       const pedido = searchParams.get('placeId')
       setPlaceId(meus.some((espaco) => espaco.id === pedido) ? pedido! : meus[0]?.id ?? '')

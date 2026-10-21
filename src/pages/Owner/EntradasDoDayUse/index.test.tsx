@@ -39,15 +39,18 @@ vi.mock('../../../contexts/AuthContext', async (original) => ({
   useAuth: () => auth.estado,
 }))
 
-/** Dois espaços do dono e um de outro: o day use `d1` é do segundo (web#520). */
+/**
+ * Os dois espaços do dono, como o `/places/mine` os devolve: o day use `d1` é do
+ * segundo (web#520). O espaço de outro dono não vem — desde a api#618 quem
+ * filtra é a api, e o teste disso mora lá (`placeListaPaginada.test.ts`).
+ */
 function espacosDoDono() {
-  espacos.list.mockResolvedValue({
+  espacos.mine.mockResolvedValue({
     data: {
       success: true,
       data: [
         { id: 'ltc', name: 'Lavras Tênis Clube', ownerId: 'dono' },
         { id: 'arena', name: 'Arena', ownerId: 'dono' },
-        { id: 'alheio', name: 'De outro dono', ownerId: 'outro' },
       ] as Place[],
     },
   } as AxiosResponse<ApiEnvelope<Place[]>>)
@@ -196,8 +199,8 @@ describe('OwnerEntradasDoDayUse', () => {
 
     expect(await screen.findByText(/Ninguém entrou ainda/)).toBeInTheDocument()
     expect(servico.entradas).toHaveBeenCalledWith('arena', 'd1')
-    // O espaço de outro dono nem é consultado.
-    expect(servico.listar).not.toHaveBeenCalledWith('alheio', true)
+    // Procura só entre os que o `/places/mine` devolveu.
+    expect(espacos.mine).toHaveBeenCalledTimes(1)
   })
 
   it('sem placeId, e o day use não é de nenhum espaço do dono: explica em vez de chamar a api', async () => {

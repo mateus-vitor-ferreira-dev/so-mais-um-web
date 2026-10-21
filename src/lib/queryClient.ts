@@ -215,6 +215,20 @@ export const chaves = {
    * abre: quem só veio conferir vencimentos não precisa da base de usuários.
    */
   usuariosDoAdmin: (papel: string) => ['admin', 'usuarios', papel] as const,
+  /**
+   * As páginas da Gestão de Usuários e a busca de pessoa (api#618).
+   *
+   * Filtro e busca entram na chave porque cada combinação é outra lista: sem
+   * eles, trocar de "Owners" para "Admins" mostraria a página de antes.
+   */
+  paginaDeUsuarios: (papel: string, busca: string) => ['admin', 'usuarios', 'pagina', papel, busca] as const,
+  buscaDeUsuarios: (papel: string, busca: string, limite: number) =>
+    ['admin', 'usuarios', 'busca', papel, busca, limite] as const,
+  /** A lista de espaços do admin e a fila de solicitações, por página (api#618). */
+  paginaDeEspacos: (busca: string) => ['espacos', 'pagina', busca] as const,
+  filaDeSolicitacoes: (status: string) => ['solicitacoes', 'pagina', status] as const,
+  contagemDeSolicitacoes: () => ['solicitacoes', 'contagem'] as const,
+  historico: (status: string) => ['historico', status] as const,
   planos: () => ['planos'] as const,
   /**
    * A conversa de suporte do dono logado (web#472). Sem id: a conversa é sempre

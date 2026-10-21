@@ -1,0 +1,28 @@
+// Publicação no Cloudflare Workers, no lugar da Vercel. O app são arquivos estáticos
+// (o build do Vite em dist/); só /partida/* passa pelo Worker, para a prévia do link
+// (worker/index.js). Deploy pelo Workers Builds: "npm run build" e "npx wrangler deploy".
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "so-mais-um-web",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-19",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Rota que o app não conhece no servidor (/partida/123, /perfil...) devolve o index.html
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/partida/*"]
+  },
+  "vars": {
+    "API_URL": "https://api.so-mais-um.com"
+  },
+  // Cada branch ganha um link próprio de preview, como na Vercel
+  "previews": {
+    "vars": {
+      "API_URL": "https://api.so-mais-um.com"
+    }
+  },
+  "observability": {
+    "enabled": true
+  }
+}

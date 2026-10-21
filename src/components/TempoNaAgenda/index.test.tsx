@@ -77,7 +77,7 @@ function previsao(leituras: Record<string, LeituraDoTempo>): PrevisaoDoEspaco {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  vi.mocked(placesService.list).mockResolvedValue({
+  vi.mocked(placesService.mine).mockResolvedValue({
     data: { success: true, data: [{ id: 'place-1', name: 'Arena Um', ownerId: 'dono-1' }] },
   } as never)
   vi.mocked(courtsService.getCourtsByPlace).mockResolvedValue({
@@ -180,11 +180,11 @@ describe('TempoNaAgenda', () => {
   })
 
   it('dono sem espaço não vê a seção', async () => {
-    vi.mocked(placesService.list).mockResolvedValue({ data: { success: true, data: [] } } as never)
+    vi.mocked(placesService.mine).mockResolvedValue({ data: { success: true, data: [] } } as never)
 
     const { container } = renderWithProviders(<TempoNaAgenda />)
 
-    await vi.waitFor(() => expect(placesService.list).toHaveBeenCalled())
+    await vi.waitFor(() => expect(placesService.mine).toHaveBeenCalled())
     expect(container).toBeEmptyDOMElement()
     expect(previsaoService.doEspaco).not.toHaveBeenCalled()
   })

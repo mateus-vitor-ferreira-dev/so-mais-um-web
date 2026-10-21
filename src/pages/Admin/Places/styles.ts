@@ -291,3 +291,24 @@ export const ConfirmBtn = styled.button`
   &:hover:not(:disabled) { opacity: 0.88; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 `
+
+/** A busca da lista (api#618): nome, cidade ou bairro, filtrada na api. */
+export const Busca = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  background: ${({ theme }) => theme.colors.bgInput};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-family: inherit;
+  ${alvoDeToque}
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 1px;
+  }
+`

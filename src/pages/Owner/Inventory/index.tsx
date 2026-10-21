@@ -81,10 +81,9 @@ export default function OwnerInventory() {
   const placeId = searchParams.get('placeId') ?? ''
 
   useEffect(() => {
-    placesService.list().then((res) => {
-      const available = user?.role === 'ADMIN'
-        ? res.data.data
-        : res.data.data.filter((place) => place.ownerId === user?.id)
+    placesService.mine().then((res) => {
+      // Os do dono, ou todos para o admin: quem filtra é a api (api#618).
+      const available = res.data.data
       setPlaces(available)
       if (!placeId && available[0]) {
         setSearchParams({ placeId: available[0].id }, { replace: true })

@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios'
 import api from './api'
-import type { ApiEnvelope, PlaceRequest, PlaceRequestStatus } from '../types/api'
+import type { ApiEnvelope, ApiPaginada, PedidoDePagina, PlaceRequest, PlaceRequestStatus } from '../types/api'
 
 /** ⚠️ Devolve a resposta bruta do axios — quem consome escreve `res.data.data`. */
 
@@ -20,8 +20,12 @@ export interface PlaceRequestInput {
 
 type Resposta<T> = Promise<AxiosResponse<ApiEnvelope<T>>>
 
-export const listAll = (status?: PlaceRequestStatus): Resposta<PlaceRequest[]> =>
-  api.get('/place-requests', { params: status ? { status } : undefined })
+/** A fila de todos os donos, por página (api#618). A do dono (`listMine`) segue inteira. */
+export const listAll = (
+  status?: PlaceRequestStatus,
+  pagina: PedidoDePagina = {},
+): Promise<ApiPaginada<PlaceRequest>> =>
+  api.get('/place-requests', { params: { ...(status ? { status } : {}), ...pagina } }).then((r) => r.data)
 
 export const listMine = (status?: PlaceRequestStatus): Resposta<PlaceRequest[]> =>
   api.get('/place-requests/my', { params: status ? { status } : undefined })

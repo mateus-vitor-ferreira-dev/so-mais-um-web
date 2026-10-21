@@ -54,7 +54,7 @@ beforeEach(() => {
   vi.clearAllMocks()
   assinatura.isActive = true
   assinatura.loading = false
-  vi.mocked(placesService.list).mockResolvedValue({ data: { success: true, data: [place] } } as Awaited<ReturnType<typeof placesService.list>>)
+  vi.mocked(placesService.mine).mockResolvedValue({ data: { success: true, data: [place] } } as Awaited<ReturnType<typeof placesService.mine>>)
   vi.mocked(equipmentService.listItems).mockResolvedValue([equipment])
   vi.mocked(equipmentService.listLoans).mockResolvedValue([loan])
   vi.mocked(equipmentService.listPartidas).mockResolvedValue([])

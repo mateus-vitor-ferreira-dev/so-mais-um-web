@@ -277,10 +277,9 @@ export const Lado = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: flex-end;
+  align-items: flex-start;
 
   ${ate.tablet} {
-    align-items: flex-start;
     width: 100%;
   }
 `

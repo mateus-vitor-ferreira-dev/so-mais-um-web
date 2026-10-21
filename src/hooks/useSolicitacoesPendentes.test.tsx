@@ -39,9 +39,23 @@ function comPendentes(quantidade: number) {
   return Promise.resolve({ data: { data: lista } }) as never
 }
 
+/**
+ * A fila do admin como a api paginada a devolve (api#618): o corpo, com uma
+ * página de no máximo um item e o `total` ao lado. O número do menu tem que
+ * vir do `total`, e não do tamanho da página.
+ */
+function filaDoAdmin(total: number) {
+  const pagina = total > 0 ? [{ id: 's0', status: 'PENDING' }] : []
+  return Promise.resolve({
+    success: true,
+    data: pagina,
+    pagina: { proximo: total > 1 ? 's0' : null, total },
+  }) as never
+}
+
 beforeEach(() => {
   vi.clearAllMocks()
-  servico.listAll.mockReturnValue(comPendentes(3))
+  servico.listAll.mockReturnValue(filaDoAdmin(3))
   servico.listMine.mockReturnValue(comPendentes(2))
 })
 
@@ -61,7 +75,15 @@ describe('contador de solicitações no menu', () => {
     painel(AdminPanelLayout, '/admin/dashboard')
 
     expect(await screen.findByText('3')).toBeInTheDocument()
-    expect(servico.listAll).toHaveBeenCalledWith('PENDING')
+    expect(servico.listAll).toHaveBeenCalledWith('PENDING', { limite: 1 })
+  })
+
+  it('no admin, conta pelo total da api, e não pelo tamanho da página (api#618)', async () => {
+    servico.listAll.mockReturnValue(filaDoAdmin(40))
+    auth.estado = { user: { id: 'eu', name: 'Admin', role: 'ADMIN' }, loading: false }
+    painel(AdminPanelLayout, '/admin/dashboard')
+
+    expect(await screen.findByText('40')).toBeInTheDocument()
   })
 
   it('aparece no painel do owner numa tela que não é a de solicitações', async () => {
@@ -73,7 +95,7 @@ describe('contador de solicitações no menu', () => {
   })
 
   it('não desenha nada quando não há pendências', async () => {
-    servico.listAll.mockReturnValue(comPendentes(0))
+    servico.listAll.mockReturnValue(filaDoAdmin(0))
     auth.estado = { user: { id: 'eu', name: 'Admin', role: 'ADMIN' }, loading: false }
     painel(AdminPanelLayout, '/admin/dashboard')
 

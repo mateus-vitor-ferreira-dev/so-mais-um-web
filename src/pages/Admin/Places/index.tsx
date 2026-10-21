@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import { toast } from 'sonner'
 import StatCard from '../../../components/StatCard'
@@ -6,54 +7,49 @@ import { GradeDeNumeros } from '../../../components/GradeDeNumeros'
 import * as placesService from '../../../services/places'
 import * as adminService from '../../../services/admin'
 import type { Place } from '../../../types/api'
-import type { AdminUser } from '../../../services/admin'
+import type { PaginaDeEspacos } from '../../../services/places'
 import {
   Table, OwnerCell, NoOwner, StatusBadge, ActionGroup,
   ActionBtn, ErrorMsg, Modal, ModalOverlay, ModalBox, ModalTitle,
-  ModalActions, CancelBtn, ConfirmBtn, Select, OwnerOption, PromoteLink,
-  PromoteBox, PromoteBtn,
+  ModalActions, CancelBtn, ConfirmBtn, PromoteLink,
+  PromoteBox, PromoteBtn, Busca,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
+import CarregarMais from '../../../components/CarregarMais'
+import BuscaDePessoa from '../../../components/BuscaDePessoa'
+import { useListaPaginada } from '../../../hooks/useListaPaginada'
+import { useValorAtrasado } from '../../../hooks/useValorAtrasado'
+import { chaves } from '../../../lib/queryClient'
 
 const STATUS_LABEL = { OPEN: 'Aberto', CLOSED: 'Fechado' }
 
 export default function AdminPlaces() {
-  const [places, setPlaces]     = useState<Place[]>([])
-  const [owners, setOwners]     = useState<AdminUser[]>([])
-  const [loading, setLoading]   = useState(true)
-  const [error, setError]       = useState<string | null>(null)
+  const queryClient = useQueryClient()
+  const [termo, setTermo]       = useState('')
   const [togglingId, setTogglingId]   = useState<string | null>(null)
   const [assignTarget, setAssignTarget] = useState<Place | null>(null)
   const [selectedOwner, setSelectedOwner] = useState('')
   const [assigning, setAssigning] = useState(false)
   const [promoteMode, setPromoteMode] = useState(false)
-  const [allUsers, setAllUsers]       = useState<AdminUser[]>([])
   const [selectedPromote, setSelectedPromote] = useState('')
   const [promoting, setPromoting] = useState(false)
 
-  const fetchPlaces = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const res = await placesService.list()
-      setPlaces(res.data.data)
-    } catch {
-      setError('Não foi possível carregar os estabelecimentos.')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+  // Por página, com a busca no servidor (api#618): até ali vinham todos.
+  const busca = useValorAtrasado(termo.trim())
+  const espacos = useListaPaginada<Place, PaginaDeEspacos>(
+    chaves.paginaDeEspacos(busca),
+    (cursor) => placesService.list(busca, { cursor }),
+  )
+  const places = espacos.itens
+  const error = espacos.erro ? 'Não foi possível carregar os estabelecimentos.' : null
 
-  const fetchOwners = useCallback(async () => {
-    try {
-      const res = await adminService.listUsers('OWNER')
-      setOwners(res.data.data)
-    } catch {
-      // silencioso — owners são carregados só quando o modal abre
-    }
-  }, [])
-
-  useEffect(() => { fetchPlaces() }, [fetchPlaces])
+  /** Recarrega a lista e as buscas de pessoa: um dono mudou de espaço, ou de papel. */
+  const fetchPlaces = async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['espacos', 'pagina'] }),
+      queryClient.invalidateQueries({ queryKey: ['admin', 'usuarios'] }),
+    ])
+  }
 
   const handleToggleStatus = async (place: Place) => {
     const next = place.status === 'OPEN' ? 'CLOSED' : 'OPEN'
@@ -68,25 +64,16 @@ export default function AdminPlaces() {
     }
   }
 
-  const openAssignModal = async (place: Place) => {
+  const openAssignModal = (place: Place) => {
     setAssignTarget(place)
-    setSelectedOwner(place.ownerId ?? '')
+    // Vazio, e não o dono atual: a busca só mostra quem foi buscado, e o
+    // "Confirmar" com o mesmo dono seria um clique que não muda nada.
+    setSelectedOwner('')
     setPromoteMode(false)
     setSelectedPromote('')
-    await fetchOwners()
   }
 
-  const openPromoteMode = async () => {
-    setPromoteMode(true)
-    if (allUsers.length === 0) {
-      try {
-        const res = await adminService.listUsers()
-        setAllUsers(res.data.data.filter((u: AdminUser) => u.role !== 'OWNER' && u.role !== 'ADMIN'))
-      } catch {
-        // silencioso
-      }
-    }
-  }
+  const openPromoteMode = () => setPromoteMode(true)
 
   const handlePromoteAndAssign = async () => {
     if (!assignTarget || !selectedPromote) return
@@ -98,7 +85,6 @@ export default function AdminPlaces() {
       setSelectedOwner('')
       setPromoteMode(false)
       setSelectedPromote('')
-      setAllUsers([])
       await fetchPlaces()
     } catch {
       toast.error('Erro ao promover e atribuir proprietário.')
@@ -122,11 +108,13 @@ export default function AdminPlaces() {
     }
   }
 
+  // A plataforma inteira, contada na api: a tela só tem a página.
+  const resumo = espacos.pagina
   const counts = {
-    total:  places.length,
-    open:   places.filter((p) => p.status === 'OPEN').length,
-    closed: places.filter((p) => p.status === 'CLOSED').length,
-    noOwner: places.filter((p) => !p.ownerId).length,
+    total:  (resumo?.porStatus?.OPEN ?? 0) + (resumo?.porStatus?.CLOSED ?? 0),
+    open:   resumo?.porStatus?.OPEN ?? 0,
+    closed: resumo?.porStatus?.CLOSED ?? 0,
+    noOwner: resumo?.semDono ?? 0,
   }
 
   usePageHeader("Estabelecimentos", "Gerencie todos os estabelecimentos da plataforma e atribua proprietários")
@@ -140,14 +128,26 @@ export default function AdminPlaces() {
         <StatCard label="Sem Proprietário" value={counts.noOwner} accent="#f59e0b" />
       </GradeDeNumeros>
 
+      <Busca
+        type="search"
+        aria-label="Buscar estabelecimento"
+        placeholder="Buscar por nome, cidade ou bairro..."
+        value={termo}
+        onChange={(e) => setTermo(e.target.value)}
+      />
+
       {error && <ErrorMsg>{error}</ErrorMsg>}
 
-      {!loading && places.length === 0 && !error && (
-        <EmptyState>Nenhum estabelecimento cadastrado.</EmptyState>
+      {!espacos.carregando && places.length === 0 && !error && (
+        <EmptyState>
+          {termo.trim()
+            ? 'Nenhum estabelecimento com esse nome, cidade ou bairro. Tente outro pedaço do nome.'
+            : 'Nenhum estabelecimento cadastrado.'}
+        </EmptyState>
       )}
 
       {places.length > 0 && (
-        <Table>
+        <Table aria-busy={espacos.atualizando}>
           <thead>
             <tr>
               <th>Nome</th>
@@ -197,6 +197,15 @@ export default function AdminPlaces() {
         </Table>
       )}
 
+      <CarregarMais
+        mostrando={places.length}
+        total={espacos.pagina?.total}
+        temMais={espacos.temMais}
+        carregando={espacos.carregandoMais}
+        aoCarregar={espacos.carregarMais}
+        rotulo="estabelecimentos"
+      />
+
       {assignTarget && (
         <Modal>
           <ModalOverlay onClick={() => setAssignTarget(null)} />
@@ -205,18 +214,16 @@ export default function AdminPlaces() {
               {assignTarget.ownerId ? 'Trocar Proprietário' : 'Atribuir Proprietário'}
             </ModalTitle>
             <p>{assignTarget.name}</p>
+            {assignTarget.owner && <p>Dono atual: <strong>{assignTarget.owner.name}</strong></p>}
 
-            <Select
-              value={selectedOwner}
-              onChange={(e) => setSelectedOwner(e.target.value)}
-            >
-              <option value="" disabled>Selecione um Owner...</option>
-              {owners.map((o) => (
-                <OwnerOption key={o.id} value={o.id}>
-                  {o.name} — {o.email}
-                </OwnerOption>
-              ))}
-            </Select>
+            {/* Busca no servidor, e não um <select> com todos os donos (api#618). */}
+            <BuscaDePessoa
+              papel="OWNER"
+              rotulo="Dono"
+              semResultado="Nenhum dono com esse nome ou e-mail. Se a pessoa ainda é jogador, promova abaixo."
+              pessoaId={selectedOwner}
+              aoEscolher={setSelectedOwner}
+            />
 
             {!promoteMode && (
               <PromoteLink onClick={openPromoteMode}>
@@ -227,17 +234,13 @@ export default function AdminPlaces() {
             {promoteMode && (
               <PromoteBox>
                 <label>Promover jogador para Owner</label>
-                <Select
-                  value={selectedPromote}
-                  onChange={(e) => setSelectedPromote(e.target.value)}
-                >
-                  <option value="" disabled>Selecione um usuário...</option>
-                  {allUsers.map((u: AdminUser) => (
-                    <OwnerOption key={u.id} value={u.id}>
-                      {u.name} — {u.email} ({u.role})
-                    </OwnerOption>
-                  ))}
-                </Select>
+                <BuscaDePessoa
+                  papel="PLAYER"
+                  rotulo="Jogador"
+                  semResultado="Nenhum jogador com esse nome ou e-mail."
+                  pessoaId={selectedPromote}
+                  aoEscolher={setSelectedPromote}
+                />
                 <PromoteBtn
                   onClick={handlePromoteAndAssign}
                   disabled={!selectedPromote || promoting}

@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { usePageHeader } from '../../../components/DashboardLayout/pageHeader'
 import { toast } from 'sonner'
 import StatCard from '../../../components/StatCard'
@@ -14,6 +15,9 @@ import {
   ConfirmBtn,
 } from './styles'
 import EmptyState from '../../../components/EmptyState'
+import CarregarMais from '../../../components/CarregarMais'
+import { useListaPaginada } from '../../../hooks/useListaPaginada'
+import { chaves } from '../../../lib/queryClient'
 import { dataCurta } from '../../../utils/datas'
 
 const STATUS_TABS: Array<{ key: PlaceRequestStatus | undefined; label: string }> = [
@@ -25,31 +29,42 @@ const STATUS_TABS: Array<{ key: PlaceRequestStatus | undefined; label: string }>
 
 const STATUS_LABEL = { PENDING: 'Pendente', APPROVED: 'Aprovada', REJECTED: 'Rejeitada' }
 
+/**
+ * Quantas solicitações há em cada situação, contadas na api (api#618).
+ *
+ * Uma página de um item por situação, lendo o `total`. Os cartões contavam a
+ * lista que estava na tela — que agora é só uma página, e antes já era só a
+ * aba aberta: na aba "Pendentes", o cartão "Aprovadas" dizia zero.
+ */
+async function contarPorSituacao() {
+  const contar = async (status?: PlaceRequestStatus) =>
+    (await placeRequestsService.listAll(status, { limite: 1 })).pagina?.total ?? 0
+  const [total, pending, approved, rejected] = await Promise.all([
+    contar(), contar('PENDING'), contar('APPROVED'), contar('REJECTED'),
+  ])
+  return { total, pending, approved, rejected }
+}
+
 export default function AdminRequests() {
-  const [requests, setRequests]   = useState<PlaceRequest[]>([])
+  const queryClient = useQueryClient()
   const [tab, setTab] = useState<PlaceRequestStatus | undefined>(undefined)
-  const [loading, setLoading]     = useState(true)
-  const [error, setError]         = useState<string | null>(null)
   const [actionId, setActionId]   = useState<string | null>(null)
   const [rejectTarget, setRejectTarget] = useState<PlaceRequest | null>(null)
   const [rejectReason, setRejectReason] = useState('')
 
   const recontarPendentes = useInvalidarSolicitacoesPendentes('todas')
 
-  const fetchRequests = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const res = await placeRequestsService.listAll(tab)
-      setRequests(res.data.data)
-    } catch {
-      setError('Não foi possível carregar as solicitações.')
-    } finally {
-      setLoading(false)
-    }
-  }, [tab])
+  const fila = useListaPaginada<PlaceRequest>(
+    chaves.filaDeSolicitacoes(tab ?? 'TODAS'),
+    (cursor) => placeRequestsService.listAll(tab, { cursor }),
+  )
+  const requests = fila.itens
+  const error = fila.erro ? 'Não foi possível carregar as solicitações.' : null
 
-  useEffect(() => { fetchRequests() }, [fetchRequests])
+  const contagem = useQuery({ queryKey: chaves.contagemDeSolicitacoes(), queryFn: contarPorSituacao })
+
+  /** Aprovar ou rejeitar muda a fila de todas as abas e os números do topo. */
+  const fetchRequests = () => queryClient.invalidateQueries({ queryKey: ['solicitacoes'] })
 
   const handleApprove = async (id: string) => {
     setActionId(id)
@@ -82,12 +97,7 @@ export default function AdminRequests() {
     }
   }
 
-  const counts = {
-    total:    requests.length,
-    pending:  requests.filter((r) => r.status === 'PENDING').length,
-    approved: requests.filter((r) => r.status === 'APPROVED').length,
-    rejected: requests.filter((r) => r.status === 'REJECTED').length,
-  }
+  const counts = contagem.data ?? { total: 0, pending: 0, approved: 0, rejected: 0 }
 
   usePageHeader("Solicitações de Estabelecimento", "Aprove ou rejeite solicitações de Owners para cadastro de novos estabelecimentos")
 
@@ -110,7 +120,7 @@ export default function AdminRequests() {
 
       {error && <ErrorMsg>{error}</ErrorMsg>}
 
-      {!loading && requests.length === 0 && !error && (
+      {!fila.carregando && requests.length === 0 && !error && (
         <EmptyState>Nenhuma solicitação encontrada.</EmptyState>
       )}
 
@@ -163,6 +173,15 @@ export default function AdminRequests() {
           </RequestCard>
         ))}
       </RequestList>
+
+      <CarregarMais
+        mostrando={requests.length}
+        total={fila.pagina?.total}
+        temMais={fila.temMais}
+        carregando={fila.carregandoMais}
+        aoCarregar={fila.carregarMais}
+        rotulo="solicitações"
+      />
 
       {rejectTarget && (
         <RejectModal>

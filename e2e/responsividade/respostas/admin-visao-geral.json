@@ -399,11 +399,15 @@
         }
       }
     },
-    "GET /place-requests?status=PENDING": {
+    "GET /place-requests?limite=1&status=PENDING": {
       "status": 200,
       "corpo": {
         "success": true,
-        "data": []
+        "data": [],
+        "pagina": {
+          "proximo": null,
+          "total": 0
+        }
       }
     }
   }
