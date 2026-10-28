@@ -8,7 +8,7 @@
 
 <p>
   <a href="https://app.so-mais-um.com"><img src="https://img.shields.io/badge/▶_Abrir_o_app-app.so--mais--um.com-22C55E?style=for-the-badge&logo=googlechrome&logoColor=white" alt="App"/></a>
-  <a href="https://so-mais-um.com"><img src="https://img.shields.io/badge/Site-so--mais--um.com-3B82F6?style=for-the-badge&logo=vercel&logoColor=white" alt="Site"/></a>
+  <a href="https://so-mais-um.com"><img src="https://img.shields.io/badge/Site-so--mais--um.com-3B82F6?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Site"/></a>
 </p>
 
 <p>
@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Vite-8.0-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 8"/>
   <img src="https://img.shields.io/badge/React_Router-7-CA4245?style=flat-square&logo=reactrouter&logoColor=white" alt="React Router 7"/>
   <img src="https://img.shields.io/badge/styled--components-6-DB7093?style=flat-square&logo=styled-components&logoColor=white" alt="styled-components"/>
-  <img src="https://img.shields.io/badge/deploy-Vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel"/>
+  <img src="https://img.shields.io/badge/deploy-Cloudflare_Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers"/>
 </p>
 
 <sub>🟢 <strong>Em produção</strong> &nbsp;•&nbsp; 👥 <strong>3</strong> perfis de acesso &nbsp;•&nbsp; 🏅 <strong>12</strong> modalidades &nbsp;•&nbsp; 🔔 tempo real (SSE)</sub>
@@ -83,7 +83,7 @@ flowchart TB
 
 ## ✨ Destaques de engenharia
 
-**Deploy novo não quebra a aba que já estava aberta.** SPA com code splitting tem um problema clássico: você publica, o hash dos chunks muda, e o usuário que estava com a página aberta clica num link e recebe um 404 de módulo. Aqui a defesa tem duas camadas. `lazyWithRetry` embrulha cada `import()` e, se o chunk sumiu, recarrega a página em vez de estourar. O que escapar cai no `ErrorBoundary`, que reconhece a assinatura do erro (`Failed to fetch dynamically imported module`, `Unable to preload CSS`) e recarrega também — só mostra a tela de erro para falhas de verdade. O `vercel.json` fecha o combo: `index.html` com `no-store`, `/assets/*` com `immutable` por um ano.
+**Deploy novo não quebra a aba que já estava aberta.** SPA com code splitting tem um problema clássico: você publica, o hash dos chunks muda, e o usuário que estava com a página aberta clica num link e recebe um 404 de módulo. Aqui a defesa tem duas camadas. `lazyWithRetry` embrulha cada `import()` e, se o chunk sumiu, recarrega a página em vez de estourar. O que escapar cai no `ErrorBoundary`, que reconhece a assinatura do erro (`Failed to fetch dynamically imported module`, `Unable to preload CSS`) e recarrega também — só mostra a tela de erro para falhas de verdade. O `public/_headers` fecha o combo: `/assets/*` com `immutable` por um ano, enquanto o `index.html` sai do Workers com `must-revalidate`.
 
 **SSE autenticado por cookie, uma conexão por aba.** O `StreamProvider` abre `GET /notifications/stream` via `EventSource` quando há usuário logado e fecha no logout — sem polling, sem WebSocket para manter de pé. `EventSource` não deixa mandar header `Authorization`, e era por isso que o JWT ia na query string; agora vai o cookie de sessão, com `withCredentials: true`. Quem precisa escuta pelo nome do evento (`useEventoDoStream`): o sino lê o evento sem nome, o das notificações, e a conversa de suporte lê o `suporte` — um nunca aparece no outro. Quando a conexão cai e volta, quem escuta é avisado (`useReconexaoDoStream`) e relê do banco o que pode ter chegado na queda. Payload malformado é ignorado em silêncio: o tempo real é acessório, nunca derruba a tela.
 
@@ -170,7 +170,7 @@ flowchart TB
     </tr>
     <tr>
       <td><strong>Deploy</strong></td>
-      <td><img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white"/> — preview por PR, produção a partir de <code>main</code> (<code>vercel build --prod</code> no CI)</td>
+      <td><img src="https://img.shields.io/badge/Cloudflare_Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white"/> — Workers Builds: preview por branch, produção a partir de <code>main</code>; só <code>/partida/*</code> passa pelo <code>worker/index.js</code>, para a prévia do link</td>
     </tr>
   </tbody>
 </table>
@@ -253,7 +253,7 @@ VITE_API_URL=http://localhost:3000
 VITE_API_URL=https://api.so-mais-um.com
 ```
 
-Trocar exige **reiniciar o `npm run dev`**: o Vite injeta `import.meta.env` em build/dev-server start, não em runtime. O deploy não usa `.env` — a Vercel e o workflow de CI injetam `VITE_API_URL` e `VITE_GOOGLE_CLIENT_ID` na hora do build (veja `.env.production` e `ci-cd.yml`).
+Trocar exige **reiniciar o `npm run dev`**: o Vite injeta `import.meta.env` em build/dev-server start, não em runtime. O build de produção lê os valores públicos do `.env.production` (`VITE_API_URL`, `VITE_GOOGLE_CLIENT_ID`...), tanto no Workers Builds quanto no CI.
 
 ### 5. Suba o app
 
@@ -305,7 +305,7 @@ npm run dev
     </tr>
     <tr>
       <td><strong>Rota funciona em dev e dá 404 em servidor próprio</strong></td>
-      <td>É uma SPA — todo caminho tem que servir o <code>index.html</code>. Na Vercel isso vem do rewrite em <code>vercel.json</code>; em outro host, replique a regra.</td>
+      <td>É uma SPA — todo caminho tem que servir o <code>index.html</code>. No Workers isso vem do <code>not_found_handling: "single-page-application"</code> do <code>wrangler.jsonc</code>; em outro host, replique a regra.</td>
     </tr>
   </tbody>
 </table>
@@ -420,7 +420,7 @@ Os fluxos críticos do jogador, o que dá mais prejuízo quando quebra:
 | Gate de assinatura | `hooks/useSubscription.test.tsx` · `utils/toastErro.test.ts` | O `isActive` concordando com o middleware da API, inclusive na tolerância de `past_due`, e o erro 402 mostrando o caminho do pagamento |
 | Assinatura vencida no painel | `pages/Owner/{Places,Courts,Equipment,Requests,Inventory}/index.test.tsx` | As cinco telas se comportando igual: conteúdo consultável, ações que gravam desabilitadas e ninguém gravando antes de o status chegar |
 
-**1272 testes, ~9s.** A cobertura de linhas está em **~78%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
+**1278 testes, ~9s.** A cobertura de linhas está em **~78%**, e o número não é meta: o critério é cobrir o que dói quando quebra, não perseguir porcentagem. **Todo PR novo entra com teste do comportamento que ele muda** — é o que a [Definition of Done](https://github.com/mateus-vitor-ferreira-dev/so-mais-um-api/blob/main/docs/EQUIPE.md) pede.
 
 ---
 
