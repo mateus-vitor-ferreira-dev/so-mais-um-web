@@ -119,6 +119,30 @@ export interface ApiEnvelope<T> {
     data: T;
 }
 
+/**
+ * Lista paginada por cursor (api#618). O `data` continua sendo a lista — só a
+ * página — e a navegação vem na chave irmã `pagina`.
+ *
+ * `P` é o que cada rota põe a mais na `pagina`: a Gestão de Usuários manda a
+ * contagem por papel, por exemplo.
+ */
+export interface InfoDaPagina {
+    /** O cursor da página seguinte; `null` quando esta é a última. */
+    proximo: string | null;
+    /** Quantos itens casam com o filtro, nas rotas que contam. */
+    total?: number;
+}
+
+export interface ApiPaginada<T, P extends InfoDaPagina = InfoDaPagina> extends ApiEnvelope<T[]> {
+    pagina: P;
+}
+
+/** O que toda rota paginada aceita na query, além dos filtros dela. */
+export interface PedidoDePagina {
+    cursor?: string;
+    limite?: number;
+}
+
 export interface ApiErrorBody {
     success: false;
     message: string;

@@ -14,7 +14,7 @@ import { sportTextLabel } from '../../utils/sportText'
 import TournamentBracket from '../../components/TournamentBracket'
 import { useTournamentFormats } from '../../hooks/useTournamentFormats'
 import { listTournaments, createTournament, createDivision } from '../../services/tournaments'
-import { list as listPlaces } from '../../services/places'
+import * as placesService from '../../services/places'
 import type { KeyboardEvent, ReactElement } from 'react'
 import type { Place, Tournament, TournamentStatus } from '../../types/api'
 import type { InferType } from 'yup'
@@ -336,20 +336,15 @@ export default function Tournaments() {
 
   useEffect(() => { fetchTournaments() }, [fetchTournaments])
 
-  // Carrega estabelecimentos: owner vê só os seus, admin vê todos
+  // Carrega estabelecimentos: owner vê só os seus, admin vê todos — e quem
+  // decide é a api (api#618). Só dono e admin criam campeonato.
   useEffect(() => {
     if (!showModal) return
-    listPlaces()
-      .then((res) => {
-        const body = res?.data ?? res ?? {}
-        const all = Array.isArray(body) ? body : (Array.isArray(body?.data) ? body.data : [])
-        const filtered = user?.role === 'OWNER'
-          ? all.filter(p => p.owner?.id === user.id)
-          : all
-        setPlaces(filtered)
-      })
+    placesService
+      .mine()
+      .then((res) => setPlaces(res.data.data))
       .catch(() => setPlaces([]))
-  }, [showModal, user])
+  }, [showModal])
 
   function closeModal() {
     setShowModal(false)

@@ -3,6 +3,7 @@ import AtribuicaoDoTempo from '../../components/AtribuicaoDoTempo'
 import CaptainBadge from '../../components/CaptainBadge'
 import CartaoDePartida, { type PartidaDoCartao } from '../../components/CartaoDePartida'
 import EmptyState from '../../components/EmptyState'
+import CarregarMais from '../../components/CarregarMais'
 import ErrorState from '../../components/ErrorState'
 import FaixaDoTempo from '../../components/FaixaDoTempo'
 import MarcaDoTime from '../../components/MarcaDoTime'
@@ -389,6 +390,34 @@ export const PECAS: Peca[] = [
               { data: '2026-09-30', leitura: { alcance: 'AINDA_LONGE', disponivelEm: '2026-09-21', risco: 'NENHUM', motivos: [] } },
             ]}
           />
+        ),
+      },
+    ],
+  },
+  {
+    nome: 'CarregarMais',
+    onde: 'components/CarregarMais',
+    porque:
+      'O pé de toda lista paginada (api#618): quantos estão na tela, de quantos, e o botão da próxima ' +
+      'página. Botão, e não rolagem infinita — numa tabela de admin a pessoa procura e compara, e a ' +
+      'rolagem que carrega sozinha tira dela o controle de quanto buscar.',
+    estados: [
+      {
+        rotulo: 'com mais para carregar — Gestão de Usuários',
+        render: () => (
+          <CarregarMais mostrando={25} total={1204} temMais carregando={false} aoCarregar={() => {}} rotulo="usuários" />
+        ),
+      },
+      {
+        rotulo: 'carregando a próxima página',
+        render: () => (
+          <CarregarMais mostrando={25} total={1204} temMais carregando aoCarregar={() => {}} rotulo="usuários" />
+        ),
+      },
+      {
+        rotulo: 'fim da lista — só a contagem',
+        render: () => (
+          <CarregarMais mostrando={7} total={7} temMais={false} carregando={false} aoCarregar={() => {}} rotulo="partidas" />
         ),
       },
     ],

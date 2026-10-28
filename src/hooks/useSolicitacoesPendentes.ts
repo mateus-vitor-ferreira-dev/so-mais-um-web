@@ -11,9 +11,19 @@ import { chaves } from '../lib/queryClient'
  */
 export type EscopoDeSolicitacoes = 'todas' | 'minhas'
 
-const BUSCA = {
-  todas:  () => placeRequestsService.listAll('PENDING'),
-  minhas: () => placeRequestsService.listMine('PENDING'),
+/**
+ * Como contar em cada escopo.
+ *
+ * A fila do admin é paginada (api#618): contar o tamanho da lista pararia no
+ * tamanho da página. Por isso ela pede uma página de um só e lê o `total`, que
+ * a api conta com o filtro. A do dono segue inteira — é o punhado dele.
+ */
+const CONTAR = {
+  todas: async () => {
+    const corpo = await placeRequestsService.listAll('PENDING', { limite: 1 })
+    return corpo.pagina?.total ?? corpo.data.length
+  },
+  minhas: async () => (await placeRequestsService.listMine('PENDING')).data.data.length,
 }
 
 /**
@@ -37,10 +47,7 @@ const BUSCA = {
 export function useSolicitacoesPendentes(escopo: EscopoDeSolicitacoes): number {
   const { data } = useQuery({
     queryKey: chaves.solicitacoesPendentes(escopo),
-    queryFn: async () => {
-      const res = await BUSCA[escopo]()
-      return res.data.data.length
-    },
+    queryFn: () => CONTAR[escopo](),
     retry: false,
   })
 

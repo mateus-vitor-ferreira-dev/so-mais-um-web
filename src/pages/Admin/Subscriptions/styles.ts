@@ -193,25 +193,6 @@ export const OpcaoEmail = styled.span`
   display: block; font-size: ${({ theme }) => theme.fontSizes.xs}; color: ${({ theme }) => theme.colors.textMuted};
   overflow-wrap: anywhere;
 `
-export const SemOpcao = styled.p<{ $erro?: boolean }>`
-  margin: 6px 4px; font-size: ${({ theme }) => theme.fontSizes.xs};
-  color: ${({ $erro, theme }) => ($erro ? theme.colors.error : theme.colors.textMuted)};
-`
-export const Escolhido = styled.div`
-  display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0;
-  padding: 8px 10px; border-radius: ${({ theme }) => theme.radii.sm};
-  border: 1px solid ${({ theme }) => theme.colors.primary}; background: ${({ theme }) => theme.colors.primarySubtle};
-`
-export const EscolhidoTexto = styled.div`
-  min-width: 0; font-size: ${({ theme }) => theme.fontSizes.sm}; color: ${({ theme }) => theme.colors.textPrimary};
-  span { display: block; font-size: ${({ theme }) => theme.fontSizes.xs}; color: ${({ theme }) => theme.colors.textMuted}; overflow-wrap: anywhere; }
-`
-export const Trocar = styled.button`
-  flex-shrink: 0; border: 0; background: transparent; cursor: pointer; padding: 4px 6px;
-  color: ${({ theme }) => theme.colors.primary}; font-weight: ${({ theme }) => theme.fontWeights.bold};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  ${alvoDeToque}
-`
 /**
  * Ajuda de campo. Fora do `<label>` de propósito: dentro dele o parágrafo
  * entraria no nome acessível do campo, e o leitor de tela anunciaria a
