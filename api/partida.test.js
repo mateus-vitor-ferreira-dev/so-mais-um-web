@@ -149,7 +149,7 @@ describe('prévia do link — as garantias do documento', () => {
   it('leva um refresh e um link visível, para o humano que cair aqui por engano', async () => {
     const res = await roda({ id: 'partida-1' }, ok(PARTIDA))
 
-    // A lista de rastreadores do `vercel.json` pode errar para mais. Quando
+    // A lista de rastreadores pode errar para mais. Quando
     // errar, a pessoa chega ao app do mesmo jeito.
     expect(res.corpo).toContain('http-equiv="refresh"')
     expect(res.corpo).toContain('<a href=')

@@ -6,9 +6,8 @@
  * isso uma meta tag no `index.html` seria necessariamente igual para todas as
  * partidas, e a prévia com data, local e vagas precisa ser montada no servidor.
  *
- * **Só rastreador passa por aqui.** Na Vercel, o `vercel.json` roteia para esta
- * função; no Cloudflare, `worker/index.js` faz o mesmo papel. Os
- * dois só chamam a prévia quando o `user-agent` casa com a lista de bots; gente de verdade
+ * **Só rastreador passa por aqui.** O `worker/index.js` só chama a prévia quando
+ * o `user-agent` casa com a lista de bots; gente de verdade
  * continua indo direto para o `index.html`, sem servidor no caminho e sem
  * nenhum risco novo de a página da partida parar de abrir. Se a lista de bots
  * errar para menos, o efeito é o de hoje: link sem prévia.
@@ -28,8 +27,7 @@
 const apiUrl = () => process.env.API_URL || process.env.VITE_API_URL || ''
 
 /**
- * Quem recebe a prévia em vez do app. É a mesma lista do `vercel.json`; enquanto
- * os dois provedores existirem, mudar uma é mudar a outra.
+ * Quem recebe a prévia em vez do app.
  */
 export const ROBOS =
   /(facebookexternalhit|whatsapp|twitterbot|slackbot|telegrambot|discordbot|linkedinbot|googlebot|bingbot|embedly|quora link preview|pinterest|redditbot|applebot|vkshare|skypeuripreview|bot|crawler|spider|preview)/i
