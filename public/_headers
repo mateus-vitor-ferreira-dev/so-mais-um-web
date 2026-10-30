@@ -1,4 +1,4 @@
-# Cabeçalhos do Cloudflare Pages (no lugar dos "headers" do vercel.json).
+# Cabeçalhos dos arquivos estáticos no Cloudflare.
 # O index.html não precisa de regra: o Pages já o serve com "max-age=0, must-revalidate",
 # então quem abre o app sempre pega a versão nova. Os arquivos de /assets têm hash no
 # nome e podem ficar em cache para sempre.

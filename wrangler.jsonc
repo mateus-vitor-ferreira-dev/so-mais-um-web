@@ -1,4 +1,4 @@
-// Publicação no Cloudflare Workers, no lugar da Vercel. O app são arquivos estáticos
+// Publicação no Cloudflare Workers. O app são arquivos estáticos
 // (o build do Vite em dist/); só /partida/* passa pelo Worker, para a prévia do link
 // (worker/index.js). Deploy pelo Workers Builds: "npm run build" e "npx wrangler deploy".
 {
@@ -16,7 +16,7 @@
   "vars": {
     "API_URL": "https://api.so-mais-um.com"
   },
-  // Cada branch ganha um link próprio de preview, como na Vercel
+  // Cada branch ganha um link próprio de preview
   "previews": {
     "vars": {
       "API_URL": "https://api.so-mais-um.com"

@@ -60,10 +60,8 @@ export default defineConfig([
     },
   },
 
-  // As funções serverless da Vercel rodam no Node, e não no navegador. É por
-  // isso que elas leem `process.env` — a única forma de a prévia do link saber
-  // o endereço da API em tempo de execução, já que o `import.meta.env` do Vite
-  // só existe no bundle do front. Ver `api/partida.js`.
+  // A prévia do link roda no Worker e nos testes, e não no navegador. Ver
+  // `api/partida.js`.
   {
     files: ['api/**/*.js'],
     languageOptions: {

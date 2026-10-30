@@ -23,9 +23,9 @@ export default defineConfig({
     // os estilos e asserção sobre classe/estilo computado mente.
     css: true,
 
-    // `api/` entra junto: as funções serverless da Vercel são código de
-    // produção como qualquer outro, e a prévia do link é justamente a parte que
-    // ninguém vê quebrar até alguém colar um link no WhatsApp.
+    // `api/` entra junto: a prévia do link é código de produção como qualquer
+    // outro, e é justamente a parte que ninguém vê quebrar até alguém colar um
+    // link no WhatsApp.
     include: ['src/**/*.{test,spec}.{ts,tsx}', '{api,worker}/**/*.{test,spec}.{js,ts}'],
 
     coverage: {

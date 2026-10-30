@@ -17,16 +17,6 @@
  */
 
 /**
- * Lido a cada chamada, e não uma vez no topo do módulo.
- *
- * Contêiner de função é reaproveitado entre invocações, e uma constante de
- * módulo congelaria a configuração no primeiro pedido que caísse naquele
- * contêiner. Ler aqui custa um acesso a objeto e mantém a função honesta com o
- * ambiente — inclusive no teste, que troca a variável entre um caso e outro.
- */
-const apiUrl = () => process.env.API_URL || process.env.VITE_API_URL || ''
-
-/**
  * Quem recebe a prévia em vez do app.
  */
 export const ROBOS =
@@ -142,8 +132,8 @@ function documento({ titulo, descricao, urlDaPagina, urlDaImagem }) {
 }
 
 /**
- * O documento da prévia e os cabeçalhos dele, sem depender de provedor: a
- * Vercel e o Cloudflare só mudam como o pedido chega e a resposta sai.
+ * O documento da prévia e os cabeçalhos dele. Como o pedido chega e a resposta
+ * sai fica no `worker/index.js`.
  *
  * O cartão fica no cache da borda por 5 minutos. Prévia é leitura pública e
  * repetida — o WhatsApp busca uma vez por link colado —, e cinco minutos é curto
@@ -164,21 +154,4 @@ export async function montaPrevia({ id, convite, origem, base }) {
       'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
     },
   }
-}
-
-/** A função serverless da Vercel. */
-export default async function handler(req, res) {
-  const { id, convite } = req.query ?? {}
-
-  const protocolo = (req.headers['x-forwarded-proto'] || 'https').split(',')[0]
-  const host = req.headers['x-forwarded-host'] || req.headers.host || ''
-
-  const { corpo, cabecalhos } = await montaPrevia({
-    id,
-    convite,
-    origem: `${protocolo}://${host}`,
-    base: apiUrl(),
-  })
-  for (const [chave, valor] of Object.entries(cabecalhos)) res.setHeader(chave, valor)
-  return res.status(200).send(corpo)
 }
