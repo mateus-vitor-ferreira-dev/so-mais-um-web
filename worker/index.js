@@ -3,9 +3,8 @@
  * no `wrangler.jsonc`); o resto do app são os arquivos estáticos, servidos sem
  * passar por aqui.
  *
- * Faz o papel da regra do `vercel.json`: só rastreador recebe o documento com as
- * meta tags da prévia; gente de verdade segue para o `index.html` do app. A lógica
- * da prévia mora em `api/partida.js`, a mesma que a Vercel usa.
+ * Só rastreador recebe o documento com as meta tags da prévia; gente de verdade
+ * segue para o `index.html` do app. A lógica da prévia mora em `api/partida.js`.
  */
 import { ROBOS, montaPrevia } from '../api/partida.js'
 
