@@ -12,4 +12,10 @@ export const notificationService = {
   readAll: (): Promise<AxiosResponse<void>> => api.patch('/notifications/read-all'),
 
   readOne: (id: string): Promise<AxiosResponse<void>> => api.patch(`/notifications/${id}/read`),
+
+  subscribePush: (subscription: PushSubscriptionJSON): Promise<AxiosResponse<void>> =>
+    api.post('/notifications/push/subscribe', subscription),
+
+  setPushPreference: (enabled: boolean): Promise<AxiosResponse<{ success: true; data: { enabled: boolean } }>> =>
+    api.patch('/notifications/push/preferences', { enabled }),
 }

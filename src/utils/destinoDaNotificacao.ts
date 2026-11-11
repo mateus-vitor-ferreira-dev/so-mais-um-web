@@ -18,6 +18,10 @@ export function destinoDaNotificacao(
   papel: UserRole | undefined,
 ): string | null {
   switch (notificacao.type) {
+    case 'MATCH_FULL':
+    case 'MATCH_CANCELLED':
+    case 'MATCH_INVITE':
+      return notificacao.data?.matchId ? `/partida/${notificacao.data.matchId}` : null
     case 'SUPPORT_MESSAGE':
       if (papel === 'OWNER') return '/owner/suporte'
       if (papel === 'ADMIN') {
