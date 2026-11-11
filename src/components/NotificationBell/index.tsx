@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Bell, CloudLightning, CloudSun } from 'lucide-react'
+import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import { notificationService } from '../../services/notificationService'
 import { useAuth } from '../../contexts/AuthContext'
 import { useEventoDoStream, useReconexaoDoStream } from '../../hooks/useEventoDoStream'
 import { destinoDaNotificacao } from '../../utils/destinoDaNotificacao'
+import { enableWebPush } from '../../services/webPush'
 import { useSuporteLido } from '../../utils/suporteLido'
 import type { Notification } from '../../types/api'
 import {
   Wrapper, BellBtn, Badge, Dropdown, DropHeader, DropTitle,
-  MarkAllBtn, NotifList, NotifItem, NotifDot, NotifText, NotifCorpo, NotifIcone,
+  MarkAllBtn, PushBtn, NotifList, NotifItem, NotifDot, NotifText, NotifCorpo, NotifIcone,
   NotifTime, EmptyMsg,
 } from './styles'
 
@@ -85,6 +87,17 @@ export default function NotificationBell() {
     setNotifs(prev => prev.map(n => ({ ...n, read: true })))
   }
 
+  async function handleEnablePush() {
+    try {
+      const result = await enableWebPush()
+      if (result === 'enabled') toast.success('Notificações ativadas neste dispositivo.')
+      else if (result === 'denied') toast.error('Permissão negada. Você pode liberar nas configurações do navegador.')
+      else toast.error('Notificações ainda não estão configuradas neste ambiente.')
+    } catch {
+      toast.error('Não foi possível ativar as notificações agora.')
+    }
+  }
+
   /**
    * Marca como lida e, quando o tipo leva a algum lugar, vai para lá.
    *
@@ -115,9 +128,10 @@ export default function NotificationBell() {
         <Dropdown>
           <DropHeader>
             <DropTitle>Notificações</DropTitle>
-            {unread > 0 && (
-              <MarkAllBtn onClick={handleMarkAll}>Marcar todas como lidas</MarkAllBtn>
-            )}
+            <div>
+              <PushBtn onClick={handleEnablePush}>Ativar no dispositivo</PushBtn>
+              {unread > 0 && <MarkAllBtn onClick={handleMarkAll}>Marcar todas como lidas</MarkAllBtn>}
+            </div>
           </DropHeader>
           <NotifList>
             {notifs.length === 0 ? (

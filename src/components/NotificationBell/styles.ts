@@ -87,6 +87,10 @@ export const MarkAllBtn = styled.button`
   &:hover { text-decoration: underline; }
 `
 
+export const PushBtn = styled(MarkAllBtn)`
+  margin-right: 10px;
+`
+
 export const NotifList = styled.div`
   max-height: 360px;
   overflow-y: auto;
